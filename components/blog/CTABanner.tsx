@@ -12,37 +12,65 @@ interface Props {
   variant?: 'inline' | 'large'
 }
 
-function DoctorIllustration() {
+function ServiceIllustration() {
   return (
-    <svg viewBox="0 0 200 200" fill="none" className="w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
-      <circle cx="100" cy="100" r="90" fill="white" opacity="0.08"/>
-      <circle cx="100" cy="100" r="70" fill="white" opacity="0.06"/>
-      <circle cx="80" cy="60" r="20" fill="#E8F0EC" opacity="0.9"/>
-      <circle cx="74" cy="57" r="2" fill="#1B4F3A"/>
-      <circle cx="86" cy="57" r="2" fill="#1B4F3A"/>
-      <path d="M74 65 Q80 70 86 65" stroke="#1B4F3A" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-      <path d="M68 75 Q60 90 65 100" stroke="#86EFAC" strokeWidth="2" fill="none" strokeLinecap="round"/>
-      <circle cx="65" cy="102" r="4" fill="#86EFAC"/>
-      <rect x="62" y="78" width="36" height="45" rx="8" fill="white" opacity="0.85"/>
-      <circle cx="80" cy="90" r="1.5" fill="#1B4F3A" opacity="0.3"/>
-      <circle cx="80" cy="100" r="1.5" fill="#1B4F3A" opacity="0.3"/>
-      <circle cx="80" cy="110" r="1.5" fill="#1B4F3A" opacity="0.3"/>
-      <rect x="110" y="80" width="55" height="40" rx="4" fill="white" opacity="0.9"/>
-      <rect x="114" y="84" width="47" height="28" rx="2" fill="#E8F0EC"/>
-      <rect x="118" y="89" width="30" height="3" rx="1" fill="#1B4F3A" opacity="0.4"/>
-      <rect x="118" y="95" width="38" height="3" rx="1" fill="#1B4F3A" opacity="0.3"/>
-      <rect x="118" y="101" width="25" height="3" rx="1" fill="#1B4F3A" opacity="0.3"/>
-      <circle cx="152" cy="89" r="6" fill="#86EFAC" opacity="0.8"/>
-      <text x="152" y="92" textAnchor="middle" fill="#1B4F3A" fontSize="8" fontWeight="700">AI</text>
-      <rect x="107" y="120" width="61" height="6" rx="2" fill="white" opacity="0.6"/>
-      <circle cx="155" cy="55" r="14" fill="#86EFAC" opacity="0.2"/>
-      <circle cx="155" cy="55" r="10" fill="none" stroke="#86EFAC" strokeWidth="1.5"/>
-      <path d="M155 48 L155 55 L160 58" stroke="#86EFAC" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M170 50 L178 46" stroke="#86EFAC" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M175 52 L178 46 L172 45" stroke="#86EFAC" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-      <path d="M40 40 L42 35 L44 40 L49 42 L44 44 L42 49 L40 44 L35 42 Z" fill="white" opacity="0.4"/>
-      <path d="M160 140 L161 137 L162 140 L165 141 L162 142 L161 145 L160 142 L157 141 Z" fill="white" opacity="0.3"/>
-      <path d="M130 45 L131 43 L132 45 L134 46 L132 47 L131 49 L130 47 L128 46 Z" fill="#86EFAC" opacity="0.5"/>
+    <svg viewBox="0 0 220 180" fill="none" className="w-36 h-28 md:w-48 md:h-36 flex-shrink-0">
+      {/* 背景グロー */}
+      <circle cx="110" cy="90" r="80" fill="white" opacity="0.06"/>
+      
+      {/* ノートPC */}
+      <rect x="30" y="40" width="100" height="68" rx="6" fill="white" opacity="0.92"/>
+      <rect x="35" y="45" width="90" height="52" rx="3" fill="#E8F0EC"/>
+      {/* 画面: ダッシュボード風 */}
+      {/* グラフ */}
+      <rect x="40" y="50" width="38" height="24" rx="2" fill="white" opacity="0.8"/>
+      <polyline points="44,70 50,64 56,66 62,58 68,60 74,54" stroke="#1B4F3A" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      <text x="42" y="57" fill="#1B4F3A" fontSize="5" fontWeight="600">進捗</text>
+      {/* 症例数カウンター */}
+      <rect x="82" y="50" width="38" height="24" rx="2" fill="white" opacity="0.8"/>
+      <text x="101" y="62" textAnchor="middle" fill="#1B4F3A" fontSize="10" fontWeight="700">87</text>
+      <text x="101" y="70" textAnchor="middle" fill="#6B6760" fontSize="4">/120 症例</text>
+      {/* テキスト行（病歴要約風） */}
+      <rect x="40" y="78" width="50" height="3" rx="1" fill="#1B4F3A" opacity="0.25"/>
+      <rect x="40" y="83" width="76" height="3" rx="1" fill="#1B4F3A" opacity="0.15"/>
+      <rect x="40" y="88" width="60" height="3" rx="1" fill="#1B4F3A" opacity="0.15"/>
+      {/* AIバッジ */}
+      <rect x="100" y="78" width="18" height="10" rx="5" fill="#86EFAC"/>
+      <text x="109" y="85" textAnchor="middle" fill="#1B4F3A" fontSize="5.5" fontWeight="700">AI</text>
+      {/* キーボード */}
+      <path d="M25 108 L135 108 L130 114 L30 114 Z" fill="white" opacity="0.5"/>
+      
+      {/* スマホ */}
+      <rect x="148" y="52" width="42" height="72" rx="6" fill="white" opacity="0.92"/>
+      <rect x="152" y="58" width="34" height="54" rx="2" fill="#E8F0EC"/>
+      {/* スマホ画面: チェックリスト */}
+      <rect x="156" y="62" width="8" height="8" rx="2" fill="#86EFAC" opacity="0.6"/>
+      <path d="M158 66 L160 68 L163 64" stroke="#1B4F3A" strokeWidth="1" strokeLinecap="round"/>
+      <rect x="167" y="63" width="15" height="2.5" rx="1" fill="#1B4F3A" opacity="0.3"/>
+      <rect x="167" y="67" width="11" height="2" rx="1" fill="#1B4F3A" opacity="0.15"/>
+      
+      <rect x="156" y="76" width="8" height="8" rx="2" fill="#86EFAC" opacity="0.6"/>
+      <path d="M158 80 L160 82 L163 78" stroke="#1B4F3A" strokeWidth="1" strokeLinecap="round"/>
+      <rect x="167" y="77" width="14" height="2.5" rx="1" fill="#1B4F3A" opacity="0.3"/>
+      <rect x="167" y="81" width="10" height="2" rx="1" fill="#1B4F3A" opacity="0.15"/>
+      
+      <rect x="156" y="90" width="8" height="8" rx="2" fill="white" opacity="0.5" stroke="#C8C4BC" strokeWidth="0.5"/>
+      <rect x="167" y="91" width="13" height="2.5" rx="1" fill="#1B4F3A" opacity="0.2"/>
+      <rect x="167" y="95" width="9" height="2" rx="1" fill="#1B4F3A" opacity="0.1"/>
+      
+      {/* 接続線（PC↔スマホ） */}
+      <path d="M130 80 Q140 80 148 76" stroke="#86EFAC" strokeWidth="1" strokeDasharray="3,2" opacity="0.5"/>
+      
+      {/* キラキラ */}
+      <path d="M20 30 L22 25 L24 30 L29 32 L24 34 L22 39 L20 34 L15 32 Z" fill="white" opacity="0.35"/>
+      <path d="M195 40 L196 37 L197 40 L200 41 L197 42 L196 45 L195 42 L192 41 Z" fill="#86EFAC" opacity="0.4"/>
+      <path d="M145 30 L146 28 L147 30 L149 31 L147 32 L146 34 L145 32 L143 31 Z" fill="white" opacity="0.3"/>
+      
+      {/* 時短アイコン */}
+      <circle cx="180" cy="140" r="12" fill="#86EFAC" opacity="0.15"/>
+      <circle cx="180" cy="140" r="8" fill="none" stroke="#86EFAC" strokeWidth="1.2"/>
+      <path d="M180 135 L180 140 L184 142" stroke="#86EFAC" strokeWidth="1.2" strokeLinecap="round"/>
+      <text x="180" y="158" textAnchor="middle" fill="white" opacity="0.4" fontSize="5">3h→30min</text>
     </svg>
   )
 }
@@ -75,29 +103,33 @@ export default function CTABanner({ cta, variant = 'inline' }: Props) {
         </div>
 
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-          <DoctorIllustration />
+          <ServiceIllustration />
           
           <div className="flex-1 text-center md:text-left">
             <span className="inline-block bg-white/15 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
-              内科ナビ — J-OSLER効率化アプリ
+              内科ナビ — J-OSLER × 内科専門医試験 対策アプリ
             </span>
             
             <h3 className="text-xl md:text-2xl font-bold text-white mb-3 leading-snug">
-              病歴要約の下書き、<br className="hidden md:inline"/>AIが30秒で生成します
+              J-OSLER作業を10分の1に。<br className="hidden md:inline"/>試験対策もこれ一つ。
             </h3>
             
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-5 text-white/80 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 mb-5 text-white/80 text-sm">
               <span className="flex items-center gap-1.5 justify-center md:justify-start">
-                <svg className="w-4 h-4 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                総合考察を自動構成
+                <svg className="w-4 h-4 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                病歴要約AI下書き（30秒）
               </span>
               <span className="flex items-center gap-1.5 justify-center md:justify-start">
-                <svg className="w-4 h-4 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                検査値フォーマット変換
+                <svg className="w-4 h-4 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                症例登録テンプレ＋検査値変換
               </span>
               <span className="flex items-center gap-1.5 justify-center md:justify-start">
-                <svg className="w-4 h-4 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                症例登録テンプレ付き
+                <svg className="w-4 h-4 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                ダッシュボードで進捗一目瞭然
+              </span>
+              <span className="flex items-center gap-1.5 justify-center md:justify-start">
+                <svg className="w-4 h-4 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                内科専門医試験クイズ機能
               </span>
             </div>
             

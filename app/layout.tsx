@@ -88,7 +88,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-bg text-tx antialiased">
         <Header />
-        <main className="max-w-5xl mx-auto px-4 py-8">
+        <main className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
           {children}
         </main>
         <Footer />
@@ -132,7 +132,7 @@ const footerCategories = [
 function Footer() {
   return (
     <footer className="bg-s0 border-t border-br mt-16">
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 py-10">
         {/* カテゴリリンク */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {footerCategories.map((group) => (

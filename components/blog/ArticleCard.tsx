@@ -15,15 +15,27 @@ export default function ArticleCard({ post, compact = false }: Props) {
     return (
       <Link
         href={`/blog/${post.slug}`}
-        className="block bg-s0 border border-br rounded-lg p-4 hover:border-ac transition-colors"
+        className="block bg-s0 border border-br rounded-lg overflow-hidden hover:border-ac transition-colors"
       >
-        <span
-          className="inline-block text-xs text-white px-2 py-0.5 rounded mb-2"
-          style={{ backgroundColor: cluster?.bg || '#1B4F3A' }}
-        >
-          {category?.name || 'その他'}
-        </span>
-        <h3 className="font-semibold text-sm line-clamp-2">{post.title}</h3>
+        {/* サムネイル（OGP画像） */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/blog/${post.slug}/opengraph-image`}
+          alt={post.title}
+          width={600}
+          height={315}
+          className="w-full h-auto bg-s1"
+          loading="lazy"
+        />
+        <div className="p-4">
+          <span
+            className="inline-block text-xs text-white px-2 py-0.5 rounded mb-2"
+            style={{ backgroundColor: cluster?.bg || '#1B4F3A' }}
+          >
+            {category?.name || 'その他'}
+          </span>
+          <h3 className="font-semibold text-sm line-clamp-2">{post.title}</h3>
+        </div>
       </Link>
     )
   }
