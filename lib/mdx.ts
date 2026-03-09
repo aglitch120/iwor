@@ -2,6 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import readingTime from 'reading-time'
+import { compileMDX } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { categories, type CategorySlug, type ClusterId, type CtaType } from './blog-config'
 
 // 記事のフロントマター型
@@ -159,4 +163,22 @@ export function getAllTags(): { tag: string; count: number }[] {
   return Object.entries(tagCount)
     .map(([tag, count]) => ({ tag, count }))
     .sort((a, b) => b.count - a.count)
+}
+
+// MDXをコンパイルしてReactコンポーネントを返す
+export async function compileMDXContent(source: string) {
+  const { content } = await compileMDX({
+    source,
+    options: {
+      parseFrontmatter: false,
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [
+          rehypeSlug,
+          [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        ],
+      },
+    },
+  })
+  return content
 }
