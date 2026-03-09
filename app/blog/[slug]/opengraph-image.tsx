@@ -114,6 +114,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '疾患群バランスと書きやすい症例',
       category: 'medical-history',
     },
+    'c05-josler-zenjinteki-shiten': {
+      title: '全人的視点の書き方',
+      subtitle: '具体例とテンプレートで解説',
+      category: 'medical-history',
+    },
     'josler-complete-guide': {
       title: 'J-OSLER完全攻略',
       subtitle: '症例登録から修了認定まで',
