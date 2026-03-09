@@ -12,7 +12,7 @@ const nextConfig = {
     return [
       {
         source: '/app',
-        destination: '/demo_v14_app.html',
+        destination: '/app.html',
       },
     ]
   },
