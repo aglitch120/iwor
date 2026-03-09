@@ -5,6 +5,53 @@ export const alt = '内科ナビ'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
+// クラスターカラー（blog-config.tsと同一。Edge Runtimeでの安定性のためインライン定義）
+const clusterColorMap: Record<string, string> = {
+  'J-OSLER基礎': '#1E3A5F',
+  '症例登録': '#3D5A80',
+  '病歴要約': '#1B4F3A',
+  '疾患別病歴要約': '#2D6A4F',
+  '進捗管理': '#0D7377',
+  'JMECC・講習': '#4A5568',
+  '内科専門医試験': '#7F1D1D',
+  '試験領域別': '#9B2C2C',
+  '総合内科専門医': '#B7410E',
+  'AI・ツール': '#4338CA',
+  'メンタル・生活': '#134E4A',
+  'バイト・収入': '#4C1D95',
+  '税金・節税': '#92400E',
+  'キャリア': '#2B6CB0',
+  '学会・論文': '#6D28D9',
+  '結婚・出産': '#9D174D',
+  'サブスペJ-OSLER': '#5B6ABF',
+  'その他': '#6B6760',
+  // ピラー用（複数クラスターにまたがるもの）
+  'J-OSLER': '#1E3A5F',
+  '試験対策': '#7F1D1D',
+  'お金・生活': '#92400E',
+  'メンタル': '#134E4A',
+}
+
+const DEFAULT_BG = '#1B4F3A'
+
+// サブタイトルのカラーをベース色に合わせて調整
+function getSubtitleColor(bgColor: string): string {
+  // 赤系
+  if (['#7F1D1D', '#9B2C2C', '#B7410E'].includes(bgColor)) return 'rgba(252,165,165,0.85)'
+  // 紫系
+  if (['#4C1D95', '#6D28D9', '#5B6ABF'].includes(bgColor)) return 'rgba(196,181,253,0.85)'
+  // 青系
+  if (['#1E3A5F', '#3D5A80', '#2B6CB0', '#4338CA'].includes(bgColor)) return 'rgba(147,197,253,0.85)'
+  // ピンク系
+  if (bgColor === '#9D174D') return 'rgba(251,182,206,0.85)'
+  // オレンジ系
+  if (bgColor === '#92400E') return 'rgba(253,186,116,0.85)'
+  // グレー系
+  if (['#4A5568', '#6B6760'].includes(bgColor)) return 'rgba(203,213,225,0.85)'
+  // ティール/グリーン系（デフォルト）
+  return 'rgba(134,239,172,0.85)'
+}
+
 interface ArticleMeta {
   title: string
   subtitle: string
@@ -36,12 +83,22 @@ function slugToMeta(slug: string): ArticleMeta {
     'money-guide': {
       title: '専攻医のお金',
       subtitle: 'バイト・確定申告・節税',
-      category: 'お金・生活',
+      category: '税金・節税',
+    },
+    'money-career-guide': {
+      title: 'お金とキャリア',
+      subtitle: 'バイト・節税・キャリア設計',
+      category: 'キャリア',
     },
     'lifehack-guide': {
       title: 'ライフハック大全',
       subtitle: '研修を乗り切るコツ',
       category: 'メンタル・生活',
+    },
+    'efficiency-guide': {
+      title: '効率化ガイド',
+      subtitle: 'AI・ツールで作業時間を短縮',
+      category: 'AI・ツール',
     },
     'career-guide': {
       title: 'キャリア設計',
@@ -62,6 +119,8 @@ function slugToMeta(slug: string): ArticleMeta {
 export default async function OGImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const meta = slugToMeta(slug)
+  const bgColor = clusterColorMap[meta.category] || DEFAULT_BG
+  const subtitleColor = getSubtitleColor(bgColor)
 
   // Noto Sans JP Bold (weight 700) をGoogle Fontsから取得
   const fontBold = await fetch(
@@ -93,7 +152,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '70px 80px',
-          backgroundColor: '#1B4F3A',
+          backgroundColor: bgColor,
           fontFamily: fontBold ? 'NotoSansJP' : 'sans-serif',
           position: 'relative',
           overflow: 'hidden',
@@ -160,7 +219,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
               style={{
                 fontSize: 36,
                 fontWeight: 700,
-                color: 'rgba(134,239,172,0.85)',
+                color: subtitleColor,
                 lineHeight: 1.3,
               }}
             >
