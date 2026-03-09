@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Noto Sans JP', 'Hiragino Sans', 'Meiryo', sans-serif;
+  font-family: var(--font-noto-sans-jp), 'Hiragino Sans', 'Meiryo', sans-serif;
   -webkit-font-smoothing: antialiased;
   background-color: var(--bg);
   color: var(--tx);

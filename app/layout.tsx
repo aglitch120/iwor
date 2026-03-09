@@ -1,6 +1,16 @@
 import type { Metadata } from 'next'
+import { Noto_Sans_JP } from 'next/font/google'
+import Image from 'next/image'
 import './globals.css'
 import { siteConfig } from '@/lib/blog-config'
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+  preload: true,
+  variable: '--font-noto-sans-jp',
+})
 
 // Organization構造化データ
 const organizationJsonLd = {
@@ -38,6 +48,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    'max-snippet': -1,
+    'max-image-preview': 'large' as const,
+    'max-video-preview': -1,
   },
   icons: {
     icon: '/icon.png',
@@ -51,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={notoSansJP.variable}>
       <head>
         <script
           type="application/ld+json"
@@ -60,7 +73,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-bg text-tx antialiased">
+      <body className={`${notoSansJP.className} min-h-screen bg-bg text-tx antialiased`}>
         <Header />
         <main className="max-w-4xl mx-auto px-4 py-8">
           {children}
@@ -77,7 +90,7 @@ function Header() {
     <header className="sticky top-0 z-50 bg-s0 border-b border-br">
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          <img 
+          <Image 
             src="/icon.png" 
             alt="内科ナビ" 
             width={36} 
@@ -114,7 +127,7 @@ function Footer() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <img 
+            <Image 
               src="/icon.png" 
               alt="内科ナビ" 
               width={32} 

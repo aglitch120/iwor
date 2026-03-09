@@ -46,7 +46,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Noto Sans JP', 'Hiragino Sans', 'Meiryo', 'sans-serif'],
+        sans: ['var(--font-noto-sans-jp)', 'Hiragino Sans', 'Meiryo', 'sans-serif'],
         mono: ['DM Mono', 'Courier New', 'monospace'],
       },
     },
