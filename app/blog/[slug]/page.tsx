@@ -87,7 +87,29 @@ export default async function ArticlePage({ params }: Props) {
       <ReadingProgress />
       
       <article>
-        {/* アイキャッチ画像（OGP画像を流用） */}
+        {/* パンくず */}
+        <nav className="text-sm text-muted mb-4">
+          <Link href="/" className="hover:text-ac">ホーム</Link>
+          <span className="mx-2">›</span>
+          <Link href="/blog" className="hover:text-ac">ブログ</Link>
+          <span className="mx-2">›</span>
+          <Link href={`/blog/category/${frontmatter.category}`} className="hover:text-ac">
+            {category?.name || 'その他'}
+          </Link>
+        </nav>
+
+        {/* カテゴリ + 読了時間 */}
+        <div className="flex items-center gap-2 mb-4">
+          <Link
+            href={`/blog/category/${frontmatter.category}`}
+            className="text-xs bg-ac text-white px-2 py-1 rounded"
+          >
+            {category?.name || 'その他'}
+          </Link>
+          <span className="text-sm text-muted">{readingTime}分で読める</span>
+        </div>
+
+        {/* アイキャッチ画像 */}
         <div className="mb-6 rounded-xl overflow-hidden bg-s1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -100,29 +122,8 @@ export default async function ArticlePage({ params }: Props) {
           />
         </div>
 
-        {/* パンくず */}
-        <nav className="text-sm text-muted mb-6">
-          <Link href="/" className="hover:text-ac">ホーム</Link>
-          <span className="mx-2">›</span>
-          <Link href="/blog" className="hover:text-ac">ブログ</Link>
-          <span className="mx-2">›</span>
-          <Link href={`/blog/category/${frontmatter.category}`} className="hover:text-ac">
-            {category?.name || 'その他'}
-          </Link>
-        </nav>
-
         {/* 記事ヘッダー */}
         <header className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Link
-              href={`/blog/category/${frontmatter.category}`}
-              className="text-xs bg-ac text-white px-2 py-1 rounded"
-            >
-              {category?.name || 'その他'}
-            </Link>
-            <span className="text-sm text-muted">{readingTime}分で読める</span>
-          </div>
-          
           <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
             {frontmatter.title}
           </h1>
