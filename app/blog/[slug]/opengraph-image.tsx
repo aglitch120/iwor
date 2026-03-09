@@ -70,6 +70,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'Accept率を上げる完全ガイド',
       category: '病歴要約',
     },
+    'c04-josler-sougou-kousatsu-kakikata': {
+      title: '総合考察の書き方',
+      subtitle: '全人的視点の入れ方を徹底解説',
+      category: '病歴要約',
+    },
     'josler-complete-guide': {
       title: 'J-OSLER完全攻略',
       subtitle: '症例登録から修了認定まで',
