@@ -86,7 +86,16 @@ function SparkIcon() {
 export default function CTABanner({ cta, variant = 'inline' }: Props) {
   if (variant === 'large') {
     return (
-      <div className="relative bg-ac rounded-2xl p-6 md:p-8 lg:p-10 my-10 overflow-hidden">
+      <>
+        <style>{`
+          @keyframes ctaFloat {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .cta-float { animation: ctaFloat 0.6s ease-out both; }
+          .cta-float-inline { animation: ctaFloat 0.4s ease-out both; }
+        `}</style>
+        <div className="cta-float relative bg-ac rounded-2xl p-6 md:p-8 lg:p-10 my-10 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <svg className="absolute top-0 right-0 w-64 h-64 text-white/[0.03]" viewBox="0 0 200 200">
             {[30, 55, 80, 105].map((r) => (
@@ -157,6 +166,7 @@ export default function CTABanner({ cta, variant = 'inline' }: Props) {
           </div>
         </div>
       </div>
+      </>
     )
   }
   
@@ -165,7 +175,7 @@ export default function CTABanner({ cta, variant = 'inline' }: Props) {
       href={cta.url}
       target={cta.url.startsWith('http') ? '_blank' : undefined}
       rel={cta.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-      className="group block bg-gradient-to-r from-ac/[0.06] to-acl/80 border border-ac/20 rounded-xl p-3 sm:p-4 my-6 hover:border-ac/40 hover:shadow-sm transition-all no-underline"
+      className="cta-float-inline group block bg-gradient-to-r from-ac/[0.06] to-acl/80 border border-ac/20 rounded-xl p-3 sm:p-4 my-6 hover:border-ac/40 hover:shadow-sm transition-all no-underline"
     >
       <div className="flex items-center gap-2 sm:gap-3">
         <SparkIcon />
