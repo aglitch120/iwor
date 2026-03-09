@@ -63,6 +63,26 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
   const { slug } = await params
   const meta = slugToMeta(slug)
 
+  // Noto Sans JP Bold (weight 700) をGoogle Fontsから取得
+  const fontBold = await fetch(
+    'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=swap'
+  ).then(res => res.text()).then(css => {
+    // CSSからフォントURLを抽出
+    const match = css.match(/src: url\(([^)]+)\)/)
+    if (match) return fetch(match[1]).then(r => r.arrayBuffer())
+    return null
+  }).catch(() => null)
+
+  const fonts: { name: string; data: ArrayBuffer; weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900; style: 'normal' | 'italic' }[] = []
+  if (fontBold) {
+    fonts.push({
+      name: 'NotoSansJP',
+      data: fontBold,
+      weight: 700,
+      style: 'normal' as const,
+    })
+  }
+
   return new ImageResponse(
     (
       <div
@@ -74,7 +94,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           justifyContent: 'space-between',
           padding: '70px 80px',
           backgroundColor: '#1B4F3A',
-          fontFamily: 'sans-serif',
+          fontFamily: fontBold ? 'NotoSansJP' : 'sans-serif',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -83,10 +103,10 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         <div
           style={{
             position: 'absolute',
-            top: '80px',
-            right: '-60px',
-            width: '400px',
-            height: '400px',
+            top: '60px',
+            right: '-80px',
+            width: '420px',
+            height: '420px',
             borderRadius: '50%',
             backgroundColor: 'rgba(255,255,255,0.06)',
           }}
@@ -94,26 +114,26 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         <div
           style={{
             position: 'absolute',
-            top: '140px',
-            right: '0px',
-            width: '300px',
-            height: '300px',
+            top: '130px',
+            right: '-10px',
+            width: '320px',
+            height: '320px',
             borderRadius: '50%',
             backgroundColor: 'rgba(255,255,255,0.04)',
           }}
         />
 
         {/* カテゴリバッジ + タイトル */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, zIndex: 1, maxWidth: '75%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, zIndex: 1, maxWidth: '78%' }}>
           {/* カテゴリバッジ */}
           <div style={{ display: 'flex' }}>
             <div
               style={{
                 backgroundColor: 'rgba(255,255,255,0.15)',
                 color: 'rgba(255,255,255,0.9)',
-                fontSize: 22,
-                fontWeight: 600,
-                padding: '10px 24px',
+                fontSize: 24,
+                fontWeight: 700,
+                padding: '10px 28px',
                 borderRadius: 8,
               }}
             >
@@ -124,7 +144,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           {/* メインタイトル */}
           <div
             style={{
-              fontSize: meta.title.length > 12 ? 64 : 80,
+              fontSize: meta.title.length > 12 ? 72 : 88,
               fontWeight: 900,
               color: '#FFFFFF',
               lineHeight: 1.15,
@@ -138,9 +158,9 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           {meta.subtitle && (
             <div
               style={{
-                fontSize: 32,
+                fontSize: 36,
                 fontWeight: 700,
-                color: 'rgba(134,239,172,0.9)',
+                color: 'rgba(134,239,172,0.85)',
                 lineHeight: 1.3,
               }}
             >
@@ -159,9 +179,9 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         >
           <div
             style={{
-              fontSize: 24,
+              fontSize: 26,
               fontWeight: 700,
-              color: 'rgba(255,255,255,0.6)',
+              color: 'rgba(255,255,255,0.5)',
             }}
           >
             内科ナビ
@@ -171,6 +191,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
     ),
     {
       ...size,
+      fonts: fonts.length > 0 ? fonts : undefined,
     }
   )
 }
