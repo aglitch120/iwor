@@ -46,7 +46,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-noto-sans-jp)', 'Hiragino Sans', 'Meiryo', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'sans-serif'],
         mono: ['DM Mono', 'Courier New', 'monospace'],
       },
     },

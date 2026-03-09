@@ -1,18 +1,9 @@
 import type { Metadata } from 'next'
-import { Noto_Sans_JP } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 import './globals.css'
 import { siteConfig, categories } from '@/lib/blog-config'
 import { websiteJsonLd, siteNavigationJsonLd } from '@/lib/seo'
-
-const notoSansJP = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  display: 'swap',
-  preload: true,
-  variable: '--font-noto-sans-jp',
-})
 
 // Organization構造化データ
 const organizationJsonLd = {
@@ -73,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ja" className={notoSansJP.variable}>
+    <html lang="ja">
       <head>
         <script
           type="application/ld+json"
@@ -94,7 +85,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${notoSansJP.className} min-h-screen bg-bg text-tx antialiased`}>
+      <body className="min-h-screen bg-bg text-tx antialiased">
         <Header />
         <main className="max-w-5xl mx-auto px-4 py-8">
           {children}
