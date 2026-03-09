@@ -165,6 +165,19 @@ export function getAllTags(): { tag: string; count: number }[] {
     .sort((a, b) => b.count - a.count)
 }
 
+// 前後記事を取得（日付順）
+export function getAdjacentPosts(currentSlug: string): { prev: PostListItem | null; next: PostListItem | null } {
+  const allPosts = getAllPosts() // 日付降順
+  const index = allPosts.findIndex((post) => post.slug === currentSlug)
+  
+  if (index === -1) return { prev: null, next: null }
+  
+  return {
+    prev: index < allPosts.length - 1 ? allPosts[index + 1] : null, // 古い記事
+    next: index > 0 ? allPosts[index - 1] : null, // 新しい記事
+  }
+}
+
 // MDXをコンパイルしてReactコンポーネントを返す
 export async function compileMDXContent(source: string) {
   const { content } = await compileMDX({

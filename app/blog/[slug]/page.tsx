@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getPostBySlug, getAllPostSlugs, getRelatedPosts, compileMDXContent } from '@/lib/mdx'
+import { getPostBySlug, getAllPostSlugs, getRelatedPosts, getAdjacentPosts, compileMDXContent } from '@/lib/mdx'
 import { categories, ctaConfig } from '@/lib/blog-config'
 import { generateMetadata as genMeta, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
 import ArticleCard from '@/components/blog/ArticleCard'
@@ -49,6 +49,7 @@ export default async function ArticlePage({ params }: Props) {
   const { frontmatter, content, readingTime } = post
   const category = categories[frontmatter.category]
   const relatedPosts = getRelatedPosts(slug, 3)
+  const { prev, next } = getAdjacentPosts(slug)
   const cta = ctaConfig[frontmatter.cta_type]
   
   // MDXをコンパイル
@@ -179,6 +180,38 @@ export default async function ArticlePage({ params }: Props) {
           <ShareButtons title={frontmatter.title} slug={slug} />
         </div>
       </article>
+
+      {/* 前後記事ナビゲーション */}
+      {(prev || next) && (
+        <nav className="mt-10 pt-8 border-t border-br grid grid-cols-1 md:grid-cols-2 gap-4">
+          {prev ? (
+            <Link
+              href={`/blog/${prev.slug}`}
+              className="group flex flex-col p-4 rounded-lg border border-br hover:border-ac hover:bg-acl/30 transition-colors"
+            >
+              <span className="text-xs text-muted mb-1">← 前の記事</span>
+              <span className="text-sm font-medium text-tx group-hover:text-ac transition-colors line-clamp-2">
+                {prev.title}
+              </span>
+            </Link>
+          ) : (
+            <div />
+          )}
+          {next ? (
+            <Link
+              href={`/blog/${next.slug}`}
+              className="group flex flex-col items-end text-right p-4 rounded-lg border border-br hover:border-ac hover:bg-acl/30 transition-colors"
+            >
+              <span className="text-xs text-muted mb-1">次の記事 →</span>
+              <span className="text-sm font-medium text-tx group-hover:text-ac transition-colors line-clamp-2">
+                {next.title}
+              </span>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </nav>
+      )}
 
       {/* 関連記事 */}
       {relatedPosts.length > 0 && (
