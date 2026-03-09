@@ -128,6 +128,7 @@ function Footer() {
             <a href="https://naikanavi.booth.pm/items/8058590" target="_blank" rel="noopener noreferrer" className="hover:text-ac">購入</a>
             <a href="/privacy" className="hover:text-ac">プライバシーポリシー</a>
             <a href="/terms" className="hover:text-ac">利用規約</a>
+            <a href="/tokushoho" className="hover:text-ac">特商法表示</a>
             <a href="/contact" className="hover:text-ac">お問い合わせ</a>
           </nav>
         </div>
