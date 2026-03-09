@@ -1,8 +1,15 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { getAllPosts } from '@/lib/mdx'
 import { categories } from '@/lib/blog-config'
 import ArticleCard from '@/components/blog/ArticleCard'
 import { AppMockup, GeometricDecoration, FeatureBadges } from '@/components/AppMockup'
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://naikanavi.com',
+  },
+}
 
 export default function HomePage() {
   const latestPosts = getAllPosts().slice(0, 6)

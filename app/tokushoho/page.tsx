@@ -3,6 +3,9 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: '特定商取引法に基づく表示',
   description: '内科ナビの特定商取引法に基づく表示。',
+  alternates: {
+    canonical: 'https://naikanavi.com/tokushoho',
+  },
 }
 
 export default function TokushohoPage() {
