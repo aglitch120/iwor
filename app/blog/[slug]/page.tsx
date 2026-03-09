@@ -7,6 +7,7 @@ import { generateMetadata as genMeta, generateArticleJsonLd, generateBreadcrumbJ
 import ArticleCard from '@/components/blog/ArticleCard'
 import CTABanner from '@/components/blog/CTABanner'
 import TableOfContents from '@/components/blog/TableOfContents'
+import ShareButtons from '@/components/blog/ShareButtons'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -169,6 +170,11 @@ export default async function ArticlePage({ params }: Props) {
             </div>
           </div>
         )}
+
+        {/* SNSシェアボタン */}
+        <div className="mt-6 pt-6 border-t border-br">
+          <ShareButtons title={frontmatter.title} slug={slug} />
+        </div>
       </article>
 
       {/* 関連記事 */}
