@@ -8,6 +8,7 @@ import ArticleCard from '@/components/blog/ArticleCard'
 import CTABanner from '@/components/blog/CTABanner'
 import TableOfContents from '@/components/blog/TableOfContents'
 import ShareButtons from '@/components/blog/ShareButtons'
+import ReadingProgress from '@/components/blog/ReadingProgress'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -80,6 +81,8 @@ export default async function ArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      
+      <ReadingProgress />
       
       <article>
         {/* パンくず */}
