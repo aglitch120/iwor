@@ -1,25 +1,37 @@
 import { ImageResponse } from 'next/og'
-import { getPostBySlug, getAllPostSlugs } from '@/lib/mdx'
-import { categories } from '@/lib/blog-config'
 
 export const runtime = 'edge'
 export const alt = '内科ナビ'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export function generateStaticParams() {
-  const slugs = getAllPostSlugs()
-  return slugs.map((slug) => ({ slug }))
+// OG画像はslugからタイトルを推測する（Edge Runtime対応）
+// Note: Cloudflare Workers(Edge)ではfs/pathが使えないため、
+// lib/mdx.tsに依存せずにOG画像を生成する
+
+// slugからタイトルを生成するヘルパー
+function slugToTitle(slug: string): string {
+  // 記事slugとタイトルのマッピング（新記事追加時に更新）
+  const titleMap: Record<string, string> = {
+    'b01-josler-byoreki-youyaku-kakikata': '【2026年最新】J-OSLER病歴要約の書き方完全ガイド',
+    'josler-complete-guide': 'J-OSLER完全攻略ガイド',
+    'exam-preparation-guide': '内科専門医試験 合格マニュアル',
+    'money-guide': '専攻医のお金完全ガイド',
+    'lifehack-guide': '専攻医ライフハック大全',
+    'career-guide': 'キャリア設計完全ロードマップ',
+  }
+
+  if (titleMap[slug]) return titleMap[slug]
+
+  // マッピングにない場合はslugを整形して表示
+  return slug
+    .replace(/^b\d+-/, '')
+    .replace(/-/g, ' ')
 }
 
 export default async function OGImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = getPostBySlug(slug)
-
-  const title = post?.frontmatter.title || '内科ナビ'
-  const categoryName = post
-    ? categories[post.frontmatter.category]?.name || 'その他'
-    : ''
+  const title = slugToTitle(slug)
 
   return new ImageResponse(
     (
@@ -35,28 +47,26 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           fontFamily: 'sans-serif',
         }}
       >
-        {/* カテゴリラベル */}
-        {categoryName && (
+        {/* ブランドラベル */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              backgroundColor: '#1B4F3A',
+              color: '#FFFFFF',
+              fontSize: 20,
+              fontWeight: 700,
+              padding: '8px 20px',
+              borderRadius: 8,
             }}
           >
-            <div
-              style={{
-                backgroundColor: '#1B4F3A',
-                color: '#FFFFFF',
-                fontSize: 20,
-                fontWeight: 700,
-                padding: '8px 20px',
-                borderRadius: 8,
-              }}
-            >
-              {categoryName}
-            </div>
+            内科ナビ
           </div>
-        )}
+        </div>
 
         {/* タイトル */}
         <div
