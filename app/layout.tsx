@@ -152,7 +152,7 @@ function Footer() {
         </div>
 
         <div className="border-t border-br pt-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-4">
             <Link href="/" className="flex items-center gap-2">
               <Image 
                 src="/icon.png" 
@@ -163,7 +163,7 @@ function Footer() {
               />
               <span className="font-semibold text-tx">内科ナビ</span>
             </Link>
-            <nav className="flex flex-wrap justify-center gap-4 text-sm text-muted">
+            <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted">
               <Link href="/blog" className="hover:text-ac">ブログ</Link>
               <a href="https://naikanavi.booth.pm/items/8058590" target="_blank" rel="noopener noreferrer" className="hover:text-ac">購入</a>
               <Link href="/privacy" className="hover:text-ac">プライバシーポリシー</Link>
@@ -172,7 +172,7 @@ function Footer() {
               <Link href="/contact" className="hover:text-ac">お問い合わせ</Link>
             </nav>
           </div>
-          <p className="text-center text-sm text-muted mt-6">
+          <p className="text-sm text-muted mt-6">
             © 2026 内科ナビ. All rights reserved.
           </p>
         </div>
