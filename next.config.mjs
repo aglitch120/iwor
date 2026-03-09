@@ -6,16 +6,6 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  
-  // /app で直接アプリを表示（URLはそのまま）
-  async rewrites() {
-    return [
-      {
-        source: '/app',
-        destination: '/app.html',
-      },
-    ]
-  },
 }
 
 const withMDX = createMDX({
