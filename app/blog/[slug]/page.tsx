@@ -6,6 +6,7 @@ import { categories, ctaConfig } from '@/lib/blog-config'
 import { generateMetadata as genMeta, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
 import ArticleCard from '@/components/blog/ArticleCard'
 import CTABanner from '@/components/blog/CTABanner'
+import TableOfContents from '@/components/blog/TableOfContents'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -137,9 +138,16 @@ export default async function ArticlePage({ params }: Props) {
         {/* 冒頭CTA */}
         <CTABanner cta={cta} variant="inline" />
 
-        {/* 本文 */}
-        <div className="prose max-w-none">
-          {MDXContent}
+        {/* 本文 + サイドバー目次 */}
+        <div className="lg:flex lg:gap-8">
+          <div className="lg:flex-1 min-w-0">
+            <div className="prose max-w-none">
+              {MDXContent}
+            </div>
+          </div>
+          <aside className="hidden lg:block lg:w-56 flex-shrink-0">
+            <TableOfContents />
+          </aside>
         </div>
 
         {/* 末尾CTA */}

@@ -96,7 +96,7 @@ export default function RootLayout({
       </head>
       <body className={`${notoSansJP.className} min-h-screen bg-bg text-tx antialiased`}>
         <Header />
-        <main className="max-w-4xl mx-auto px-4 py-8">
+        <main className="max-w-5xl mx-auto px-4 py-8">
           {children}
         </main>
         <Footer />
@@ -109,7 +109,7 @@ export default function RootLayout({
 function Header() {
   return (
     <header className="sticky top-0 z-50 bg-s0 border-b border-br">
-      <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <Image 
             src="/icon.png" 
@@ -176,7 +176,7 @@ const footerCategories = [
 function Footer() {
   return (
     <footer className="bg-s0 border-t border-br mt-16">
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 py-10">
         {/* カテゴリリンク */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {footerCategories.map((group) => (
