@@ -259,4 +259,29 @@ body {
 
 ---
 
+## 📝 MDX記事スタイリングルール
+
+### コードブロック（`pre > code`）
+
+MDX記事内の ``` コードブロックは `.prose pre` でダーク背景（`bg-tx`）＋白文字（`text-s0`）を適用している。
+
+**注意**: `.prose pre code` には必ず背景色・テキスト色をリセットすること。インラインの `.prose code` スタイル（`bg-s1` 薄ベージュ背景）が継承されるとダーク背景上で文字が読めなくなる。
+
+```css
+/* インラインcode */
+.prose code { @apply bg-s1 px-1.5 py-0.5 rounded text-sm font-mono; }
+
+/* コードブロック */
+.prose pre { @apply bg-tx text-s0 p-4 rounded-lg overflow-x-auto mb-4; }
+
+/* ⚠️ pre内codeのリセット（必須） */
+.prose pre code { @apply bg-transparent p-0 rounded-none text-inherit; }
+```
+
+### コードブロック使用時のチェックリスト
+
+新しいCSSクラスを `.prose` 配下に追加する際は、`pre` 内でのスタイル継承に注意すること。特に背景色・テキスト色は `pre code` で意図しない上書きが発生しやすい。
+
+---
+
 *このデザインシステムはdemo_v14_app.htmlから抽出されました。*
