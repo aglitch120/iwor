@@ -279,7 +279,7 @@ MDX記事内の ``` コードブロックは `CopyableCodeBlock` コンポーネ
 
 /* コードブロック（CopyableCodeBlock内のpre） */
 .code-block-wrapper pre {
-  @apply bg-tx text-s0 p-4 pt-10 rounded-lg;
+  @apply bg-tx text-s0 p-4 rounded-lg;
   white-space: pre-wrap;
   word-break: break-all;
   overflow-wrap: break-word;
