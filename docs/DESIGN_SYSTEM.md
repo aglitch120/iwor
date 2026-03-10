@@ -261,9 +261,15 @@ body {
 
 ## 📝 MDX記事スタイリングルール
 
-### コードブロック（`pre > code`）
+### コードブロック（`pre > code`）＋コピーボタン
 
-MDX記事内の ``` コードブロックは `.prose pre` でダーク背景（`bg-tx`）＋白文字（`text-s0`）を適用している。
+MDX記事内の ``` コードブロックは `CopyableCodeBlock` コンポーネント（`components/blog/CopyableCodeBlock.tsx`）で描画される。MDXコンパイラの `components.pre` にカスタムコンポーネントとして登録済み。
+
+**主な仕様**：
+- ダーク背景（`bg-tx`）＋白文字（`text-s0`）
+- **テキスト折り返し**（`white-space: pre-wrap; word-break: break-all;`）— 横スクロール禁止
+- 右上にコピーボタン（アイコン＋ラベル）付き
+- モバイルではコピーラベルを非表示（アイコンのみ）
 
 **注意**: `.prose pre code` には必ず背景色・テキスト色をリセットすること。インラインの `.prose code` スタイル（`bg-s1` 薄ベージュ背景）が継承されるとダーク背景上で文字が読めなくなる。
 
@@ -271,16 +277,32 @@ MDX記事内の ``` コードブロックは `.prose pre` でダーク背景（`
 /* インラインcode */
 .prose code { @apply bg-s1 px-1.5 py-0.5 rounded text-sm font-mono; }
 
-/* コードブロック */
-.prose pre { @apply bg-tx text-s0 p-4 rounded-lg overflow-x-auto mb-4; }
+/* コードブロック（CopyableCodeBlock内のpre） */
+.code-block-wrapper pre {
+  @apply bg-tx text-s0 p-4 pt-10 rounded-lg;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
 
 /* ⚠️ pre内codeのリセット（必須） */
-.prose pre code { @apply bg-transparent p-0 rounded-none text-inherit; }
+.prose pre code {
+  @apply bg-transparent p-0 rounded-none text-inherit;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* コピーボタン */
+.code-copy-btn {
+  @apply absolute top-2 right-2 flex items-center gap-1.5 text-xs text-s0/70 bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-md transition-colors z-10;
+}
 ```
 
 ### コードブロック使用時のチェックリスト
 
-新しいCSSクラスを `.prose` 配下に追加する際は、`pre` 内でのスタイル継承に注意すること。特に背景色・テキスト色は `pre code` で意図しない上書きが発生しやすい。
+- 新しいCSSクラスを `.prose` 配下に追加する際は、`pre` 内でのスタイル継承に注意すること
+- 例文・テンプレートは必ず ``` コードブロックで記述する（自動的にコピーボタン付きで描画される）
+- `overflow-x-auto` や `whitespace-nowrap` は使用禁止（横スクロールはUX上問題がある）
 
 ---
 
