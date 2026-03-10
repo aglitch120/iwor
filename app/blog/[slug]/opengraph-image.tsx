@@ -169,6 +169,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'UpToDate・ガイドラインの書き方',
       category: 'medical-history',
     },
+    'e02-josler-manianai': {
+      title: 'J-OSLERが間に合わない！',
+      subtitle: '残り期間別の巻き返し戦略',
+      category: 'progress-management',
+    },
     'josler-complete-guide': {
       title: 'J-OSLER完全攻略',
       subtitle: '症例登録から修了認定まで',
