@@ -179,6 +179,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '一次評価・二次評価のスケジュール',
       category: 'josler-basics',
     },
+    'c12-josler-nijihyouka': {
+      title: 'J-OSLER二次評価完全ガイド',
+      subtitle: '査読委員の視点とAcceptのコツ',
+      category: 'medical-history',
+    },
     'josler-complete-guide': {
       title: 'J-OSLER完全攻略',
       subtitle: '症例登録から修了認定まで',
