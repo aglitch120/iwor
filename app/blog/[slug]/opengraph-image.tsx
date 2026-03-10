@@ -184,6 +184,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '残り期間別の巻き返し戦略',
       category: 'progress-management',
     },
+    'e04-josler-checklist': {
+      title: 'J-OSLERチェックリスト',
+      subtitle: '修了要件を一覧で管理',
+      category: 'progress-management',
+    },
     'g01-naika-senmoni-benkyouhou': {
       title: '内科専門医試験の勉強法',
       subtitle: 'いつから・何を・どのくらい',
