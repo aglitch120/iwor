@@ -24,13 +24,13 @@
 
   <circle cx="446" cy="164" r="14" fill="#1B4F3A"/>
   <text x="446" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="white">4</text>
-  <text x="468" y="168" font-size="13" font-weight="bold" fill="#1A1917">直近の医師国家試験問題</text>
-  <text x="468" y="186" font-size="10" fill="#6B6760">試験内容の重複が多い。トレンド把握にも有効</text>
+  <text x="468" y="168" font-size="13" font-weight="bold" fill="#1A1917">内科ナビ 問題演習</text>
+  <text x="468" y="186" font-size="10" fill="#6B6760">疾患別5択+苦手自動判定。スキマ学習に</text>
 
   <circle cx="446" cy="206" r="14" fill="#1B4F3A"/>
   <text x="446" y="210" text-anchor="middle" font-size="11" font-weight="bold" fill="white">5</text>
-  <text x="468" y="210" font-size="13" font-weight="bold" fill="#1A1917">セルフトレーニング問題</text>
-  <text x="468" y="228" font-size="10" fill="#6B6760">日本内科学会公式。出題傾向の参考に</text>
+  <text x="468" y="210" font-size="13" font-weight="bold" fill="#1A1917">直近の医師国家試験問題</text>
+  <text x="468" y="228" font-size="10" fill="#6B6760">出題の重複が多い。トレンド把握にも有効</text>
 
   <text x="60" y="260" font-size="14" font-weight="bold" fill="#4338CA">補助教材（特定の目的に）</text>
   <rect x="40" y="272" width="720" height="100" rx="8" fill="#FEFEFC" stroke="#DDD9D2"/>
