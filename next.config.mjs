@@ -14,6 +14,17 @@ const nextConfig = {
       ],
     }
   },
+  async headers() {
+    return [
+      {
+        source: '/images/:path*.svg',
+        headers: [
+          { key: 'Content-Type', value: 'image/svg+xml' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+    ]
+  },
 }
 
 const withMDX = createMDX({
