@@ -194,6 +194,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '1ヶ月・3ヶ月・半年プラン',
       category: 'specialist-exam',
     },
+    'g03-naika-senmoni-sankousho': {
+      title: 'おすすめ参考書・問題集',
+      subtitle: '2026年版ランキング',
+      category: 'specialist-exam',
+    },
     'a05-josler-kigen-shimekiri': {
       title: 'J-OSLERの期限・締め切り一覧',
       subtitle: '一次評価・二次評価のスケジュール',
