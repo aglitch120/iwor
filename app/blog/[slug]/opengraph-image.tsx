@@ -209,6 +209,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '2026年版ランキング',
       category: 'specialist-exam',
     },
+    'g05-naika-senmoni-kakomon': {
+      title: '内科専門医試験の過去問対策',
+      subtitle: '公式問題集の使い方と復元問題',
+      category: 'specialist-exam',
+    },
     'j01-josler-ai-katsuyo': {
       title: 'J-OSLERをAIで効率化',
       subtitle: 'ChatGPT・Perplexity活用ガイド',

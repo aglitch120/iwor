@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" font-family="'Helvetica Neue', Arial, sans-serif">
+  <rect width="800" height="520" fill="#F5F4F0" rx="12"/>
+  <text x="400" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#1A1917">内科専門医試験 公式過去問 vs 市販問題集 比較</text>
+  <line x1="60" y1="52" x2="740" y2="52" stroke="#DDD9D2" stroke-width="1"/>
+  <rect x="40" y="70" width="350" height="200" rx="10" fill="#FEFEFC" stroke="#1B4F3A" stroke-width="2"/>
+  <rect x="40" y="70" width="350" height="36" rx="10" fill="#1B4F3A"/>
+  <rect x="40" y="88" width="350" height="18" fill="#1B4F3A"/>
+  <text x="215" y="94" text-anchor="middle" font-size="14" font-weight="bold" fill="#FEFEFC">公式過去問題集（内科学会刊行）</text>
+  <circle cx="68" cy="126" r="8" fill="#DCFCE7" stroke="#166534" stroke-width="1.5"/>
+  <text x="64" y="130" text-anchor="middle" font-size="10" fill="#166534" font-weight="bold">1</text>
+  <text x="84" y="130" font-size="12" fill="#1A1917">実際の出題問題を収録（プール問題あり）</text>
+  <circle cx="68" cy="152" r="8" fill="#DCFCE7" stroke="#166534" stroke-width="1.5"/>
+  <text x="64" y="156" text-anchor="middle" font-size="10" fill="#166534" font-weight="bold">2</text>
+  <text x="84" y="156" font-size="12" fill="#1A1917">出題傾向・難易度の基準がわかる</text>
+  <circle cx="68" cy="178" r="8" fill="#DCFCE7" stroke="#166534" stroke-width="1.5"/>
+  <text x="64" y="182" text-anchor="middle" font-size="10" fill="#166534" font-weight="bold">3</text>
+  <text x="84" y="182" font-size="12" fill="#1A1917">受験者のほぼ全員が使用している</text>
+  <circle cx="68" cy="204" r="8" fill="#FEE2E2" stroke="#991B1B" stroke-width="1.5"/>
+  <text x="64" y="208" text-anchor="middle" font-size="10" fill="#991B1B">!</text>
+  <text x="84" y="208" font-size="12" fill="#991B1B">解説がほぼない / 問題がやや古い</text>
+  <circle cx="68" cy="230" r="8" fill="#FEE2E2" stroke="#991B1B" stroke-width="1.5"/>
+  <text x="64" y="234" text-anchor="middle" font-size="10" fill="#991B1B">!</text>
+  <text x="84" y="234" font-size="12" fill="#991B1B">一般書店では購入不可（学会HPのみ）</text>
+  <text x="215" y="260" text-anchor="middle" font-size="11" fill="#1B4F3A" font-weight="bold">優先度: 最優先（必須）</text>
+  <rect x="410" y="70" width="350" height="200" rx="10" fill="#FEFEFC" stroke="#3D5A80" stroke-width="2"/>
+  <rect x="410" y="70" width="350" height="36" rx="10" fill="#3D5A80"/>
+  <rect x="410" y="88" width="350" height="18" fill="#3D5A80"/>
+  <text x="585" y="94" text-anchor="middle" font-size="14" font-weight="bold" fill="#FEFEFC">市販問題集（QB・THE問題集等）</text>
+  <circle cx="438" cy="126" r="8" fill="#DCFCE7" stroke="#166534" stroke-width="1.5"/>
+  <text x="434" y="130" text-anchor="middle" font-size="10" fill="#166534" font-weight="bold">1</text>
+  <text x="454" y="130" font-size="12" fill="#1A1917">丁寧な解説付き（知識の定着に有効）</text>
+  <circle cx="438" cy="152" r="8" fill="#DCFCE7" stroke="#166534" stroke-width="1.5"/>
+  <text x="434" y="156" text-anchor="middle" font-size="10" fill="#166534" font-weight="bold">2</text>
+  <text x="454" y="156" font-size="12" fill="#1A1917">最新ガイドラインに対応</text>
+  <circle cx="438" cy="178" r="8" fill="#DCFCE7" stroke="#166534" stroke-width="1.5"/>
+  <text x="434" y="182" text-anchor="middle" font-size="10" fill="#166534" font-weight="bold">3</text>
+  <text x="454" y="182" font-size="12" fill="#1A1917">オンライン版で隙間時間に学習可能</text>
+  <circle cx="438" cy="204" r="8" fill="#FEE2E2" stroke="#991B1B" stroke-width="1.5"/>
+  <text x="434" y="208" text-anchor="middle" font-size="10" fill="#991B1B">!</text>
+  <text x="454" y="208" font-size="12" fill="#991B1B">実際の出題とは異なる場合がある</text>
+  <circle cx="438" cy="230" r="8" fill="#FEE2E2" stroke="#991B1B" stroke-width="1.5"/>
+  <text x="434" y="234" text-anchor="middle" font-size="10" fill="#991B1B">!</text>
+  <text x="454" y="234" font-size="12" fill="#991B1B">費用が高め（セットで4万円超）</text>
+  <text x="585" y="260" text-anchor="middle" font-size="11" fill="#3D5A80" font-weight="bold">優先度: 高（公式過去問の次に）</text>
+  <rect x="40" y="290" width="720" height="100" rx="10" fill="#FEFEFC" stroke="#92400E" stroke-width="2"/>
+  <rect x="40" y="290" width="720" height="36" rx="10" fill="#92400E"/>
+  <rect x="40" y="308" width="720" height="18" fill="#92400E"/>
+  <text x="400" y="314" text-anchor="middle" font-size="14" font-weight="bold" fill="#FEFEFC">復元問題（非公式）</text>
+  <text x="60" y="348" font-size="12" fill="#1A1917">受験経験者がSNS・ブログ・noteで公開した記憶ベースの問題再現。解説なし、精度にばらつきあり。</text>
+  <text x="60" y="368" font-size="12" fill="#991B1B">近年は内科学会がSNS投稿を厳しく制限しており、新しい復元は入手困難になりつつある。</text>
+  <text x="60" y="382" font-size="11" fill="#6B6760">優先度: 低（余裕があれば参照）。周辺知識をイヤーノートで調べる使い方が有効。</text>
+  <rect x="40" y="410" width="720" height="80" rx="10" fill="#E8F0EC" stroke="#1B4F3A" stroke-width="1.5"/>
+  <text x="60" y="436" font-size="13" font-weight="bold" fill="#1B4F3A">結論: 最小限の教材で最大の効果を</text>
+  <text x="60" y="458" font-size="12" fill="#1A1917">公式過去問 2〜3周 + QB/QC 1〜2周 = 合格ラインに到達可能。教材の完成度 > 教材の数。</text>
+  <text x="60" y="478" font-size="12" fill="#1A1917">間違えた問題をイヤーノートで調べ、周辺知識を固めることが得点力に直結する。</text>
+  <text x="400" y="510" text-anchor="middle" font-size="10" fill="#6B6760">© 内科ナビ naikanavi.com</text>
+</svg>
