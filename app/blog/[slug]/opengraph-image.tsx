@@ -174,6 +174,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'UpToDate・ガイドラインの書き方',
       category: 'medical-history',
     },
+    'c08-josler-byoreki-youyaku-sashimodoshi': {
+      title: '病歴要約の差し戻し対策',
+      subtitle: 'Revision対応ガイド',
+      category: 'medical-history',
+    },
     'e01-josler-shinchoku-kanri': {
       title: 'J-OSLER進捗管理の方法',
       subtitle: '最短で修了要件を満たすスケジュール',
