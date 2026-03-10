@@ -105,7 +105,7 @@
   <text x="690" y="429" text-anchor="middle" fill="#6B6760" font-size="9"></text>
 
   <!-- Total row -->
-  <rect x="30" y="446" width="740" height="32" rx="0 0 6 6" fill="#E8F0EC"/>
+  <rect x="30" y="446" width="740" height="32" rx="0" fill="#E8F0EC"/>
   <text x="200" y="467" text-anchor="middle" fill="#1B4F3A" font-size="12" font-weight="bold">合計</text>
   <text x="420" y="467" text-anchor="middle" fill="#1B4F3A" font-size="12" font-weight="bold">70</text>
   <text x="560" y="467" text-anchor="middle" fill="#1B4F3A" font-size="12" font-weight="bold">100</text>

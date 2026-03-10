@@ -393,8 +393,14 @@ seo_checked: true
 #### SVG図解（2〜3点/記事）
 - DESIGN_SYSTEM.mdのカラーパレットに準拠
 - カード内にミニアイコン（クリップボード、ペン、チェックマーク等）でポップさを出す
-- `© 内科ナビ naikanavi.com` のフッターを入れる
+- `© 内科ナビ naikanavi.com` のフッターを入れる（`©` は文字リテラルで記述）
 - ALT属性に具体的な説明を入れる
+
+**SVG作成時の必須ルール（XMLパースエラー防止）：**
+- `&copy;` `&trade;` `&reg;` 等のHTMLエンティティは使用禁止 → `©` `™` `®` の文字リテラルを使う
+- SVGはXMLなので `&amp;` `&lt;` `&gt;` `&quot;` `&apos;` の5つ以外のエンティティは未定義エラーになる
+- `rx` `ry` 属性は単一の数値のみ（`rx="6"` ○ / `rx="0 0 6 6"` ✕）
+- 作成後は必ずXMLバリデーションを実行: `python3 -c "import xml.etree.ElementTree as ET; ET.parse('file.svg')"`
 
 #### OGP画像
 - 新記事追加時は `app/blog/[slug]/opengraph-image.tsx` のtitleMapに追記すること
