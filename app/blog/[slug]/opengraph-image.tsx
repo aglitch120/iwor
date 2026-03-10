@@ -139,6 +139,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'Accept率を上げるコツを徹底解説',
       category: 'medical-history',
     },
+    'b05-josler-shourei-touroku-template': {
+      title: '症例登録テンプレート',
+      subtitle: '現病歴・自己省察をパターン別にコピペ',
+      category: 'case-registration',
+    },
     'c02-josler-byoreki-youyaku-template': {
       title: '病歴要約テンプレート',
       subtitle: '項目別の書き方と入力のコツ',
