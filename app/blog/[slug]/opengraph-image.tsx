@@ -149,6 +149,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '項目別の書き方と入力のコツ',
       category: 'medical-history',
     },
+    'c03-josler-byoreki-youyaku-reibun': {
+      title: '病歴要約の例文集',
+      subtitle: '領域別の書き方を項目ごとに解説',
+      category: 'medical-history',
+    },
     'josler-complete-guide': {
       title: 'J-OSLER完全攻略',
       subtitle: '症例登録から修了認定まで',
