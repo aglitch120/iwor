@@ -174,6 +174,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '残り期間別の巻き返し戦略',
       category: 'progress-management',
     },
+    'g01-naika-senmoni-benkyouhou': {
+      title: '内科専門医試験の勉強法',
+      subtitle: 'いつから・何を・どのくらい',
+      category: 'specialist-exam',
+    },
     'a05-josler-kigen-shimekiri': {
       title: 'J-OSLERの期限・締め切り一覧',
       subtitle: '一次評価・二次評価のスケジュール',
