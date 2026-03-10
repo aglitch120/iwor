@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/generate-ogp-meta.mjs && next dev",
+    "build": "node scripts/generate-ogp-meta.mjs && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-ogp": "node scripts/generate-ogp-meta.mjs"
   },
   "keywords": [],
   "author": "",

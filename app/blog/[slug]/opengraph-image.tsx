@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import ogpMeta from '@/lib/ogp-meta.json'
 
 export const runtime = 'edge'
 export const alt = '内科ナビ'
@@ -277,6 +278,10 @@ function slugToMeta(slug: string): ArticleMeta {
   }
 
   if (metaMap[slug]) return metaMap[slug]
+
+  // ogp-meta.json から取得（scripts/generate-ogp-meta.mjs で自動生成）
+  const jsonMeta = (ogpMeta as Record<string, ArticleMeta>)[slug]
+  if (jsonMeta) return jsonMeta
 
   return {
     title: slug.replace(/^[a-z]\d+-/, '').replace(/-/g, ' '),
