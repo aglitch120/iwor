@@ -325,6 +325,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '脂質異常症・痛風・電解質異常の書き方',
       category: 'disease-specific',
     },
+    'd08-josler-byoreki-youyaku-shinkei': {
+      title: '病歴要約【神経】',
+      subtitle: '脳梗塞・てんかん・パーキンソン病の書き方',
+      category: 'disease-specific',
+    },
   }
 
   if (metaMap[slug]) return metaMap[slug]
