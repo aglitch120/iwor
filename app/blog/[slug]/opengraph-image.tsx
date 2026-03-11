@@ -295,6 +295,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '心不全・心筋梗塞の書き方',
       category: 'disease-specific',
     },
+    'j10-claude-pubmed-mcp': {
+      title: 'Claude PubMed MCP',
+      subtitle: '医学文献検索の設定と使い方',
+      category: 'ai-tools',
+    },
   }
 
   if (metaMap[slug]) return metaMap[slug]
