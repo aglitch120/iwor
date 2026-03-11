@@ -305,6 +305,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '医学文献検索の設定と使い方',
       category: 'ai-tools',
     },
+    'd04-josler-byoreki-youyaku-ketsueki': {
+      title: '病歴要約【血液】',
+      subtitle: '貧血・白血病・リンパ腫の書き方',
+      category: 'disease-specific',
+    },
   }
 
   if (metaMap[slug]) return metaMap[slug]
