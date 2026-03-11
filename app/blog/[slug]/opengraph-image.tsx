@@ -285,6 +285,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '完全ロードマップ',
       category: 'career',
     },
+    'd01-josler-byoreki-youyaku-shoukaki': {
+      title: '病歴要約【消化器】',
+      subtitle: '消化管・肝・胆膵の選び方',
+      category: 'disease-specific',
+    },
   }
 
   if (metaMap[slug]) return metaMap[slug]
