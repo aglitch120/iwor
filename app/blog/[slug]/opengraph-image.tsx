@@ -230,6 +230,16 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'プロンプト例付き実践ガイド',
       category: 'ai-tools',
     },
+    'j04-josler-jitan': {
+      title: 'J-OSLER作業を時短する5つのテクニック',
+      subtitle: 'テンプレ・ツール活用術',
+      category: 'ai-tools',
+    },
+    'j03-josler-kensa-kekka-format': {
+      title: 'J-OSLER検査結果のフォーマット変換術',
+      subtitle: 'カルテからコピペで整形する方法',
+      category: 'ai-tools',
+    },
     'a05-josler-kigen-shimekiri': {
       title: 'J-OSLERの期限・締め切り一覧',
       subtitle: '一次評価・二次評価のスケジュール',
