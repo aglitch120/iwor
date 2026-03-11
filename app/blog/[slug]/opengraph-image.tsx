@@ -310,6 +310,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '貧血・白血病・リンパ腫の書き方',
       category: 'disease-specific',
     },
+    'd05-josler-byoreki-youyaku-jinzou': {
+      title: '病歴要約【腎臓】',
+      subtitle: 'CKD・ネフローゼ・AKIの書き方',
+      category: 'disease-specific',
+    },
   }
 
   if (metaMap[slug]) return metaMap[slug]
