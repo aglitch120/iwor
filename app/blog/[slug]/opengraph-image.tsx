@@ -295,6 +295,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '心不全・心筋梗塞の書き方',
       category: 'disease-specific',
     },
+    'd03-josler-byoreki-youyaku-kokyuuki': {
+      title: '病歴要約【呼吸器】',
+      subtitle: '肺炎・COPD・間質性肺炎の書き方',
+      category: 'disease-specific',
+    },
     'j10-claude-pubmed-mcp': {
       title: 'Claude PubMed MCP',
       subtitle: '医学文献検索の設定と使い方',
