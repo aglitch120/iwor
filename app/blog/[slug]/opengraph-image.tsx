@@ -195,6 +195,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '修了要件を一覧で管理',
       category: 'progress-management',
     },
+    'e06-josler-ryuunen': {
+      title: 'J-OSLER留年するとどうなる？',
+      subtitle: '対処法と翌年への影響',
+      category: 'progress-management',
+    },
     'g01-naika-senmoni-benkyouhou': {
       title: '内科専門医試験の勉強法',
       subtitle: 'いつから・何を・どのくらい',
