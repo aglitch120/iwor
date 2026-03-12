@@ -370,6 +370,21 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '敗血症・肺炎・尿路感染の書き方',
       category: 'disease-specific',
     },
+    'd11-josler-byoreki-youyaku-kyuukyuu': {
+      title: '病歴要約【救急領域】',
+      subtitle: '他領域との違いと考察のコツ',
+      category: 'disease-specific',
+    },
+    'd12-josler-geka-shoukai-shourei': {
+      title: '外科紹介症例の書き方',
+      subtitle: '全身麻酔・転科の条件と例文',
+      category: 'disease-specific',
+    },
+    'd14-josler-gairai-shourei': {
+      title: '外来症例の書き方',
+      subtitle: '7篇の上限と選び方のコツ',
+      category: 'disease-specific',
+    },
     'f01-jmecc-toha': {
       title: 'JMECCとは？',
       subtitle: '受講すべき理由と申込方法',
