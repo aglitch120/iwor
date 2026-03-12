@@ -305,6 +305,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '医学文献検索の設定と使い方',
       category: 'ai-tools',
     },
+    'n08-senkoui-program-erabikata': {
+      title: '専攻医プログラムの選び方',
+      subtitle: '比較すべき7つのポイント',
+      category: 'career',
+    },
     'd04-josler-byoreki-youyaku-ketsueki': {
       title: '病歴要約【血液】',
       subtitle: '貧血・白血病・リンパ腫の書き方',
