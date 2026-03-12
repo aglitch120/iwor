@@ -148,7 +148,7 @@ export default function SearchDialog() {
         className="fixed inset-0 bg-tx/40 z-[60] backdrop-blur-sm"
         onClick={close}
       />
-      <div className="fixed inset-0 z-[70] flex items-start justify-center pt-[15vh] px-4">
+      <div className="fixed inset-0 z-[70] flex items-start justify-center pt-[15vh] px-4" onClick={close}>
         <div
           className="w-full max-w-lg bg-s0 rounded-xl shadow-2xl border border-br overflow-hidden"
           onClick={(e) => e.stopPropagation()}
@@ -179,9 +179,13 @@ export default function SearchDialog() {
             />
             <button
               onClick={close}
-              className="text-xs text-muted bg-s1 px-1.5 py-0.5 rounded border border-br font-mono"
+              className="flex items-center justify-center w-7 h-7 rounded-md text-muted hover:text-tx hover:bg-s1 transition-colors"
+              aria-label="閉じる"
             >
-              ESC
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6L6 18" />
+                <path d="M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
