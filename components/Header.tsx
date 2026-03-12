@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import MobileMenu from './MobileMenu'
+import SearchDialog from './SearchDialog'
 
 export default function Header() {
   return (
@@ -25,6 +26,7 @@ export default function Header() {
           >
             ブログ
           </Link>
+          <SearchDialog />
           <a
             href="https://naikanavi.booth.pm/items/8058590"
             target="_blank"
