@@ -350,6 +350,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'SLE・RAの書き方と疾患群配分',
       category: 'disease-specific',
     },
+    'd10-josler-byoreki-youyaku-kansenshou': {
+      title: '病歴要約【感染症】',
+      subtitle: '敗血症・肺炎・尿路感染の書き方',
+      category: 'disease-specific',
+    },
     'f01-jmecc-toha': {
       title: 'JMECCとは？',
       subtitle: '受講すべき理由と申込方法',
