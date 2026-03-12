@@ -330,6 +330,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '脳梗塞・てんかん・パーキンソン病の書き方',
       category: 'disease-specific',
     },
+    'f01-jmecc-toha': {
+      title: 'JMECCとは？',
+      subtitle: '受講すべき理由と申込方法',
+      category: 'jmecc-training',
+    },
   }
 
   if (metaMap[slug]) return metaMap[slug]
