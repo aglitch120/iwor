@@ -100,6 +100,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '画面の見方から操作方法まで',
       category: 'josler-basics',
     },
+    'a04-josler-itsukara': {
+      title: 'J-OSLERはいつから？',
+      subtitle: '最適なスタート時期と準備すべきこと',
+      category: 'josler-basics',
+    },
     'b01-josler-byoreki-youyaku-kakikata': {
       title: '病歴要約の書き方',
       subtitle: 'Accept率を上げる完全ガイド',
