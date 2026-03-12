@@ -97,7 +97,7 @@ export default function RootLayout({
   )
 }
 
-// フッターカテゴリグループ（SEO内部リンク強化）
+// フッターカテゴリグループ（SEO内部リンク強化・blog-config.ts 全カテゴリ準拠）
 const footerCategories = [
   {
     title: 'J-OSLER',
@@ -105,13 +105,17 @@ const footerCategories = [
       { name: 'J-OSLER基礎', href: '/blog/category/josler-basics' },
       { name: '症例登録', href: '/blog/category/case-registration' },
       { name: '病歴要約', href: '/blog/category/medical-history' },
+      { name: '疾患別病歴要約', href: '/blog/category/disease-specific' },
       { name: '進捗管理', href: '/blog/category/progress-management' },
+      { name: 'JMECC・講習', href: '/blog/category/jmecc-training' },
     ],
   },
   {
     title: '試験・キャリア',
     links: [
       { name: '内科専門医試験', href: '/blog/category/specialist-exam' },
+      { name: '試験領域別', href: '/blog/category/exam-by-field' },
+      { name: '総合内科専門医', href: '/blog/category/comprehensive-exam' },
       { name: 'キャリア', href: '/blog/category/career' },
       { name: 'AI・ツール', href: '/blog/category/ai-tools' },
       { name: '学会・論文', href: '/blog/category/academic' },
@@ -124,6 +128,8 @@ const footerCategories = [
       { name: '税金・節税', href: '/blog/category/tax-saving' },
       { name: 'メンタル・生活', href: '/blog/category/mental-life' },
       { name: '結婚・出産', href: '/blog/category/life-events' },
+      { name: 'サブスペJ-OSLER', href: '/blog/category/subspecialty' },
+      { name: 'その他', href: '/blog/category/others' },
     ],
   },
 ]

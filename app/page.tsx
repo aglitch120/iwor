@@ -135,7 +135,7 @@ export default function HomePage() {
       <section className="py-8">
         <h2 className="text-xl font-bold mb-6">カテゴリ</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {Object.entries(categories).slice(0, 8).map(([slug, category]) => (
+          {Object.entries(categories).map(([slug, category]) => (
             <Link
               key={slug}
               href={`/blog/category/${slug}`}

@@ -75,7 +75,6 @@ export default async function CategoryPage({ params }: Props) {
         <div className="flex flex-wrap gap-2">
           {Object.entries(categories)
             .filter(([slug]) => slug !== category)
-            .slice(0, 8)
             .map(([slug, cat]) => (
               <Link
                 key={slug}

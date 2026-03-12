@@ -2,36 +2,35 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { categories } from '@/lib/blog-config'
 
+// blog-config.ts の全カテゴリをグループ化して表示
 const menuCategories = [
   {
     title: 'J-OSLER',
-    links: [
-      { name: 'J-OSLER基礎', href: '/blog/category/josler-basics' },
-      { name: '症例登録', href: '/blog/category/case-registration' },
-      { name: '病歴要約', href: '/blog/category/medical-history' },
-      { name: '進捗管理', href: '/blog/category/progress-management' },
-    ],
+    slugs: ['josler-basics', 'case-registration', 'medical-history', 'disease-specific', 'progress-management', 'jmecc-training'],
   },
   {
     title: '試験・キャリア',
-    links: [
-      { name: '内科専門医試験', href: '/blog/category/specialist-exam' },
-      { name: 'キャリア', href: '/blog/category/career' },
-      { name: 'AI・ツール', href: '/blog/category/ai-tools' },
-      { name: '学会・論文', href: '/blog/category/academic' },
-    ],
+    slugs: ['specialist-exam', 'exam-by-field', 'comprehensive-exam', 'career', 'ai-tools', 'academic'],
   },
   {
     title: 'お金・生活',
-    links: [
-      { name: 'バイト・収入', href: '/blog/category/part-time' },
-      { name: '税金・節税', href: '/blog/category/tax-saving' },
-      { name: 'メンタル・生活', href: '/blog/category/mental-life' },
-      { name: '結婚・出産', href: '/blog/category/life-events' },
-    ],
+    slugs: ['part-time', 'tax-saving', 'mental-life', 'life-events'],
   },
-]
+  {
+    title: 'その他',
+    slugs: ['subspecialty', 'others'],
+  },
+].map(group => ({
+  title: group.title,
+  links: group.slugs
+    .filter(slug => slug in categories)
+    .map(slug => ({
+      name: categories[slug as keyof typeof categories].name,
+      href: `/blog/category/${slug}`,
+    })),
+}))
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false)
