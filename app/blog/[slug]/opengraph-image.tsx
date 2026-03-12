@@ -205,6 +205,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '対処法と翌年への影響',
       category: 'progress-management',
     },
+    'e03-josler-schedule': {
+      title: 'J-OSLER理想のスケジュール',
+      subtitle: '1年目・2年目・3年目の目標',
+      category: 'progress-management',
+    },
     'g01-naika-senmoni-benkyouhou': {
       title: '内科専門医試験の勉強法',
       subtitle: 'いつから・何を・どのくらい',
