@@ -395,6 +395,16 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '受講すべき理由と申込方法',
       category: 'jmecc-training',
     },
+    'f02-jmecc-moushikomi-schedule': {
+      title: 'JMECC申し込み方法',
+      subtitle: '2026年開催スケジュール',
+      category: 'jmecc-training',
+    },
+    'd13-josler-bouken-shourei': {
+      title: '剖検症例の書き方',
+      subtitle: '4条件・考察の対比・疾患群ルール',
+      category: 'disease-specific',
+    },
     'g06-naika-senmoni-goukakuritsu': {
       title: '内科専門医試験の合格率推移',
       subtitle: '第1回〜第5回のデータ分析',
