@@ -133,11 +133,12 @@ naikanavi/
 
 ## 📝 記事品質基準（最重要 — 必ず守ること）
 
-**⚠️ 記事を書く前に `docs/ARTICLE_QUALITY_GUIDE.md` を必ず読むこと。**
-これは「どんなAIでも従えば高品質な記事を書ける」ための完全手順書である。
-散文の書き方、SVGの作り方、CTAの配置、Before/After実例まで含む。
+**⚠️ 記事を書く前に必ず以下を読むこと（省略禁止）:**
+1. `docs/ARTICLE_QUALITY_GUIDE.md`（完全手順書: 散文の書き方、SVG、CTA、Before/After）
+2. `docs/CLAUDE_CODE_QUALITY_GUIDE.md`（Sonnet向け品質保証: Opus比較分析、プロンプトテンプレ）
+3. `docs/SEO_GUIDELINE.md`（特に §2, §11.17〜§11.29）
 
-加えて `docs/SEO_GUIDELINE.md`（特に §2, §11.17〜§11.29）も必読。
+**記事のコミット前に必ず `bash check_article_quality.sh content/blog/記事名.mdx` を実行。不合格ならコミットしない。**
 
 ### 記事作成で絶対に守るルール
 
