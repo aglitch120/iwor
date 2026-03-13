@@ -275,6 +275,16 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'プロンプト例付き実践ガイド',
       category: 'ai-tools',
     },
+    'j05-chatgpt-byoreki-youyaku': {
+      title: 'ChatGPTで病歴要約を書く方法',
+      subtitle: 'プロンプトテンプレートと注意点',
+      category: 'ai-tools',
+    },
+    'j06-notion-josler-kanri': {
+      title: 'NotionでJ-OSLER進捗を管理する方法',
+      subtitle: 'テンプレート活用術',
+      category: 'ai-tools',
+    },
     'j04-josler-jitan': {
       title: 'J-OSLER作業を時短する5つのテクニック',
       subtitle: 'テンプレ・ツール活用術',
