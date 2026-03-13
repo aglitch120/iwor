@@ -385,6 +385,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '7篇の上限と選び方のコツ',
       category: 'disease-specific',
     },
+    'd15-josler-shoki-kenshu-shourei': {
+      title: '初期研修中の症例は使える？',
+      subtitle: '3条件と登録上限を徹底解説',
+      category: 'disease-specific',
+    },
     'f01-jmecc-toha': {
       title: 'JMECCとは？',
       subtitle: '受講すべき理由と申込方法',
