@@ -205,6 +205,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '修了要件を一覧で管理',
       category: 'progress-management',
     },
+    'e05-josler-shidoui-renkei': {
+      title: 'J-OSLER 指導医承認が進まないときの対処法',
+      subtitle: '承認漏れ防止策と効果的なリマインド術',
+      category: 'progress-management',
+    },
     'e06-josler-ryuunen': {
       title: 'J-OSLER留年するとどうなる？',
       subtitle: '対処法と翌年への影響',
@@ -223,6 +228,11 @@ function slugToMeta(slug: string): ArticleMeta {
     'g02-naika-senmoni-itsu-kara': {
       title: '勉強はいつから始める？',
       subtitle: '1ヶ月・3ヶ月・半年プラン',
+      category: 'specialist-exam',
+    },
+    'g04-naika-senmoni-shutsudai-keiko': {
+      title: '内科専門医試験の出題傾向と対策',
+      subtitle: '領域別配点と重要テーマ',
       category: 'specialist-exam',
     },
     'g03-naika-senmoni-sankousho': {
@@ -404,6 +414,16 @@ function slugToMeta(slug: string): ArticleMeta {
       title: '剖検症例の書き方',
       subtitle: '4条件・考察の対比・疾患群ルール',
       category: 'disease-specific',
+    },
+    'f03-jmecc-junbi-benkyouhou': {
+      title: 'JMECC 事前準備・勉強法',
+      subtitle: 'テキストと当日を乗り切るコツ',
+      category: 'jmecc-training',
+    },
+    'f05-josler-hissu-koushuukai': {
+      title: '内科専攻医の必須講習会',
+      subtitle: '医療倫理・医療安全・感染制御の受け方',
+      category: 'jmecc-training',
     },
     'f04-josler-e-learning': {
       title: 'J-OSLER e-Learningの受講方法',
