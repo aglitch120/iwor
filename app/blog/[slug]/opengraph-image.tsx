@@ -285,6 +285,21 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: 'テンプレート活用術',
       category: 'ai-tools',
     },
+    'j07-voice-input-josler': {
+      title: '音声入力でJ-OSLERの記録を効率化',
+      subtitle: 'iPhone・Androidの活用術',
+      category: 'ai-tools',
+    },
+    'j08-ai-bunken-kensaku': {
+      title: 'AIを使った医学文献検索術',
+      subtitle: 'PubMedプロンプトとPerplexity活用法',
+      category: 'ai-tools',
+    },
+    'j09-ai-prompt-template': {
+      title: 'J-OSLER専用AIプロンプトテンプレート集',
+      subtitle: '病歴要約・症例登録を効率化',
+      category: 'ai-tools',
+    },
     'j04-josler-jitan': {
       title: 'J-OSLER作業を時短する5つのテクニック',
       subtitle: 'テンプレ・ツール活用術',
