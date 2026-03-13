@@ -84,6 +84,10 @@ else
   PASS=false
 fi
 
+# 7.5. 太字マークダウン破損チェック
+BOLD_BROKEN=$(grep -c "\*\*[^*]*（[^*]*）\*\*" "$FILE" 2>/dev/null || echo 0)
+if [ "$BOLD_BROKEN" -eq 0 ]; then echo "✅ 太字マークダウン: 破損なし"; else echo "❌ 太字マークダウン破損: ${BOLD_BROKEN}箇所（**の中に（）がある）"; PASS=false; fi
+
 # 8. SVGの多様性チェック
 if [ "$SVG_COUNT" -ge 2 ]; then
   SVG_TYPES=$(grep -oE 'aria-label="[^"]*"' "$FILE" | sort -u | wc -l)
