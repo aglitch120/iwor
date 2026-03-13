@@ -300,6 +300,41 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '病歴要約・症例登録を効率化',
       category: 'ai-tools',
     },
+    'k01-burnout-taisaku': {
+      title: '内科専攻医のバーンアウト対策',
+      subtitle: '症状・原因・回復法',
+      category: 'mental-life',
+    },
+    'k02-nennkyuu-torikaikata': {
+      title: '専攻医の年休・有給の取り方',
+      subtitle: '取得しにくい環境での対処法',
+      category: 'mental-life',
+    },
+    'k03-suimin-kanri': {
+      title: '専攻医の睡眠管理',
+      subtitle: '当直明けの回復術と質を上げる方法',
+      category: 'mental-life',
+    },
+    'k04-senior-relations': {
+      title: '指導医・先輩との関係構築',
+      subtitle: 'コミュニケーション術',
+      category: 'mental-life',
+    },
+    'k05-diet-exercise': {
+      title: '専攻医の食事・運動管理',
+      subtitle: '忙しい中での健康維持',
+      category: 'mental-life',
+    },
+    'k06-stress-management': {
+      title: '当直・夜勤のストレス管理',
+      subtitle: '精神的に追い詰められない方法',
+      category: 'mental-life',
+    },
+    'k07-mental-life-guide': {
+      title: '内科専攻医のメンタル・生活完全ガイド',
+      subtitle: 'バーンアウト予防から生活管理まで',
+      category: 'mental-life',
+    },
     'j04-josler-jitan': {
       title: 'J-OSLER作業を時短する5つのテクニック',
       subtitle: 'テンプレ・ツール活用術',
