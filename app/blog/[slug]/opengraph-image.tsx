@@ -415,6 +415,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '転出・転入申請の流れと注意点',
       category: 'josler-basics',
     },
+    'a14-josler-shuryo-nintei': {
+      title: 'J-OSLER修了認定の流れ',
+      subtitle: '申請方法・修了見込との違い',
+      category: 'josler-basics',
+    },
     'g06-naika-senmoni-goukakuritsu': {
       title: '内科専門医試験の合格率推移',
       subtitle: '第1回〜第5回のデータ分析',
