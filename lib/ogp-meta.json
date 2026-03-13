@@ -34,6 +34,21 @@
     "subtitle": "",
     "category": "josler-basics"
   },
+  "a09-josler-tenshutsu-tennyu": {
+    "title": "J-OSLER施設異動の手続き完全ガイド",
+    "subtitle": "転出・転入申請の流れと注意点",
+    "category": "josler-basics"
+  },
+  "a14-josler-shuryo-nintei": {
+    "title": "J-OSLER修了認定の流れ",
+    "subtitle": "申請方法・修了見込との違い・出願までの手続き",
+    "category": "josler-basics"
+  },
+  "a15-josler-360do-hyouka": {
+    "title": "J-OSLER自己評価・360度評価の書き方",
+    "subtitle": "半期ごとの手続きと登録方法",
+    "category": "josler-basics"
+  },
   "b01-josler-byoreki-youyaku-kakikata": {
     "title": "J-OSLER病歴要約の書き方完全ガイド",
     "subtitle": "",
@@ -209,6 +224,11 @@
     "subtitle": "全身麻酔・転科の条件と例文",
     "category": "disease-specific"
   },
+  "d13-josler-bouken-shourei": {
+    "title": "J-OSLER剖検症例の書き方",
+    "subtitle": "4条件・考察の対比・疾患群ルール",
+    "category": "disease-specific"
+  },
   "d14-josler-gairai-shourei": {
     "title": "J-OSLER外来症例の書き方",
     "subtitle": "7篇の上限と選び方のコツ",
@@ -239,6 +259,11 @@
     "subtitle": "症例登録・病歴要約・修了要件を一覧で管理",
     "category": "progress-management"
   },
+  "e05-josler-shidoui-renkei": {
+    "title": "J-OSLER 指導医承認が進まないときの対処法",
+    "subtitle": "承認漏れ防止策",
+    "category": "progress-management"
+  },
   "e06-josler-ryuunen": {
     "title": "J-OSLER留年するとどうなる？対処法と翌年への影響を徹底解説",
     "subtitle": "",
@@ -247,6 +272,26 @@
   "f01-jmecc-toha": {
     "title": "JMECCとは？内科専攻医が受講すべき理由と申込方法",
     "subtitle": "",
+    "category": "jmecc-training"
+  },
+  "f02-jmecc-moushikomi-schedule": {
+    "title": "JMECC申し込み方法と開催スケジュール",
+    "subtitle": "2026年版完全ガイド",
+    "category": "jmecc-training"
+  },
+  "f03-jmecc-junbi-benkyouhou": {
+    "title": "JMECC 事前準備・勉強法",
+    "subtitle": "テキストと当日を乗り切るコツ",
+    "category": "jmecc-training"
+  },
+  "f04-josler-e-learning": {
+    "title": "J-OSLER e-Learningの受講方法と修了証の取得",
+    "subtitle": "共通講習を効率的にクリア",
+    "category": "jmecc-training"
+  },
+  "f05-josler-hissu-koushuukai": {
+    "title": "内科専攻医の必須講習会",
+    "subtitle": "医療倫理・医療安全・感染制御の受け方",
     "category": "jmecc-training"
   },
   "g01-naika-senmoni-benkyouhou": {
@@ -262,6 +307,11 @@
   "g03-naika-senmoni-sankousho": {
     "title": "内科専門医試験おすすめ参考書・問題集ランキング",
     "subtitle": "",
+    "category": "specialist-exam"
+  },
+  "g04-naika-senmoni-shutsudai-keiko": {
+    "title": "内科専門医試験の出題傾向と対策",
+    "subtitle": "領域別配点と重要テーマ",
     "category": "specialist-exam"
   },
   "g05-naika-senmoni-kakomon": {
@@ -284,6 +334,21 @@
     "subtitle": "第6回試験の全情報",
     "category": "specialist-exam"
   },
+  "g09-naika-senmoni-moshikomi": {
+    "title": "内科専門医試験の受験申し込み方法",
+    "subtitle": "出願手順と受験資格を徹底解説",
+    "category": "specialist-exam"
+  },
+  "g10-naika-senmoni-tojitsu": {
+    "title": "内科専門医試験 当日の持ち物・流れ・直前対策",
+    "subtitle": "前日〜試験後まで",
+    "category": "specialist-exam"
+  },
+  "g11-naika-senmoni-fugoukaku": {
+    "title": "内科専門医試験 不合格・再受験の対処法",
+    "subtitle": "気持ちの切り替えと次への準備",
+    "category": "specialist-exam"
+  },
   "j01-josler-ai-katsuyo": {
     "title": "J-OSLERをAIで効率化する方法",
     "subtitle": "Claude・ChatGPT・Perplexity活用ガイド",
@@ -302,6 +367,31 @@
   "j04-josler-jitan": {
     "title": "J-OSLER作業を時短する5つのテクニック",
     "subtitle": "テンプレ・ツール活用術",
+    "category": "ai-tools"
+  },
+  "j05-chatgpt-byoreki-youyaku": {
+    "title": "ChatGPTで病歴要約を書く方法",
+    "subtitle": "プロンプトテンプレートと注意点",
+    "category": "ai-tools"
+  },
+  "j06-notion-josler-kanri": {
+    "title": "Notionで専攻医のJ-OSLER進捗を管理する方法",
+    "subtitle": "テンプレート活用術",
+    "category": "ai-tools"
+  },
+  "j07-voice-input-josler": {
+    "title": "音声入力でJ-OSLERの記録を効率化する方法",
+    "subtitle": "iPhoneとAndroidの活用術",
+    "category": "ai-tools"
+  },
+  "j08-ai-bunken-kensaku": {
+    "title": "AIを使った医学文献検索術",
+    "subtitle": "PubMedプロンプトとPerplexity活用法",
+    "category": "ai-tools"
+  },
+  "j09-ai-prompt-template": {
+    "title": "J-OSLER専用AIプロンプトテンプレート集",
+    "subtitle": "病歴要約・症例登録を効率化",
     "category": "ai-tools"
   },
   "j10-claude-pubmed-mcp": {
@@ -348,5 +438,40 @@
     "title": "キャリア設計",
     "subtitle": "完全ロードマップ",
     "category": "career"
+  },
+  "k01-burnout-taisaku": {
+    "title": "内科専攻医のバーンアウト対策",
+    "subtitle": "症状・原因・回復法",
+    "category": "mental-life"
+  },
+  "k02-nennkyuu-torikaikata": {
+    "title": "専攻医の年休・有給の取り方",
+    "subtitle": "取得しにくい環境での対処法",
+    "category": "mental-life"
+  },
+  "k03-suimin-kanri": {
+    "title": "専攻医の睡眠管理",
+    "subtitle": "当直明けの回復術と質を上げる方法",
+    "category": "mental-life"
+  },
+  "k04-senior-relations": {
+    "title": "指導医・先輩との関係構築",
+    "subtitle": "専攻医のコミュニケーション術",
+    "category": "mental-life"
+  },
+  "k05-diet-exercise": {
+    "title": "専攻医の食事・運動管理",
+    "subtitle": "忙しい中での健康維持",
+    "category": "mental-life"
+  },
+  "k06-stress-management": {
+    "title": "当直・夜勤のストレス管理",
+    "subtitle": "精神的に追い詰められない方法",
+    "category": "mental-life"
+  },
+  "k07-mental-life-guide": {
+    "title": "内科専攻医のメンタル・生活完全ガイド",
+    "subtitle": "バーンアウト・睡眠・食事・当直ストレスまで",
+    "category": "mental-life"
   }
 }
