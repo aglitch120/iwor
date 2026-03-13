@@ -410,6 +410,11 @@ function slugToMeta(slug: string): ArticleMeta {
       subtitle: '共通講習を効率的にクリア',
       category: 'jmecc-training',
     },
+    'a09-josler-tenshutsu-tennyu': {
+      title: 'J-OSLER施設異動の手続き',
+      subtitle: '転出・転入申請の流れと注意点',
+      category: 'josler-basics',
+    },
     'g06-naika-senmoni-goukakuritsu': {
       title: '内科専門医試験の合格率推移',
       subtitle: '第1回〜第5回のデータ分析',
