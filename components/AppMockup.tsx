@@ -3,7 +3,7 @@
 
 export function AppMockup({ className = '' }: { className?: string }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className}`} aria-hidden="true" role="presentation">
       {/* Desktop mockup */}
       <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden max-w-[520px] mx-auto">
         {/* ブラウザバー */}

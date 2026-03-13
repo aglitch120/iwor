@@ -162,7 +162,7 @@ function Footer() {
             <Link href="/" className="flex items-center gap-2">
               <Image 
                 src="/icon.png" 
-                alt="内科ナビ" 
+                alt="" 
                 width={32} 
                 height={32} 
                 className="rounded-lg"

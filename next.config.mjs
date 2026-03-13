@@ -9,12 +9,32 @@ const nextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
-        // アプリ本体: public/app.html を配信（API は app.html 内で Worker に直接通信）
         { source: '/app', destination: '/app.html' },
       ],
     }
   },
   async headers() {
+    const securityHeaders = [
+      { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+      { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      {
+        key: 'Content-Security-Policy',
+        value: [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' static.cloudflareinsights.com",
+          "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
+          "font-src 'self' fonts.gstatic.com",
+          "img-src 'self' data: blob: *.naikanavi.com",
+          "connect-src 'self' cloudflareinsights.com",
+          "frame-src 'self' docs.google.com naikanavi.booth.pm",
+          "frame-ancestors 'self'",
+        ].join('; '),
+      },
+    ]
+
     return [
       {
         source: '/images/:path*.svg',
@@ -22,6 +42,10 @@ const nextConfig = {
           { key: 'Content-Type', value: 'image/svg+xml' },
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
+      },
+      {
+        source: '/(.*)',
+        headers: securityHeaders,
       },
     ]
   },
