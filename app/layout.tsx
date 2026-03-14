@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import Script from 'next/script'
 import './globals.css'
 import { siteConfig, categories } from '@/lib/blog-config'
 import { websiteJsonLd, siteNavigationJsonLd } from '@/lib/seo'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 
 // Organization構造化データ
 const organizationJsonLd = {
@@ -88,6 +91,17 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-bg text-tx antialiased">
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+            </Script>
+          </>
+        )}
         <Header />
         <main className="max-w-5xl mx-auto px-6 sm:px-8 py-8 pb-24 md:pb-8">
           {children}

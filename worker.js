@@ -31,11 +31,21 @@
 //  Secrets: ADMIN_KEY, N8N_KEY
 // ═══════════════════════════════════════════════════════════════
 
-const CORS = {
-  "Access-Control-Allow-Origin":  "*",
-  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Api-Key,X-Admin-Key",
-};
+const ALLOWED_ORIGINS = ["https://naikanavi.com", "http://localhost:3000"];
+
+function getCors(request) {
+  const origin = request?.headers?.get("Origin") || "";
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : "https://naikanavi.com";
+  return {
+    "Access-Control-Allow-Origin":  allowedOrigin,
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Api-Key,X-Admin-Key",
+    "Vary": "Origin",
+  };
+}
+
+// 後方互換: 静的CORSオブジェクト（リクエストなし文脈で使用）
+const CORS = getCors(null);
 
 const json = (data, status=200, extraHeaders={}) =>
   new Response(JSON.stringify(data), {
@@ -1501,7 +1511,7 @@ export default {
     const path = url.pathname;
 
     if (request.method === "OPTIONS")
-      return new Response(null, { headers: CORS });
+      return new Response(null, { headers: getCors(request) });
 
     // ══════════════════════════════════════════════════
     //  ページ配信: GET / （認証状態でログイン画面 or アプリ）
