@@ -168,6 +168,26 @@ export function getAllTags(): { tag: string; count: number }[] {
     .sort((a, b) => b.count - a.count)
 }
 
+// カテゴリ別記事数を取得
+export function getCategoryCounts(): { slug: CategorySlug; name: string; cluster: string; count: number }[] {
+  const posts = getAllPosts()
+  const counts: Partial<Record<CategorySlug, number>> = {}
+
+  posts.forEach((post) => {
+    counts[post.category] = (counts[post.category] || 0) + 1
+  })
+
+  return (Object.entries(categories) as [CategorySlug, { name: string; cluster: string }][])
+    .map(([slug, { name, cluster }]) => ({
+      slug,
+      name,
+      cluster,
+      count: counts[slug] || 0,
+    }))
+    .filter((c) => c.count > 0)
+    .sort((a, b) => b.count - a.count)
+}
+
 // 前後記事を取得（日付順）
 export function getAdjacentPosts(currentSlug: string): { prev: PostListItem | null; next: PostListItem | null } {
   const allPosts = getAllPosts() // 日付降順

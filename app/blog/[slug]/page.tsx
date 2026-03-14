@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getPostBySlug, getAllPostSlugs, getRelatedPosts, getAdjacentPosts, compileMDXContent } from '@/lib/mdx'
+import { getPostBySlug, getAllPostSlugs, getRelatedPosts, getAdjacentPosts, getCategoryCounts, compileMDXContent } from '@/lib/mdx'
 import { categories, clusterColors, ctaConfig, getTagSlug } from '@/lib/blog-config'
 import { generateMetadata as genMeta, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
 import ArticleCard from '@/components/blog/ArticleCard'
@@ -11,6 +11,7 @@ import InlineTableOfContents from '@/components/blog/InlineTableOfContents'
 import ShareButtons from '@/components/blog/ShareButtons'
 import ReadingProgress from '@/components/blog/ReadingProgress'
 import RelatedArticlesSidebar from '@/components/blog/RelatedArticlesSidebar'
+import CategoryNavSidebar from '@/components/blog/CategoryNavSidebar'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -53,6 +54,7 @@ export default async function ArticlePage({ params }: Props) {
   const clusterColor = category ? clusterColors[category.cluster]?.bg : '#1B4F3A'
   const relatedPosts = getRelatedPosts(slug, 5)
   const { prev, next } = getAdjacentPosts(slug)
+  const categoryCounts = getCategoryCounts()
   const cta = ctaConfig[frontmatter.cta_type]
   
   // MDXをコンパイル
@@ -176,6 +178,7 @@ export default async function ArticlePage({ params }: Props) {
           <aside className="hidden lg:block lg:w-56 flex-shrink-0">
             <TableOfContents />
             <RelatedArticlesSidebar posts={relatedPosts.slice(0, 5)} />
+            <CategoryNavSidebar categories={categoryCounts} currentCategory={frontmatter.category} />
           </aside>
         </div>
 
