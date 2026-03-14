@@ -172,8 +172,8 @@ export default function AdminPage() {
       {/* クイックリンク */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
+          { label: 'SEOヘルスチェック', href: '/admin/seo-health' },
           { label: 'ブログ一覧', href: '/blog' },
-          { label: 'トップページ', href: '/' },
           { label: 'サイトマップ', href: '/sitemap.xml' },
           { label: '画像サイトマップ', href: '/image-sitemap.xml' },
         ].map(({ label, href }) => (
