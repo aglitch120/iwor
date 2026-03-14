@@ -24,15 +24,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+
       - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v12
-        continue-on-error: true
-        with:
-          urls: |
-            http://localhost:3000/
-            http://localhost:3000/blog
-            http://localhost:3000/blog/a01-josler-toha
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          budgetPath: ./.github/lighthouse-budget.json
-          runs: 1
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
