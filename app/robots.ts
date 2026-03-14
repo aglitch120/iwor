@@ -9,6 +9,9 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/'],
       },
     ],
-    sitemap: 'https://naikanavi.com/sitemap.xml',
+    sitemap: [
+      'https://naikanavi.com/sitemap.xml',
+      'https://naikanavi.com/image-sitemap.xml',
+    ],
   }
 }
