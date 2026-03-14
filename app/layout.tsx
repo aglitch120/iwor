@@ -190,6 +190,7 @@ function Footer() {
             </Link>
             <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted">
               <Link href="/blog" className="hover:text-ac">ブログ</Link>
+              <Link href="/tools" className="hover:text-ac">計算ツール</Link>
               <a href="https://naikanavi.booth.pm/items/8058590" target="_blank" rel="noopener noreferrer" className="hover:text-ac">購入</a>
               <Link href="/privacy" className="hover:text-ac">プライバシーポリシー</Link>
               <Link href="/terms" className="hover:text-ac">利用規約</Link>
