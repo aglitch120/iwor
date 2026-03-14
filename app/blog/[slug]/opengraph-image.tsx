@@ -657,7 +657,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           {/* メインタイトル */}
           <div
             style={{
-              fontSize: meta.title.length > 12 ? 72 : 88,
+              fontSize: meta.title.length > 30 ? 52 : meta.title.length > 18 ? 64 : meta.title.length > 12 ? 72 : 88,
               fontWeight: 900,
               color: '#FFFFFF',
               lineHeight: 1.15,
