@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
+  verification: {
+    google: 'uehcWYHUwP5AZjA_o0H-VuZsz64RPKz_Ivn1maLm9fE',
+  },
   robots: {
     index: true,
     follow: true,
