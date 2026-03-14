@@ -858,5 +858,20 @@
     "title": "効率化ガイド",
     "subtitle": "AI・ツールで作業時間を短縮",
     "category": "ai-tools"
+  },
+  "q08-tounyoubyou-naibunpitsu-subspecialty": {
+    "title": "糖尿病・内分泌内科サブスペシャルティとJ-OSLER",
+    "subtitle": "専攻医の取得ロードマップ",
+    "category": "subspecialty"
+  },
+  "q09-kougenbyou-subspecialty": {
+    "title": "膠原病・リウマチ内科サブスペシャルティとJ-OSLER",
+    "subtitle": "専攻医の取得ロードマップ",
+    "category": "subspecialty"
+  },
+  "q10-kansenshou-subspecialty": {
+    "title": "感染症内科サブスペシャルティとJ-OSLER",
+    "subtitle": "専攻医の取得ロードマップ",
+    "category": "subspecialty"
   }
 }

@@ -469,6 +469,6 @@ export const siteConfig = {
   name: '内科ナビ',
   description: '内科専攻医の悩みをすべて解決する',
   url: 'https://naikanavi.com',
-  ogImage: 'https://naikanavi.com/og/default.png',
+  ogImage: 'https://naikanavi.com/opengraph-image',
   author: '内科ナビ編集部',
 }
