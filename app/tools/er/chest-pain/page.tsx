@@ -63,7 +63,7 @@ const tree: Record<string, TreeNode> = {
       severity: 'critical',
       title: 'STEMI — Door-to-Balloon 90分以内',
       actions: [
-        'アスピリン162-325mg噛砕投与（禁忌確認）',
+        'アスピリン噛砕投与（用量は施設プロトコル参照、禁忌確認）',
         'ヘパリン静注',
         'P2Y12阻害薬（プラスグレル/チカグレロル/クロピドグレル）',
         '循環器コンサルト → 緊急PCI',
@@ -174,7 +174,7 @@ const tree: Record<string, TreeNode> = {
       severity: 'moderate',
       title: 'PE unlikely — D-dimerで除外を試みる',
       actions: [
-        'D-dimer測定（年齢調整カットオフ: 50歳以上は年齢×10 μg/L）',
+        'D-dimer測定（年齢調整カットオフの適用を検討）',
         'D-dimer陰性 → PE除外（感度95%以上）',
         'D-dimer陽性 → 造影CT（CTPA）へ',
         'PERC criteria全て陰性なら D-dimerすら不要（超低リスク）',
@@ -205,7 +205,7 @@ const tree: Record<string, TreeNode> = {
       title: '急性大動脈解離 — Stanford A型なら緊急手術',
       actions: [
         '疼痛コントロール（モルヒネ/フェンタニル）',
-        'sBP 100-120mmHg目標 + HR<60（β遮断薬IV → ニカルジピン/ニトロプルシド）',
+        '降圧+心拍数管理（β遮断薬IV → 降圧薬追加。目標値は施設プロトコル参照）',
         '造影CT（大動脈全長）',
         'Stanford A型 → 心臓外科緊急コンサルト → 緊急手術',
         'Stanford B型 → 降圧管理でICU',
@@ -304,7 +304,7 @@ const tree: Record<string, TreeNode> = {
       severity: 'moderate',
       title: '急性心膜炎 — 心筋炎合併に注意',
       actions: [
-        'NSAIDs（イブプロフェン600mg×3/日）+ コルヒチン',
+        'NSAIDs + コルヒチン（用量は添付文書・施設プロトコル参照）',
         '心筋炎合併の除外（トロポニン上昇 + 壁運動異常）',
         '心嚢液貯留 → 心タンポナーデに移行しないか経過観察',
         '原因検索（ウイルス性が最多）',
