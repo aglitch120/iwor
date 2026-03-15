@@ -29,14 +29,14 @@ export default function CalculatorLayout({
   references,
 }: CalculatorLayoutProps) {
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto overflow-hidden">
       {/* パンくず */}
-      <nav className="text-sm text-muted mb-6">
+      <nav className="text-sm text-muted mb-6 flex flex-wrap items-center gap-y-1">
         <Link href="/" className="hover:text-ac">ホーム</Link>
-        <span className="mx-2">›</span>
+        <span className="mx-1.5">›</span>
         <Link href="/tools" className="hover:text-ac">臨床計算ツール</Link>
-        <span className="mx-2">›</span>
-        <span>{title}</span>
+        <span className="mx-1.5">›</span>
+        <span className="break-all">{title}</span>
       </nav>
 
       {/* ヘッダー */}
@@ -101,11 +101,11 @@ export default function CalculatorLayout({
       {references && references.length > 0 && (
         <section className="mb-8">
           <h2 className="text-lg font-bold mb-3">参考文献</h2>
-          <ol className="list-decimal list-inside text-sm text-muted space-y-1">
+          <ol className="list-decimal list-inside text-sm text-muted space-y-2">
             {references.map((ref, i) => (
-              <li key={i}>
+              <li key={i} className="break-words">
                 {ref.url ? (
-                  <a href={ref.url} target="_blank" rel="noopener noreferrer" className="hover:text-ac underline">
+                  <a href={ref.url} target="_blank" rel="noopener noreferrer" className="hover:text-ac underline break-words">
                     {ref.text}
                   </a>
                 ) : (
