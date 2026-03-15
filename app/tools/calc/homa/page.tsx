@@ -9,8 +9,8 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('homa')!
 
 export default function HomaPage() {
-  const [fbs, setFbs] = useState('')
-  const [iri, setIri] = useState('')
+  const [fbs, setFbs] = useState('110')
+  const [iri, setIri] = useState('12')
 
   const result = useMemo(() => {
     const f = parseFloat(fbs); const i = parseFloat(iri)

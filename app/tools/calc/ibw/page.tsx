@@ -9,8 +9,8 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('ibw')!
 
 export default function IbwPage() {
-  const [height, setHeight] = useState('')
-  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('170')
+  const [weight, setWeight] = useState('78')
   const [sex, setSex] = useState('male')
 
   const result = useMemo(() => {

@@ -7,10 +7,10 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('light-criteria')!
 
 export default function LightCriteriaPage() {
-  const [plProt, setPlProt] = useState('')
-  const [sProt, setSProt] = useState('')
-  const [plLdh, setPlLdh] = useState('')
-  const [sLdh, setSLdh] = useState('')
+  const [plProt, setPlProt] = useState('3.5')
+  const [sProt, setSProt] = useState('3.5')
+  const [plLdh, setPlLdh] = useState('3.5')
+  const [sLdh, setSLdh] = useState('3.5')
   const [ldhUpper, setLdhUpper] = useState('230')
 
   const result = useMemo(() => {

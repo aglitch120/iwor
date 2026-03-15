@@ -10,8 +10,8 @@ const toolDef = getToolBySlug('free-water-deficit')!
 
 export default function FreeWaterDeficitPage() {
   const [sex, setSex] = useState('male')
-  const [weight, setWeight] = useState('')
-  const [currentNa, setCurrentNa] = useState('')
+  const [weight, setWeight] = useState('60')
+  const [currentNa, setCurrentNa] = useState('155')
 
   const result = useMemo(() => {
     const w = parseFloat(weight)

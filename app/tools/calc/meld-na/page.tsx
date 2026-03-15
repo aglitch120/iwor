@@ -9,10 +9,10 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('meld-na')!
 
 export default function MeldNaPage() {
-  const [bilirubin, setBilirubin] = useState('')
-  const [cr, setCr] = useState('')
-  const [inr, setInr] = useState('')
-  const [na, setNa] = useState('')
+  const [bilirubin, setBilirubin] = useState('2.5')
+  const [cr, setCr] = useState('1.5')
+  const [inr, setInr] = useState('1.8')
+  const [na, setNa] = useState('130')
   const [dialysis, setDialysis] = useState('no')
 
   const result = useMemo(() => {

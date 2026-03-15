@@ -21,9 +21,9 @@ const stressFactors = [
 
 export default function HarrisBenedictPage() {
   const [sex, setSex] = useState('male')
-  const [age, setAge] = useState('')
-  const [height, setHeight] = useState('')
-  const [weight, setWeight] = useState('')
+  const [age, setAge] = useState('55')
+  const [height, setHeight] = useState('170')
+  const [weight, setWeight] = useState('65')
   const [stress, setStress] = useState('bed')
 
   const result = useMemo(() => {

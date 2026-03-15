@@ -10,7 +10,7 @@ const toolDef = getToolBySlug('winters-formula')!
 
 export default function WintersFormulaPage() {
   const [hco3, setHco3] = useState('15')
-  const [pco2, setPco2] = useState('')
+  const [pco2, setPco2] = useState('28')
 
   const result = useMemo(() => {
     const hco3Val = parseFloat(hco3)

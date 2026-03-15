@@ -14,8 +14,8 @@ function getTBWfactor(sex: string): number {
 
 export default function NaDeficitPage() {
   const [sex, setSex] = useState('male')
-  const [weight, setWeight] = useState('')
-  const [currentNa, setCurrentNa] = useState('')
+  const [weight, setWeight] = useState('60')
+  const [currentNa, setCurrentNa] = useState('125')
   const [targetNa, setTargetNa] = useState('135')
 
   const result = useMemo(() => {

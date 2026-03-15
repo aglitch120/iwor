@@ -9,9 +9,9 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('anc')!
 
 export default function AncPage() {
-  const [wbc, setWbc] = useState('')
-  const [neutro, setNeutro] = useState('')
-  const [bands, setBands] = useState('')
+  const [wbc, setWbc] = useState('3000')
+  const [neutro, setNeutro] = useState('40')
+  const [bands, setBands] = useState('5')
 
   const result = useMemo(() => {
     const w = parseFloat(wbc)

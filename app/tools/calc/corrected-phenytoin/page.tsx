@@ -9,8 +9,8 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('corrected-phenytoin')!
 
 export default function CorrectedPhenytoinPage() {
-  const [level, setLevel] = useState('')
-  const [alb, setAlb] = useState('')
+  const [level, setLevel] = useState('8')
+  const [alb, setAlb] = useState('2.5')
   const [renal, setRenal] = useState('normal')
 
   const result = useMemo(() => {

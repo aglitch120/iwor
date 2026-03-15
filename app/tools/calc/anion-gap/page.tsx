@@ -12,7 +12,7 @@ export default function AnionGapPage() {
   const [na, setNa] = useState('140')
   const [cl, setCl] = useState('105')
   const [hco3, setHco3] = useState('24')
-  const [alb, setAlb] = useState('')
+  const [alb, setAlb] = useState('3.5')
 
   const result = useMemo(() => {
     const naVal = parseFloat(na)

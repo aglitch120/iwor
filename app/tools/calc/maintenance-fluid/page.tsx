@@ -21,7 +21,7 @@ function calc421(weight: number): { mlPerHour: number; mlPerDay: number } {
 }
 
 export default function MaintenanceFluidPage() {
-  const [weight, setWeight] = useState('')
+  const [weight, setWeight] = useState('60')
 
   const result = useMemo(() => {
     const w = parseFloat(weight)

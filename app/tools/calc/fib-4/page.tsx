@@ -35,10 +35,10 @@ function getInterpretation(fib4: number): { text: string; severity: 'ok' | 'wn' 
 }
 
 export default function FIB4Page() {
-  const [age, setAge] = useState('')
-  const [ast, setAst] = useState('')
-  const [alt, setAlt] = useState('')
-  const [plt, setPlt] = useState('')
+  const [age, setAge] = useState('55')
+  const [ast, setAst] = useState('45')
+  const [alt, setAlt] = useState('50')
+  const [plt, setPlt] = useState('15')
 
   const result = useMemo(() => {
     const a = parseFloat(age)

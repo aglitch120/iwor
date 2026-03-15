@@ -43,10 +43,10 @@ function getInterpretation(gradient: number, expected: number): { text: string; 
 }
 
 export default function AAGradientPage() {
-  const [age, setAge] = useState('')
+  const [age, setAge] = useState('50')
   const [fio2, setFio2] = useState('0.21')
-  const [pao2, setPao2] = useState('')
-  const [paco2, setPaco2] = useState('')
+  const [pao2, setPao2] = useState('80')
+  const [paco2, setPaco2] = useState('40')
 
   const result = useMemo(() => {
     const a = parseFloat(age)

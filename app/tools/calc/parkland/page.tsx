@@ -9,8 +9,8 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('parkland')!
 
 export default function ParklandPage() {
-  const [weight, setWeight] = useState('')
-  const [tbsa, setTbsa] = useState('')
+  const [weight, setWeight] = useState('70')
+  const [tbsa, setTbsa] = useState('25')
 
   const result = useMemo(() => {
     const w = parseFloat(weight)

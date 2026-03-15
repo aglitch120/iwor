@@ -77,10 +77,10 @@ function getInHospitalMortality(score: number): { risk: string; severity: 'ok' |
 }
 
 export default function GRACEPage() {
-  const [age, setAge] = useState('')
-  const [hr, setHr] = useState('')
-  const [sbp, setSbp] = useState('')
-  const [cr, setCr] = useState('')
+  const [age, setAge] = useState('65')
+  const [hr, setHr] = useState('85')
+  const [sbp, setSbp] = useState('130')
+  const [cr, setCr] = useState('1.2')
   const [killip, setKillip] = useState('1')
   const [stChange, setStChange] = useState(false)
   const [cardiacArrest, setCardiacArrest] = useState(false)

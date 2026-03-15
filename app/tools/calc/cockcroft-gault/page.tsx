@@ -28,9 +28,9 @@ function getLabel(ccr: number): string {
 }
 
 export default function CockcroftGaultPage() {
-  const [age, setAge] = useState('')
-  const [weight, setWeight] = useState('')
-  const [cr, setCr] = useState('')
+  const [age, setAge] = useState('65')
+  const [weight, setWeight] = useState('60')
+  const [cr, setCr] = useState('1.2')
   const [sex, setSex] = useState('male')
 
   const result = useMemo(() => {

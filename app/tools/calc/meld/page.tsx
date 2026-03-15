@@ -61,11 +61,11 @@ function getMortality(meld: number): { text: string; severity: 'ok' | 'wn' | 'dn
 }
 
 export default function MELDPage() {
-  const [bilirubin, setBilirubin] = useState('')
-  const [creatinine, setCreatinine] = useState('')
-  const [inr, setInr] = useState('')
-  const [sodium, setSodium] = useState('')
-  const [albumin, setAlbumin] = useState('')
+  const [bilirubin, setBilirubin] = useState('2.5')
+  const [creatinine, setCreatinine] = useState('1.5')
+  const [inr, setInr] = useState('1.8')
+  const [sodium, setSodium] = useState('132')
+  const [albumin, setAlbumin] = useState('2.8')
   const [sex, setSex] = useState<'male' | 'female'>('male')
   const [dialysis, setDialysis] = useState(false)
 
