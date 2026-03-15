@@ -65,14 +65,14 @@ export default function GcsPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={
         <ResultCard
-          score={`${result.total}点`}
-          label={result.label}
+          label="GCS"
+          value={result.total}
+          unit="/ 15点"
+          interpretation={result.label}
           severity={result.severity}
           details={[
-            `内訳: E${result.e} + V${result.v} + M${result.m}`,
-            result.total <= 8 ? '⚠️ GCS ≤ 8: 気道確保・挿管の適応を検討' : '',
-            '※ 鎮静薬・筋弛緩薬使用時は評価不能（記録には「T」を付記）',
-          ].filter(Boolean)}
+            { label: '内訳', value: `E${result.e} + V${result.v} + M${result.m}` },
+          ]}
         />
       }
       explanation={

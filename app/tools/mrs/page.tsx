@@ -31,14 +31,14 @@ export default function MrsPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`mRS ${result.value}`}
-          label={result.label.replace(/^\d: /, '')}
+          label="modified Rankin Scale"
+          value={`mRS ${result.value}`}
+          interpretation={result.label.replace(/^\d: /, '')}
           severity={result.severity}
           details={[
-            result.detail,
-            result.value <= 2 ? '良好な転帰（favorable outcome）' : '',
-            result.value >= 3 && result.value <= 5 ? '不良な転帰（unfavorable outcome）' : '',
-          ].filter(Boolean)}
+            ...(result.detail ? [{ label: '定義', value: result.detail }] : []),
+            { label: '転帰', value: result.value <= 2 ? '良好（favorable）' : '不良（unfavorable）' },
+          ]}
         />
       )}
       explanation={

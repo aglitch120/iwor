@@ -45,15 +45,13 @@ export default function KarnofskyPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`KPS ${result.value}%`}
-          label={result.label.replace(/^\d+%: /, '')}
+          label="Karnofsky Performance Status"
+          value={`${result.value}%`}
+          interpretation={result.label.replace(/^\d+%: /, '')}
           severity={result.severity}
           details={[
-            `ECOG PS換算: ${ecogEquiv}`,
-            result.value >= 70 ? '自立した生活が可能' : '',
-            result.value >= 50 && result.value < 70 ? '介助が必要だが自宅療養可能' : '',
-            result.value < 50 ? '入院レベルのケアが必要' : '',
-          ].filter(Boolean)}
+            { label: 'ECOG PS換算', value: ecogEquiv },
+          ]}
         />
       )}
       explanation={

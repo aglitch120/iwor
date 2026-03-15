@@ -51,13 +51,14 @@ export default function BmiPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={result.bmi.toFixed(1)}
-          label={result.classification.label}
+          label="BMI"
+          value={result.bmi.toFixed(1)}
+          interpretation={result.classification.label}
           severity={result.classification.severity}
           details={[
-            `${result.classification.detail}（日本肥満学会基準）`,
-            `標準体重（BMI 22）: ${result.idealWeight.bmi22} kg`,
-            `BMI 20〜25の適正範囲: ${result.idealWeight.bmi20}〜${result.idealWeight.bmi25} kg`,
+            { label: '分類', value: result.classification.detail },
+            { label: '標準体重（BMI 22）', value: `${result.idealWeight.bmi22} kg` },
+            { label: '適正範囲（BMI 20〜25）', value: `${result.idealWeight.bmi20}〜${result.idealWeight.bmi25} kg` },
           ]}
         />
       )}

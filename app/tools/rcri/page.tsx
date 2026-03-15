@@ -48,12 +48,13 @@ export default function RcriPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={
         <ResultCard
-          score={`${result.score}点`}
-          label={result.recommendation}
+          label="RCRI スコア"
+          value={result.score}
+          unit="/ 6点"
+          interpretation={result.recommendation}
           severity={result.severity}
           details={[
-            `主要心血管合併症の推定リスク: ${result.risk}`,
-            '※ 2014 ACC/AHAガイドラインの術前評価アルゴリズムに組み込まれています',
+            { label: '主要心血管合併症リスク', value: result.risk },
           ]}
         />
       }

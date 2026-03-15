@@ -48,13 +48,12 @@ export default function BsaPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`${result.duBois.toFixed(4)} m²`}
-          label="Du Bois式"
+          label="体表面積（Du Bois式）"
+          value={`${result.duBois.toFixed(4)} m²`}
           severity="ok"
           details={[
-            `新谷式（日本人向け）: ${result.shintani.toFixed(4)} m²`,
-            `Mosteller式: ${result.mosteller.toFixed(4)} m²`,
-            `※ 薬剤投与量の計算にはDu Bois式が最も広く使用されます`,
+            { label: '新谷式（日本人向け）', value: `${result.shintani.toFixed(4)} m²` },
+            { label: 'Mosteller式', value: `${result.mosteller.toFixed(4)} m²` },
           ]}
         />
       )}

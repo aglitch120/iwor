@@ -37,14 +37,13 @@ export default function FreeWaterDeficitPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`${result.deficit} L`}
           label="自由水欠乏量"
+          value={result.deficit}
+          unit="L"
+          interpretation="⚠️ 24時間で10 mEq/L以下のNa低下に留める"
           severity="wn"
           details={[
-            `TBW: ${result.tbw} L`,
-            '⚠️ Na補正速度: 24時間で10 mEq/L以下（脳浮腫予防）',
-            '※ 48時間以上で半量を補正、残りを次の24-48時間で補正が一般的',
-            '※ 不感蒸泄（約10 mL/kg/日）の追加補正も考慮',
+            { label: 'TBW', value: `${result.tbw} L` },
           ]}
         />
       )}

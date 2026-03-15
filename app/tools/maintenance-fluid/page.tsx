@@ -39,16 +39,16 @@ export default function MaintenanceFluidPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`${result.mlPerHour.toFixed(0)} mL/時`}
-          label={`1日量: ${result.mlPerDay.toFixed(0)} mL/日`}
+          label="維持輸液量（4-2-1ルール）"
+          value={result.mlPerHour.toFixed(0)}
+          unit="mL/時"
+          interpretation={`1日量: ${result.mlPerDay.toFixed(0)} mL/日`}
           severity="ok"
           details={[
-            `体重 ${result.weight} kg での4-2-1ルール計算`,
-            `最初の10kg: ${Math.min(result.weight, 10) * 4} mL/時（4 mL/kg/時）`,
-            result.weight > 10 ? `次の10kg: ${Math.min(result.weight - 10, 10) * 2} mL/時（2 mL/kg/時）` : '',
-            result.weight > 20 ? `残り: ${(result.weight - 20) * 1} mL/時（1 mL/kg/時）` : '',
-            '※ 発熱・不感蒸泄増加時は追加補正が必要',
-          ].filter(Boolean)}
+            { label: '最初の10kg', value: `${Math.min(result.weight, 10) * 4} mL/時` },
+            ...(result.weight > 10 ? [{ label: '次の10kg', value: `${Math.min(result.weight - 10, 10) * 2} mL/時` }] : []),
+            ...(result.weight > 20 ? [{ label: '残り', value: `${(result.weight - 20) * 1} mL/時` }] : []),
+          ]}
         />
       )}
       explanation={

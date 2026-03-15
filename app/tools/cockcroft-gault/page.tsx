@@ -52,14 +52,11 @@ export default function CockcroftGaultPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`${result.ccr.toFixed(1)} mL/min`}
-          label={result.label}
+          label="クレアチニンクリアランス"
+          value={result.ccr.toFixed(1)}
+          unit="mL/min"
+          interpretation={result.label}
           severity={result.severity}
-          details={[
-            '※ 実体重を使用。肥満患者では理想体重や補正体重の使用を考慮',
-            '※ eGFRとは異なり、体表面積で補正されていない実測値に近い推算値',
-            '※ 薬剤の添付文書がCCrで用量調整を記載している場合に使用',
-          ]}
         />
       )}
       explanation={

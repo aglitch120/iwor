@@ -46,13 +46,15 @@ export default function Abcd2Page() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={
         <ResultCard
-          score={`${result.score}点`}
-          label={result.label}
+          label="ABCD² スコア"
+          value={result.score}
+          unit="/ 7点"
+          interpretation={result.label}
           severity={result.severity}
           details={[
-            `2日以内の脳梗塞リスク: ${result.risk2d}`,
-            `7日以内: ${result.risk7d}`,
-            `90日以内: ${result.risk90d}`,
+            { label: '2日以内の脳梗塞リスク', value: result.risk2d },
+            { label: '7日以内', value: result.risk7d },
+            { label: '90日以内', value: result.risk90d },
           ]}
         />
       }

@@ -45,15 +45,15 @@ export default function NaDeficitPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`${result.deficit} mEq`}
           label="Na補充必要量"
+          value={result.deficit}
+          unit="mEq"
+          interpretation="⚠️ 24時間で10 mEq/L以下の補正に留める（ODS予防）"
           severity="wn"
           details={[
-            `総体液量（TBW）: ${result.tbw} L`,
-            `Na上昇幅: ${result.delta} mEq/L`,
-            `3% NaCl換算: 約${result.threePercentNaCl} mL`,
-            '⚠️ Na補正速度: 24時間で10 mEq/L以下（ODS予防）',
-            '⚠️ 急性症候性低Na血症でも最初の数時間は4-6 mEq/L以内の補正に留める',
+            { label: 'TBW', value: `${result.tbw} L` },
+            { label: 'Na上昇幅', value: `${result.delta} mEq/L` },
+            { label: '3% NaCl換算', value: `約${result.threePercentNaCl} mL` },
           ]}
         />
       )}

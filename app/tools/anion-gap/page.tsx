@@ -57,16 +57,16 @@ export default function AnionGapPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`AG: ${result.ag.toFixed(1)} mEq/L`}
-          label={result.interpretation}
+          label="アニオンギャップ"
+          value={result.ag.toFixed(1)}
+          unit="mEq/L"
+          interpretation={result.interpretation}
           severity={result.severity}
           details={[
-            result.correctedAg != null ? `補正AG（Alb補正）: ${result.correctedAg.toFixed(1)} mEq/L` : '',
-            result.deltaRatio != null ? `ΔAG/ΔHCO₃⁻ = ${result.deltaRatio.toFixed(2)}（正常: 1〜2）` : '',
-            result.deltaRatio != null && result.deltaRatio < 1 ? '→ 非AG開大型アシドーシスの合併を示唆' : '',
-            result.deltaRatio != null && result.deltaRatio > 2 ? '→ 代謝性アルカローシスの合併を示唆' : '',
-            '正常範囲: 8〜12 mEq/L',
-          ].filter(Boolean)}
+            ...(result.correctedAg != null ? [{ label: '補正AG（Alb補正）', value: `${result.correctedAg.toFixed(1)} mEq/L` }] : []),
+            ...(result.deltaRatio != null ? [{ label: 'ΔAG/ΔHCO₃⁻', value: result.deltaRatio.toFixed(2) }] : []),
+            { label: '正常範囲', value: '8〜12 mEq/L' },
+          ]}
         />
       )}
       explanation={

@@ -39,16 +39,14 @@ export default function EcogPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={result && (
         <ResultCard
-          score={`ECOG PS ${result.value}`}
-          label={result.label.replace(/^PS \d: /, '')}
+          label="ECOG Performance Status"
+          value={`PS ${result.value}`}
+          interpretation={result.label.replace(/^PS \d: /, '')}
           severity={result.severity}
           details={[
-            result.detail,
-            `Karnofsky PS換算: 約${kpsMapping[result.value]}`,
-            result.value <= 1 ? '多くの臨床試験で登録基準を満たす（PS 0-1）' : '',
-            result.value === 2 ? '一部の臨床試験では登録可能' : '',
-            result.value >= 3 ? '全身化学療法の適応は慎重に判断' : '',
-          ].filter(Boolean)}
+            { label: '定義', value: result.detail },
+            { label: 'Karnofsky PS換算', value: `約${kpsMapping[result.value]}` },
+          ]}
         />
       )}
       explanation={
