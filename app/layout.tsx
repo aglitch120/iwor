@@ -180,6 +180,17 @@ function Footer() {
           ))}
         </div>
 
+        {/* 医療情報免責表示 */}
+        <div className="mb-8 p-4 bg-bg border border-br rounded-lg">
+          <p className="text-xs text-muted leading-relaxed">
+            <span className="font-semibold text-tx">医療情報に関する免責事項:</span>{' '}
+            本サイトの情報は医療従事者の臨床判断を支援する目的で提供されており、診断・治療の代替とはなりません。
+            臨床計算ツール・薬剤情報・診療フローの結果は参考値であり、個別の患者への適用は各医師の責任において行ってください。
+            掲載情報の正確性には最大限注意を払っていますが、医学情報は常に更新されるため、最新の添付文書・ガイドラインを必ず確認してください。
+            本サイトの利用により生じたいかなる損害についても、運営者は責任を負いかねます。
+          </p>
+        </div>
+
         <div className="border-t border-br pt-6">
           <div className="flex flex-col md:flex-row justify-between items-start gap-4">
             <Link href="/" className="flex items-center gap-2">
