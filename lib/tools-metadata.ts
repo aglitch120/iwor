@@ -1,0 +1,33 @@
+import type { Metadata } from 'next'
+import { getToolBySlug } from '@/lib/tools-config'
+
+export function generateToolMetadata(slug: string): Metadata {
+  const tool = getToolBySlug(slug)
+  if (!tool) return {}
+
+  const title = `${tool.name}（${tool.nameEn}）— 無料オンライン計算ツール | 内科ナビ`
+  const description = `${tool.description} エビデンスに基づく解説・参考文献付き。内科専攻医・研修医向け臨床計算ツール。`
+  const url = `https://naikanavi.com/tools/${slug}`
+
+  return {
+    title,
+    description,
+    keywords: [...tool.keywords, '計算ツール', '臨床スコア', '内科', '医療', 'オンライン', '無料'],
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: '内科ナビ',
+      type: 'website',
+      locale: 'ja_JP',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${tool.name} 計算ツール | 内科ナビ`,
+      description,
+    },
+    alternates: {
+      canonical: url,
+    },
+  }
+}

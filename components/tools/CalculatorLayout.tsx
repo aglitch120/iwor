@@ -2,6 +2,14 @@
 
 import { ReactNode } from 'react'
 import Link from 'next/link'
+import CTABanner from '@/components/blog/CTABanner'
+
+const toolsCta = {
+  title: '🚀 AIが病歴要約の下書きを30秒で生成',
+  description: 'J-OSLER作業を10分の1に。症例登録テンプレ・検査値フォーマット変換・病歴要約AI下書きが全部入り。',
+  buttonText: '無料で試してみる',
+  url: 'https://naikanavi.booth.pm/items/8058590',
+}
 
 interface CalculatorLayoutProps {
   title: string
@@ -116,6 +124,9 @@ export default function CalculatorLayout({
           </ol>
         </section>
       )}
+
+      {/* CTA */}
+      <CTABanner cta={toolsCta} variant="large" />
     </div>
   )
 }
