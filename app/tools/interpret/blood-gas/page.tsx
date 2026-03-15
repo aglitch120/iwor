@@ -215,10 +215,13 @@ function interpret(d: BloodGasInput): StepResult[] {
 
 // ── UI Components ──
 const severityStyles = {
-  ok: 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-300',
-  wn: 'bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-300',
-  dn: 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300',
-  neutral: 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300',
+  ok: 'bg-[#E6F4EA] border-l-4 border-[#34A853]',
+  wn: 'bg-[#FFF8E1] border-l-4 border-[#F9A825]',
+  dn: 'bg-[#FDECEA] border-l-4 border-[#D93025]',
+  neutral: 'bg-[#E8F0FE] border-l-4 border-[#4285F4]',
+}
+const severityTextColor = {
+  ok: 'text-[#1B5E20]', wn: 'text-[#E65100]', dn: 'text-[#B71C1C]', neutral: 'text-[#1565C0]',
 }
 
 function Field({ id, label, unit, value, onChange, step = 0.01, hint }: {
@@ -297,18 +300,18 @@ export default function BloodGasPage() {
           <h2 className="text-lg font-bold text-tx mb-4">解釈結果</h2>
           <div className="space-y-3">
             {steps.map((s, i) => (
-              <div key={i} className={`border rounded-xl p-4 ${severityStyles[s.severity]}`}>
+              <div key={i} className={`rounded-xl p-4 ${severityStyles[s.severity]}`}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full border border-current/20">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${severityTextColor[s.severity]} bg-white/60`}>
                     Step {Math.floor(s.step)}
                   </span>
-                  <span className="text-sm font-bold">{s.title}</span>
+                  <span className={`text-sm font-bold ${severityTextColor[s.severity]}`}>{s.title}</span>
                 </div>
-                <p className="text-sm font-medium mb-1">{s.finding}</p>
+                <p className={`text-sm font-medium mb-1 ${severityTextColor[s.severity]}`}>{s.finding}</p>
                 {s.formula && (
-                  <p className="text-xs font-mono bg-white/50 dark:bg-black/10 px-2 py-1 rounded mt-1 mb-1">{s.formula}</p>
+                  <p className="text-xs font-mono bg-white/70 text-tx px-2 py-1 rounded mt-1 mb-1">{s.formula}</p>
                 )}
-                {s.detail && <p className="text-xs opacity-80">{s.detail}</p>}
+                {s.detail && <p className="text-xs text-tx/80">{s.detail}</p>}
               </div>
             ))}
           </div>

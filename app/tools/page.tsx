@@ -147,8 +147,8 @@ function CategoryCard({ cat }: { cat: typeof categories[0] }) {
           )}
           {cat.badge && (
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-              cat.badge === 'PRO' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' :
-              cat.badge === 'NEW' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' :
+              cat.badge === 'PRO' ? 'bg-[#FFF8E1] text-[#E65100]' :
+              cat.badge === 'NEW' ? 'bg-[#E6F4EA] text-[#1B5E20]' :
               'bg-s2 text-muted'
             }`}>
               {cat.badge}

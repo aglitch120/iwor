@@ -349,13 +349,16 @@ function assessAll(d: PatientData): DiseaseAssessment[] {
 
 // ── UI ──
 const statusColors = {
-  normal: 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-300',
-  caution: 'bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-300',
-  abnormal: 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300',
-  diagnosed: 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300',
+  normal: 'bg-[#E6F4EA] border-l-4 border-[#34A853]',
+  caution: 'bg-[#FFF8E1] border-l-4 border-[#F9A825]',
+  abnormal: 'bg-[#FDECEA] border-l-4 border-[#D93025]',
+  diagnosed: 'bg-[#E8F0FE] border-l-4 border-[#4285F4]',
+}
+const statusTextColors: Record<string, string> = {
+  normal: 'text-[#1B5E20]', caution: 'text-[#E65100]', abnormal: 'text-[#B71C1C]', diagnosed: 'text-[#1565C0]',
 }
 const statusLabels = { normal: '正常', caution: '注意', abnormal: '異常', diagnosed: '治療中' }
-const priorityColors = { high: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300', medium: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300', low: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' }
+const priorityColors = { high: 'bg-[#D93025] text-white', medium: 'bg-[#F9A825] text-[#4A3800]', low: 'bg-[#E8E5DF] text-[#6B6760]' }
 const categoryLabelsMap: Record<string, string> = { screening: '検査', referral: '紹介', lifestyle: '生活指導', medication: '薬物', monitoring: 'モニタリング' }
 
 function InputField({ id, label, unit, value, onChange, type = 'number', hint, step }: {
@@ -509,15 +512,15 @@ export default function LifestylePage() {
         <>
           {/* 緊急アクション */}
           {highPriority.length > 0 && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
-              <h2 className="text-sm font-bold text-red-800 dark:text-red-300 mb-2">🚨 優先アクション</h2>
+            <div className="mb-6 p-4 bg-[#FDECEA] border-l-4 border-[#D93025] rounded-xl">
+              <h2 className="text-sm font-bold text-[#B71C1C] mb-2">🚨 優先アクション</h2>
               <div className="space-y-2">
                 {highPriority.map((a, i) => (
                   <div key={i} className="flex gap-2 items-start">
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 whitespace-nowrap">{categoryLabelsMap[a.category]}</span>
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-[#D93025] text-white whitespace-nowrap">{categoryLabelsMap[a.category]}</span>
                     <div>
-                      <p className="text-sm font-medium text-red-900 dark:text-red-200">{a.title}</p>
-                      <p className="text-xs text-red-700 dark:text-red-400">{a.detail}</p>
+                      <p className="text-sm font-medium text-tx">{a.title}</p>
+                      <p className="text-xs text-tx/70">{a.detail}</p>
                     </div>
                   </div>
                 ))}
@@ -529,23 +532,23 @@ export default function LifestylePage() {
           <h2 className="text-lg font-bold text-tx mb-3">疾患別評価</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {assessments.map(a => (
-              <div key={a.name} className={`border rounded-xl p-4 ${statusColors[a.status]}`}>
+              <div key={a.name} className={`rounded-xl p-4 ${statusColors[a.status]}`}>
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-bold text-sm">{a.name}</h3>
-                  <span className="text-xs px-2 py-0.5 rounded-full font-medium border border-current/20">{statusLabels[a.status]}</span>
+                  <h3 className={`font-bold text-sm ${statusTextColors[a.status]}`}>{a.name}</h3>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusTextColors[a.status]} bg-white/60`}>{statusLabels[a.status]}</span>
                 </div>
-                <p className="text-sm mb-2">{a.summary}</p>
+                <p className="text-sm text-tx mb-2">{a.summary}</p>
                 {a.targets.length > 0 && (
-                  <div className="text-xs space-y-0.5 mb-2">
+                  <div className="text-xs text-tx space-y-0.5 mb-2">
                     {a.targets.map((t, i) => <p key={i}>🎯 {t}</p>)}
                   </div>
                 )}
                 {a.actions.length > 0 && (
-                  <div className="text-xs space-y-1 mt-2 pt-2 border-t border-current/10">
+                  <div className="text-xs space-y-1 mt-2 pt-2 border-t border-tx/10">
                     {a.actions.map((act, i) => (
                       <div key={i} className="flex gap-1.5 items-start">
                         <span className={`px-1 py-0.5 rounded text-[10px] whitespace-nowrap ${priorityColors[act.priority]}`}>{categoryLabelsMap[act.category]}</span>
-                        <span>{act.title}</span>
+                        <span className="text-tx">{act.title}</span>
                       </div>
                     ))}
                   </div>

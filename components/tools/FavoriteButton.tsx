@@ -137,7 +137,7 @@ export default function FavoriteButton({ slug, size = 'md' }: FavoriteButtonProp
         onClick={handleClick}
         className={`${sizeClass} flex items-center justify-center rounded-full border transition-all
           ${isFav
-            ? 'bg-amber-50 border-amber-300 text-amber-500 dark:bg-amber-900/30 dark:border-amber-700'
+            ? 'bg-[#FFF8E1] border-[#F9A825] text-[#F9A825]'
             : 'bg-s0 border-br text-muted hover:text-amber-400 hover:border-amber-300'
           }`}
         aria-label={isFav ? 'お気に入り解除' : 'お気に入りに追加'}
@@ -166,8 +166,8 @@ export function FavoritesBar() {
   if (favorites.length === 0) return null
 
   return (
-    <div className="mb-6 p-3 bg-amber-50/50 dark:bg-amber-900/10 border border-amber-200/50 dark:border-amber-800/30 rounded-xl">
-      <p className="text-xs font-medium text-amber-700 dark:text-amber-400 mb-2 flex items-center gap-1">
+    <div className="mb-6 p-3 bg-[#FFF8E1] border border-[#F9A825]/50 rounded-xl">
+      <p className="text-xs font-medium text-[#E65100] mb-2 flex items-center gap-1">
         ⭐ お気に入り
       </p>
       <div className="flex flex-wrap gap-1.5">
@@ -175,7 +175,7 @@ export function FavoritesBar() {
           <a
             key={slug}
             href={`/tools/calc/${slug}`}
-            className="text-xs px-2.5 py-1 bg-white dark:bg-s1 border border-amber-200 dark:border-amber-800 rounded-lg text-tx hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
+            className="text-xs px-2.5 py-1 bg-white border border-[#F9A825]/40 rounded-lg text-tx hover:bg-[#FFF8E1] transition-colors"
           >
             {slug}
           </a>
