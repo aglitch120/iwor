@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = '内科ナビ - 内科専攻医の悩みをすべて解決する'
+export const alt = 'iwor - 内科専攻医の悩みをすべて解決する'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -50,7 +50,7 @@ export default function OgImage() {
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
           }}>
-            内科ナビ
+            iwor
           </div>
 
           {/* サブタイトル */}

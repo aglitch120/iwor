@@ -54,9 +54,15 @@ export const metadata: Metadata = {
     'max-video-preview': -1,
   },
   icons: {
-    icon: '/icon.png',
-    apple: '/icon.png',
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
+  manifest: '/manifest.json',
   alternates: {
     canonical: siteConfig.url,
     languages: {
@@ -186,7 +192,7 @@ function Footer() {
                 height={32} 
                 className="rounded-lg"
               />
-              <span className="font-semibold text-tx">内科ナビ</span>
+              <span className="font-semibold text-tx">iwor</span>
             </Link>
             <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted">
               <Link href="/blog" className="hover:text-ac">ブログ</Link>
@@ -199,7 +205,7 @@ function Footer() {
             </nav>
           </div>
           <p className="text-sm text-muted mt-6">
-            © 2026 内科ナビ. All rights reserved.
+            © 2026 iwor. All rights reserved.
           </p>
         </div>
       </div>

@@ -29,7 +29,7 @@ export default function HomePage() {
             J-OSLER進捗管理、病歴要約、専門医試験対策から、キャリア・お金の情報まで。
           </p>
           <p className="text-sm text-muted mt-2 tracking-widest uppercase font-mono">
-            iwor.jp — 内科ナビ
+            iwor — 医師の臨床とキャリアを支える恵みの地
           </p>
         </div>
 
@@ -83,7 +83,7 @@ export default function HomePage() {
 
       {/* ═══ 特長セクション ═══ */}
       <section className="py-12 md:py-16">
-        <h2 className="text-xl font-bold text-center mb-2">なぜ内科ナビ？</h2>
+        <h2 className="text-xl font-bold text-center mb-2">なぜiwor？</h2>
         <p className="text-sm text-muted text-center mb-10 max-w-md mx-auto">
           J-OSLERの複雑な修了要件を、シンプルに見える化。
         </p>
@@ -243,7 +243,7 @@ export default function HomePage() {
           <div className="relative z-10">
             <div className="text-center mb-8">
               <h2 className="text-xl md:text-2xl font-bold text-white mb-3">
-                内科ナビで専攻医生活を効率化しませんか？
+                iworで専攻医生活を効率化しませんか？
               </h2>
               <p className="text-white/60 text-sm max-w-lg mx-auto">
                 J-OSLER進捗管理、AI病歴要約テンプレート、試験対策クイズ。

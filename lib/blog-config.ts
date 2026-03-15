@@ -466,9 +466,9 @@ export function getTagName(slug: string): string | undefined {
 
 // サイト情報
 export const siteConfig = {
-  name: '内科ナビ',
-  description: '内科専攻医の悩みをすべて解決する',
+  name: 'iwor',
+  description: '医師の臨床とキャリアを支える、恵みの地',
   url: 'https://iwor.jp',
   ogImage: 'https://iwor.jp/opengraph-image',
-  author: '内科ナビ編集部',
+  author: 'iwor編集部',
 }

@@ -59,12 +59,12 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/icon.png"
-            alt="内科ナビ"
+            alt="iwor"
             width={36}
             height={36}
             className="rounded-lg"
           />
-          <span className="font-bold text-tx">内科ナビ</span>
+          <span className="font-bold text-tx">iwor</span>
         </Link>
         <nav className="flex items-center gap-1.5 md:gap-3">
           {/* デスクトップ: ブログ + メガメニュー */}

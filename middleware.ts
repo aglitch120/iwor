@@ -24,7 +24,7 @@ export function middleware(req: NextRequest) {
   return new NextResponse('Unauthorized', {
     status: 401,
     headers: {
-      'WWW-Authenticate': 'Basic realm="内科ナビ 管理画面"',
+      'WWW-Authenticate': 'Basic realm="iwor 管理画面"',
     },
   })
 }
