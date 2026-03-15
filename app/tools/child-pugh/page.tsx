@@ -190,8 +190,9 @@ export default function ChildPughPage() {
         relatedTools={relatedTools}
         references={[
           { text: 'Pugh RN, et al. Transection of the oesophagus for bleeding oesophageal varices. Br J Surg. 1973;60(8):646-649. PMID: 4541913', url: 'https://pubmed.ncbi.nlm.nih.gov/4541913/' },
-          { text: 'Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001;33(2):464-470. PMID: 11172350', url: 'https://pubmed.ncbi.nlm.nih.gov/11172350/' },
+          { text: 'Mansour A, et al. Abdominal operations in patients with cirrhosis: still a major surgical challenge. Surgery. 1997;122(4):730-735. PMID: 9347849', url: 'https://pubmed.ncbi.nlm.nih.gov/9347849/' },
           { text: 'Cholongitas E, et al. Systematic review: the model for end-stage liver disease—should it replace Child-Pugh\'s classification for assessing prognosis in cirrhosis? Aliment Pharmacol Ther. 2005;22(11-12):1079-1089. PMID: 16305721', url: 'https://pubmed.ncbi.nlm.nih.gov/16305721/' },
+          { text: 'D\'Amico G, et al. Natural history and prognostic indicators of survival in cirrhosis: a systematic review of 118 studies. J Hepatol. 2006;44(1):217-231. PMID: 16298014', url: 'https://pubmed.ncbi.nlm.nih.gov/16298014/' },
         ]}
         result={
           <div className="space-y-3">
@@ -222,9 +223,8 @@ export default function ChildPughPage() {
                   </p>
                 </div>
               </div>
+              <p className="text-[10px] text-muted mt-2">出典: D'Amico G, et al. J Hepatol 2006（生存率）; Mansour A, et al. Surgery 1997（周術期死亡率）</p>
             </div>
-
-            {/* 臨床的指針 */}
             {result.grade === 'C' && (
               <div className="bg-dnl border border-dnb rounded-xl p-4">
                 <p className="text-sm font-medium text-dn">⚠️ Class C — 待機手術は原則禁忌</p>

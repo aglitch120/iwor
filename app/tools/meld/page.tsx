@@ -174,6 +174,7 @@ export default function MELDPage() {
                 interpretation={`${result.text} — 3ヶ月死亡率 ${result.mortality3m}`}
                 severity={result.severity}
               />
+              <p className="text-[10px] text-muted px-1">3ヶ月死亡率: Wiesner R, et al. Gastroenterology 2003; PMID: 12512033</p>
 
               {result.meld3 !== null && (
                 <div className="bg-s0 border border-br rounded-xl p-4">
