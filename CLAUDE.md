@@ -8,9 +8,9 @@
 
 ```bash
 # リポジトリクローン後、最初に実行
-git remote set-url origin https://TOKEN@github.com/aglitch120/naikanavi.git
-git config user.email "claude@anthropic.com"
-git config user.name "Claude"
+git remote set-url origin https://TOKEN@github.com/aglitch120/iwor.git
+git config user.email "aglitch120@users.noreply.github.com"
+git config user.name "aglitch120"
 ```
 
 **注意**: トークンはセキュリティのためここには記載しない。会話開始時にユーザーから受け取ること。
@@ -22,213 +22,68 @@ git config user.name "Claude"
 ### 1. 作業開始時に必ず行うこと
 - リポジトリをcloneして最新状態を確認する
 - `docs/` フォルダ内の以下のガイドラインを読み、内容に従うこと：
+  - `docs/BUSINESS_OVERVIEW.md` — ビジネス概要・収益モデル・3セグメント商品設計
+  - `docs/EXIT_STRATEGY.md` — EXIT戦略・ロードマップ
+  - `docs/EXIT_TODO.md` — TODOトラッカー（WS0〜WS4）
   - `docs/DESIGN_SYSTEM.md` — カラー・タイポグラフィ・コンポーネント規約
   - `docs/SEO_GUIDELINE.md` — 記事作成ルール・KW設計・メタデータ
   - `docs/IMPLEMENTATION_GUIDE.md` — 技術実装・フォルダ構成・デプロイ手順
-  - `docs/IMPROVEMENT_ROADMAP.md` — 改善計画・タスク進捗管理
-  - `docs/BUSINESS_OVERVIEW.md` — ビジネスモデル・ターゲット
 
-### 2. 作業中のルール
-- 小さなタスク（1機能、1修正）ごとにコミットする
-- 長時間作業は30分ごとに中間コミットする
-- 長い作業（10分以上）は途中で進捗を報告する
+### 2. コミットルール
+- 小さなタスク（1ファイル、1機能）ごとにコミット
+- コミット後は必ずプッシュ
+- `git add -A` 禁止 → `git add <ファイル名>` で個別指定
+- `node_modules/` は絶対にコミットしない
+- コミットメッセージは日本語OK、プレフィックス付き（docs:, feat:, fix:, refactor:）
 
-### 3. タスク完了時に必ず行うこと
-- `docs/IMPROVEMENT_ROADMAP.md` のチェックマークを更新する（`[ ]` → `[x]`）
-- 「次のアクション」セクションを最新状態に保つ
-- **必ず `git push` する**（pushしないと作業が反映されない）
+### 3. タスク管理
+- `docs/EXIT_TODO.md` をタスク完了ごとに更新してpush
+- 長い作業は途中で進捗報告
 
----
-
-## Git ルール（厳守）
-
-### 禁止事項
-- **`git add -A` 禁止** — 意図しないファイル（.env、credentials、巨大バイナリ等）がコミットされるリスクがあるため、必ずファイルを個別に指定して `git add` すること
-- **`node_modules/` のコミット禁止** — `.gitignore` に含まれているが、万が一追跡対象になっていないか注意すること
-- **秘密情報（トークン、APIキー、パスワード等）をコミットしない**
-
-### コミットメッセージ
-- 変更内容が分かる簡潔な日本語または英語で記述
-- 例: `Add D15: ○○の記事`, `Fix: MDXレンダリングの修正`, `Update keyword list`
+### 4. コードスタイル
+- TypeScript + Next.js 14 App Router
+- Tailwind CSS でスタイリング（カスタムCSSは最小限）
+- コンポーネントは `components/` に配置
+- MDX記事は `content/blog/` に配置
 
 ---
 
-## クイックコマンド
+## プロジェクト概要
 
-```bash
-# 開発サーバー起動
-npm run dev
+**iwor（イウォル）** — 医師の臨床とキャリアを支える恵みの地
 
-# 本番ビルド
-npm run build
+- ドメイン: iwor.jp
+- 旧サイト: naikanavi.com（→ iwor.jpに301リダイレクト予定）
+- 技術: Next.js 14 + MDX + Tailwind + Cloudflare Pages / Workers / KV
 
-# Cloudflare Workers起動
-npx wrangler dev
-
-# デプロイ（git pushで Cloudflare Pages に自動デプロイ）
-git push
+### サイト構造
 ```
+iwor.jp/
+├── /tools/        ← 臨床計算ツール群（無料）
+├── /compare/      ← 薬剤比較（無料）
+├── /blog/         ← SEOコンテンツ（173記事＋新規）
+├── /josler/       ← J-OSLER対策（PRO）
+├── /interpret/    ← 検査読影インタラクティブ（将来）
+├── /emergency/    ← ACLS・緊急対応（将来）
+├── /er/           ← 主訴別ER対応（将来）
+├── /icu/          ← ICU管理ツール（将来）
+├── /dashboard/    ← 病棟管理ダッシュボード（将来・PRO）
+├── /journal/      ← 論文フィード（将来・PRO）
+├── /matching/     ← マッチング対策（将来・PRO）
+├── /specialist/   ← 他科専門医対策（将来）
+└── /hospitals/    ← 病院DB（将来）
+```
+
+### ビジネスモデル
+- 無料: 臨床ツール、薬剤比較、ブログ → SEO集客＋信頼構築
+- 有料: iwor PRO 年額9,800円 → データ保存・パーソナライズ・API利用
+
+詳細は `docs/BUSINESS_OVERVIEW.md` を参照。
 
 ---
 
-## プロジェクト構成
+## 注意事項
 
-```
-naikanavi/
-├── app/                        # Next.js App Router
-│   ├── blog/[slug]/            # 記事ページ
-│   ├── layout.tsx              # 共通レイアウト
-│   ├── sitemap.ts              # 動的サイトマップ
-│   └── robots.ts               # robots.txt
-├── content/articles/            # MDX記事
-├── components/                  # UIコンポーネント
-│   ├── blog/                   # ブログ関連（ArticleCard, TOC, CTA等）
-│   └── seo/                    # 構造化データ（JSON-LD）
-├── lib/                        # ユーティリティ（mdx.ts, seo.ts等）
-├── docs/                       # ドキュメント（ガイドライン・ロードマップ）
-│   ├── DESIGN_SYSTEM.md
-│   ├── SEO_GUIDELINE.md
-│   ├── IMPLEMENTATION_GUIDE.md
-│   ├── IMPROVEMENT_ROADMAP.md
-│   ├── BUSINESS_OVERVIEW.md
-│   └── keywords/               # キーワードリスト
-├── public/                     # 静的アセット
-├── demo_v14_app.html           # メインアプリ（単一HTML）
-└── worker.js                   # Cloudflare Workers API
-```
-
----
-
-## モデル選択ガイドライン
-
-通常の作業は **Sonnet（現在のデフォルト）** で十分。以下の状況では作業開始前にユーザーへ通知し、**Opusへの切り替えを提案**すること。
-
-### Opusを推奨すべきタイミング
-
-- **アーキテクチャ設計**: 新機能の設計、フォルダ構成の大幅変更、複数コンポーネントにまたがるリファクタリング
-- **難解なバグ調査**: 再現困難なバグ、複数ファイルにまたがる原因調査
-- **SEO戦略の立案**: キーワード構造の再設計、競合分析、コンテンツ戦略の策定
-- **パフォーマンス最適化**: Core Web Vitals改善、ビルド最適化など複雑な最適化作業
-- **新技術の導入**: 未使用ライブラリの統合、Cloudflare Workers拡張など
-
-### 通知フォーマット
-
-```
-⚠️ この作業はOpusが適しています。
-理由: [具体的な理由]
-切り替えてから作業を続けますか？
-```
-
----
-
-## 重要な注意事項
-
-1. **MDX記事**: `content/blog/` に配置。SEOガイドラインに従って作成すること
-2. **構造化データ**: 各記事に JSON-LD を設定（Article, FAQ, Breadcrumb等）
-3. **デザイン**: `docs/DESIGN_SYSTEM.md` のカラーパレット・コンポーネント規約に従う
-4. **デプロイ**: `git push` で Cloudflare Pages に自動デプロイ
-5. **本番URL**: https://naikanavi.com
-
----
-
-## 📝 記事品質基準（最重要 — 必ず守ること）
-
-**⚠️ 記事を書く前に必ず以下を読むこと（省略禁止）:**
-1. `docs/ARTICLE_QUALITY_GUIDE.md`（完全手順書: 散文の書き方、SVG、CTA、Before/After）
-2. `docs/CLAUDE_CODE_QUALITY_GUIDE.md`（Sonnet向け品質保証: Opus比較分析、プロンプトテンプレ）
-3. `docs/SEO_GUIDELINE.md`（特に §2, §11.17〜§11.29）
-
-### 🔴 記事コミット前の必須フロー（省略厳禁）
-
-```
-記事執筆
-  ↓
-bash scripts/check_article_quality_v2.sh content/blog/記事名.mdx
-  ↓
-🔴 不合格 → 修正 → 再実行（🟢になるまで繰り返す）
-  ↓
-🟢 合格 or 🟡 合格（警告のみ）
-  ↓
-Phase 6 のファクトチェック項目を公式ソースと照合（手動）
-  ↓
-git add → git commit → git push
-```
-
-**不合格（🔴）のままコミットすることは絶対に禁止。**
-**スクリプトを実行せずにコミットすることも禁止。**
-
-### 品質チェックv2が検出する項目（7フェーズ）
-
-1. **フロントマター検証** — 必須フィールド、title/description長、日付形式
-2. **構造・コンテンツ品質** — SVG数、CTA配置（中盤必須）、内部リンク数・切れ、散文ファースト、箇条書き壁、よくある失敗、FAQ
-3. **マークダウン構文** — 太字破損（全角括弧問題）、リンク構文、見出しプレフィックス禁止、見出しレベル飛び、テーブル幅、アンカーテキスト
-4. **SVG品質** — 著作権フッター、多様性、viewBox、背景色、アクセシビリティ、ドロップシャドウ
-5. **表記ゆれ・誤字** — J-OSLER表記統一、全角スペース、文体統一（です・ます体）
-6. **ファクトチェック要注意項目** — 数値・断定的記述の自動抽出（→手動で公式ソースと照合）
-7. **太字・装飾** — 太字数、テンプレ太字比率
-
-### 記事作成で絶対に守るルール
-
-新規記事の作成・既存記事の修正では、以下の品質基準を**すべて満たしてからコミットすること**。
-
-#### 1. 散文ファースト（箇条書きの壁を作らない）
-- 各H2セクションの冒頭は**必ず2〜3段落の散文**で始める
-- 箇条書きは補助的に使い、連続5行以上の箇条書きは禁止
-- 「なぜそうなのか」「どういう背景があるのか」を散文で説明してから、要点を箇条書きでまとめる
-- ❌ NG: H2見出しの直後にいきなり箇条書きリスト
-- ✅ OK: H2見出し → 散文2〜3段落 → 必要に応じて箇条書き
-
-#### 2. 太字の自然な使用
-- 各段落に**1〜2箇所の太字**を入れる（重要キーワード・数値・結論）
-- 箇条書きの先頭だけ太字にする「テンプレ太字」は避ける
-- 文中の重要ワードを自然に太字にする
-
-#### 3. SVGイラストの多様化
-- 1記事に**最低2種類**の異なるタイプのSVGを入れる
-- 同じ「3カラム表」テンプレートの使い回しは禁止
-- 使うべきSVGタイプ: フローチャート、タイムライン、比較図、ステップ図、プロセス図
-- すべてのSVGに `© 内科ナビ naikanavi.com` の著作権フッターを入れる
-
-#### 4. 自然なCTA配置（最低2箇所）
-- 記事冒頭: blockquoteで内科ナビの関連機能を紹介（必須）
-- 記事中盤: 文脈に溶け込む自然なCTAリンク（必須）
-  - ❌ NG: blockquoteのCTAだけ
-  - ✅ OK: 「〜を繰り返し演習できます。[問題演習で苦手をつぶしましょう](https://naikanavi.booth.pm/items/8058590)。」
-- 記事末尾のまとめ付近にも自然にCTAを入れる（推奨）
-
-#### 5. 「よくある失敗3パターン」セクション（推奨・文脈に応じて判断）
-- 読者にとって実際に役立つ失敗パターンがある場合に配置する
-- まとめセクションの前に `## よくある失敗3パターン` を配置
-- 各パターンは `### ❶ 〜` `### ❷ 〜` `### ❸ 〜` の形式
-- 各パターンは3〜5行の散文で「なぜ失敗するか」「正しくはどうか」を解説
-- 無理に入れると冗長になる記事（ツール紹介・スケジュール系）では省略可
-
-#### 6. 内部リンク（最低3本、目標5本）
-- 関連記事への自然な導線を本文中に配置
-- まとめセクションにも他の領域記事へのリンクを入れる
-- アンカーテキストにキーワードを含める
-  - ❌ NG: [こちら](/blog/xxx)
-  - ✅ OK: [内科専門医試験の出題傾向と対策](/blog/g04-naika-senmoni-shutsudai-keiko)
-
-#### 7. 文字数の目安
-- 通常記事: 3,000〜5,000字（SVG除く）
-- ピラー記事: 5,000〜8,000字（SVG除く）
-- 箇条書きだけの「スカスカ記事」は絶対に作らない
-
-### 品質チェックリスト（コミット前に確認）
-
-```
-□ 各H2セクション冒頭に2〜3段落の散文があるか？
-□ 連続5行以上の箇条書きの壁がないか？
-□ 太字が文中に自然に配置されているか？
-□ SVGが2種類以上あり、同じテンプレの使い回しでないか？
-□ CTAが冒頭blockquote + 中盤の最低2箇所あるか？
-□ 「よくある失敗3パターン」セクションは文脈上有益か（有益なら配置）？
-□ 内部リンクが3本以上あるか？
-□ 文字数が3,000字以上あるか（SVG除く）？
-```
-
-### 参考: 良質記事の例
-- `content/blog/c01-josler-byoreki-youyaku-kakikata.mdx` — 散文の深み、自然なCTA、多様なSVG
-- `content/blog/k01-burnout-taisaku.mdx` — MBIモデルの散文解説、段階的なチェックリスト
-- `content/blog/h07-naika-senmoni-shinkei.mdx` — リライト後の品質基準モデル
+- ソースコード内に `naikanavi` の参照が多数残っている（移行中）
+- 本番ドメインは iwor.jp に移行予定（Cloudflare接続後）
+- naikanavi.com からの301リダイレクトを設定予定

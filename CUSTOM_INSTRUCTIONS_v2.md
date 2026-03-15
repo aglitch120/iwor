@@ -49,12 +49,12 @@ iwor.jp/
 
 ## GitHubリポジトリ
 
-https://github.com/aglitch120/naikanavi
+https://github.com/aglitch120/iwor
 ※リポジトリ名は将来iworに変更予定
 
 ## 作業時のルール
 
-1. 作業開始時は必ず aglitch120/naikanavi をcloneし、docs/ フォルダを確認する
+1. 作業開始時は必ず aglitch120/iwor をcloneし、docs/ フォルダを確認する
 2. 戦略・方針は docs/BUSINESS_OVERVIEW.md と docs/EXIT_STRATEGY.md に従う
 3. デザインは docs/DESIGN_SYSTEM.md に従う
 4. SEOは docs/SEO_GUIDELINE.md に従う

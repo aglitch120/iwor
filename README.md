@@ -1,54 +1,57 @@
-# 内科ナビ
+# iwor
 
-内科専門医を目指す専攻医向けのWebアプリ＋SEOブログ
+医師の臨床とキャリアを支える、恵みの地。
 
-## 🚀 クイックスタート
+**iwor（イウォル）** — アイヌ語で「恵みの地」
+
+## ドメイン
+
+- 本番: https://iwor.jp
+- 旧サイト: https://naikanavi.com（→ iwor.jp に301リダイレクト予定）
+
+## 技術スタック
+
+- Next.js 14 + MDX + Tailwind CSS
+- Cloudflare Pages / Workers / KV
+- DNS: Cloudflare（Xserverドメインからネームサーバー変更）
+
+## クイックスタート
 
 ```bash
-# 開発サーバー起動（Workers）
-npx wrangler dev
+npm install
+npm run dev
 
 # デプロイ
-git add . && git commit -m "変更内容" && git push
+npx wrangler deploy
 ```
 
-## 📁 プロジェクト構成
+## プロジェクト構成
 
 ```
-naikanavi/
-├── demo_v14_app.html    # メインアプリ（単一HTML）
-├── worker.js            # Cloudflare Workers API
-├── wrangler.toml        # Wrangler設定
-├── docs/                # ドキュメント
-│   ├── BUSINESS_OVERVIEW.md   # ビジネス概要
-│   ├── SEO_GUIDELINE.md       # SEOガイドライン
-│   ├── IMPLEMENTATION_GUIDE.md # 実装ガイド
-│   ├── DESIGN_SYSTEM.md       # デザインシステム
-│   └── keywords/
-│       └── naikanavi_keyword_list.xlsx  # キーワードリスト
-└── README.md
+iwor/
+├── app/                 # Next.js App Router
+│   ├── blog/            # SEOブログ（173記事）
+│   ├── tools/           # 臨床計算ツール群
+│   ├── contact/
+│   ├── privacy/
+│   ├── terms/
+│   └── tokushoho/
+├── components/          # 共通コンポーネント
+├── content/blog/        # MDX記事ファイル
+├── docs/                # プロジェクトドキュメント
+├── lib/                 # ユーティリティ・設定
+├── public/              # 静的アセット
+├── scripts/             # ビルド・品質チェック
+└── worker.js            # Cloudflare Workers API
 ```
 
-## 📖 ドキュメント
+## ドキュメント
 
 | ファイル | 内容 |
 |---------|------|
-| [BUSINESS_OVERVIEW.md](docs/BUSINESS_OVERVIEW.md) | ビジネスモデル、ターゲット、機能概要 |
-| [SEO_GUIDELINE.md](docs/SEO_GUIDELINE.md) | 記事作成ルール、運営フロー、KPI |
-| [IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md) | 技術実装、フォルダ構成、デプロイ |
-| [DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) | カラー、タイポグラフィ、コンポーネント |
-
-## 🔗 リンク
-
-- **本番**: https://naikanavi.com
-- **Cloudflare**: https://dash.cloudflare.com
-- **GitHub**: https://github.com/aglitch120/naikanavi
-
-## 🤖 Claude MCP連携
-
-このリポジトリはClaude（claude.ai）のGitHub MCP連携に対応しています。
-新しいチャットで以下のように指示すれば、全ドキュメントにアクセス可能：
-
-```
-aglitch120/naikanavi の docs/ を読んで、内科ナビの概要を把握して
-```
+| [BUSINESS_OVERVIEW.md](docs/BUSINESS_OVERVIEW.md) | ビジネス概要・収益モデル・競合分析 |
+| [EXIT_STRATEGY.md](docs/EXIT_STRATEGY.md) | EXIT戦略・ロードマップ |
+| [EXIT_TODO.md](docs/EXIT_TODO.md) | TODOトラッカー（WS0〜WS4） |
+| [SEO_GUIDELINE.md](docs/SEO_GUIDELINE.md) | SEO・記事作成ルール |
+| [IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md) | 技術実装ガイド |
+| [DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) | デザインシステム |
