@@ -95,8 +95,8 @@ export default function CHADS2Page() {
         categoryIcon={categoryIcons[toolDef.category]}
         relatedTools={relatedTools}
         references={[
-          { text: 'Gage BF, et al. Validation of clinical classification schemes for predicting stroke. JAMA. 2001;285(22):2864-2870.' },
-          { text: '不整脈薬物治療ガイドライン（2020年改訂版）日本循環器学会.' },
+          { text: 'Gage BF, et al. Validation of clinical classification schemes for predicting stroke: results from the National Registry of Atrial Fibrillation. JAMA. 2001;285(22):2864-2870. PMID: 11401607', url: 'https://pubmed.ncbi.nlm.nih.gov/11401607/' },
+          { text: '2024 JCS/JHRS Guideline on Pharmacotherapy of Cardiac Arrhythmias. Circ J. 2024. 日本循環器学会/日本不整脈心電学会.' },
         ]}
         result={
           <ResultCard

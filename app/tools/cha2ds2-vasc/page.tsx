@@ -113,9 +113,9 @@ export default function CHA2DS2VAScPage() {
         categoryIcon={categoryIcons[toolDef.category]}
         relatedTools={relatedTools}
         references={[
-          { text: 'Lip GY, et al. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation. Chest. 2010;137(2):263-272.' },
-          { text: '2020 ESC Guidelines for the diagnosis and management of atrial fibrillation. Eur Heart J. 2021;42(5):373-498.' },
-          { text: '不整脈薬物治療ガイドライン（2020年改訂版）日本循環器学会.' },
+          { text: 'Lip GY, et al. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach. Chest. 2010;137(2):263-272. PMID: 19762550', url: 'https://pubmed.ncbi.nlm.nih.gov/19762550/' },
+          { text: 'Hindricks G, et al. 2020 ESC Guidelines for the diagnosis and management of atrial fibrillation. Eur Heart J. 2021;42(5):373-498. PMID: 32860505', url: 'https://pubmed.ncbi.nlm.nih.gov/32860505/' },
+          { text: '2024 JCS/JHRS Guideline on Pharmacotherapy of Cardiac Arrhythmias. Circ J. 2024. 日本循環器学会/日本不整脈心電学会.' },
         ]}
         result={
           <div className="space-y-3">
