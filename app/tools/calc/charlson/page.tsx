@@ -49,7 +49,7 @@ export default function CharlsonPage() {
   }, [age, checks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Charlson CCI" value={result.total} unit="点" interpretation={`推定10年生存率: ${result.surv}`} severity={result.severity}
         details={[{ label: '併存疾患スコア', value: `${result.comorbScore}点` }, { label: '年齢スコア', value: `${result.agePoints}点` }]} />}

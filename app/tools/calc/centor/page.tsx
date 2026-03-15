@@ -33,7 +33,7 @@ export default function CentorPage() {
   }, [fever, cough, tonsillar, lymph, ageGroup])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Centor/McIsaac" value={result.score} unit="/ 5点" interpretation={result.recommendation} severity={result.severity}
         details={[{ label: 'GAS咽頭炎確率', value: result.gasProb }]} />}

@@ -32,7 +32,7 @@ export default function HeartScorePage() {
   }, [scores])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="HEART Score" value={result.total} unit="/ 10点" interpretation={result.label} severity={result.severity}
         details={[{ label: '6週間MACE発生率', value: result.mace }]} />}

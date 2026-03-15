@@ -35,7 +35,7 @@ export default function MasccPage() {
   }, [burden, hypotension, copd, solid, fungal, dehydration, outpatient, age60])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="MASCC Score" value={result.score} unit="/ 26点" interpretation={result.label} severity={result.severity}
         details={[{ label: 'リスク', value: result.complication }]} />}

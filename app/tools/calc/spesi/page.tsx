@@ -28,7 +28,7 @@ export default function SpesiPage() {
   }, [checks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="sPESI" value={result.score} unit="/ 6点" interpretation={result.label} severity={result.severity}
         details={[{ label: '30日死亡率', value: result.lowRisk ? '1.0%' : '10.9%' }]} />}

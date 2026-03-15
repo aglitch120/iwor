@@ -70,6 +70,7 @@ export default function InsulinSlidingPage() {
 
   return (
     <CalculatorLayout
+      slug={toolDef.slug}
       title={toolDef.name}
       titleEn={toolDef.nameEn}
       description={toolDef.description}

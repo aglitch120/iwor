@@ -21,7 +21,7 @@ export default function RockallPage() {
   }, [age, shock, comorbidity, diagnosis, stigmata])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Rockall Score" value={result.score} unit="/ 11点" interpretation={result.label} severity={result.severity} />}
       explanation={

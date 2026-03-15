@@ -38,7 +38,7 @@ export default function OttawaAnklePage() {
   }, [ankleChecks, footChecks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Ottawa Ankle Rules" value={result.anyPos ? 'X線推奨' : 'X線不要'} unit="" interpretation={result.label} severity={result.severity} />}
       explanation={

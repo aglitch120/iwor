@@ -21,7 +21,7 @@ export default function Aims65Page() {
   }, [alb, inr, ms, sbp, age])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="AIMS65" value={result.score} unit="/ 5点" interpretation={`院内死亡率: ${result.mortality}`} severity={result.severity} />}
       explanation={

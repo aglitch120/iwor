@@ -34,7 +34,7 @@ export default function PaduaPage() {
   }, [checks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Padua Score" value={result.score} unit="/ 20点" interpretation={result.label} severity={result.severity}
         details={[{ label: 'VTE発生率', value: result.vteRate }]} />}

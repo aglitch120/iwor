@@ -29,7 +29,7 @@ export default function TimiPage() {
   }, [checks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="TIMI Risk Score" value={result.score} unit="/ 7点" interpretation={result.label} severity={result.severity}
         details={[{ label: '14日以内イベント率', value: result.risk }]} />}

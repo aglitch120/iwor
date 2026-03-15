@@ -88,7 +88,8 @@ export default function CHADS2Page() {
       />
 
       <CalculatorLayout
-        title={toolDef.name}
+        slug={toolDef.slug}
+      title={toolDef.name}
         titleEn={toolDef.nameEn}
         description={toolDef.description}
         category={categoryLabels[toolDef.category]}

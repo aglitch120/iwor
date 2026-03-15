@@ -41,7 +41,7 @@ export default function Phq9Page() {
   }, [scores])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="PHQ-9" value={result.total} unit="/ 27点" interpretation={result.label} severity={result.severity}
         details={result.q9 ? [{ label: '⚠ 希死念慮', value: '問9が1点以上 — 安全性の評価が必要' }] : []} />}

@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import CTABanner from '@/components/blog/CTABanner'
+import FavoriteButton from '@/components/tools/FavoriteButton'
 
 const toolsCta = {
   title: '🚀 AIが病歴要約の下書きを30秒で生成',
@@ -12,6 +13,7 @@ const toolsCta = {
 }
 
 interface CalculatorLayoutProps {
+  slug?: string
   title: string
   titleEn: string
   description: string
@@ -25,6 +27,7 @@ interface CalculatorLayoutProps {
 }
 
 export default function CalculatorLayout({
+  slug,
   title,
   titleEn,
   description,
@@ -49,11 +52,16 @@ export default function CalculatorLayout({
 
       {/* ヘッダー */}
       <header className="mb-8">
-        <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">
-          {categoryIcon} {category}
-        </span>
-        <h1 className="text-2xl font-bold text-tx mb-1">{title}</h1>
-        <p className="text-sm text-muted">{titleEn}</p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">
+              {categoryIcon} {category}
+            </span>
+            <h1 className="text-2xl font-bold text-tx mb-1">{title}</h1>
+            <p className="text-sm text-muted">{titleEn}</p>
+          </div>
+          {slug && <FavoriteButton slug={slug} />}
+        </div>
         <p className="text-sm text-muted mt-2">{description}</p>
       </header>
 

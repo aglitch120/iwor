@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { tools, implementedTools, categoryLabels, categoryIcons, type ToolCategory, type ToolDefinition } from '@/lib/tools-config'
+import FavoriteButton, { FavoritesBar } from '@/components/tools/FavoriteButton'
 
 const categoryOrder: ToolCategory[] = [
   'nephrology', 'cardiology', 'hepatology', 'respiratory',
@@ -34,6 +35,9 @@ export default function ToolsList() {
 
   return (
     <>
+      {/* お気に入りバー */}
+      <FavoritesBar />
+
       {/* 検索窓 */}
       <div className="relative mb-8">
         <svg

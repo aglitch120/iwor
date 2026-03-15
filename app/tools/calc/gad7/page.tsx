@@ -35,7 +35,7 @@ export default function Gad7Page() {
   }, [scores])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="GAD-7" value={result.total} unit="/ 21点" interpretation={result.label} severity={result.severity} />}
       explanation={

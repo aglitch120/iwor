@@ -29,7 +29,7 @@ export default function AlvaradoPage() {
   }, [checks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Alvarado (MANTRELS)" value={result.score} unit="/ 10点" interpretation={result.label} severity={result.severity} />}
       explanation={

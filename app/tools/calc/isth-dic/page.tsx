@@ -21,7 +21,7 @@ export default function IsthDicPage() {
   }, [plt, fdp, pt, fib])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="ISTH DIC Score" value={result.score} unit="/ 8点" interpretation={result.label} severity={result.severity}
         details={[{ label: '判定', value: result.overt ? 'Overt DIC' : 'Non-overt' }]} />}

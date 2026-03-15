@@ -49,7 +49,7 @@ export default function LightCriteriaPage() {
   }, [plProt, sProt, plLdh, sLdh, ldhUpper])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={
         <ResultCard

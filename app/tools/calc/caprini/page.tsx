@@ -61,7 +61,7 @@ export default function CapriniPage() {
   }, [checks])
 
   return (
-    <CalculatorLayout title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Caprini Score" value={result.score} unit="点" interpretation={result.label} severity={result.severity}
         details={[{ label: '推奨予防策', value: result.prevention }]} />}

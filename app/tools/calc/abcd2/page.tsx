@@ -39,6 +39,7 @@ export default function Abcd2Page() {
 
   return (
     <CalculatorLayout
+      slug={toolDef.slug}
       title={toolDef.name}
       titleEn={toolDef.nameEn}
       description={toolDef.description}

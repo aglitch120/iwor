@@ -38,6 +38,7 @@ export default function KarnofskyPage() {
 
   return (
     <CalculatorLayout
+      slug={toolDef.slug}
       title={toolDef.name}
       titleEn={toolDef.nameEn}
       description={toolDef.description}

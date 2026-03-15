@@ -42,6 +42,7 @@ export default function FenaPage() {
 
   return (
     <CalculatorLayout
+      slug={toolDef.slug}
       title={toolDef.name}
       titleEn={toolDef.nameEn}
       description={toolDef.description}
