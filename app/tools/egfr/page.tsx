@@ -110,17 +110,20 @@ export default function EgfrPage() {
         relatedTools={relatedTools}
         references={[
           {
-            text: 'Inker LA, et al. New Creatinine- and Cystatin C-Based Equations to Estimate GFR. N Engl J Med. 2021;385(19):1737-1749.',
-            url: 'https://doi.org/10.1056/NEJMoa2102953',
+            text: 'Inker LA, et al. New Creatinine- and Cystatin C-Based Equations to Estimate GFR without Race. N Engl J Med. 2021;385(19):1737-1749. PMID: 34554658',
+            url: 'https://pubmed.ncbi.nlm.nih.gov/34554658/',
           },
           {
-            text: 'Horio M, et al. GFR estimation using standardized serum cystatin C in Japan. Am J Kidney Dis. 2013;61(2):197-203.',
+            text: 'Matsuo S, et al. Revised equations for estimated GFR from serum creatinine in Japan. Am J Kidney Dis. 2009;53(6):982-992. PMID: 19339088',
+            url: 'https://pubmed.ncbi.nlm.nih.gov/19339088/',
           },
           {
-            text: 'KDIGO 2024 Clinical Practice Guideline for CKD Evaluation, Management, and Treatment.',
+            text: 'Horio M, et al. GFR estimation using standardized serum cystatin C in Japan. Am J Kidney Dis. 2013;61(2):197-203. PMID: 22892396',
+            url: 'https://pubmed.ncbi.nlm.nih.gov/22892396/',
           },
           {
-            text: 'Matsuo S, et al. Revised equations for estimated GFR from serum creatinine in Japan. Am J Kidney Dis. 2009;53(6):982-992.',
+            text: 'KDIGO 2024 Clinical Practice Guideline for the Evaluation, Management, and Treatment of CKD. Kidney Int. 2024;105(4S):S117-S314. PMID: 38490803',
+            url: 'https://pubmed.ncbi.nlm.nih.gov/38490803/',
           },
         ]}
         result={
