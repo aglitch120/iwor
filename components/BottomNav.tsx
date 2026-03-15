@@ -28,18 +28,16 @@ const navItems = [
     exact: false,
   },
   {
-    label: 'カテゴリ',
-    href: '/blog/category/josler-basics',
+    label: 'ツール',
+    href: '/tools',
     icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="8" height="8" rx="1.5" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} />
-        <rect x="13" y="3" width="8" height="8" rx="1.5" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} />
-        <rect x="3" y="13" width="8" height="8" rx="1.5" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} />
-        <rect x="13" y="13" width="8" height="8" rx="1.5" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} />
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} />
+        <line x1="4" y1="22" x2="4" y2="15" />
+        <path d="M14 8h4M14 12h4" />
       </svg>
     ),
     exact: false,
-    matchPrefix: '/blog/category',
   },
   {
     label: '購入',
@@ -65,9 +63,9 @@ export default function BottomNav() {
       return pathname.startsWith(item.matchPrefix)
     }
     if (item.exact) return pathname === item.href
-    // /blog はブログ記事ページでもアクティブ（カテゴリ除く）
+    // /blog はブログ記事ページ・カテゴリページでもアクティブ
     if (item.href === '/blog') {
-      return pathname.startsWith('/blog') && !pathname.startsWith('/blog/category')
+      return pathname.startsWith('/blog')
     }
     return pathname.startsWith(item.href)
   }
