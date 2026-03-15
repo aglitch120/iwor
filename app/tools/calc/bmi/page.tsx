@@ -28,8 +28,8 @@ function idealWeight(height: number): { bmi22: number; bmi20: number; bmi25: num
 }
 
 export default function BmiPage() {
-  const [height, setHeight] = useState('')
-  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('170')
+  const [weight, setWeight] = useState('60')
 
   const result = useMemo(() => {
     const h = parseFloat(height)

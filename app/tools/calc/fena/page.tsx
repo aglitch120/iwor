@@ -9,10 +9,10 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('fena')!
 
 export default function FenaPage() {
-  const [uNa, setUNa] = useState('')
-  const [sNa, setSNa] = useState('')
-  const [uCr, setUCr] = useState('')
-  const [sCr, setSCr] = useState('')
+  const [uNa, setUNa] = useState('40')
+  const [sNa, setSNa] = useState('140')
+  const [uCr, setUCr] = useState('100')
+  const [sCr, setSCr] = useState('1.5')
 
   const result = useMemo(() => {
     const un = parseFloat(uNa)

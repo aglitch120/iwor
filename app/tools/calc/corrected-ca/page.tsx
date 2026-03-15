@@ -17,8 +17,8 @@ function getInterpretation(corrCa: number): { text: string; severity: 'ok' | 'wn
 }
 
 export default function CorrectedCaPage() {
-  const [ca, setCa] = useState('')
-  const [alb, setAlb] = useState('')
+  const [ca, setCa] = useState('8.5')
+  const [alb, setAlb] = useState('3.0')
 
   const result = useMemo(() => {
     const caVal = parseFloat(ca)

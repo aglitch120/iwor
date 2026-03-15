@@ -9,7 +9,7 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('winters-formula')!
 
 export default function WintersFormulaPage() {
-  const [hco3, setHco3] = useState('')
+  const [hco3, setHco3] = useState('15')
   const [pco2, setPco2] = useState('')
 
   const result = useMemo(() => {

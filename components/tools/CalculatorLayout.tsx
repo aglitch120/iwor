@@ -45,7 +45,9 @@ export default function CalculatorLayout({
       <nav className="text-sm text-muted mb-6 flex flex-wrap items-center gap-y-1">
         <Link href="/" className="hover:text-ac">ホーム</Link>
         <span className="mx-1.5">›</span>
-        <Link href="/tools/calc" className="hover:text-ac">臨床計算ツール</Link>
+        <Link href="/tools" className="hover:text-ac">臨床ツール</Link>
+        <span className="mx-1.5">›</span>
+        <Link href="/tools/calc" className="hover:text-ac">計算ツール</Link>
         <span className="mx-1.5">›</span>
         <span className="break-all">{title}</span>
       </nav>

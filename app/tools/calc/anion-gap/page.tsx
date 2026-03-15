@@ -9,9 +9,9 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('anion-gap')!
 
 export default function AnionGapPage() {
-  const [na, setNa] = useState('')
-  const [cl, setCl] = useState('')
-  const [hco3, setHco3] = useState('')
+  const [na, setNa] = useState('140')
+  const [cl, setCl] = useState('105')
+  const [hco3, setHco3] = useState('24')
   const [alb, setAlb] = useState('')
 
   const result = useMemo(() => {

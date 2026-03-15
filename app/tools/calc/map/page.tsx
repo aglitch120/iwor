@@ -9,8 +9,8 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('map')!
 
 export default function MapPage() {
-  const [sbp, setSbp] = useState('')
-  const [dbp, setDbp] = useState('')
+  const [sbp, setSbp] = useState('120')
+  const [dbp, setDbp] = useState('80')
 
   const result = useMemo(() => {
     const s = parseFloat(sbp)

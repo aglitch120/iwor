@@ -9,8 +9,8 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('qtc')!
 
 export default function QtcPage() {
-  const [qt, setQt] = useState('')
-  const [hr, setHr] = useState('')
+  const [qt, setQt] = useState('400')
+  const [hr, setHr] = useState('75')
   const [sex, setSex] = useState('male')
 
   const result = useMemo(() => {

@@ -24,8 +24,8 @@ function calcMosteller(h: number, w: number): number {
 }
 
 export default function BsaPage() {
-  const [height, setHeight] = useState('')
-  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('170')
+  const [weight, setWeight] = useState('60')
 
   const result = useMemo(() => {
     const h = parseFloat(height)

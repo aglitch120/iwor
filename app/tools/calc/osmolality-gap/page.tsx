@@ -9,10 +9,10 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('osmolality-gap')!
 
 export default function OsmolalityGapPage() {
-  const [measuredOsm, setMeasuredOsm] = useState('')
-  const [na, setNa] = useState('')
-  const [glucose, setGlucose] = useState('')
-  const [bun, setBun] = useState('')
+  const [measuredOsm, setMeasuredOsm] = useState('310')
+  const [na, setNa] = useState('140')
+  const [glucose, setGlucose] = useState('100')
+  const [bun, setBun] = useState('20')
 
   const result = useMemo(() => {
     const mOsm = parseFloat(measuredOsm)

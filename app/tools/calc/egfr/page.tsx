@@ -47,8 +47,8 @@ function getCkdStage(egfr: number): { stage: string; label: string; severity: 'o
 }
 
 export default function EgfrPage() {
-  const [cr, setCr] = useState('')
-  const [age, setAge] = useState('')
+  const [cr, setCr] = useState('1.0')
+  const [age, setAge] = useState('50')
   const [sex, setSex] = useState<string>('male')
 
   const result = useMemo(() => {

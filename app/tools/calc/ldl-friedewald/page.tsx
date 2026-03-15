@@ -21,9 +21,9 @@ function getLdlTarget(risk: string): { target: number; label: string } {
 }
 
 export default function LdlFriedewaldPage() {
-  const [tc, setTc] = useState('')
-  const [hdl, setHdl] = useState('')
-  const [tg, setTg] = useState('')
+  const [tc, setTc] = useState('220')
+  const [hdl, setHdl] = useState('50')
+  const [tg, setTg] = useState('150')
 
   const result = useMemo(() => {
     const tcVal = parseFloat(tc)
