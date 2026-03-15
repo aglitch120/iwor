@@ -31,13 +31,13 @@ interface DiseaseAssessment {
 }
 
 const defaultData: PatientData = {
-  age: '', sex: 'male', height: '', weight: '', waist: '',
-  sbp: '', dbp: '',
-  hba1c: '', fbs: '', tc: '', ldl: '', hdl: '', tg: '',
-  ast: '', alt: '', ggt: '', ua: '', cr: '',
+  age: '55', sex: 'male', height: '170', weight: '78', waist: '90',
+  sbp: '148', dbp: '92',
+  hba1c: '6.8', fbs: '118', tc: '240', ldl: '', hdl: '45', tg: '180',
+  ast: '38', alt: '52', ggt: '68', ua: '7.8', cr: '1.1',
   uacr: '',
-  smoking: 'no', alcohol: 'none', exercise: 'none',
-  fhCvd: false, fhDm: false, fhHtn: false,
+  smoking: 'ex', alcohol: 'light', exercise: 'none',
+  fhCvd: false, fhDm: true, fhHtn: false,
   currentDm: false, currentHtn: false, currentDl: false, currentCkd: false,
   onStatin: false, onAntihtn: false, onDmMed: false,
 }
