@@ -50,7 +50,7 @@
 - [x] ホームページ 7アプリ構造にリデザイン
 
 ### 残タスク
-- [ ] **Worker再デプロイ**（register/login対応版。ローカルで `cd workers && npx wrangler deploy`）
+- [x] **Worker再デプロイ**（register/login対応版 — 2026-03-16 デプロイ完了）
 - [ ] BOOTH商品価格を本番価格（¥9,800）に変更
 - [ ] BOOTH 2年パス・3年パス商品追加
 - [ ] BOOTHサムネイル画像作成
@@ -119,7 +119,7 @@
 |-------|------|
 | Phase 0: 基盤 | ✅ 完了 |
 | Phase 1: 臨床ツール（123個） | ✅ 完了 |
-| Phase 1.5: PRO基盤 + 収益化 | ✅ 完了（Worker再デプロイ残） |
+| Phase 1.5: PRO基盤 + 収益化 | ✅ 完了（BOOTH価格変更・商品追加残） |
 | Phase 2: マッチング | 🔜 次 |
 | Phase 3: 病棟TODO | 未着手 |
 | Phase 4: J-OSLER | 未着手 |
