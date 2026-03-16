@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
-import { activateProCode, getProDetails, resetProStatus } from '@/lib/pro-activation'
+import { useState, useEffect } from 'react'
+import { activateWithOrderNumber, getProDetails } from '@/lib/pro-activation'
 import { useProStatus } from '@/components/pro/useProStatus'
 
 const planLabels: Record<string, string> = {
@@ -13,10 +13,9 @@ const planLabels: Record<string, string> = {
 
 export default function ActivatePage() {
   const { isPro, refresh } = useProStatus()
-  const [segments, setSegments] = useState(['', '', '', ''])
+  const [orderNumber, setOrderNumber] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const [result, setResult] = useState<{ success: boolean; message: string; plan?: string } | null>(null)
 
   // PRO済みユーザーの詳細情報
   const [proDetails, setProDetails] = useState<ReturnType<typeof getProDetails>>(null)
@@ -24,65 +23,35 @@ export default function ActivatePage() {
     if (isPro) setProDetails(getProDetails())
   }, [isPro])
 
-  // セグメント入力ハンドラ
-  const handleSegmentChange = (index: number, value: string) => {
-    // 大文字化 + 英数字のみ
-    const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4)
-    const next = [...segments]
-    next[index] = cleaned
-    setSegments(next)
-
-    // 4文字入力で次のフィールドへ自動遷移
-    if (cleaned.length === 4 && index < 3) {
-      inputRefs.current[index + 1]?.focus()
-    }
-  }
-
-  // ペースト対応（IWOR-XXXX-XXXX-XXXX 形式）
-  const handlePaste = (e: React.ClipboardEvent) => {
-    const text = e.clipboardData.getData('text').trim().toUpperCase()
-    const match = text.match(/^IWOR-([A-Z0-9]{4})-([A-Z0-9]{4})-([A-Z0-9]{4})$/)
-    if (match) {
-      e.preventDefault()
-      setSegments(['IWOR', match[1], match[2], match[3]])
-      inputRefs.current[3]?.focus()
-    }
-  }
-
-  // バックスペースで前のフィールドに戻る
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && segments[index] === '' && index > 1) {
-      inputRefs.current[index - 1]?.focus()
-    }
+  // 入力ハンドラ（数字のみ）
+  const handleInput = (value: string) => {
+    setOrderNumber(value.replace(/\D/g, '').slice(0, 12))
+    if (result) setResult(null)
   }
 
   // アクティベーション実行
   const handleActivate = async () => {
-    const code = `IWOR-${segments[1]}-${segments[2]}-${segments[3]}`
     setIsSubmitting(true)
     setResult(null)
 
-    try {
-      const res = await activateProCode(code)
-      if (res.success) {
-        refresh()
-        setResult({
-          success: true,
-          message: `🎉 ${planLabels[res.plan!] || res.plan}のアクティベーションが完了しました！`,
-        })
-      } else {
-        setResult({ success: false, message: res.error || '不明なエラーが発生しました。' })
-      }
-    } catch {
-      setResult({ success: false, message: 'エラーが発生しました。もう一度お試しください。' })
-    } finally {
-      setIsSubmitting(false)
+    const res = await activateWithOrderNumber(orderNumber)
+    if (res.success) {
+      refresh()
+      setResult({
+        success: true,
+        message: `🎉 ${planLabels[res.plan!] || res.plan}のアクティベーションが完了しました！`,
+        plan: res.plan,
+      })
+    } else {
+      setResult({ success: false, message: res.error || '不明なエラーが発生しました。' })
     }
+
+    setIsSubmitting(false)
   }
 
-  const isCodeComplete = segments[1].length === 4 && segments[2].length === 4 && segments[3].length === 4
+  const isValid = /^\d{5,12}$/.test(orderNumber)
 
-  // ── 既にPRO会員の場合 ──
+  // ── 既にPRO会員 ──
   if (isPro && proDetails) {
     const expiresDate = proDetails.expiresAt ? new Date(proDetails.expiresAt) : null
     const daysLeft = expiresDate
@@ -139,7 +108,7 @@ export default function ActivatePage() {
     )
   }
 
-  // ── アクティベーション成功後 ──
+  // ── アクティベーション成功 ──
   if (result?.success) {
     return (
       <div className="max-w-lg mx-auto -mt-2">
@@ -187,7 +156,7 @@ export default function ActivatePage() {
     )
   }
 
-  // ── コード入力フォーム ──
+  // ── 注文番号入力フォーム ──
   return (
     <div className="max-w-lg mx-auto -mt-2">
       <nav className="text-sm text-muted mb-8">
@@ -203,40 +172,31 @@ export default function ActivatePage() {
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-ac/10 border border-ac/20 text-ac text-xs font-bold rounded-full mb-4">
             ✦ iwor PRO
           </div>
-          <h1 className="text-xl font-bold text-tx mb-2">アクティベーションコード入力</h1>
+          <h1 className="text-xl font-bold text-tx mb-2">アクティベーション</h1>
           <p className="text-sm text-muted leading-relaxed">
-            BOOTHでご購入いただいたコードを入力してください。
+            BOOTHの注文番号を入力してPROを有効化してください。
           </p>
         </div>
 
-        {/* コード入力フィールド */}
-        <div className="flex items-center justify-center gap-2 mb-6" onPaste={handlePaste}>
-          {/* IWOR固定プレフィックス */}
-          <div className="w-16 h-12 bg-s1 border border-br rounded-lg flex items-center justify-center text-sm font-mono font-bold text-muted">
-            IWOR
-          </div>
-          <span className="text-muted font-bold">-</span>
-          {/* 入力セグメント 3つ */}
-          {[1, 2, 3].map(i => (
-            <div key={i} className="flex items-center gap-2">
-              <input
-                ref={el => { inputRefs.current[i] = el }}
-                type="text"
-                inputMode="text"
-                autoCapitalize="characters"
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck={false}
-                maxLength={4}
-                value={segments[i]}
-                onChange={e => handleSegmentChange(i, e.target.value)}
-                onKeyDown={e => handleKeyDown(i, e)}
-                className="w-16 h-12 text-center text-sm font-mono font-bold tracking-wider bg-bg border-2 border-br rounded-lg focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all uppercase placeholder:text-muted/40"
-                placeholder="····"
-              />
-              {i < 3 && <span className="text-muted font-bold">-</span>}
-            </div>
-          ))}
+        {/* 注文番号入力 */}
+        <div className="mb-6">
+          <label htmlFor="orderNumber" className="block text-sm font-medium text-tx mb-2">
+            注文番号
+          </label>
+          <input
+            id="orderNumber"
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            placeholder="例: 77836313"
+            value={orderNumber}
+            onChange={e => handleInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter' && isValid && !isSubmitting) handleActivate() }}
+            className="w-full h-14 px-4 text-lg font-mono tracking-widest bg-bg border-2 border-br rounded-xl focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all text-center placeholder:text-muted/40 placeholder:tracking-normal placeholder:font-sans placeholder:text-base"
+          />
+          <p className="text-xs text-muted mt-2">
+            BOOTHの注文確認メールに記載されている数字です。
+          </p>
         </div>
 
         {/* エラーメッセージ */}
@@ -246,12 +206,12 @@ export default function ActivatePage() {
           </div>
         )}
 
-        {/* アクティベーションボタン */}
+        {/* ボタン */}
         <button
           onClick={handleActivate}
-          disabled={!isCodeComplete || isSubmitting}
+          disabled={!isValid || isSubmitting}
           className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all ${
-            isCodeComplete && !isSubmitting
+            isValid && !isSubmitting
               ? 'bg-ac text-white hover:bg-ac2 shadow-lg shadow-ac/20'
               : 'bg-s1 text-muted border border-br cursor-not-allowed'
           }`}
@@ -271,15 +231,15 @@ export default function ActivatePage() {
 
         {/* ヘルプ */}
         <div className="mt-6 pt-6 border-t border-br">
-          <h2 className="text-sm font-bold text-tx mb-3">コードが見つからない場合</h2>
+          <h2 className="text-sm font-bold text-tx mb-3">注文番号の確認方法</h2>
           <div className="space-y-2 text-xs text-muted leading-relaxed">
             <p>
               <span className="font-medium text-tx">1.</span>{' '}
-              BOOTHの購入完了画面、または注文確認メールをご確認ください。
+              BOOTHで購入後、<span className="font-medium text-tx">noreply@booth.pm</span> から届くメールを開きます。
             </p>
             <p>
               <span className="font-medium text-tx">2.</span>{' '}
-              コードは <span className="font-mono text-tx">IWOR-XXXX-XXXX-XXXX</span> の形式です。
+              メール件名「商品が購入されました（注文番号 <span className="font-mono text-tx">XXXXXXXX</span>）」の数字が注文番号です。
             </p>
             <p>
               <span className="font-medium text-tx">3.</span>{' '}
@@ -291,9 +251,9 @@ export default function ActivatePage() {
         </div>
       </div>
 
-      {/* まだ購入していない人向け */}
+      {/* まだ購入していない人 */}
       <div className="mt-6 text-center">
-        <p className="text-sm text-muted mb-3">コードをお持ちでない方</p>
+        <p className="text-sm text-muted mb-3">まだ購入されていない方</p>
         <Link
           href="/pro"
           className="inline-flex items-center gap-2 text-sm text-ac font-medium hover:underline"

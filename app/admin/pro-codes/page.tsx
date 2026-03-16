@@ -1,171 +1,221 @@
-import fs from 'fs'
-import path from 'path'
+'use client'
+
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { useState, useEffect, useCallback } from 'react'
 
-export const metadata: Metadata = {
-  title: 'PROコード管理 | iwor Admin',
-  robots: { index: false, follow: false },
-}
-
-interface CodeEntry {
-  hash: string
-  plan: string
-  durationDays: number
-  createdAt: string
-  used: boolean
-}
-
-function loadCodes(): CodeEntry[] {
-  try {
-    const filePath = path.join(process.cwd(), 'lib', 'pro-codes-generated.json')
-    const raw = fs.readFileSync(filePath, 'utf-8')
-    const data = JSON.parse(raw)
-    return data.codes || []
-  } catch {
-    return []
-  }
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
 const planLabels: Record<string, { label: string; color: string }> = {
   pro_1y: { label: '1年パス', color: 'bg-acl text-ac' },
   pro_2y: { label: '2年パス', color: 'bg-wnl text-wn' },
   pro_3y: { label: '3年パス', color: 'bg-[#EDE9FE] text-[#6D28D9]' },
+  unknown: { label: '不明', color: 'bg-s1 text-muted' },
+}
+
+interface Order {
+  orderNumber: string
+  productName: string
+  buyerEmail: string
+  plan: string
+  durationDays: number
+  storedAt: string
+  activated: boolean
+  activatedAt: string | null
+  expiresAt: string | null
 }
 
 export default function ProCodesPage() {
-  const codes = loadCodes()
+  const [adminKey, setAdminKey] = useState('')
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [orders, setOrders] = useState<Order[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  // 手動追加用
+  const [newOrder, setNewOrder] = useState('')
+  const [newPlan, setNewPlan] = useState('iwor PRO 1年パス')
+  const [addLoading, setAddLoading] = useState(false)
+
+  const fetchOrders = useCallback(async (key: string) => {
+    if (!API_URL) {
+      setError('NEXT_PUBLIC_API_URL が未設定です。Worker をデプロイしてください。')
+      return
+    }
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(`${API_URL}/api/admin/orders?key=${encodeURIComponent(key)}`)
+      if (res.status === 403) {
+        setError('Admin Keyが正しくありません。')
+        setIsAuthenticated(false)
+        return
+      }
+      const data = await res.json()
+      setOrders(data.orders || [])
+      setIsAuthenticated(true)
+    } catch {
+      setError('APIに接続できません。Worker URLを確認してください。')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  const handleLogin = () => {
+    if (!adminKey.trim()) return
+    fetchOrders(adminKey)
+  }
+
+  const handleAddOrder = async () => {
+    if (!newOrder.trim()) return
+    setAddLoading(true)
+    try {
+      const res = await fetch(`${API_URL}/api/admin/add-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+        body: JSON.stringify({ orderNumber: newOrder.trim(), productName: newPlan }),
+      })
+      if (res.ok) {
+        setNewOrder('')
+        fetchOrders(adminKey)
+      }
+    } catch { /* ignore */ }
+    setAddLoading(false)
+  }
 
   // 集計
-  const total = codes.length
-  const usedCount = codes.filter(c => c.used).length
-  const unusedCount = total - usedCount
-  const byPlan = codes.reduce<Record<string, { total: number; used: number }>>((acc, c) => {
-    if (!acc[c.plan]) acc[c.plan] = { total: 0, used: 0 }
-    acc[c.plan].total++
-    if (c.used) acc[c.plan].used++
-    return acc
-  }, {})
+  const total = orders.length
+  const activated = orders.filter(o => o.activated).length
+  const pending = total - activated
 
+  // ── 未認証 ──
+  if (!isAuthenticated) {
+    return (
+      <div className="max-w-sm mx-auto mt-20">
+        <div className="bg-s0 border border-br rounded-2xl p-8 text-center">
+          <h1 className="text-lg font-bold text-tx mb-4">PROコード管理</h1>
+          {!API_URL && (
+            <div className="bg-wnl border border-wnb rounded-xl p-3 mb-4 text-xs text-wn text-left">
+              <p className="font-bold mb-1">Worker未デプロイ</p>
+              <p>workers/ ディレクトリの手順に従って Cloudflare Worker をデプロイし、NEXT_PUBLIC_API_URL を設定してください。</p>
+            </div>
+          )}
+          <input
+            type="password"
+            placeholder="Admin Key"
+            value={adminKey}
+            onChange={e => setAdminKey(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') handleLogin() }}
+            className="w-full h-12 px-4 bg-bg border border-br rounded-xl text-sm mb-3 outline-none focus:border-ac"
+          />
+          {error && <p className="text-xs text-dn mb-3">{error}</p>}
+          <button
+            onClick={handleLogin}
+            disabled={!adminKey.trim() || loading}
+            className="w-full py-3 bg-ac text-white rounded-xl font-bold text-sm hover:bg-ac2 transition-colors disabled:opacity-50"
+          >
+            {loading ? '確認中...' : 'ログイン'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // ── ダッシュボード ──
   return (
     <div className="max-w-4xl mx-auto">
-      {/* ヘッダー */}
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-tx mb-1">PROコード管理</h1>
-          <p className="text-sm text-muted">アクティベーションコードの在庫状況</p>
+          <p className="text-sm text-muted">BOOTH注文 → アクティベーション状況</p>
         </div>
-        <Link href="/admin" className="text-sm text-ac hover:text-ac2 transition-colors">
-          ← 管理画面に戻る
-        </Link>
+        <div className="flex gap-3">
+          <button onClick={() => fetchOrders(adminKey)} className="text-sm text-ac hover:text-ac2">
+            ↻ 更新
+          </button>
+          <Link href="/admin" className="text-sm text-muted hover:text-ac">← 管理画面</Link>
+        </div>
       </div>
 
-      {/* KPIカード */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      {/* KPI */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-s0 border border-br rounded-xl p-5">
-          <p className="text-xs text-muted mb-2">総コード数</p>
+          <p className="text-xs text-muted mb-1">総注文数</p>
           <p className="text-3xl font-bold text-tx">{total}</p>
         </div>
         <div className="bg-s0 border border-br rounded-xl p-5">
-          <p className="text-xs text-muted mb-2">未使用</p>
-          <p className="text-3xl font-bold text-ok">{unusedCount}</p>
+          <p className="text-xs text-muted mb-1">有効化済み</p>
+          <p className="text-3xl font-bold text-ok">{activated}</p>
         </div>
         <div className="bg-s0 border border-br rounded-xl p-5">
-          <p className="text-xs text-muted mb-2">使用済み</p>
-          <p className="text-3xl font-bold text-wn">{usedCount}</p>
-        </div>
-        <div className="bg-s0 border border-br rounded-xl p-5">
-          <p className="text-xs text-muted mb-2">使用率</p>
-          <p className="text-3xl font-bold text-tx">{total > 0 ? Math.round(usedCount / total * 100) : 0}%</p>
+          <p className="text-xs text-muted mb-1">未使用</p>
+          <p className="text-3xl font-bold text-wn">{pending}</p>
         </div>
       </div>
 
-      {/* プラン別集計 */}
-      <div className="bg-s0 border border-br rounded-xl p-5 mb-8">
-        <h2 className="text-sm font-semibold text-tx mb-4">プラン別在庫</h2>
-        <div className="space-y-3">
-          {Object.entries(byPlan).map(([plan, stats]) => {
-            const info = planLabels[plan] || { label: plan, color: 'bg-s1 text-muted' }
-            return (
-              <div key={plan} className="flex items-center gap-3">
-                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${info.color}`}>
-                  {info.label}
-                </span>
-                <div className="flex-1 h-2 bg-s1 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-ac rounded-full transition-all"
-                    style={{ width: `${stats.total > 0 ? (stats.used / stats.total) * 100 : 0}%` }}
-                  />
-                </div>
-                <span className="text-xs text-muted whitespace-nowrap">
-                  {stats.used}/{stats.total} 使用
-                </span>
-              </div>
-            )
-          })}
+      {/* 手動追加 */}
+      <div className="bg-s0 border border-br rounded-xl p-5 mb-6">
+        <h2 className="text-sm font-semibold text-tx mb-3">注文を手動追加</h2>
+        <div className="flex gap-3">
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder="注文番号"
+            value={newOrder}
+            onChange={e => setNewOrder(e.target.value.replace(/\D/g, ''))}
+            className="flex-1 h-10 px-3 bg-bg border border-br rounded-lg text-sm font-mono outline-none focus:border-ac"
+          />
+          <select
+            value={newPlan}
+            onChange={e => setNewPlan(e.target.value)}
+            className="h-10 px-3 bg-bg border border-br rounded-lg text-sm outline-none focus:border-ac"
+          >
+            <option value="iwor PRO 1年パス">1年パス</option>
+            <option value="iwor PRO 2年パス">2年パス</option>
+            <option value="iwor PRO 3年パス">3年パス</option>
+          </select>
+          <button
+            onClick={handleAddOrder}
+            disabled={!newOrder.trim() || addLoading}
+            className="px-4 h-10 bg-ac text-white rounded-lg text-sm font-bold hover:bg-ac2 transition-colors disabled:opacity-50"
+          >
+            追加
+          </button>
         </div>
       </div>
 
-      {/* コード一覧 */}
-      <div className="bg-s0 border border-br rounded-xl overflow-hidden mb-8">
-        <div className="p-5 border-b border-br flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-tx">コード一覧</h2>
-          <span className="text-xs text-muted">ハッシュの先頭8文字のみ表示</span>
+      {/* 注文一覧 */}
+      <div className="bg-s0 border border-br rounded-xl overflow-hidden">
+        <div className="p-5 border-b border-br">
+          <h2 className="text-sm font-semibold text-tx">注文一覧</h2>
         </div>
         <div className="divide-y divide-br">
-          {codes.length === 0 ? (
+          {orders.length === 0 ? (
             <div className="p-8 text-center text-sm text-muted">
-              コードがまだ生成されていません。
-              <br />
-              <code className="text-xs bg-s1 px-2 py-1 rounded mt-2 inline-block">
-                node scripts/generate-pro-codes.mjs --plan pro_1y --count 10
-              </code>
+              注文データがありません。
             </div>
           ) : (
-            codes.map((code, i) => {
-              const info = planLabels[code.plan] || { label: code.plan, color: 'bg-s1 text-muted' }
+            orders.map(order => {
+              const info = planLabels[order.plan] || planLabels.unknown
               return (
-                <div key={i} className="px-5 py-3 flex items-center gap-3 text-xs">
-                  <span className="font-mono text-muted w-20">{code.hash.slice(0, 8)}…</span>
+                <div key={order.orderNumber} className="px-5 py-3 flex items-center gap-3 text-xs">
+                  <span className="font-mono font-bold text-tx w-24">#{order.orderNumber}</span>
                   <span className={`px-2 py-0.5 rounded-full font-bold ${info.color}`}>
                     {info.label}
                   </span>
-                  <span className="text-muted flex-1">
-                    {new Date(code.createdAt).toLocaleDateString('ja-JP')}
+                  <span className="text-muted flex-1 truncate">{order.productName}</span>
+                  <span className="text-muted">
+                    {new Date(order.storedAt).toLocaleDateString('ja-JP')}
                   </span>
                   <span className={`px-2 py-0.5 rounded-full font-medium ${
-                    code.used ? 'bg-wnl text-wn' : 'bg-okl text-ok'
+                    order.activated ? 'bg-okl text-ok' : 'bg-wnl text-wn'
                   }`}>
-                    {code.used ? '使用済み' : '未使用'}
+                    {order.activated ? '有効化済' : '未使用'}
                   </span>
                 </div>
               )
             })
           )}
         </div>
-      </div>
-
-      {/* コード生成方法 */}
-      <div className="bg-s0 border border-br rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-tx mb-3">コード追加方法</h2>
-        <div className="bg-s1 rounded-lg p-4">
-          <pre className="text-xs text-tx font-mono whitespace-pre-wrap leading-relaxed">{`# 1年パスを10個生成
-node scripts/generate-pro-codes.mjs --plan pro_1y --count 10
-
-# 2年パスを5個生成
-node scripts/generate-pro-codes.mjs --plan pro_2y --count 5
-
-# 3年パスを5個生成
-node scripts/generate-pro-codes.mjs --plan pro_3y --count 5
-
-# 生成後、コミット＆デプロイ
-git add lib/pro-codes-generated.json
-git commit -m "feat: add PRO activation codes"
-git push`}</pre>
-        </div>
-        <p className="text-xs text-muted mt-3">
-          ※ 生成されたコードはコンソールに表示されます。BOOTH商品の購入完了メッセージに貼り付けてください。
-        </p>
       </div>
     </div>
   )

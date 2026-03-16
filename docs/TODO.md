@@ -136,14 +136,21 @@
 - [x] trackToolUsage全ツール自動トラッキング（2026-03-16）
 - [x] /pro/ ランディングページ作成（2026-03-16、セグメント別タブ+3プラン+比較表+FAQ+構造化データ）
 - [x] docs/PRODUCT.md 作成（2026-03-16）
-- [x] アクティベーションコード生成スクリプト（SHA-256ハッシュ、IWOR-XXXX-XXXX-XXXX形式）（2026-03-16）
-- [x] /pro/activate アクティベーションページ（コード入力→検証→PRO有効化）（2026-03-16）
+- [x] /pro/activate アクティベーションページ（注文番号入力→Worker API検証→PRO有効化）（2026-03-16）
 - [x] useProStatus 有効期限チェック＋refresh追加（2026-03-16）
 - [x] ProModal にアクティベーション導線追加（2026-03-16）
-- [x] /admin/pro-codes コード管理画面（2026-03-16）
+- [x] /admin/pro-codes 注文管理画面（API接続、手動注文追加）（2026-03-16）
 - [x] 旧naikanavi BOOTHリンク→/pro 内部リンクに全更新（2026-03-16）
 - [x] ホームページCTA テキスト・導線をiwor PRO体制に更新（2026-03-16）
 - [x] BOOTH商品テンプレート作成（docs/BOOTH_PRODUCT_TEMPLATE.md）（2026-03-16）
+- [x] workers/api.js — iwor PRO専用Worker新規作成（注文保存/有効化/管理者API）（2026-03-16）
+- [x] workers/wrangler.toml — デプロイ設定（2026-03-16）
+- [x] scripts/booth-gas.js — GAS（1分ごとGmailチェック→Worker POST）（2026-03-16）
+- [x] lib/pro-activation.ts — Worker API呼び出し方式に書き換え（2026-03-16）
+- [ ] **Worker デプロイ（KV作成 + Secrets設定 + NEXT_PUBLIC_API_URL設定）**
+- [ ] **GAS設置（scripts/booth-gas.js → Google Apps Script + 1分トリガー）**
+- [ ] **BOOTH商品登録（3商品 + サムネイル画像）**
+- [ ] **テスト購入 → GAS → Worker → /pro/activate 動作確認**
 
 ---
 

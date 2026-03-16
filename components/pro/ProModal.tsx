@@ -106,7 +106,7 @@ export default function ProModal({ feature = 'favorites', onClose }: ProModalPro
             href="/pro/activate"
             className="block text-sm text-ac hover:underline mb-3"
           >
-            コードをお持ちの方はこちら
+            購入済みの方（注文番号で有効化）
           </a>
 
           <button
