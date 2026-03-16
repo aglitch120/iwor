@@ -1,280 +1,293 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getAllPosts } from '@/lib/mdx'
-import { categories } from '@/lib/blog-config'
 import ArticleCard from '@/components/blog/ArticleCard'
-import { AppMockup, GeometricDecoration, FeatureBadges } from '@/components/AppMockup'
 
 export const metadata: Metadata = {
+  title: 'iwor — 医師の臨床とキャリアを支える恵みの地',
+  description: '臨床計算ツール79種、ER対応、ACLS/BLS、ICU管理、検査読影、薬剤比較155種。病棟TODO、J-OSLER管理、マッチング対策、論文フィード。医師・研修医・医学生のすべてがここに。',
   alternates: {
     canonical: 'https://iwor.jp',
   },
 }
 
+// ── 7つのサービス定義 ──
+const services = {
+  clinical: [
+    {
+      slug: 'tools',
+      href: '/tools',
+      icon: 'stethoscope',
+      color: 'bg-acl',
+      strokeColor: 'stroke-ac',
+      name: '臨床ツール',
+      desc: '計算ツール、ER対応、ACLS/BLS、ICU管理、検査読影、薬剤比較。計算と操作は完全無料。',
+      badge: 'free' as const,
+      tags: ['計算 79種', 'ER 6本', 'ACLS 4本', 'ICU 4本', '読影 5本', '薬剤比較 25'],
+      featured: true,
+    },
+    {
+      slug: 'dashboard',
+      href: '/dashboard',
+      icon: 'check',
+      color: 'bg-[#E6F1FB]',
+      strokeColor: 'stroke-[#185FA5]',
+      name: '病棟TODO & 症例ログ',
+      desc: '患者ごとのタスク管理。チェックで完了→症例として記録。退院で自動アーカイブ。',
+      badge: 'pro' as const,
+      tags: ['Stat tracker', 'EPOC連携'],
+    },
+    {
+      slug: 'learning',
+      href: '/learning',
+      icon: 'book',
+      color: 'bg-[#EEEDFE]',
+      strokeColor: 'stroke-[#534AB7]',
+      name: '学習',
+      desc: '内科専門医試験対策から始まり、エコー・輸液など講座を順次追加。',
+      badge: 'pro' as const,
+      tags: ['問題演習', '講座（順次追加）'],
+    },
+  ],
+  career: [
+    {
+      slug: 'josler',
+      href: '/josler',
+      icon: 'chart',
+      color: 'bg-[#FAEEDA]',
+      strokeColor: 'stroke-[#854F0B]',
+      name: 'J-OSLER管理',
+      desc: '症例登録・進捗トラッカー・病歴要約AI生成',
+    },
+    {
+      slug: 'matching',
+      href: '/matching',
+      icon: 'graduation',
+      color: 'bg-[#FBEAF0]',
+      strokeColor: 'stroke-[#993556]',
+      name: 'マッチング対策',
+      desc: '履歴書生成・病院DB・AI面接練習',
+    },
+    {
+      slug: 'journal',
+      href: '/journal',
+      icon: 'journal',
+      color: 'bg-[#E1F5EE]',
+      strokeColor: 'stroke-[#0F6E56]',
+      name: '論文フィード',
+      desc: '最新論文の日本語要約・ブックマーク',
+    },
+  ],
+}
+
+// ── アイコン SVG ──
+function ServiceIcon({ type, className }: { type: string; className?: string }) {
+  const cls = `w-[18px] h-[18px] ${className || ''}`
+  switch (type) {
+    case 'stethoscope':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+    case 'check':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+    case 'book':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    case 'chart':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    case 'graduation':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
+    case 'journal':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+    case 'pen':
+      return <svg className={cls} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+    default:
+      return null
+  }
+}
+
+function Badge({ type }: { type: 'free' | 'pro' }) {
+  if (type === 'free') {
+    return <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-okl text-ok">Free</span>
+  }
+  return <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-wnl text-wn">PRO</span>
+}
+
 export default function HomePage() {
-  const latestPosts = getAllPosts().slice(0, 6)
-  
+  const latestPosts = getAllPosts().slice(0, 4)
+
   return (
-    <div>
-      {/* ═══ ヒーローセクション ═══ */}
-      <section className="relative py-12 md:py-16 -mx-4 px-4 overflow-hidden">
-        <GeometricDecoration />
-
-        <div className="relative z-10 text-center mb-10">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-tight">
-            内科専攻医の悩みを<br />
-            すべて解決する
-          </h1>
-          <p className="text-muted mb-1 max-w-lg mx-auto leading-relaxed">
-            J-OSLER進捗管理、病歴要約、専門医試験対策から、キャリア・お金の情報まで。
-          </p>
-          <p className="text-sm text-muted mt-2 tracking-widest uppercase font-mono">
-            iwor — 臨床とキャリアに、いつも手の届く場所に
-          </p>
-        </div>
-
-        {/* 機能バッジ */}
-        <div className="relative z-10 mb-2">
-          <FeatureBadges />
-        </div>
-
-        {/* クラウド同期バッジ */}
-        <div className="relative z-10 flex justify-center mb-10">
-          <span className="inline-flex items-center gap-1.5 text-xs text-muted bg-s1 border border-br rounded-full px-4 py-1.5 mt-3">
-            <svg className="w-3.5 h-3.5 text-ac" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-            </svg>
-            クラウド同期 — リアルタイム保存
-          </span>
-        </div>
-
-        {/* アプリモックアップ */}
-        <div className="relative z-10 max-w-xl mx-auto mb-10 px-4">
-          <AppMockup />
-        </div>
-
-        {/* CTA ボタン */}
-        <div className="relative z-10 flex flex-col sm:flex-row justify-center gap-3 max-w-md mx-auto">
-          <a
-            href="/pro"
-            className="bg-ac text-white px-6 py-3 rounded-lg font-medium hover:bg-ac2 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-ac/20"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            iwor PROを見る
-          </a>
-          <a
-            href="/app"
-            className="bg-s0 text-ac border border-br px-6 py-3 rounded-lg font-medium hover:bg-acl hover:border-ac transition-colors flex items-center justify-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </svg>
-            ログイン
-          </a>
-        </div>
-        <p className="relative z-10 text-center text-sm text-muted mt-4">
-          <a href="/blog" className="text-ac hover:underline">ブログ記事を読む →</a>
+    <div className="max-w-3xl mx-auto">
+      {/* ═══ ヒーロー ═══ */}
+      <section className="text-center py-8 md:py-12">
+        <h1 className="text-2xl md:text-3xl font-bold text-tx leading-tight mb-3">
+          医師の臨床とキャリアを支える、<br className="hidden sm:inline" />恵みの地
+        </h1>
+        <p className="text-sm md:text-base text-muted max-w-lg mx-auto leading-relaxed">
+          臨床ツール、病棟管理、学習、キャリア支援 — すべてひとつの場所で
         </p>
       </section>
 
-      {/* ═══ 特長セクション ═══ */}
-      <section className="py-12 md:py-16">
-        <h2 className="text-xl font-bold text-center mb-2">なぜiwor？</h2>
-        <p className="text-sm text-muted text-center mb-10 max-w-md mx-auto">
-          J-OSLERの複雑な修了要件を、シンプルに見える化。
-        </p>
-        <div className="grid md:grid-cols-3 gap-4">
-          {[
-            {
-              icon: (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-1.5L12 12m0 0l3-1.5M12 12l-3-1.5" />
-                </svg>
-              ),
-              title: 'ダッシュボードで一目瞭然',
-              desc: '120症例・56疾患群・29病歴要約の進捗をリアルタイムで把握。「あと何が足りないか」が3秒でわかる。',
-            },
-            {
-              icon: (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
-                </svg>
-              ),
-              title: 'AI病歴要約テンプレート',
-              desc: '370疾患に対応したAIテンプレートで、病歴要約の下書きを自動生成。差し戻しリスクを大幅軽減。',
-            },
-            {
-              icon: (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342" />
-                </svg>
-              ),
-              title: '筆記試験の問題演習',
-              desc: '370疾患×5パターンの問題を自動生成。苦手分野を特定して効率的に対策。',
-            },
-          ].map((feat) => (
-            <div
-              key={feat.title}
-              className="bg-s0 border border-br rounded-xl p-6 hover:border-ac/30 hover:shadow-sm transition-all"
-            >
-              <div className="w-10 h-10 rounded-lg bg-acl flex items-center justify-center text-ac mb-4">
-                {feat.icon}
+      {/* ═══ Clinical ═══ */}
+      <section className="mb-10">
+        <p className="text-[11px] font-bold text-muted/60 tracking-wide mb-3 pl-0.5">CLINICAL</p>
+
+        {/* 臨床ツール — フルワイド featured カード */}
+        <Link
+          href={services.clinical[0].href}
+          className="block bg-s0 border border-br rounded-xl p-5 mb-3 hover:border-ac/30 transition-colors"
+        >
+          <div className="md:grid md:grid-cols-2 md:gap-6">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className={`w-9 h-9 ${services.clinical[0].color} rounded-[9px] flex items-center justify-center`}>
+                  <ServiceIcon type={services.clinical[0].icon} className={services.clinical[0].strokeColor} />
+                </div>
+                <Badge type="free" />
               </div>
-              <h3 className="font-bold text-tx mb-2">{feat.title}</h3>
-              <p className="text-sm text-muted leading-relaxed">{feat.desc}</p>
+              <h2 className="text-[15px] font-bold text-tx mb-1">{services.clinical[0].name}</h2>
+              <p className="text-xs text-muted leading-relaxed">{services.clinical[0].desc}</p>
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="flex flex-wrap gap-1.5 mt-3 md:mt-0 md:items-center md:justify-end">
+              {services.clinical[0].tags?.map(tag => (
+                <span key={tag} className="text-[11px] px-2.5 py-1 rounded-md bg-s1 border border-br text-tx">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Link>
 
-      {/* ═══ 臨床計算ツールセクション ═══ */}
-      <section className="py-12 md:py-16">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-bold">臨床計算ツール</h2>
-          <Link href="/tools" className="text-ac text-sm hover:underline">
-            すべて見る →
-          </Link>
-        </div>
-        <p className="text-sm text-muted mb-6">
-          ベッドサイドですぐ使える。登録不要・無料の臨床スコア計算。
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { name: 'eGFR計算', slug: 'egfr', icon: '💧', desc: 'CKD-EPI 2021' },
-            { name: 'CHA₂DS₂-VASc', slug: 'cha2ds2-vasc', icon: '❤️', desc: '心房細動の脳卒中リスク' },
-            { name: 'CHADS₂', slug: 'chads2', icon: '❤️', desc: '脳卒中リスク簡易評価' },
-            { name: 'Child-Pugh', slug: 'child-pugh', icon: '🫁', desc: '肝硬変の重症度', comingSoon: true },
-            { name: 'CURB-65', slug: 'curb-65', icon: '🌬️', desc: '市中肺炎の重症度', comingSoon: true },
-            { name: 'qSOFA', slug: 'qsofa', icon: '🦠', desc: '敗血症スクリーニング', comingSoon: true },
-            { name: 'Wells PE', slug: 'wells-pe', icon: '🌬️', desc: '肺塞栓の確率評価', comingSoon: true },
-            { name: 'SOFA', slug: 'sofa', icon: '🦠', desc: '臓器障害の定量評価', comingSoon: true },
-          ].map(tool => (
-            tool.comingSoon ? (
-              <div
-                key={tool.slug}
-                className="bg-s1/50 border border-br/50 rounded-xl p-4 opacity-60"
-              >
-                <span className="text-lg">{tool.icon}</span>
-                <p className="text-sm font-medium text-muted mt-1.5">{tool.name}</p>
-                <p className="text-xs text-muted/70 mt-0.5">{tool.desc}</p>
-                <span className="inline-block text-[10px] text-muted bg-s2 px-1.5 py-0.5 rounded mt-2">準備中</span>
-              </div>
-            ) : (
-              <Link
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-s0 border border-br rounded-xl p-4 hover:border-ac/30 hover:bg-acl/30 transition-colors group"
-              >
-                <span className="text-lg">{tool.icon}</span>
-                <p className="text-sm font-medium text-tx group-hover:text-ac mt-1.5 transition-colors">{tool.name}</p>
-                <p className="text-xs text-muted mt-0.5">{tool.desc}</p>
-              </Link>
-            )
-          ))}
-        </div>
-      </section>
-
-      {/* ═══ カテゴリセクション ═══ */}
-      <section className="py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">カテゴリ</h2>
-          <Link href="/blog" className="text-ac text-sm hover:underline">
-            すべて見る →
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {Object.entries(categories).slice(0, 8).map(([slug, category]) => (
+        {/* 病棟TODO + 学習 — 2カラム */}
+        <div className="grid grid-cols-2 gap-3">
+          {services.clinical.slice(1).map(s => (
             <Link
-              key={slug}
-              href={`/blog/category/${slug}`}
-              className="bg-s0 border border-br rounded-lg p-4 text-center hover:border-ac hover:bg-acl transition-colors"
+              key={s.slug}
+              href={s.href}
+              className="block bg-s0 border border-br rounded-xl p-4 hover:border-ac/30 transition-colors"
             >
-              <span className="text-sm font-medium">{category.name}</span>
+              <div className="flex items-center justify-between mb-2.5">
+                <div className={`w-8 h-8 ${s.color} rounded-lg flex items-center justify-center`}>
+                  <ServiceIcon type={s.icon} className={s.strokeColor} />
+                </div>
+                {s.badge && <Badge type={s.badge} />}
+              </div>
+              <h2 className="text-sm font-bold text-tx mb-1">{s.name}</h2>
+              <p className="text-[11px] text-muted leading-relaxed">{s.desc}</p>
+              {s.tags && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {s.tags.map(tag => (
+                    <span key={tag} className="text-[9px] px-1.5 py-0.5 rounded bg-s1 text-muted">{tag}</span>
+                  ))}
+                </div>
+              )}
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ═══ 最新記事セクション ═══ */}
-      <section className="py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">最新記事</h2>
-          <Link href="/blog" className="text-ac text-sm hover:underline">
-            すべて見る →
-          </Link>
+      {/* ═══ Career ═══ */}
+      <section className="mb-10">
+        <p className="text-[11px] font-bold text-muted/60 tracking-wide mb-3 pl-0.5">CAREER</p>
+
+        {/* デスクトップ: 3カラム / モバイル: リスト */}
+        <div className="hidden md:grid md:grid-cols-3 gap-3">
+          {services.career.map(s => (
+            <Link
+              key={s.slug}
+              href={s.href}
+              className="block bg-s0 border border-br rounded-xl p-4 hover:border-ac/30 transition-colors"
+            >
+              <div className={`w-8 h-8 ${s.color} rounded-lg flex items-center justify-center mb-2.5`}>
+                <ServiceIcon type={s.icon} className={s.strokeColor} />
+              </div>
+              <h2 className="text-[13px] font-bold text-tx mb-1">{s.name}</h2>
+              <p className="text-[11px] text-muted leading-relaxed">{s.desc}</p>
+            </Link>
+          ))}
         </div>
-        
-        {latestPosts.length > 0 ? (
-          <div className="grid md:grid-cols-2 gap-4">
-            {latestPosts.map((post) => (
-              <ArticleCard key={post.slug} post={post} />
-            ))}
+
+        {/* モバイル: 横並びリスト */}
+        <div className="md:hidden space-y-2">
+          {services.career.map(s => (
+            <Link
+              key={s.slug}
+              href={s.href}
+              className="flex items-center gap-3 bg-s0 border border-br rounded-xl px-4 py-3 hover:border-ac/30 transition-colors"
+            >
+              <div className={`w-8 h-8 ${s.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                <ServiceIcon type={s.icon} className={s.strokeColor} />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-sm font-bold text-tx">{s.name}</h2>
+                <p className="text-[11px] text-muted leading-relaxed">{s.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ Content — ブログ ═══ */}
+      <section className="mb-10">
+        <p className="text-[11px] font-bold text-muted/60 tracking-wide mb-3 pl-0.5">CONTENT</p>
+
+        <Link
+          href="/blog"
+          className="flex items-center gap-4 bg-s0 border border-br rounded-xl px-5 py-4 hover:border-ac/30 transition-colors mb-6"
+        >
+          <div className="w-8 h-8 bg-s1 rounded-lg flex items-center justify-center flex-shrink-0">
+            <ServiceIcon type="pen" className="stroke-muted" />
           </div>
-        ) : (
-          <div className="bg-s0 border border-br rounded-lg p-8 text-center text-muted">
-            <p>まだ記事がありません。近日公開予定です！</p>
+          <div className="min-w-0">
+            <h2 className="text-sm font-bold text-tx">ブログ</h2>
+            <p className="text-[11px] text-muted">173記事 — J-OSLER対策、キャリア、試験勉強法、医師の生活</p>
+          </div>
+        </Link>
+
+        {/* 最新記事 */}
+        {latestPosts.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs font-medium text-muted">最新記事</p>
+              <Link href="/blog" className="text-xs text-ac hover:underline">すべて見る →</Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {latestPosts.map(post => (
+                <ArticleCard key={post.slug} post={post} compact />
+              ))}
+            </div>
           </div>
         )}
       </section>
 
-      {/* ═══ 大CTAセクション ═══ */}
-      <section className="py-8">
-        <div className="relative bg-ac rounded-2xl p-8 md:p-12 overflow-hidden">
-          {/* 幾何学装飾（暗い背景に白の線） */}
+      {/* ═══ PRO CTA ═══ */}
+      <section className="mb-8">
+        <div className="bg-ac rounded-2xl p-6 md:p-8 text-center relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            <svg className="absolute top-0 right-0 w-72 h-72 text-white/[0.04]" viewBox="0 0 200 200">
-              {[30, 50, 70, 90].map((r) => (
-                <circle key={r} cx="160" cy="40" r={r} fill="none" stroke="currentColor" strokeWidth="1" />
+            <svg className="absolute top-0 right-0 w-48 h-48 text-white/[0.03]" viewBox="0 0 200 200">
+              {[30, 55, 80, 105].map(r => (
+                <circle key={r} cx="170" cy="30" r={r} fill="none" stroke="currentColor" strokeWidth="0.8" />
               ))}
             </svg>
-            <svg className="absolute bottom-0 left-0 w-48 h-48 text-white/[0.05]" viewBox="0 0 200 200">
-              {Array.from({ length: 6 }).map((_, row) =>
-                Array.from({ length: 6 }).map((_, col) => (
-                  <circle key={`${row}-${col}`} cx={15 + col * 35} cy={15 + row * 35} r="2" fill="currentColor" />
-                ))
-              )}
-            </svg>
           </div>
-
           <div className="relative z-10">
-            <div className="text-center mb-8">
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-3">
-                iworで専攻医生活を効率化しませんか？
-              </h2>
-              <p className="text-white/60 text-sm max-w-lg mx-auto">
-                J-OSLER進捗管理、AI病歴要約テンプレート、試験対策クイズ。
-                内科専攻医に必要なツールをすべて一箇所に。
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-              {/* 新規ユーザー向け */}
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5">
-                <div className="text-xs font-medium text-white/60 mb-2">はじめての方</div>
-                <h3 className="font-bold text-white mb-2">iwor PROに登録</h3>
-                <p className="text-sm text-white/50 mb-4">¥9,800/年〜。臨床ツールの解釈・キャリア管理が使い放題。</p>
-                <a
-                  href="/pro"
-                  className="inline-flex items-center justify-center gap-2 w-full bg-white text-ac px-4 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors"
-                >
-                  プランを見る →
-                </a>
-              </div>
-              
-              {/* コード入力 */}
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5">
-                <div className="text-xs font-medium text-white/60 mb-2">コードをお持ちの方</div>
-                <h3 className="font-bold text-white mb-2">アクティベーション</h3>
-                <p className="text-sm text-white/50 mb-4">BOOTHで購入したコードを入力して有効化。</p>
-                <a
-                  href="/pro/activate"
-                  className="inline-flex items-center justify-center gap-2 w-full bg-transparent text-white border border-white/40 px-4 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
-                >
-                  コードを入力 →
-                </a>
-              </div>
+            <p className="text-white/60 text-xs mb-1">iwor PRO</p>
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
+              すべての機能を、ひとつのプランで。
+            </h2>
+            <p className="text-white/60 text-xs mb-5 max-w-md mx-auto">
+              臨床ツールの解釈、病棟管理、学習、J-OSLER、マッチング、論文フィード。¥9,800/年〜
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/pro"
+                className="inline-flex items-center justify-center bg-white text-ac px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/90 transition-colors"
+              >
+                プランを見る
+              </Link>
+              <Link
+                href="/pro/activate"
+                className="inline-flex items-center justify-center bg-white/10 text-white border border-white/20 px-6 py-3 rounded-xl font-medium text-sm hover:bg-white/20 transition-colors"
+              >
+                ログイン / 会員登録
+              </Link>
             </div>
           </div>
         </div>
