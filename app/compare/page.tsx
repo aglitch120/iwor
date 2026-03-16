@@ -13,8 +13,8 @@ const categories = [
       { href: '/compare/doac', name: 'DOAC（直接経口抗凝固薬）', count: 4, live: true },
       { href: '/compare/arb', name: 'ARB（アンジオテンシンII受容体拮抗薬）', count: 7, live: true },
       { href: '/compare/statin', name: 'スタチン（HMG-CoA還元酵素阻害薬）', count: 6, live: true },
-      { href: '/compare/ccb', name: 'Ca拮抗薬', count: 0, live: false },
-      { href: '/compare/beta-blocker', name: 'β遮断薬', count: 0, live: false },
+      { href: '/compare/ccb', name: 'Ca拮抗薬', count: 7, live: true },
+      { href: '/compare/beta-blocker', name: 'β遮断薬', count: 7, live: true },
       { href: '/compare/diuretic', name: '利尿薬', count: 0, live: false },
       { href: '/compare/antiplatelet', name: '抗血小板薬', count: 0, live: false },
     ]
@@ -23,7 +23,7 @@ const categories = [
     group: '代謝・内分泌',
     items: [
       { href: '/compare/sglt2i', name: 'SGLT2阻害薬', count: 6, live: true },
-      { href: '/compare/dpp4i', name: 'DPP-4阻害薬', count: 0, live: false },
+      { href: '/compare/dpp4i', name: 'DPP-4阻害薬', count: 7, live: true },
       { href: '/compare/glp1ra', name: 'GLP-1受容体作動薬', count: 0, live: false },
       { href: '/compare/urate', name: '尿酸降下薬', count: 0, live: false },
     ]
@@ -54,7 +54,7 @@ const categories = [
   {
     group: '鎮痛・抗炎症',
     items: [
-      { href: '/compare/nsaids', name: 'NSAIDs', count: 0, live: false },
+      { href: '/compare/nsaids', name: 'NSAIDs', count: 7, live: true },
       { href: '/compare/steroid', name: '経口ステロイド', count: 0, live: false },
     ]
   },
@@ -62,7 +62,7 @@ const categories = [
     group: '呼吸器・アレルギー',
     items: [
       { href: '/compare/inhaler', name: '吸入薬（ICS/LABA/LAMA）', count: 0, live: false },
-      { href: '/compare/antihistamine', name: '抗ヒスタミン薬', count: 0, live: false },
+      { href: '/compare/antihistamine', name: '抗ヒスタミン薬', count: 8, live: true },
     ]
   },
   {
