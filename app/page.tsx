@@ -22,6 +22,7 @@ export default function HomePage() {
           <span className="w-1.5 h-1.5 bg-ac rounded-full animate-pulse" />
           123個の臨床ツール + 173記事、すべて無料
         </div>
+        <p className="text-sm text-muted mb-3 tracking-wide">iwor（イウォル）</p>
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-tx leading-[1.15] tracking-tight mb-5">
           医学生から医師まで、
           <br />
