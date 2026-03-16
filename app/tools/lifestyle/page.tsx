@@ -1,6 +1,10 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import ProGate from '@/components/pro/ProGate'
+import FavoriteButton from '@/components/tools/FavoriteButton'
+import ProPulseHint from '@/components/pro/ProPulseHint'
+import { trackToolUsage } from '@/components/pro/useProStatus'
 
 // ── 型定義 ──
 interface PatientData {
@@ -225,8 +229,11 @@ export default function LifestylePage() {
   const bySub = useMemo(() => { const m: Record<string, ActionItem[]> = {}; all.forEach(a => { if (!m[a.subcategory]) m[a.subcategory] = []; m[a.subcategory].push(a) }); return m }, [all])
   const byDis = useMemo(() => { const m: Record<string, ActionItem[]> = {}; all.forEach(a => { if (!m[a.disease]) m[a.disease] = []; m[a.disease].push(a) }); return m }, [all])
 
+  // PLG: ツール利用トラッキング
+  useEffect(() => { trackToolUsage('lifestyle') }, [])
+
   return <div className="max-w-4xl mx-auto">
-    <div className="mb-6"><h1 className="text-2xl font-bold text-tx">生活習慣病 総合管理ツール</h1><p className="text-sm text-muted mt-1">患者データ入力 → 疾患評価・管理目標・次のアクション自動生成</p><p className="text-xs text-muted mt-1 p-2 bg-bg rounded-lg border border-br">⚠️ 本ツールは臨床判断の補助です。</p></div>
+    <div className="mb-6 flex items-start justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold text-tx">生活習慣病 総合管理ツール</h1><p className="text-sm text-muted mt-1">患者データ入力 → 疾患評価・管理目標・次のアクション自動生成</p><p className="text-xs text-muted mt-1 p-2 bg-bg rounded-lg border border-br">⚠️ 本ツールは臨床判断の補助です。</p></div><ProPulseHint><FavoriteButton slug="lifestyle" /></ProPulseHint></div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
       <div className="bg-s0 border border-br rounded-xl p-4 space-y-3"><h2 className="text-sm font-bold text-tx">📋 基本情報</h2><div className="grid grid-cols-2 gap-2"><F id="age" label="年齢" unit="歳" value={data.age} onChange={s('age')} /><div><label className="block text-xs font-medium text-tx mb-0.5">性別</label><select value={data.sex} onChange={e => s('sex')(e.target.value)} className="w-full px-2 py-1.5 text-sm bg-bg border border-br rounded-lg text-tx focus:outline-none focus:ring-2 focus:ring-ac/30"><option value="male">男性</option><option value="female">女性</option></select></div><F id="height" label="身長" unit="cm" value={data.height} onChange={s('height')} /><F id="weight" label="体重" unit="kg" value={data.weight} onChange={s('weight')} /></div><F id="waist" label="腹囲" unit="cm" hint="メタボ:男≧85 女≧90" value={data.waist} onChange={s('waist')} />{bmi && <p className="text-xs text-muted">BMI: <span className="font-mono font-bold text-tx">{bmi.toFixed(1)}</span></p>}</div>
@@ -247,7 +254,9 @@ export default function LifestylePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">{assessments.map(a=><div key={a.name} className={`rounded-xl p-4 ${sCard[a.status]}`}><div className="flex items-center justify-between mb-2"><h3 className={`font-bold text-sm ${sText[a.status]}`}>{a.name}</h3><span className={`text-xs px-2 py-0.5 rounded-full font-medium ${sText[a.status]} bg-white/60`}>{sLabel[a.status]}</span></div><p className="text-sm text-tx mb-2">{a.summary}</p>{a.targets.length>0&&<div className="text-xs text-tx space-y-0.5 mb-2">{a.targets.map((t,i)=><p key={i}>🎯 {t}</p>)}</div>}</div>)}</div>
 
       {all.length>0&&<><div className="flex items-center justify-between mb-3"><h2 className="text-lg font-bold text-tx">全アクション（{all.length}件）</h2><div className="flex gap-1"><button onClick={()=>setActionView('disease')} className={`text-xs px-3 py-1 rounded-lg border ${actionView==='disease'?'bg-ac text-white border-ac':'bg-bg text-muted border-br'}`}>疾患別</button><button onClick={()=>setActionView('subcategory')} className={`text-xs px-3 py-1 rounded-lg border ${actionView==='subcategory'?'bg-ac text-white border-ac':'bg-bg text-muted border-br'}`}>カテゴリ別</button></div></div>
-        <div className="bg-s0 border border-br rounded-xl p-4 mb-8">{actionView==='disease'?<div className="space-y-4">{Object.entries(byDis).map(([d,as])=><div key={d}><p className="text-xs font-bold text-ac mb-2 border-b border-br pb-1">{d}</p><div className="space-y-2">{as.map((a,i)=><AR key={i} a={a}/>)}</div></div>)}</div>:<div className="space-y-4">{Object.entries(bySub).map(([sub,as])=><div key={sub}><p className="text-xs font-bold text-ac mb-2 border-b border-br pb-1">{subL[sub]||sub}</p><div className="space-y-2">{as.map((a,i)=><AR key={i} a={a}/>)}</div></div>)}</div>}</div></>}
+        <ProGate feature="action_plan" previewHeight={100}>
+        <div className="bg-s0 border border-br rounded-xl p-4 mb-8">{actionView==='disease'?<div className="space-y-4">{Object.entries(byDis).map(([d,as])=><div key={d}><p className="text-xs font-bold text-ac mb-2 border-b border-br pb-1">{d}</p><div className="space-y-2">{as.map((a,i)=><AR key={i} a={a}/>)}</div></div>)}</div>:<div className="space-y-4">{Object.entries(bySub).map(([sub,as])=><div key={sub}><p className="text-xs font-bold text-ac mb-2 border-b border-br pb-1">{subL[sub]||sub}</p><div className="space-y-2">{as.map((a,i)=><AR key={i} a={a}/>)}</div></div>)}</div>}</div>
+        </ProGate></>}
     </>}
 
     <div className="text-xs text-muted mt-8 pt-4 border-t border-br"><p className="font-semibold">出典:</p><p>JSH2019 / 糖尿病GL2024 / 動脈硬化GL2022 / CKD GL2023 / 高尿酸GL第3版 / MASLD GL2023</p></div>

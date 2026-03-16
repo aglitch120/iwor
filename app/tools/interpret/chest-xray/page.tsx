@@ -1,8 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import ChestXraySVG from '@/components/tools/interpret/ChestXraySVG'
+import ProGate from '@/components/pro/ProGate'
+import FavoriteButton from '@/components/tools/FavoriteButton'
+import ProPulseHint from '@/components/pro/ProPulseHint'
+import { trackToolUsage } from '@/components/pro/useProStatus'
 
 type Severity = 'ok' | 'wn' | 'dn' | 'neutral'
 
@@ -81,6 +85,9 @@ const categories = [
 ]
 
 export default function ChestXrayPage() {
+  // PLG: ツール利用トラッキング
+  useEffect(() => { trackToolUsage('interpret-chest-xray') }, [])
+
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [activeCat, setActiveCat] = useState<string | null>(null)
 
@@ -114,11 +121,11 @@ export default function ChestXrayPage() {
         <Link href="/tools" className="hover:text-ac">臨床ツール</Link><span className="mx-2">›</span>
         <Link href="/tools/interpret" className="hover:text-ac">検査読影</Link><span className="mx-2">›</span><span>胸部X線</span>
       </nav>
-      <header className="mb-6">
+      <header className="mb-6"><div className="flex items-start justify-between gap-3"><div className="min-w-0">
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🫁 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">胸部X線 系統的読影チェックリスト</h1>
         <p className="text-sm text-muted">ABCDE法で見落としゼロ。各セクションにホバーすると模式図の対応部位がハイライト。</p>
-      </header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-chest-xray" /></ProPulseHint></div></header>
       <div className="flex flex-col lg:flex-row gap-6 mb-6">
         <div className="lg:w-[320px] shrink-0"><div className="lg:sticky lg:top-4 bg-s1 border border-br rounded-xl p-3">
           <p className="text-xs font-bold text-tx mb-2 text-center">模式的胸部X線</p>
@@ -196,6 +203,7 @@ export default function ChestXrayPage() {
       </div>
 
       {/* SEO */}
+      <ProGate feature="interpretation" previewHeight={80}>
       <section className="space-y-4 text-sm text-muted mb-8">
         <h2 className="text-base font-bold text-tx">胸部X線 ABCDE法による系統的読影</h2>
         <p>胸部X線読影は系統的アプローチで見落としを防ぎます。ABCDE法はAirway（気道）→ Bones（骨）→ Cardiac（心臓）→ Diaphragm（横隔膜）→ Everything else（肺野・胸膜）の順に評価する方法です。</p>
@@ -206,6 +214,7 @@ export default function ChestXrayPage() {
         <h3 className="font-bold text-tx">見落としやすい所見</h3>
         <p>肺尖部の結節影、横隔膜下のfree air、肋骨骨折、心陰影に重なる左下葉の浸潤影、気管の偏位は見落としやすい所見です。ABCDE法を使って毎回同じ順序で評価することで、これらの見落としを防ぐことができます。</p>
       </section>
+      </ProGate>
 
       {/* 関連ツール */}
       <section className="mb-8">

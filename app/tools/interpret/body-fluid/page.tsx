@@ -1,7 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import ProGate from '@/components/pro/ProGate'
+import FavoriteButton from '@/components/tools/FavoriteButton'
+import ProPulseHint from '@/components/pro/ProPulseHint'
+import { trackToolUsage } from '@/components/pro/useProStatus'
 
 type Severity = 'ok' | 'wn' | 'dn' | 'neutral'
 type FluidType = 'pleural' | 'ascites' | 'csf' | ''
@@ -388,6 +392,9 @@ function SelectField({ id, label, value, onChange, options }: {
 
 // ── Main Component ──
 export default function BodyFluidPage() {
+  // PLG: ツール利用トラッキング
+  useEffect(() => { trackToolUsage('interpret-body-fluid') }, [])
+
   const [fluidType, setFluidType] = useState<FluidType>('pleural')
   const [pleural, setPleural] = useState<PleuralInput>(pleuralDefaults)
   const [ascites, setAscites] = useState<AscitesInput>(ascitesDefaults)
@@ -417,11 +424,11 @@ export default function BodyFluidPage() {
         <span>体液検査</span>
       </nav>
 
-      <header className="mb-6">
+      <header className="mb-6"><div className="flex items-start justify-between gap-3"><div className="min-w-0">
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🧪 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">体液検査 インタラクティブ解釈</h1>
         <p className="text-sm text-muted">胸水（Light基準）・腹水（SAAG）・髄液（髄膜炎鑑別）をステップバイステップで評価。</p>
-      </header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-body-fluid" /></ProPulseHint></div></header>
 
       {/* Fluid type selector */}
       <div className="flex gap-2 mb-6">
@@ -548,6 +555,7 @@ export default function BodyFluidPage() {
       </div>
 
       {/* SEO解説 */}
+      <ProGate feature="interpretation" previewHeight={80}>
       <section className="space-y-4 text-sm text-muted mb-8">
         <h2 className="text-base font-bold text-tx">体液検査の系統的アプローチ</h2>
 
@@ -560,6 +568,7 @@ export default function BodyFluidPage() {
         <h3 className="font-bold text-tx">髄液: 髄膜炎の鑑別</h3>
         <p>細菌性髄膜炎: WBC &gt; 1000（好中球優位）・蛋白上昇・糖低下（髄液糖/血糖 &lt; 0.4）。ウイルス性: WBC 10-500（リンパ球優位）・蛋白軽度上昇・糖正常。結核性: リンパ球優位・蛋白著明上昇・糖低下・ADA上昇。</p>
       </section>
+      </ProGate>
 
       {/* 関連ツール */}
       <section className="mb-8">

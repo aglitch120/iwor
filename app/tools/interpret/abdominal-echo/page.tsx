@@ -1,8 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import AbdominalEchoSVG from '@/components/tools/interpret/AbdominalEchoSVG'
+import ProGate from '@/components/pro/ProGate'
+import FavoriteButton from '@/components/tools/FavoriteButton'
+import ProPulseHint from '@/components/pro/ProPulseHint'
+import { trackToolUsage } from '@/components/pro/useProStatus'
 
 type Severity = 'ok' | 'wn' | 'dn' | 'neutral'
 
@@ -89,6 +93,9 @@ const organs: OrganCategory[] = [
 ]
 
 export default function AbdominalEchoPage() {
+  // PLG: ツール利用トラッキング
+  useEffect(() => { trackToolUsage('interpret-abdominal-echo') }, [])
+
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [activeOrgan, setActiveOrgan] = useState<string | null>(null)
   const svgKey: Record<string,string> = {liver:'liver',gb:'gb',pancreas:'pancreas',kidney:'kidney_r',spleen:'spleen',aorta:'aorta',others:'bladder'}
@@ -133,11 +140,11 @@ export default function AbdominalEchoPage() {
         <Link href="/tools" className="hover:text-ac">臨床ツール</Link><span className="mx-2">›</span>
         <Link href="/tools/interpret" className="hover:text-ac">検査読影</Link><span className="mx-2">›</span><span>腹部エコー</span>
       </nav>
-      <header className="mb-6">
+      <header className="mb-6"><div className="flex items-start justify-between gap-3"><div className="min-w-0">
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🔊 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">腹部エコー 系統的評価チェックリスト</h1>
         <p className="text-sm text-muted">臓器別に評価。各セクションにホバーすると模式図の対応臓器がハイライト。</p>
-      </header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-abdominal-echo" /></ProPulseHint></div></header>
       <div className="flex flex-col lg:flex-row gap-6 mb-6">
         <div className="lg:w-[320px] shrink-0"><div className="lg:sticky lg:top-4 bg-s1 border border-br rounded-xl p-3">
           <p className="text-xs font-bold text-tx mb-2 text-center">模式的腹部臓器配置</p>
@@ -202,6 +209,7 @@ export default function AbdominalEchoPage() {
       </div>
 
       {/* SEO */}
+      <ProGate feature="interpretation" previewHeight={80}>
       <section className="space-y-4 text-sm text-muted mb-8">
         <h2 className="text-base font-bold text-tx">腹部エコーの系統的アプローチ</h2>
         <p>腹部超音波検査はベッドサイドで非侵襲的に腹腔内臓器を評価できる重要な検査です。系統的に肝臓→胆嚢・胆管→膵臓→腎臓→脾臓→大動脈→その他の順に評価することで見落としを防ぎます。</p>
@@ -212,6 +220,7 @@ export default function AbdominalEchoPage() {
         <h3 className="font-bold text-tx">急性腹症での腹部エコー</h3>
         <p>急性胆嚢炎（Murphy sign + 胆嚢壁肥厚 + 結石）・AAA破裂（大動脈径拡大 + 後腹膜血腫）・水腎症（尿管結石）・腹水（消化管穿孔・出血）の迅速診断に不可欠です。</p>
       </section>
+      </ProGate>
 
       {/* 関連ツール */}
       <section className="mb-8">

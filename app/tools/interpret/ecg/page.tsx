@@ -1,8 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import ECGSVG from '@/components/tools/interpret/ECGSVG'
+import ProGate from '@/components/pro/ProGate'
+import FavoriteButton from '@/components/tools/FavoriteButton'
+import ProPulseHint from '@/components/pro/ProPulseHint'
+import { trackToolUsage } from '@/components/pro/useProStatus'
 
 // ── Types ──
 type Severity = 'ok' | 'wn' | 'dn' | 'neutral'
@@ -298,6 +302,9 @@ const otherFindingOptions = [
 ]
 
 export default function ECGInterpretPage() {
+  // PLG: ツール利用トラッキング
+  useEffect(() => { trackToolUsage('interpret-ecg') }, [])
+
   const [input, setInput] = useState<ECGInput>(defaults)
   const [activeStep, setActiveStep] = useState<string | null>(null)
   const set = <K extends keyof ECGInput>(key: K) => (val: ECGInput[K]) => setInput(prev => ({ ...prev, [key]: val }))
@@ -328,13 +335,13 @@ export default function ECGInterpretPage() {
       </nav>
 
       {/* ヘッダー */}
-      <header className="mb-6">
+      <header className="mb-6"><div className="flex items-start justify-between gap-3"><div className="min-w-0">
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🫀 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">心電図（ECG）系統的読影フロー</h1>
         <p className="text-sm text-muted">
           心拍数 → リズム → P波 → PR間隔 → QRS → 軸 → ST変化 → T波 → QTc をステップバイステップで解釈。見落としを防ぐ9項目チェック。
         </p>
-      </header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-ecg" /></ProPulseHint></div></header>
 
       {/* 模式的心電図波形 */}
       <div className="bg-s1 border border-br rounded-xl p-3 mb-6">
@@ -476,6 +483,7 @@ export default function ECGInterpretPage() {
       </div>
 
       {/* SEO解説 */}
+      <ProGate feature="interpretation" previewHeight={80}>
       <section className="space-y-4 text-sm text-muted mb-8">
         <h2 className="text-base font-bold text-tx">心電図の系統的読影アプローチ</h2>
         <p>心電図（ECG/EKG）の読影は系統的に行うことで見落としを防ぎます。本ツールは「Rate → Rhythm → P wave → PR → QRS → Axis → ST → T → QTc」の9ステップで、入力された所見から鑑別疾患と次の評価ステップを提示します。</p>
@@ -489,6 +497,7 @@ export default function ECGInterpretPage() {
         <h3 className="font-bold text-tx">QT延長の評価</h3>
         <p>QTcはBazett補正（QT/√RR）で算出。男性 &gt; 450ms・女性 &gt; 470msで延長。500ms超はTorsades de Pointesの高リスクで、原因薬剤の中止と電解質補正（K &gt; 4.0, Mg &gt; 2.0）が必要。</p>
       </section>
+      </ProGate>
 
       {/* 関連ツール */}
       <section className="mb-8">

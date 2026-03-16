@@ -1,17 +1,11 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import Link from 'next/link'
-import CTABanner from '@/components/blog/CTABanner'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
-
-const toolsCta = {
-  title: '🚀 AIが病歴要約の下書きを30秒で生成',
-  description: 'J-OSLER作業を10分の1に。症例登録テンプレ・検査値フォーマット変換・病歴要約AI下書きが全部入り。',
-  buttonText: '無料で試してみる',
-  url: 'https://naikanavi.booth.pm/items/8058590',
-}
+import ProGate from '@/components/pro/ProGate'
+import { trackToolUsage, getTotalToolUsage, useProStatus } from '@/components/pro/useProStatus'
 
 interface CalculatorLayoutProps {
   slug?: string
@@ -22,9 +16,81 @@ interface CalculatorLayoutProps {
   categoryIcon: string
   children: ReactNode
   result?: ReactNode
+  /** SEO解説。自動的にProGate(interpretation)で包まれる。noProGate=trueで解除。 */
   explanation?: ReactNode
+  /** trueにするとexplanationのProGateラップを無効化 */
+  noProGate?: boolean
   relatedTools?: { slug: string; name: string }[]
   references?: { text: string; url?: string }[]
+}
+
+/** PLG: 3回目利用バナー（1回限り） */
+function ThirdUseBanner() {
+  const { isPro } = useProStatus()
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (isPro) return
+    const total = getTotalToolUsage()
+    const shown = localStorage.getItem('iwor_third_use_banner_shown') === 'true'
+    if (total >= 3 && !shown) {
+      setShow(true)
+      localStorage.setItem('iwor_third_use_banner_shown', 'true')
+    }
+  }, [isPro])
+
+  if (!show) return null
+
+  return (
+    <div className="mb-6 p-4 bg-acl border border-ac/20 rounded-xl flex items-start gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <span className="text-lg flex-shrink-0">⭐</span>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-tx mb-0.5">よく使うツールをお気に入りに保存できます</p>
+        <p className="text-xs text-muted">PRO会員ならお気に入り保存・解釈・アクションプランが使い放題</p>
+      </div>
+      <Link
+        href="/pro"
+        className="flex-shrink-0 text-xs font-bold text-ac hover:text-ac/80 transition-colors"
+      >
+        詳しく →
+      </Link>
+    </div>
+  )
+}
+
+/** PRO CTA（ページ末尾） */
+function ProCTA() {
+  return (
+    <div className="relative bg-ac rounded-2xl p-6 md:p-8 my-8 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <svg className="absolute top-0 right-0 w-64 h-64 text-white/[0.03]" viewBox="0 0 200 200">
+          {[30, 55, 80, 105].map((r) => (
+            <circle key={r} cx="170" cy="30" r={r} fill="none" stroke="currentColor" strokeWidth="0.8" />
+          ))}
+        </svg>
+      </div>
+      <div className="relative z-10 text-center">
+        <span className="inline-block bg-white/15 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
+          iwor PRO
+        </span>
+        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug">
+          解釈・アクションプラン・お気に入りが使い放題
+        </h3>
+        <p className="text-white/70 text-sm mb-4 max-w-md mx-auto">
+          臨床ツールの深い解釈、推奨アクション、データ保存。月額換算 約817円で全機能アクセス。
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link
+            href="/pro"
+            className="inline-flex items-center justify-center gap-2 bg-white text-ac px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/90 transition-colors shadow-lg shadow-black/10"
+          >
+            PRO会員について詳しく見る
+          </Link>
+        </div>
+        <p className="text-white/40 text-xs mt-3">¥9,800/年 〜</p>
+      </div>
+    </div>
+  )
 }
 
 export default function CalculatorLayout({
@@ -37,9 +103,15 @@ export default function CalculatorLayout({
   children,
   result,
   explanation,
+  noProGate = false,
   relatedTools,
   references,
 }: CalculatorLayoutProps) {
+  // PLG: ツール利用回数トラッキング
+  useEffect(() => {
+    if (slug) trackToolUsage(slug)
+  }, [slug])
+
   return (
     <div className="max-w-2xl mx-auto overflow-hidden">
       {/* パンくず */}
@@ -72,6 +144,9 @@ export default function CalculatorLayout({
         <p className="text-sm text-muted mt-2">{description}</p>
       </header>
 
+      {/* PLG: 3回目利用バナー */}
+      <ThirdUseBanner />
+
       {/* 計算フォーム */}
       <section className="bg-s0 border border-br rounded-xl p-5 sm:p-6 mb-6">
         <h2 className="sr-only">入力</h2>
@@ -95,10 +170,16 @@ export default function CalculatorLayout({
         </p>
       </div>
 
-      {/* SEO解説 */}
+      {/* SEO解説（ProGateで自動ラップ） */}
       {explanation && (
         <section className="mb-8">
-          {explanation}
+          {noProGate ? (
+            explanation
+          ) : (
+            <ProGate feature="interpretation" previewHeight={80}>
+              {explanation}
+            </ProGate>
+          )}
         </section>
       )}
 
@@ -140,8 +221,8 @@ export default function CalculatorLayout({
         </section>
       )}
 
-      {/* CTA */}
-      <CTABanner cta={toolsCta} variant="large" />
+      {/* PRO CTA */}
+      <ProCTA />
     </div>
   )
 }

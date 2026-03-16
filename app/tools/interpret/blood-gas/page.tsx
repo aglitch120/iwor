@@ -1,7 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import ProGate from '@/components/pro/ProGate'
+import FavoriteButton from '@/components/tools/FavoriteButton'
+import ProPulseHint from '@/components/pro/ProPulseHint'
+import { trackToolUsage } from '@/components/pro/useProStatus'
 
 interface BloodGasInput {
   ph: string; pco2: string; hco3: string
@@ -240,6 +244,9 @@ function Field({ id, label, unit, value, onChange, step = 0.01, hint }: {
 }
 
 export default function BloodGasPage() {
+  // PLG: ツール利用トラッキング
+  useEffect(() => { trackToolUsage('interpret-blood-gas') }, [])
+
   const [input, setInput] = useState<BloodGasInput>(defaults)
   const set = (key: keyof BloodGasInput) => (val: string) => setInput(prev => ({ ...prev, [key]: val }))
 
@@ -258,13 +265,13 @@ export default function BloodGasPage() {
       </nav>
 
       {/* ヘッダー */}
-      <header className="mb-6">
+      <header className="mb-6"><div className="flex items-start justify-between gap-3"><div className="min-w-0">
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🔬 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">血液ガス分析 インタラクティブ解釈</h1>
         <p className="text-sm text-muted">
           pH・PCO₂・HCO₃⁻を入力 → 酸塩基障害をステップバイステップで自動解釈。AG・代償・A-aDO₂・P/F比まで一括評価。
         </p>
-      </header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-blood-gas" /></ProPulseHint></div></header>
 
       {/* 入力 */}
       <section className="bg-s0 border border-br rounded-xl p-5 mb-6">
@@ -325,6 +332,7 @@ export default function BloodGasPage() {
       </div>
 
       {/* SEO解説 */}
+      <ProGate feature="interpretation" previewHeight={80}>
       <section className="space-y-4 text-sm text-muted mb-8">
         <h2 className="text-base font-bold text-tx">血液ガス分析の系統的アプローチ</h2>
         <p>血液ガス（ABG）の解釈は、以下の5ステップで系統的に行います。本ツールはこの手順を自動化し、混合性障害の見落としを防ぎます。</p>
@@ -335,6 +343,7 @@ export default function BloodGasPage() {
         <h3 className="font-bold text-tx">非AG開大型の鑑別</h3>
         <p>下痢、RTA（I型・II型・IV型）、生食大量投与、尿管S状結腸吻合、アセタゾラミド</p>
       </section>
+      </ProGate>
 
       {/* 関連ツール */}
       <section className="mb-8">
