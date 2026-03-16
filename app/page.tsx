@@ -16,13 +16,8 @@ export default function HomePage() {
   return (
     <div className="max-w-5xl mx-auto">
 
-      {/* ═══ Hero（縦配置: モックアップ → テキスト） ═══ */}
-      <section className="pt-10 pb-16 md:pt-16 md:pb-24 text-center">
-        {/* モックアップ（先に表示、インパクト） */}
-        <div className="max-w-md mx-auto mb-10 md:mb-12">
-          <AppMockup className="w-full" />
-        </div>
-
+      {/* ═══ Hero（中央: テキスト → mockup） ═══ */}
+      <section className="pt-12 pb-16 md:pt-20 md:pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-acl border border-ac/20 rounded-full text-xs font-medium text-ac mb-6">
           <span className="w-1.5 h-1.5 bg-ac rounded-full animate-pulse" />
           123個の臨床ツール + 173記事、すべて無料
@@ -36,7 +31,7 @@ export default function HomePage() {
           臨床ツール、病棟管理、学習、キャリア支援。
           必要なものが、すべてひとつの場所に。
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
           <Link
             href="/app"
             className="inline-flex items-center justify-center gap-2 bg-ac text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-ac2 transition-colors shadow-lg shadow-ac/20"
@@ -52,6 +47,10 @@ export default function HomePage() {
           >
             PRO会員について
           </Link>
+        </div>
+        {/* モックアップ */}
+        <div className="max-w-xl mx-auto">
+          <AppMockup className="w-full" />
         </div>
       </section>
 
