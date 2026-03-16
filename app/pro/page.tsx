@@ -66,7 +66,7 @@ const plans = [
     label: '1年パス',
     price: 9800,
     priceDisplay: '¥9,800',
-    monthly: '約817円',
+    monthly: '約¥820',
     period: '/ 年',
     discount: null,
     popular: false,
@@ -76,7 +76,7 @@ const plans = [
     label: '2年パス',
     price: 15800,
     priceDisplay: '¥15,800',
-    monthly: '約658円',
+    monthly: '約¥660',
     period: '/ 2年',
     discount: '19%OFF',
     popular: true,
@@ -86,7 +86,7 @@ const plans = [
     label: '3年パス',
     price: 19800,
     priceDisplay: '¥19,800',
-    monthly: '約550円',
+    monthly: '約¥550',
     period: '/ 3年',
     discount: '33%OFF',
     popular: false,
@@ -203,7 +203,7 @@ export default function ProPage() {
       <section className="grid grid-cols-3 gap-4 mb-16">
         {[
           { num: '120+', label: '臨床ツール', sub: '計算・ER・ACLS・ICU・読影・薬剤比較' },
-          { num: '¥27', label: '1日あたり', sub: '年額¥9,800' },
+          { num: '¥820', label: '月あたり', sub: '年額¥9,800' },
           { num: '0', label: '患者データ保存', sub: 'キャリアデータのみ' },
         ].map((s) => (
           <div key={s.label} className="text-center p-4 bg-s0 border border-br rounded-xl">
@@ -248,7 +248,7 @@ export default function ProPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
             {currentSegment.features.map((f, i) => (
-              <div key={i} className="bg-s0/80 backdrop-blur-sm rounded-xl p-4 border border-br/50">
+              <div key={i} className="bg-s0 rounded-xl p-4 border border-br/50">
                 <div className="flex items-start gap-2">
                   <span className="text-ac text-sm mt-0.5">✓</span>
                   <div>
@@ -301,7 +301,7 @@ export default function ProPage() {
               </p>
               <p className="text-3xl font-bold mb-1">{plan.priceDisplay}</p>
               <p className={`text-xs mb-4 ${plan.popular ? 'text-white/60' : 'text-muted'}`}>
-                月額換算 {plan.monthly}
+                月あたり {plan.monthly}
               </p>
               <a
                 href="https://iwor.booth.pm/items/8087647"
@@ -337,24 +337,31 @@ export default function ProPage() {
         <h2 className="text-xl font-bold text-tx text-center mb-2">無料 vs PRO</h2>
         <p className="text-sm text-muted text-center mb-6">緊急ツールは永久無料。PROは解釈・保存・蓄積が使い放題。</p>
 
-        <div className="bg-s0 border border-br rounded-2xl overflow-hidden">
-          {/* ヘッダー */}
-          <div className="grid grid-cols-[1fr,1fr,1fr] bg-s1 border-b border-br">
-            <div className="p-3 text-xs font-bold text-muted">機能</div>
-            <div className="p-3 text-xs font-bold text-muted text-center border-l border-br">FREE</div>
-            <div className="p-3 text-xs font-bold text-ac text-center border-l border-br bg-acl/30">PRO</div>
-          </div>
-          {/* 行 */}
-          {comparison.map((row, i) => (
-            <div
-              key={i}
-              className={`grid grid-cols-[1fr,1fr,1fr] ${i < comparison.length - 1 ? 'border-b border-br' : ''}`}
-            >
-              <div className="p-3 text-xs text-tx font-medium">{row.feature}</div>
-              <div className="p-3 text-xs text-muted text-center border-l border-br">{row.free}</div>
-              <div className="p-3 text-xs text-ac font-medium text-center border-l border-br bg-acl/10">{row.pro}</div>
+        <div className="relative">
+          {/* PRO列の浮き上がり背景 */}
+          <div className="absolute top-0 right-0 w-[33.33%] h-full bg-acl/40 border-2 border-ac/20 rounded-2xl -translate-y-2 shadow-lg shadow-ac/10 pointer-events-none" />
+
+          <div className="relative bg-s0 border border-br rounded-2xl overflow-hidden">
+            {/* ヘッダー */}
+            <div className="grid grid-cols-[1fr,1fr,1fr] bg-s1 border-b border-br">
+              <div className="p-3 text-xs font-bold text-muted">機能</div>
+              <div className="p-3 text-xs font-bold text-muted text-center border-l border-br">FREE</div>
+              <div className="p-3 text-xs font-bold text-ac text-center border-l border-br bg-acl/50">
+                <span className="inline-flex items-center gap-1">✦ PRO</span>
+              </div>
             </div>
-          ))}
+            {/* 行 */}
+            {comparison.map((row, i) => (
+              <div
+                key={i}
+                className={`grid grid-cols-[1fr,1fr,1fr] ${i < comparison.length - 1 ? 'border-b border-br' : ''}`}
+              >
+                <div className="p-3 text-xs text-tx font-medium">{row.feature}</div>
+                <div className="p-3 text-xs text-muted text-center border-l border-br">{row.free}</div>
+                <div className="p-3 text-xs text-ac font-medium text-center border-l border-br bg-acl/20">{row.pro}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -405,32 +412,23 @@ export default function ProPage() {
 
       {/* ═══ 最終CTA ═══ */}
       <section className="mb-8">
-        <div className="bg-ac rounded-2xl p-8 md:p-10 text-center relative overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            <svg className="absolute top-0 right-0 w-64 h-64 text-white/[0.03]" viewBox="0 0 200 200">
-              {[30, 55, 80, 105].map((r) => (
-                <circle key={r} cx="170" cy="30" r={r} fill="none" stroke="currentColor" strokeWidth="0.8" />
-              ))}
-            </svg>
-          </div>
-          <div className="relative z-10">
-            <p className="text-white/60 text-sm mb-2">iwor PRO</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              今日から、臨床をもっと深く。
-            </h2>
-            <p className="text-white/70 text-sm mb-6 max-w-md mx-auto">
-              120+の臨床ツール、解釈、アクションプラン。月額約817円で全機能アクセス。
-            </p>
-            <a
-              href="https://iwor.booth.pm/items/8087647"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-white text-ac px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-white/90 transition-colors shadow-lg"
-            >
-              BOOTHで購入する
-            </a>
-            <p className="text-white/40 text-xs mt-3">¥9,800/年〜 ・ クレジットカード・PayPay・コンビニ払い</p>
-          </div>
+        <div className="bg-ac rounded-2xl p-8 md:p-10 text-center shadow-xl shadow-ac/15 -mx-2 md:-mx-4">
+          <p className="text-white/60 text-sm mb-2">iwor PRO</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+            今日から、臨床をもっと深く。
+          </h2>
+          <p className="text-white/70 text-sm mb-6 max-w-md mx-auto">
+            120+の臨床ツール、解釈、アクションプラン。月あたり約¥820で全機能アクセス。
+          </p>
+          <a
+            href="https://iwor.booth.pm/items/8087647"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-white text-ac px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-white/90 transition-colors shadow-lg"
+          >
+            BOOTHで購入する
+          </a>
+          <p className="text-white/40 text-xs mt-3">¥9,800/年〜 ・ クレジットカード・PayPay・コンビニ払い</p>
         </div>
       </section>
     </div>

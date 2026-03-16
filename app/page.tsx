@@ -16,47 +16,41 @@ export default function HomePage() {
   return (
     <div className="max-w-5xl mx-auto">
 
-      {/* ═══ Hero ═══ */}
-      <section className="pt-12 pb-16 md:pt-20 md:pb-24">
-        {/* モバイル: 中央揃え / デスクトップ: 左テキスト＋右モックアップ */}
-        <div className="flex flex-col md:flex-row md:items-center md:gap-12">
-          <div className="flex-1 text-center md:text-left mb-10 md:mb-0">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-acl border border-ac/20 rounded-full text-xs font-medium text-ac mb-6">
-              <span className="w-1.5 h-1.5 bg-ac rounded-full animate-pulse" />
-              123個の臨床ツール + 173記事、すべて無料
-            </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-tx leading-[1.15] tracking-tight mb-5">
-              医学生から医師まで、
-              <br />
-              ずっと臨床のそばに。
-            </h1>
-            <p className="text-base text-muted leading-relaxed max-w-md mx-auto md:mx-0 mb-8">
-              臨床ツール、病棟管理、学習、キャリア支援。
-              必要なものが、すべてひとつの場所に。
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <Link
-                href="/app"
-                className="inline-flex items-center justify-center gap-2 bg-ac text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-ac2 transition-colors shadow-lg shadow-ac/20"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                アプリを使ってみる
-              </Link>
-              <Link
-                href="/pro"
-                className="inline-flex items-center justify-center gap-2 bg-s0 text-tx border border-br px-7 py-3.5 rounded-xl font-medium text-sm hover:border-ac/40 hover:bg-acl transition-colors"
-              >
-                PRO会員について
-              </Link>
-            </div>
-          </div>
-
-          {/* デスクトップのみモックアップ表示 */}
-          <div className="hidden md:block flex-1">
-            <AppMockup className="w-full" />
-          </div>
+      {/* ═══ Hero（中央配置） ═══ */}
+      <section className="pt-12 pb-16 md:pt-20 md:pb-24 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-acl border border-ac/20 rounded-full text-xs font-medium text-ac mb-6">
+          <span className="w-1.5 h-1.5 bg-ac rounded-full animate-pulse" />
+          123個の臨床ツール + 173記事、すべて無料
+        </div>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-tx leading-[1.15] tracking-tight mb-5">
+          医学生から医師まで、
+          <br />
+          ずっと臨床のそばに。
+        </h1>
+        <p className="text-base text-muted leading-relaxed max-w-lg mx-auto mb-8">
+          臨床ツール、病棟管理、学習、キャリア支援。
+          必要なものが、すべてひとつの場所に。
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+          <Link
+            href="/app"
+            className="inline-flex items-center justify-center gap-2 bg-ac text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-ac2 transition-colors shadow-lg shadow-ac/20"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            アプリを使ってみる
+          </Link>
+          <Link
+            href="/pro"
+            className="inline-flex items-center justify-center gap-2 bg-s0 text-tx border border-br px-7 py-3.5 rounded-xl font-medium text-sm hover:border-ac/40 hover:bg-acl transition-colors"
+          >
+            PRO会員について
+          </Link>
+        </div>
+        {/* モックアップ（中央） */}
+        <div className="max-w-xl mx-auto">
+          <AppMockup className="w-full" />
         </div>
       </section>
 
@@ -72,7 +66,7 @@ export default function HomePage() {
         {/* ── メインカード: 臨床ツール ── */}
         <Link
           href="/tools"
-          className="group block mb-4 rounded-2xl border-2 border-ac/20 bg-gradient-to-br from-acl/60 via-s0 to-bg overflow-hidden hover:border-ac/40 transition-all"
+          className="group block mb-4 rounded-2xl border border-br bg-s0 overflow-hidden hover:border-ac/40 hover:shadow-md transition-all"
         >
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-5">
@@ -83,28 +77,28 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="text-lg md:text-xl font-bold text-tx group-hover:text-ac transition-colors">臨床ツール</h3>
-                <p className="text-xs text-muted">計算・ER対応・ACLS/BLS・ICU管理・検査読影・薬剤比較</p>
+                <p className="text-xs text-muted">計算・ER・ACLS/BLS・ICU・読影・薬剤比較 — すべて無料</p>
               </div>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
               {['臨床計算', 'ER対応', 'ACLS/BLS', 'ICU管理', '検査読影', '薬剤比較'].map(name => (
-                <div key={name} className="bg-ac/10 text-ac border border-ac/20 rounded-lg px-3 py-2.5 text-center">
+                <div key={name} className="bg-acl text-ac border border-ac/15 rounded-lg px-3 py-2.5 text-center">
                   <p className="text-xs font-bold">{name}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="px-6 md:px-8 py-3 bg-ac/5 border-t border-ac/10 flex items-center justify-between">
+          <div className="px-6 md:px-8 py-3 bg-s1 border-t border-br flex items-center justify-between">
             <p className="text-xs text-muted">CHA₂DS₂-VASc, eGFR, SOFA, Wells PE, A-DROP, qSOFA ...</p>
             <span className="text-xs text-ac font-medium group-hover:translate-x-1 transition-transform">使ってみる →</span>
           </div>
         </Link>
 
-        {/* ── 6サービス: ガラス質感カード ── */}
+        {/* ── 6サービス: フラットカード ── */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
             {
-              href: '/dashboard', title: '病棟TODO', sub: 'タスク管理 & 症例ログ', tag: 'PRO',
+              href: '/dashboard', title: '病棟TODO', sub: '症例ログ & Stat tracker', tag: 'PRO',
               icon: <><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 12l2.5 2.5L16 9" /></>,
             },
             {
@@ -116,11 +110,11 @@ export default function HomePage() {
               icon: <><path d="M12 20V10" /><path d="M18 20V4" /><path d="M6 20v-4" /></>,
             },
             {
-              href: '/matching', title: 'マッチング対策', sub: '履歴書 & AI面接練習', tag: 'PRO',
+              href: '/matching', title: 'マッチング対策', sub: '履歴書 & AI面接', tag: 'PRO',
               icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5" /></>,
             },
             {
-              href: '/journal', title: '論文フィード', sub: '日本語要約 & ブックマーク', tag: 'FREE',
+              href: '/journal', title: '論文フィード', sub: '日本語要約 & ブックマーク', tag: 'FREEMIUM',
               icon: <><path d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" /></>,
             },
             {
@@ -131,19 +125,21 @@ export default function HomePage() {
             <Link
               key={s.href}
               href={s.href}
-              className="group relative flex flex-col items-center text-center rounded-2xl border border-ac/15 bg-gradient-to-br from-acl/40 via-s0 to-s0 p-6 md:p-7 hover:border-ac/35 hover:shadow-lg hover:shadow-ac/5 transition-all backdrop-blur-sm"
+              className="group relative flex flex-col items-center text-center rounded-2xl border border-br bg-s0 p-6 md:p-7 hover:border-ac/30 hover:shadow-md transition-all"
             >
-              {/* PRO / FREE バッジ — 右上 */}
+              {/* バッジ */}
               <span className={`absolute top-3 right-3 text-[10px] font-semibold tracking-wide px-2 py-0.5 rounded-md ${
                 s.tag === 'FREE'
-                  ? 'text-ac/60 bg-ac/8'
-                  : 'text-ac bg-ac/12'
+                  ? 'text-ac/60 bg-acl'
+                  : s.tag === 'FREEMIUM'
+                  ? 'text-muted bg-s1'
+                  : 'text-ac bg-acl'
               }`}>
                 {s.tag}
               </span>
 
-              {/* アイコン — ガラス風 */}
-              <div className="w-12 h-12 rounded-xl bg-ac/10 border border-ac/15 flex items-center justify-center mb-4 group-hover:bg-ac/15 group-hover:border-ac/25 group-hover:shadow-md group-hover:shadow-ac/10 transition-all">
+              {/* アイコン */}
+              <div className="w-12 h-12 rounded-xl bg-acl border border-ac/10 flex items-center justify-center mb-4 group-hover:bg-ac/15 group-hover:border-ac/20 transition-all">
                 <svg className="w-5 h-5 text-ac" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                   {s.icon}
                 </svg>
@@ -175,17 +171,7 @@ export default function HomePage() {
 
       {/* ═══ PRO CTA ═══ */}
       <section className="mb-8">
-        <div className="relative bg-ac rounded-2xl p-8 md:p-10 text-center overflow-hidden">
-          {/* ガラス装飾 */}
-          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/5 rounded-full blur-2xl" />
-            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
-            <svg className="absolute top-0 right-0 w-64 h-64 text-white/[0.03]" viewBox="0 0 200 200">
-              {[30, 55, 80, 105].map(r => (
-                <circle key={r} cx="170" cy="30" r={r} fill="none" stroke="currentColor" strokeWidth="0.8" />
-              ))}
-            </svg>
-          </div>
+        <div className="relative bg-ac rounded-2xl p-8 md:p-10 text-center overflow-hidden shadow-xl shadow-ac/15 -mx-2 md:-mx-4">
           <div className="relative z-10">
             <p className="text-white/40 text-xs mb-2 tracking-widest uppercase font-mono">iwor PRO</p>
             <h2 className="text-xl md:text-2xl font-bold text-white mb-3">
@@ -194,7 +180,7 @@ export default function HomePage() {
             <p className="text-white/60 text-sm mb-6 max-w-lg mx-auto leading-relaxed">
               解釈・アクションプラン・病棟管理・学習・J-OSLER・マッチング・論文フィード。
               <br className="hidden sm:inline" />
-              年額¥9,800 — 1日あたり約27円ですべてにアクセス。
+              月額約¥820ですべてにアクセス。
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
@@ -205,7 +191,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/pro/activate"
-                className="inline-flex items-center justify-center bg-white/10 text-white border border-white/20 px-7 py-3.5 rounded-xl font-medium text-sm hover:bg-white/20 transition-colors backdrop-blur-sm"
+                className="inline-flex items-center justify-center bg-white/10 text-white border border-white/20 px-7 py-3.5 rounded-xl font-medium text-sm hover:bg-white/20 transition-colors"
               >
                 ログイン / 会員登録
               </Link>

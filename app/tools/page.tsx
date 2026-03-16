@@ -2,18 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: '臨床ツール',
-  description: '内科外来・ER・病棟のすべてをカバー。臨床計算79種、生活習慣病総合管理、抗菌薬調整、ACLS、ER対応、J-OSLER管理など。',
+  title: '臨床ツール — iwor',
+  description: '臨床計算79種、生活習慣病総合管理、ER対応6本、ACLS/BLS 4本、ICU管理4本、検査読影5本、薬剤比較25カテゴリ。すべて無料。',
 }
 
-// ── 目玉ツール ──
-const featured = {
-  href: '/tools/lifestyle',
-  name: '生活習慣病 総合管理ツール',
-  desc: '高血圧・糖尿病・脂質異常症・CKD・肝障害・高尿酸血症・肥満 — 検査値を入力するだけで、疾患評価・管理目標・次のアクション・生活指導が自動生成。二次性高血圧/SAS/FHスクリーニング提案付き。',
-}
-
-// ── ツールカテゴリ ──
+// ── ツールカテゴリ（臨床ツールのみ） ──
 const categories = [
   {
     slug: 'calc',
@@ -78,60 +71,6 @@ const categories = [
     badge: '準備中',
     available: false,
   },
-  {
-    slug: 'ward',
-    icon: '📋',
-    name: '病棟管理',
-    description: '患者TODO・採血・輸液・メモ',
-    count: null,
-    badge: 'PRO',
-    available: false,
-  },
-  {
-    slug: 'journal',
-    icon: '📰',
-    name: '論文フィード',
-    description: '最新論文の日本語要約・自動配信',
-    count: null,
-    badge: '準備中',
-    available: false,
-  },
-  {
-    slug: 'josler',
-    icon: '📝',
-    name: 'J-OSLER管理',
-    description: '症例登録・進捗トラッカー・病歴要約',
-    count: null,
-    badge: 'PRO',
-    available: false,
-  },
-  {
-    slug: 'study',
-    icon: '📖',
-    name: '臨床トレーニング',
-    description: '症例ベースの問題演習・知識整理',
-    count: null,
-    badge: '準備中',
-    available: false,
-  },
-  {
-    slug: 'diagnosis',
-    icon: '🩻',
-    name: '専門科診断',
-    description: '20問であなたに合う専門科を診断',
-    count: null,
-    badge: '準備中',
-    available: false,
-  },
-  {
-    slug: 'matching',
-    icon: '🎓',
-    name: 'マッチング対策',
-    description: '病院DB・倍率表・面接対策・履歴書生成',
-    count: null,
-    badge: '準備中',
-    available: false,
-  },
 ]
 
 function CategoryCard({ cat }: { cat: typeof categories[0] }) {
@@ -186,27 +125,9 @@ export default function ToolsHubPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-tx">臨床ツール</h1>
         <p className="text-muted mt-2">
-          臨床医が必要なものがすべて揃う。計算・判断・緊急系はすべて<span className="font-bold text-ac">無料</span>。
+          計算・判断・緊急系はすべて<span className="font-bold text-ac">無料</span>。解釈・アクションプランは<span className="font-bold text-ac">PRO</span>。
         </p>
       </div>
-
-      {/* 目玉: 生活習慣病 総合管理 */}
-      <Link
-        href={featured.href}
-        className="group block mb-8 p-6 rounded-2xl border-2 border-ac/30 bg-gradient-to-br from-acl/50 to-bg hover:border-ac/60 transition-all"
-      >
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-ac text-white font-bold">NEW</span>
-          <span className="text-xs text-ac font-medium">内科外来の決定版</span>
-        </div>
-        <h2 className="text-xl font-bold text-tx group-hover:text-ac transition-colors mb-2">
-          {featured.name}
-        </h2>
-        <p className="text-sm text-muted leading-relaxed">
-          {featured.desc}
-        </p>
-        <span className="inline-block mt-3 text-sm text-ac font-medium">使ってみる →</span>
-      </Link>
 
       {/* カテゴリグリッド */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
