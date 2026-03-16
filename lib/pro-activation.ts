@@ -7,7 +7,7 @@
 
 // Worker API URL（デプロイ後に設定）
 // 開発時は localhost:8787、本番は iwor-api.xxx.workers.dev or api.iwor.jp
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+const API_URL = 'https://iwor-api.mightyaddnine.workers.dev'
 
 interface ActivationResult {
   success: boolean

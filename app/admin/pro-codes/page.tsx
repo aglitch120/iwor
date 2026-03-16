@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect, useCallback } from 'react'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+const API_URL = 'https://iwor-api.mightyaddnine.workers.dev'
 
 const planLabels: Record<string, { label: string; color: string }> = {
   pro_1y: { label: '1年パス', color: 'bg-acl text-ac' },
