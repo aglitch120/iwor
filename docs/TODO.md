@@ -1,6 +1,6 @@
 # iwor.jp TODO
 
-> 更新: 2026-03-16（デザイン統一・/app hub完了）
+> 更新: 2026-03-17（病棟TODO MVP完了）
 > 方針: 自走メイン、売却は保険。7つのサービスを段階的に構築。
 
 ---
@@ -79,13 +79,21 @@
 - [ ] 履歴書PDF出力機能（PRO）
 - [ ] マッチングプロフィールのクラウド保存（Supabase）
 
-## Phase 3: 病棟TODO & 症例ログ
+## Phase 3: 病棟TODO & 症例ログ（✅ MVP完了 2026-03-17）
 
-- [ ] /dashboard/ ティーザーLP
-- [ ] 患者TODO（Things 3風、チェック→ログ、退院→アーカイブ）
-- [ ] 症例ポチポチメモ（タップ入力）
-- [ ] Stat tracker（統計・検索・編集・削除）
+- [x] /dashboard/ MVP実装（DashboardApp.tsx）
+- [x] lib/josler-data.ts — J-OSLER 17領域・70疾患群の共通データ
+- [x] 患者カード（病室/ID/年代/性別/領域/疾患群/診断名）
+- [x] カスタマイズ可能タスクボタン（デフォルト5 + 候補19 + カスタム自由追加）
+- [x] 退院→症例ログ自動アーカイブ（確認ポップアップ付き）
+- [x] 症例ログ（検索/領域別統計/ログ編集/入退院日変更）
+- [x] CSVエクスポート（BOM付きUTF-8）
+- [x] カスタム記録項目（自由追加→CSV出力時カラム追加）
+- [x] J-OSLER準拠 領域→疾患群→病名 3段階ドロップダウン
+- [ ] ProGate適用（データ永続化=PRO、操作=FREE）
 - [ ] EPOC連携エクスポート
+- [ ] localStorageデータ永続化
+- [ ] Supabaseクラウド同期（Phase 2基盤後）
 
 ## Phase 4: J-OSLER管理
 
@@ -136,7 +144,7 @@
 | Phase 1.5: PRO基盤 + 収益化 | ✅ 完了（BOOTH価格変更・商品追加残） |
 | デザイン統一 | ✅ 完了（ガラス→フラット、/app hub、ブログカード、About背景） |
 | Phase 2: マッチング | 🔧 MVP完成（AI API化・PDF出力残） |
-| Phase 3: 病棟TODO | 未着手 |
+| Phase 3: 病棟TODO | ✅ MVP完了（ProGate/永続化/EPOC残） |
 | Phase 4: J-OSLER | 未着手 |
 | Phase 5: 学習 | 未着手 |
 | Phase 6: 論文フィード | 未着手 |
