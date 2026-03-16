@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { getAllPosts } from '@/lib/mdx'
 import ArticleCard from '@/components/blog/ArticleCard'
 import { AppMockup } from '@/components/AppMockup'
-import { IworIllustration } from '@/components/IworIllustration'
 
 export const metadata: Metadata = {
   title: 'iwor（イウォル）— 医学生から医師まで、ずっと臨床のそばに',
@@ -18,10 +17,7 @@ export default function HomePage() {
     <div className="max-w-5xl mx-auto">
 
       {/* ═══ Hero（中央: テキスト → mockup） ═══ */}
-      <section className="relative pt-12 pb-16 md:pt-20 md:pb-24 text-center">
-        {/* 背景イラスト */}
-        <IworIllustration className="absolute inset-0 w-full h-full opacity-60" />
-        <div className="relative z-10">
+      <section className="pt-12 pb-16 md:pt-20 md:pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-acl border border-ac/20 rounded-full text-xs font-medium text-ac mb-6">
           <span className="w-1.5 h-1.5 bg-ac rounded-full animate-pulse" />
           123個の臨床ツール + 173記事、すべて無料
@@ -56,7 +52,6 @@ export default function HomePage() {
         {/* モックアップ */}
         <div className="max-w-xl mx-auto">
           <AppMockup className="w-full" />
-        </div>
         </div>
       </section>
 
