@@ -156,9 +156,9 @@ export default function DashboardApp(){
   const editLP=arc.find((p:any)=>p.id===editLogId);
 
   return(
-    <div style={{background:C.bg,minHeight:"100vh",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif",color:C.tx,maxWidth:520,margin:"0 auto",position:"relative",paddingBottom:80}}>
+    <div style={{background:C.bg,minHeight:"100vh",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif",color:C.tx,maxWidth:720,margin:"0 auto",position:"relative",paddingBottom:80}}>
       {/* Header */}
-      <div style={{background:C.s0,borderBottom:`1px solid ${C.br}`,padding:"14px 18px",display:"flex",alignItems:"center",gap:10,position:"sticky",top:0,zIndex:50}}>
+      <div style={{background:C.s0,borderBottom:`1px solid ${C.br}`,padding:"14px 18px",display:"flex",alignItems:"center",gap:10,position:"sticky",top:56,zIndex:40}}>
         <div style={{width:32,height:32,background:C.ac,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:14,fontWeight:700}}>iw</div>
         <span style={{fontWeight:700,fontSize:17}}>病棟TODO</span>
         <span style={{fontSize:11,color:C.ac,background:C.acl,padding:"2px 7px",borderRadius:4,fontWeight:600}}>PRO</span>
@@ -317,7 +317,7 @@ export default function DashboardApp(){
         )}
       </div>
 
-      {tab==="todo"&&<button onClick={()=>{if(pts.length>=2&&requirePro("full_access"))return;setShowAdd(true);}} style={{position:"fixed",bottom:24,right:"max(14px,calc(50% - 246px))",width:56,height:56,borderRadius:"50%",border:"none",background:C.ac,color:"#fff",fontSize:28,fontWeight:300,cursor:"pointer",boxShadow:`0 4px 20px ${C.ac}44`,display:"flex",alignItems:"center",justifyContent:"center",zIndex:40}}>+</button>}
+      {tab==="todo"&&<button onClick={()=>{if(pts.length>=2&&requirePro("full_access"))return;setShowAdd(true);}} style={{position:"fixed",bottom:24,right:"max(14px,calc(50% - 346px))",width:56,height:56,borderRadius:"50%",border:"none",background:C.ac,color:"#fff",fontSize:28,fontWeight:300,cursor:"pointer",boxShadow:`0 4px 20px ${C.ac}44`,display:"flex",alignItems:"center",justifyContent:"center",zIndex:40}}>+</button>}
 
       {showAdd&&<AddModal onAdd={addPt} onClose={()=>setShowAdd(false)} />}
       {selP&&<DetailModal p={selP} tasks={tasks} cFields={cFields} onUpd={u=>updPt(selId,u)} onDC={()=>{setSelId(null);setDcId(selP.id);}} onClose={()=>setSelId(null)} onTog={tid=>togTask(selId,tid)} />}
