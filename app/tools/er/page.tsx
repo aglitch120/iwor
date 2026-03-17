@@ -18,6 +18,15 @@ const erFlows = [
   { href: '/tools/er/headache', emoji: '🤕', name: '頭痛', desc: 'Red Flag評価 → SAH/髄膜炎/GCA除外 → 片頭痛/緊張型/群発の急性期治療' },
   { href: '/tools/er/back-pain', emoji: '🦴', name: '腰背部痛', desc: 'AAA破裂・馬尾症候群・脊椎感染症・尿管結石の除外 → 非特異的腰痛の管理' },
   { href: '/tools/er/gi-bleeding', emoji: '🩸', name: '吐血・下血', desc: '上部/下部の判別 → ショック対応 → 静脈瘤/潰瘍/憩室の鑑別。GBSでリスク層別化' },
+  { href: '/tools/er/palpitation', emoji: '💓', name: '動悸', desc: '12誘導心電図 → Narrow/Wide QRS → SVT/VT/AF鑑別。ACLS連動。非心原性も評価' },
+  { href: '/tools/er/nausea-vomiting', emoji: '🤮', name: '悪心・嘔吐', desc: '急性腹症・頭蓋内圧亢進・ACS・DKAの除外 → 脱水評価 → 対症療法' },
+  { href: '/tools/er/sore-throat', emoji: '😷', name: '咽頭痛', desc: '気道緊急除外 → 扁桃周囲膿瘍 → Centor基準でGAS鑑別 → EBV考慮' },
+  { href: '/tools/er/hemoptysis', emoji: '🫁', name: '血痰・喀血', desc: '出血量評価 → 大量喀血は窒息リスク → BAE。肺癌・PE・結核の鑑別' },
+  { href: '/tools/er/weakness', emoji: '💪', name: '麻痺・脱力', desc: 'UMN(脳卒中) vs LMN(GBS) vs 脊髄 vs 非神経学的。発症様式と分布で鑑別' },
+  { href: '/tools/er/cough', emoji: '🤧', name: '咳・喀痰', desc: '急性/亜急性/慢性の分類 → 気道緊急・PE・心不全の除外 → 感染症/喘息/GERD（準備中）' },
+  { href: '/tools/er/diarrhea', emoji: '🚽', name: '下痢', desc: '脱水評価 → 血便・発熱の有無 → 感染性/炎症性/虚血性の鑑別（準備中）' },
+  { href: '/tools/er/numbness', emoji: '🖐️', name: 'しびれ', desc: '脳卒中・脊髄・GBS除外 → 末梢神経障害パターン → 手根管/糖尿病性（準備中）' },
+  { href: '/tools/er/hospital-fever', emoji: '🏥', name: '発熱（院内）', desc: '5D評価: Drug/Device/DVT/Decubitus/C.difficile → FN対応（準備中）' },
 ]
 
 const aclsFlows = [
