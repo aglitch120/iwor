@@ -149,7 +149,7 @@
 
 ## Phase 6: 論文フィード自動化
 
-- [ ] /journal/ 基本UI
+- [x] /journal/ 基本UI
 - [ ] PubMed API + Claude API 自動要約パイプライン
 - [ ] 最新3件FREE / 全アーカイブPRO
 
@@ -185,8 +185,8 @@
 | Phase 2: マッチング | ✅ MVP完了＋改善済（折りたたみ、ダミーモザイク、おすすめ表現） |
 | Phase 3: 病棟TODO | ✅ 完了（ヘッダー修正済） |
 | Phase 4: J-OSLER | ✅ MVP完了（Overview/Cases/Summaries/Other/Guide移植済） |
-| Phase 5: 学習 | 未着手 |
-| Phase 6: 論文フィード | 未着手 |
+| Phase 5: 学習 | ティーザーLP完了 |
+| Phase 6: 論文フィード | ティーザーLP完了 |
 
 ## 次期タスク（優先順）
 
