@@ -15,7 +15,13 @@ interface RegisterResult {
   error?: string
 }
 
-export async function registerWithOrderNumber(orderNumber: string, email: string): Promise<RegisterResult> {
+export interface UserProfile {
+  university?: string
+  licenseYear?: string
+  hospital?: string
+}
+
+export async function registerWithOrderNumber(orderNumber: string, email: string, profile?: UserProfile): Promise<RegisterResult> {
   const cleanedOrder = orderNumber.trim().replace(/\D/g, '')
   const cleanedEmail = email.trim().toLowerCase()
 
@@ -30,7 +36,13 @@ export async function registerWithOrderNumber(orderNumber: string, email: string
     const res = await fetch(`${API_URL}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderNumber: cleanedOrder, email: cleanedEmail }),
+      body: JSON.stringify({
+        orderNumber: cleanedOrder,
+        email: cleanedEmail,
+        ...(profile?.university && { university: profile.university }),
+        ...(profile?.licenseYear && { licenseYear: profile.licenseYear }),
+        ...(profile?.hospital && { hospital: profile.hospital }),
+      }),
     })
     const data = await res.json()
 

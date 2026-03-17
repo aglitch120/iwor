@@ -162,6 +162,9 @@ export default {
           orderNumber,
           registeredAt: now.toISOString(),
           expiresAt: expiresAt.toISOString(),
+          university: String(body.university || "").trim() || undefined,
+          licenseYear: String(body.licenseYear || "").trim() || undefined,
+          hospital: String(body.hospital || "").trim() || undefined,
         })
       );
 

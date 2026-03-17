@@ -22,6 +22,9 @@ export default function ActivatePage() {
   // 登録フォーム
   const [orderNumber, setOrderNumber] = useState('')
   const [regEmail, setRegEmail] = useState('')
+  const [regUniversity, setRegUniversity] = useState('')
+  const [regLicenseYear, setRegLicenseYear] = useState('')
+  const [regHospital, setRegHospital] = useState('')
 
   // ログインフォーム
   const [loginEmail, setLoginEmail] = useState('')
@@ -48,7 +51,11 @@ export default function ActivatePage() {
     e.preventDefault()
     setIsSubmitting(true)
     setError('')
-    const res = await registerWithOrderNumber(orderNumber, regEmail)
+    const res = await registerWithOrderNumber(orderNumber, regEmail, {
+      university: regUniversity,
+      licenseYear: regLicenseYear,
+      hospital: regHospital,
+    })
     if (res.success) {
       refresh()
       setRegResult({ email: res.email!, password: res.password!, plan: res.plan! })
@@ -372,6 +379,54 @@ export default function ActivatePage() {
                   className="w-full h-12 px-4 text-sm bg-bg border-2 border-br rounded-xl focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all"
                 />
                 <p className="text-xs text-muted mt-1">ログインに使用します</p>
+              </div>
+            </div>
+
+            {/* プロフィール情報（任意） */}
+            <div className="mt-6 pt-5 border-t border-br">
+              <p className="text-xs font-medium text-muted mb-3">プロフィール情報（任意・後から変更不可）</p>
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="reg-university" className="block text-xs font-medium text-tx mb-1">卒業大学</label>
+                  <input
+                    id="reg-university"
+                    type="text"
+                    autoComplete="off"
+                    placeholder="例: 東京大学"
+                    value={regUniversity}
+                    onChange={e => setRegUniversity(e.target.value)}
+                    className="w-full h-10 px-3 text-sm bg-bg border border-br rounded-lg focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="reg-license-year" className="block text-xs font-medium text-tx mb-1">医師免許取得年</label>
+                  <select
+                    id="reg-license-year"
+                    value={regLicenseYear}
+                    onChange={e => setRegLicenseYear(e.target.value)}
+                    className="w-full h-10 px-3 text-sm bg-bg border border-br rounded-lg focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all appearance-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="student">医学生（未取得）</option>
+                    {Array.from({ length: 15 }, (_, i) => {
+                      const y = new Date().getFullYear() - i
+                      return <option key={y} value={String(y)}>{y}年</option>
+                    })}
+                    <option value="other">それ以前</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="reg-hospital" className="block text-xs font-medium text-tx mb-1">勤務先病院</label>
+                  <input
+                    id="reg-hospital"
+                    type="text"
+                    autoComplete="off"
+                    placeholder="例: ○○大学附属病院"
+                    value={regHospital}
+                    onChange={e => setRegHospital(e.target.value)}
+                    className="w-full h-10 px-3 text-sm bg-bg border border-br rounded-lg focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all"
+                  />
+                </div>
               </div>
             </div>
 
