@@ -2,8 +2,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { HOSPITALS, Hospital } from './hospitals-data'
 
-const MC = '#993556'
-const MCL = '#FBEAF0'
+const MC = '#1B4F3A'
+const MCL = '#E8F0EC'
 const API_URL = 'https://iwor-api.mightyaddnine.workers.dev'
 
 interface Profile {
@@ -333,7 +333,7 @@ ${conversationLog}
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                     msg.role === 'user'
-                      ? 'bg-[#993556] text-white rounded-br-md'
+                      ? 'bg-ac text-white rounded-br-md'
                       : 'bg-s1 text-tx rounded-bl-md'
                   }`}>
                     {msg.role === 'interviewer' && (
@@ -383,7 +383,7 @@ ${conversationLog}
                       onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); sendAnswer() } }}
                       placeholder="回答を入力…"
                       rows={2}
-                      className="w-full px-3 py-2 border border-br rounded-xl bg-bg text-sm text-tx focus:border-[#993556] focus:ring-1 focus:ring-[#993556]/20 outline-none resize-none transition-all"
+                      className="w-full px-3 py-2 border border-br rounded-xl bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none resize-none transition-all"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -546,7 +546,7 @@ function SetupScreen({
                   {wishlistHospitals.map(h => (
                     <button key={h.id}
                       onClick={() => setSettings({ ...settings, hospitalId: h.id })}
-                      className="px-3 py-1.5 rounded-lg text-[11px] font-medium border border-br hover:border-[#993556]/40 transition-all bg-s1 text-tx">
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-medium border border-br hover:border-ac/40 transition-all bg-s1 text-tx">
                       {h.name}
                     </button>
                   ))}
@@ -559,7 +559,7 @@ function SetupScreen({
               value={hospitalSearch}
               onChange={e => setHospitalSearch(e.target.value)}
               placeholder="病院名で検索（空で一般面接）"
-              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-[#993556] outline-none transition-all"
+              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac outline-none transition-all"
             />
             {filteredHospitals.length > 0 && (
               <div className="border border-br rounded-lg overflow-hidden">

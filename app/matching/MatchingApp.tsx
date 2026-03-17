@@ -6,9 +6,9 @@ import ProModal from '@/components/pro/ProModal'
 import HospitalTab from './HospitalSection'
 import InterviewTab from './InterviewSection'
 
-// ── マッチングテーマカラー ──
-const MC = '#993556'
-const MCL = '#FBEAF0'
+// ── マッチングテーマカラー（サイト統一グリーン） ──
+const MC = '#1B4F3A'
+const MCL = '#E8F0EC'
 
 // ── 型定義 ──
 interface Profile {
@@ -248,7 +248,7 @@ function ProfileTab({
             <select
               value={profile.graduationYear}
               onChange={e => updateField('graduationYear', e.target.value)}
-              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-[#993556] focus:ring-1 focus:ring-[#993556]/20 outline-none transition-all"
+              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
             >
               <option value="">選択してください</option>
               {[2026, 2027, 2028, 2029, 2030].map(y => (
@@ -271,7 +271,7 @@ function ProfileTab({
             <select
               value={profile.preferredSpecialty}
               onChange={e => updateField('preferredSpecialty', e.target.value)}
-              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-[#993556] focus:ring-1 focus:ring-[#993556]/20 outline-none transition-all"
+              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
             >
               <option value="">選択してください</option>
               {SPECIALTIES.map(s => (
@@ -490,7 +490,7 @@ function Field({
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-[#993556] focus:ring-1 focus:ring-[#993556]/20 outline-none transition-all"
+        className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
       />
     </div>
   )
@@ -509,7 +509,7 @@ function TextArea({
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
-        className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-[#993556] focus:ring-1 focus:ring-[#993556]/20 outline-none transition-all resize-none"
+        className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all resize-none"
       />
     </div>
   )

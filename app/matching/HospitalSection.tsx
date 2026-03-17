@@ -6,8 +6,8 @@ import {
 } from './hospitals-data'
 import { calculateMatchProbability, MatchProbabilityResult } from './match-calc'
 
-const MC = '#993556'
-const MCL = '#FBEAF0'
+const MC = '#1B4F3A'
+const MCL = '#E8F0EC'
 
 // ── localStorage keys ──
 const STORAGE_INTERESTED = 'iwor_matching_interested'
@@ -255,19 +255,19 @@ export default function HospitalTab({
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="病院名・都道府県で検索"
-                className="w-full pl-10 pr-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-[#993556] focus:ring-1 focus:ring-[#993556]/20 outline-none transition-all"
+                className="w-full pl-10 pr-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
               />
             </div>
 
             {/* 基本フィルタ行 */}
             <div className="flex gap-2 flex-wrap">
               <select value={filterRegion} onChange={e => setFilterRegion(e.target.value)}
-                className="px-3 py-2 border border-br rounded-lg bg-bg text-xs text-tx focus:border-[#993556] outline-none">
+                className="px-3 py-2 border border-br rounded-lg bg-bg text-xs text-tx focus:border-ac outline-none">
                 <option value="">全地域</option>
                 {REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
               </select>
               <select value={filterType} onChange={e => setFilterType(e.target.value)}
-                className="px-3 py-2 border border-br rounded-lg bg-bg text-xs text-tx focus:border-[#993556] outline-none">
+                className="px-3 py-2 border border-br rounded-lg bg-bg text-xs text-tx focus:border-ac outline-none">
                 <option value="">全タイプ</option>
                 <option value="大学病院">大学病院</option>
                 <option value="市中病院">市中病院</option>
@@ -275,7 +275,7 @@ export default function HospitalTab({
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all flex items-center gap-1 ${
-                  activeFilters > 0 ? 'border-[#993556]/40' : 'border-br'
+                  activeFilters > 0 ? 'border-ac/40' : 'border-br'
                 }`}
                 style={activeFilters > 0 ? { background: MCL, color: MC } : undefined}
               >
