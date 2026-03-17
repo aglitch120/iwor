@@ -104,7 +104,7 @@ export default function AntibioticsPage() {
   const [expandedSite, setExpandedSite] = useState<string | null>(EMPIRIC[0].site)
 
   const categories = useMemo(() => {
-    const cats = [...new Set(DRUGS.map(d => d.category))]
+    const cats = Array.from(new Set(DRUGS.map(d => d.category)))
     return ['all', ...cats]
   }, [])
 
