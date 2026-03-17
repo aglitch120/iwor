@@ -112,7 +112,7 @@ export function RadioGroup({ label, value, onChange, options, name }: RadioGroup
 interface CheckItemProps {
   label: string
   sublabel?: string
-  points: number
+  points?: number
   checked: boolean
   onChange: (checked: boolean) => void
   id: string
