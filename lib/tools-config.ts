@@ -937,6 +937,7 @@ export const implementedTools = new Set(['egfr', 'cha2ds2-vasc', 'chads2', 'has-
   'cchr', 'pecarn', 'canadian-cspine', 'nexus', 'rtpa-checklist', 'aspects', 'add-risk', 'lrinec', 'fisher', 'hunt-hess', 'wfns', 'ciwa-ar', 'four-score', 'cage', 'psi-port', 'smart-cop', 'geneva', 'toast', 'duke-criteria', 'ottawa-sah', 'san-francisco-syncope', 'sapsii',
   // Tier 2
   'apgar', 'asa-ps', 'gir', 'cfs', 'opioid-conversion', 'gnri', 'conut', 'ttkg', 'holiday-segar',
+  'pni', 'cpc', 'sarc-f', 'eat10', 'mmrc',
 ])
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
