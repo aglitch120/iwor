@@ -23,10 +23,10 @@ const erFlows = [
   { href: '/tools/er/sore-throat', emoji: '😷', name: '咽頭痛', desc: '気道緊急除外 → 扁桃周囲膿瘍 → Centor基準でGAS鑑別 → EBV考慮' },
   { href: '/tools/er/hemoptysis', emoji: '🫁', name: '血痰・喀血', desc: '出血量評価 → 大量喀血は窒息リスク → BAE。肺癌・PE・結核の鑑別' },
   { href: '/tools/er/weakness', emoji: '💪', name: '麻痺・脱力', desc: 'UMN(脳卒中) vs LMN(GBS) vs 脊髄 vs 非神経学的。発症様式と分布で鑑別' },
-  { href: '/tools/er/cough', emoji: '🤧', name: '咳・喀痰', desc: '急性/亜急性/慢性の分類 → 気道緊急・PE・心不全の除外 → 感染症/喘息/GERD（準備中）' },
-  { href: '/tools/er/diarrhea', emoji: '🚽', name: '下痢', desc: '脱水評価 → 血便・発熱の有無 → 感染性/炎症性/虚血性の鑑別（準備中）' },
-  { href: '/tools/er/numbness', emoji: '🖐️', name: 'しびれ', desc: '脳卒中・脊髄・GBS除外 → 末梢神経障害パターン → 手根管/糖尿病性（準備中）' },
-  { href: '/tools/er/hospital-fever', emoji: '🏥', name: '発熱（院内）', desc: '5D評価: Drug/Device/DVT/Decubitus/C.difficile → FN対応（準備中）' },
+  { href: '/tools/er/cough', emoji: '🤧', name: '咳・喀痰', desc: '急性/亜急性/慢性の分類 → 肺炎・PE・心不全の除外 → 3大慢性咳嗽原因の評価' },
+  { href: '/tools/er/diarrhea', emoji: '🚽', name: '下痢', desc: '脱水評価 → 血便(EHEC/IBD/虚血性腸炎) → 感染性 → CDI評価 → 対症療法' },
+  { href: '/tools/er/numbness', emoji: '🖐️', name: 'しびれ', desc: '脳卒中・脊髄・GBS除外 → 末梢神経障害(DM/B12) → 絞扼性神経障害 → 過換気' },
+  { href: '/tools/er/hospital-fever', emoji: '🏥', name: '発熱（院内）', desc: '5D評価 + 術後W³I²F → FN/CRBSI/CAUTI/CDI/薬剤熱の系統的鑑別' },
 ]
 
 const aclsFlows = [
