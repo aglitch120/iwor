@@ -78,6 +78,7 @@ export default function DashboardApp(){
   const[showProModal,setShowProModal]=useState<boolean>(false);
   const[proFeature,setProFeature]=useState<string>("full_access");
   const[loaded,setLoaded]=useState<boolean>(false);
+  const[showTutorial,setShowTutorial]=useState<boolean>(false);
   const saveTimer=useRef<any>(null);
 
   // ── Data load on mount ──
@@ -91,6 +92,8 @@ export default function DashboardApp(){
         if(data.customFields?.length) setCFields(data.customFields);
       }
       setLoaded(true);
+      // Show tutorial on first visit
+      if(!localStorage.getItem('iwor_dashboard_tutorial_done')) setShowTutorial(true);
     })();
     setStatusCallback(setSaveStatus);
     return()=>{stopAutoSave();};
@@ -319,6 +322,7 @@ export default function DashboardApp(){
 
       {tab==="todo"&&<button onClick={()=>{if(pts.length>=2&&requirePro("full_access"))return;setShowAdd(true);}} style={{position:"fixed",bottom:24,right:"max(14px,calc(50% - 346px))",width:56,height:56,borderRadius:"50%",border:"none",background:C.ac,color:"#fff",fontSize:28,fontWeight:300,cursor:"pointer",boxShadow:`0 4px 20px ${C.ac}44`,display:"flex",alignItems:"center",justifyContent:"center",zIndex:40}}>+</button>}
 
+      {showTutorial&&<Tutorial onClose={()=>{setShowTutorial(false);localStorage.setItem('iwor_dashboard_tutorial_done','1');}} />}
       {showAdd&&<AddModal onAdd={addPt} onClose={()=>setShowAdd(false)} />}
       {selP&&<DetailModal p={selP} tasks={tasks} cFields={cFields} onUpd={u=>updPt(selId,u)} onDC={()=>{setSelId(null);setDcId(selP.id);}} onClose={()=>setSelId(null)} onTog={tid=>togTask(selId,tid)} />}
       {dcId&&<DCConfirm p={pts.find((x:any)=>x.id===dcId)} onOk={()=>discharge(dcId)} onNo={()=>setDcId(null)} />}
@@ -514,3 +518,95 @@ const btnP={flex:1,padding:13,border:"none",borderRadius:9,background:C.ac,color
 const btnG={flex:1,padding:13,border:`1.5px solid ${C.br}`,borderRadius:9,background:"none",color:C.m,fontSize:14,fontWeight:500,cursor:"pointer"};
 function FI({l,v,s,ph,st={}}:any){return(<div style={{marginBottom:0,...st}}><label style={lbl}>{l}</label><input value={v} onChange={e=>s(e.target.value)} placeholder={ph} style={inp} /></div>);}
 function Ov({onClose,children}:any){return(<div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:100,display:"flex",alignItems:"flex-end",justifyContent:"center"}}><div onClick={e=>e.stopPropagation()} style={{background:C.s0,borderRadius:"16px 16px 0 0",width:"100%",maxWidth:520,maxHeight:"85vh",overflowY:"auto",animation:"su .25s ease-out"}}><div style={{display:"flex",justifyContent:"center",paddingTop:10,paddingBottom:4}}><div style={{width:36,height:4,background:C.br2,borderRadius:2}} /></div>{children}</div><style>{`@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style></div>);}
+
+// ═══ Onboarding Tutorial ═══
+const TUTORIAL_STEPS = [
+  {
+    emoji: "➕",
+    title: "症例を追加しよう",
+    desc: "右下の＋ボタンから入院患者を追加します。病室・年代・性別・診断名を入力するだけ。J-OSLER準拠の領域・疾患群も選択できます。",
+  },
+  {
+    emoji: "✅",
+    title: "毎日のTODOを管理",
+    desc: "患者カードのタスクボタン（書類📄・処方💊・注射💉など）をタップして完了。タスクは毎日自動リセットされます。項目は自由にカスタマイズ可能。",
+  },
+  {
+    emoji: "📝",
+    title: "メモ・記録を残す",
+    desc: "患者カードをタップすると詳細画面が開きます。日々のメモ、カスタム記録項目（術式・主治医など）を自由に追加できます。",
+  },
+  {
+    emoji: "🏠",
+    title: "退院 → 自動アーカイブ",
+    desc: "退院ボタンを押すと、その患者は「症例ログ」に自動アーカイブ。入院中の患者だけがTODO画面に表示されます。",
+  },
+  {
+    emoji: "📊",
+    title: "症例ログを活用",
+    desc: "症例ログタブでは、今までの全症例を検索・領域別統計で確認できます。CSV出力でEPOC・J-OSLER・臨床研究・症例発表に活用できます。",
+  },
+];
+
+function Tutorial({ onClose }: { onClose: () => void }) {
+  const [step, setStep] = useState(0);
+  const s = TUTORIAL_STEPS[step];
+  const isLast = step === TUTORIAL_STEPS.length - 1;
+
+  return (
+    <div onClick={onClose} style={{
+      position: "fixed", inset: 0, background: "rgba(0,0,0,.6)", zIndex: 200,
+      display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        background: C.s0, borderRadius: 20, width: "100%", maxWidth: 400,
+        padding: "32px 28px 24px", textAlign: "center", position: "relative",
+        animation: "su .3s ease-out",
+      }}>
+        {/* Progress dots */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 20 }}>
+          {TUTORIAL_STEPS.map((_, i) => (
+            <div key={i} style={{
+              width: i === step ? 20 : 8, height: 8, borderRadius: 4,
+              background: i === step ? C.ac : C.s2, transition: "all .3s",
+            }} />
+          ))}
+        </div>
+
+        {/* Icon */}
+        <div style={{
+          width: 64, height: 64, borderRadius: 16, background: C.acl,
+          border: `2px solid ${C.ac}30`, display: "flex", alignItems: "center",
+          justifyContent: "center", margin: "0 auto 16px", fontSize: 28,
+        }}>
+          {s.emoji}
+        </div>
+
+        {/* Content */}
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: C.tx, marginBottom: 8 }}>{s.title}</h3>
+        <p style={{ fontSize: 13, color: C.m, lineHeight: 1.7, marginBottom: 24 }}>{s.desc}</p>
+
+        {/* Step counter */}
+        <p style={{ fontSize: 11, color: C.br2, marginBottom: 16 }}>
+          {step + 1} / {TUTORIAL_STEPS.length}
+        </p>
+
+        {/* Buttons */}
+        <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={onClose} style={{
+            flex: 1, padding: "12px 0", border: `1.5px solid ${C.br}`, borderRadius: 12,
+            background: "none", color: C.m, fontSize: 13, fontWeight: 500, cursor: "pointer",
+          }}>
+            スキップ
+          </button>
+          <button onClick={() => isLast ? onClose() : setStep(step + 1)} style={{
+            flex: 2, padding: "12px 0", border: "none", borderRadius: 12,
+            background: C.ac, color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer",
+          }}>
+            {isLast ? "はじめる 🚀" : "次へ →"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
