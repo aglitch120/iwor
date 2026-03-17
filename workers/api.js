@@ -247,6 +247,64 @@ export default {
     }
 
     // ══════════════════════════════════════════════════
+    //  パスワードリセット
+    //  POST /api/reset-password
+    //  Body: { orderNumber, email }
+    //  → 注文番号+メールが一致すれば新パスワード発行
+    // ══════════════════════════════════════════════════
+    if (path === "/api/reset-password" && request.method === "POST") {
+      const body = await request.json();
+      const orderNumber = String(body.orderNumber || "").trim();
+      const email = String(body.email || "").trim().toLowerCase();
+
+      if (!orderNumber || !/^\d{5,12}$/.test(orderNumber)) {
+        return json({ error: "注文番号を正しく入力してください（数字5〜12桁）" }, 400, request);
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return json({ error: "メールアドレスを正しく入力してください" }, 400, request);
+      }
+
+      // 注文番号チェック
+      const orderRaw = await env.IWOR_KV.get(orderKey(orderNumber));
+      if (!orderRaw) {
+        return json({ error: "注文番号が見つかりません。" }, 404, request);
+      }
+      const order = JSON.parse(orderRaw);
+
+      // 注文が使用済みで、登録メールと一致するか確認
+      if (!order.used || order.registeredEmail !== email) {
+        return json({ error: "注文番号とメールアドレスの組み合わせが一致しません。" }, 400, request);
+      }
+
+      // ユーザー存在チェック
+      const userRaw = await env.IWOR_KV.get(userKey(email));
+      if (!userRaw) {
+        return json({ error: "アカウントが見つかりません。" }, 404, request);
+      }
+      const user = JSON.parse(userRaw);
+
+      // 新パスワード生成
+      const newPassword = generatePassword();
+      const newPasswordHash = await sha256(newPassword + email + SALT);
+
+      // ユーザー情報更新
+      await env.IWOR_KV.put(
+        userKey(email),
+        JSON.stringify({
+          ...user,
+          passwordHash: newPasswordHash,
+          passwordResetAt: new Date().toISOString(),
+        })
+      );
+
+      return json({
+        ok: true,
+        email,
+        password: newPassword,
+      }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
     //  管理者: 注文一覧
     //  GET /api/admin/orders?key={ADMIN_KEY}
     // ══════════════════════════════════════════════════

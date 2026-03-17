@@ -101,6 +101,48 @@ export async function loginWithEmail(email: string, password: string): Promise<L
   }
 }
 
+// ── パスワードリセット ──
+
+interface ResetResult {
+  success: boolean
+  email?: string
+  password?: string
+  error?: string
+}
+
+export async function resetPassword(orderNumber: string, email: string): Promise<ResetResult> {
+  const cleanedOrder = orderNumber.trim().replace(/\D/g, '')
+  const cleanedEmail = email.trim().toLowerCase()
+
+  if (!cleanedOrder || cleanedOrder.length < 5 || cleanedOrder.length > 12) {
+    return { success: false, error: '注文番号を正しく入力してください（数字5〜12桁）' }
+  }
+  if (!cleanedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanedEmail)) {
+    return { success: false, error: 'メールアドレスを正しく入力してください' }
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/api/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderNumber: cleanedOrder, email: cleanedEmail }),
+    })
+    const data = await res.json()
+
+    if (!res.ok || !data.ok) {
+      return { success: false, error: data.error || 'パスワードの再設定に失敗しました。' }
+    }
+
+    return {
+      success: true,
+      email: data.email,
+      password: data.password,
+    }
+  } catch {
+    return { success: false, error: 'サーバーに接続できませんでした。' }
+  }
+}
+
 // ── セッション管理 ──
 
 function saveProSession(email: string, plan: string, expiresAt: string, sessionToken?: string) {
