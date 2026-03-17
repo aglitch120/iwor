@@ -143,7 +143,7 @@
 
 ## Phase 5: 学習プラットフォーム
 
-- [ ] /learning/ ティーザーLP
+- [x] /learning/ ティーザーLP
 - [ ] /learning/naika-exam/ 内科専門医試験（旧Quiz機能移植、370疾患）
 - [ ] 講座追加基盤（エコー、輸液など）
 
