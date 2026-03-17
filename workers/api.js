@@ -10,6 +10,8 @@
 //    POST /api/login            — メール+パスワードでログイン
 //    PUT  /api/dashboard        — ダッシュボードデータ保存
 //    GET  /api/dashboard        — ダッシュボードデータ読み込み
+//    PUT  /api/josler           — J-OSLERデータ保存
+//    GET  /api/josler           — J-OSLERデータ読み込み
 //    POST /api/interview-feedback — AI面接フィードバック（Workers AI）
 //    GET  /api/admin/orders     — 管理者: 注文一覧
 //    GET  /api/admin/users      — 管理者: ユーザー一覧
@@ -433,6 +435,52 @@ export default {
 
       const session = JSON.parse(sessionRaw);
       const raw = await env.IWOR_KV.get(`dashboard:${session.email}`);
+
+      if (!raw) return json({ ok: true, data: null }, 200, request);
+
+      const parsed = JSON.parse(raw);
+      return json({ ok: true, data: parsed.data, updatedAt: parsed.updatedAt }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
+    //  J-OSLERデータ保存
+    //  PUT /api/josler
+    //  Authorization: Bearer {sessionToken}
+    // ══════════════════════════════════════════════════
+    if (path === "/api/josler" && request.method === "PUT") {
+      const auth = request.headers.get("Authorization") || "";
+      const token = auth.replace("Bearer ", "").trim();
+      if (!token) return json({ error: "Unauthorized" }, 401, request);
+
+      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
+      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
+
+      const session = JSON.parse(sessionRaw);
+      const body = await request.json();
+
+      await env.IWOR_KV.put(`josler:${session.email}`, JSON.stringify({
+        data: body.data,
+        updatedAt: new Date().toISOString(),
+      }));
+
+      return json({ ok: true, updatedAt: new Date().toISOString() }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
+    //  J-OSLERデータ読み込み
+    //  GET /api/josler
+    //  Authorization: Bearer {sessionToken}
+    // ══════════════════════════════════════════════════
+    if (path === "/api/josler" && request.method === "GET") {
+      const auth = request.headers.get("Authorization") || "";
+      const token = auth.replace("Bearer ", "").trim();
+      if (!token) return json({ error: "Unauthorized" }, 401, request);
+
+      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
+      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
+
+      const session = JSON.parse(sessionRaw);
+      const raw = await env.IWOR_KV.get(`josler:${session.email}`);
 
       if (!raw) return json({ ok: true, data: null }, 200, request);
 

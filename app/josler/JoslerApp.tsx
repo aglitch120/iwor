@@ -5,6 +5,11 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { SPECIALTIES as SP, DISEASE_GROUPS as DG } from '@/lib/josler-data'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
+import {
+  loadJoslerData, saveJoslerData, saveToLocal,
+  startAutoSave, stopAutoSave, setStatusCallback,
+  type JoslerData, type SaveStatus,
+} from '@/lib/josler-storage'
 
 /* ── Colors ── */
 const C = { bg: '#F5F4F0', s0: '#FEFEFC', s1: '#F0EDE7', s2: '#E8E5DF', br: '#DDD9D2', br2: '#C8C4BC', tx: '#1A1917', m: '#6B6760', ac: '#1B4F3A', acl: '#E8F0EC', ac2: '#155230', ok: '#166534', wn: '#B45309' }
@@ -59,7 +64,6 @@ function makeSums() {
 function defaultOther() {
   return { jmecc: false, publications: 0, ethics: { y1: 0, y2: 0, y3: 0 }, academicMeetings: { y1: 0, y2: 0, y3: 0 } }
 }
-const LS_KEY = 'iwor_josler_data'
 
 /* ── Computed helpers ── */
 function recalc(eg: any) {
@@ -83,6 +87,7 @@ export default function JoslerApp() {
   const [other, setOther] = useState(() => defaultOther())
   const [loaded, setLoaded] = useState(false)
   const [showProModal, setShowProModal] = useState(false)
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved')
 
   // UI state
   const [openSp, setOpenSp] = useState<string | null>(null)
@@ -93,31 +98,49 @@ export default function JoslerApp() {
   const [showShortage, setShowShortage] = useState(false)
   const [openGuide, setOpenGuide] = useState<string | null>(null)
 
-  // Load data
+  // ── Data load on mount ──
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY)
-      if (raw) {
-        const d = JSON.parse(raw)
-        if (d.eg) setEg(d.eg)
-        if (d.summaries) setSummaries(d.summaries)
-        if (d.other) setOther(d.other)
+    (async () => {
+      const data = await loadJoslerData()
+      if (data) {
+        if (data.eg) setEg(data.eg)
+        if (data.summaries) setSummaries(data.summaries)
+        if (data.other) setOther(data.other)
       }
-    } catch (e) { console.warn('[JOSLER] load error', e) }
-    setLoaded(true)
+      setLoaded(true)
+    })()
+    setStatusCallback(setSaveStatus)
+    return () => { stopAutoSave() }
   }, [])
 
-  // Auto-save
+  // ── Auto-save: debounced on every state change ──
+  const getPayload = useCallback((): JoslerData => ({
+    eg, summaries, other,
+  }), [eg, summaries, other])
+
   const saveTimer = useRef<any>(null)
   useEffect(() => {
     if (!loaded) return
+    if (!isPro) {
+      // FREE: localStorage only
+      saveToLocal(getPayload())
+      return
+    }
+    // PRO: debounced save (localStorage immediate + cloud debounced)
     if (saveTimer.current) clearTimeout(saveTimer.current)
     saveTimer.current = setTimeout(() => {
-      try {
-        localStorage.setItem(LS_KEY, JSON.stringify({ eg, summaries, other }))
-      } catch (e) { console.warn('[JOSLER] save error', e) }
-    }, 500)
-  }, [eg, summaries, other, loaded])
+      saveJoslerData(getPayload(), true)
+    }, 2000)
+    saveToLocal(getPayload())
+  }, [eg, summaries, other, loaded, isPro, getPayload])
+
+  // ── Start auto-save for PRO users ──
+  useEffect(() => {
+    if (loaded && isPro) {
+      startAutoSave(getPayload)
+    }
+    return () => { stopAutoSave() }
+  }, [loaded, isPro, getPayload])
 
   // Computed
   const { cases, groups } = recalc(eg)
@@ -174,6 +197,12 @@ export default function JoslerApp() {
         <div style={{ width: 32, height: 32, background: C.ac, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 14, fontWeight: 700 }}>iw</div>
         <span style={{ fontWeight: 700, fontSize: 17 }}>J-OSLER管理</span>
         <span style={{ fontSize: 11, color: C.ac, background: C.acl, padding: '2px 7px', borderRadius: 4, fontWeight: 600 }}>PRO</span>
+        <span style={{ flex: 1 }} />
+        {isPro && (
+          <span style={{ fontSize: 11, padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace', background: saveStatus === 'saved' ? '#DCFCE7' : saveStatus === 'saving' || saveStatus === 'dirty' ? '#FEF3C7' : saveStatus === 'error' ? '#FEE2E2' : '#EEF4FF', color: saveStatus === 'saved' ? '#166534' : saveStatus === 'saving' || saveStatus === 'dirty' ? '#92400E' : saveStatus === 'error' ? '#991B1B' : '#1E40AF', transition: 'all .3s' }}>
+            {saveStatus === 'saved' ? '✓ 保存済み' : saveStatus === 'saving' || saveStatus === 'dirty' ? '⟳ 保存中…' : saveStatus === 'error' ? '✕ 保存失敗' : '☁ オフライン'}
+          </span>
+        )}
       </div>
 
       {/* Tabs */}
