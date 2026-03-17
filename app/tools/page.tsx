@@ -57,10 +57,10 @@ const categories = [
     slug: 'antibiotics',
     icon: '💊',
     name: '抗菌薬ガイド',
-    description: '主要薬剤のeGFR/CCr別推奨用量・スペクトラム',
-    count: null,
-    badge: '準備中',
-    available: false,
+    description: 'スペクトラム一覧 + 感染症別エンピリック選択。18薬剤 × 7感染症カテゴリ',
+    count: 18,
+    badge: 'NEW',
+    available: true,
   },
 ]
 
