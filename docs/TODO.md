@@ -167,9 +167,9 @@
 - [ ] Stripe導入（法人化後）
 
 ### 旧資産整理
-- [ ] 旧worker.js 整理（iwor-apiが後継）
-- [ ] 旧public/app.html 削除（Phase 4-5で機能移植完了後）
-- [ ] 旧demo_v14_app.html 削除
+- [x] 旧worker.js 整理（iwor-apiが後継）→ 削除済み
+- [x] 旧public/app.html 削除（Phase 4-5で機能移植完了後）→ 削除済み
+- [x] 旧demo_v14_app.html 削除 → 削除済み
 
 ---
 
