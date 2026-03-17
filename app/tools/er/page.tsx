@@ -17,6 +17,7 @@ const erFlows = [
   { href: '/tools/er/dizziness', emoji: '🌀', name: 'めまい', desc: '回転性/浮動性/失調の分類 → HINTSで中枢性除外 → BPPV/前庭神経炎/脳卒中の鑑別' },
   { href: '/tools/er/headache', emoji: '🤕', name: '頭痛', desc: 'Red Flag評価 → SAH/髄膜炎/GCA除外 → 片頭痛/緊張型/群発の急性期治療' },
   { href: '/tools/er/back-pain', emoji: '🦴', name: '腰背部痛', desc: 'AAA破裂・馬尾症候群・脊椎感染症・尿管結石の除外 → 非特異的腰痛の管理' },
+  { href: '/tools/er/gi-bleeding', emoji: '🩸', name: '吐血・下血', desc: '上部/下部の判別 → ショック対応 → 静脈瘤/潰瘍/憩室の鑑別。GBSでリスク層別化' },
 ]
 
 const aclsFlows = [
