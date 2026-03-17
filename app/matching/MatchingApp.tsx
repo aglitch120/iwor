@@ -215,8 +215,11 @@ function ProfileTab({
   completion: number
   isPro: boolean
 }) {
+  const [openSection, setOpenSection] = useState<number>(1)
+  const toggle = (n: number) => setOpenSection(prev => prev === n ? 0 : n)
+
   return (
-    <div className="space-y-5">
+    <div className="space-y-3">
       {/* 完成度バー */}
       <div className="bg-s0 border border-br rounded-xl p-4">
         <div className="flex items-center justify-between mb-2">
@@ -235,84 +238,102 @@ function ProfileTab({
       </div>
 
       {/* 基本情報 */}
-      <div className="bg-s0 border border-br rounded-xl p-5">
-        <h2 className="text-sm font-bold text-tx mb-4 flex items-center gap-2">
-          <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold" style={{ background: MC }}>1</span>
-          基本情報
-        </h2>
-        <div className="space-y-3">
-          <Field label="氏名" value={profile.name} onChange={v => updateField('name', v)} placeholder="山田 太郎" />
-          <Field label="大学" value={profile.university} onChange={v => updateField('university', v)} placeholder="○○大学医学部" />
-          <div>
-            <label className="text-xs font-medium text-tx mb-1 block">卒業年度</label>
-            <select
-              value={profile.graduationYear}
-              onChange={e => updateField('graduationYear', e.target.value)}
-              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
-            >
-              <option value="">選択してください</option>
-              {[2026, 2027, 2028, 2029, 2030].map(y => (
-                <option key={y} value={String(y)}>{y}年3月卒業</option>
-              ))}
-            </select>
+      <div className="bg-s0 border border-br rounded-xl overflow-hidden">
+        <button onClick={() => toggle(1)} className="w-full flex items-center justify-between p-4 hover:bg-s1/50 transition-colors">
+          <span className="text-sm font-bold text-tx flex items-center gap-2">
+            <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold" style={{ background: MC }}>1</span>
+            基本情報
+            {profile.name && profile.university && <span className="text-[10px] text-ac">✓</span>}
+          </span>
+          <span className={`text-muted transition-transform ${openSection === 1 ? 'rotate-180' : ''}`}>▾</span>
+        </button>
+        {openSection === 1 && (
+          <div className="px-5 pb-5 space-y-3">
+            <Field label="氏名" value={profile.name} onChange={v => updateField('name', v)} placeholder="山田 太郎" />
+            <Field label="大学" value={profile.university} onChange={v => updateField('university', v)} placeholder="○○大学医学部" />
+            <div>
+              <label className="text-xs font-medium text-tx mb-1 block">卒業年度</label>
+              <select
+                value={profile.graduationYear}
+                onChange={e => updateField('graduationYear', e.target.value)}
+                className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
+              >
+                <option value="">選択してください</option>
+                {[2026, 2027, 2028, 2029, 2030].map(y => (
+                  <option key={y} value={String(y)}>{y}年3月卒業</option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* 志望 */}
-      <div className="bg-s0 border border-br rounded-xl p-5">
-        <h2 className="text-sm font-bold text-tx mb-4 flex items-center gap-2">
-          <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold" style={{ background: MC }}>2</span>
-          志望情報
-        </h2>
-        <div className="space-y-4">
-          <div>
-            <label className="text-xs font-medium text-tx mb-1 block">志望科</label>
-            <select
-              value={profile.preferredSpecialty}
-              onChange={e => updateField('preferredSpecialty', e.target.value)}
-              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
-            >
-              <option value="">選択してください</option>
-              {SPECIALTIES.map(s => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs font-medium text-tx mb-2 block">希望地域（複数選択可）</label>
-            <div className="flex flex-wrap gap-2">
-              {REGIONS.map(r => (
-                <button
-                  key={r}
-                  onClick={() => toggleRegion(r)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                    profile.preferredRegions.includes(r)
-                      ? 'text-white border-transparent'
-                      : 'border-br text-muted hover:border-br2 bg-s0'
-                  }`}
-                  style={profile.preferredRegions.includes(r) ? { background: MC } : undefined}
-                >
-                  {r}
-                </button>
-              ))}
+      <div className="bg-s0 border border-br rounded-xl overflow-hidden">
+        <button onClick={() => toggle(2)} className="w-full flex items-center justify-between p-4 hover:bg-s1/50 transition-colors">
+          <span className="text-sm font-bold text-tx flex items-center gap-2">
+            <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold" style={{ background: MC }}>2</span>
+            志望情報
+            {profile.preferredSpecialty && <span className="text-[10px] text-ac">✓</span>}
+          </span>
+          <span className={`text-muted transition-transform ${openSection === 2 ? 'rotate-180' : ''}`}>▾</span>
+        </button>
+        {openSection === 2 && (
+          <div className="px-5 pb-5 space-y-4">
+            <div>
+              <label className="text-xs font-medium text-tx mb-1 block">志望科</label>
+              <select
+                value={profile.preferredSpecialty}
+                onChange={e => updateField('preferredSpecialty', e.target.value)}
+                className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
+              >
+                <option value="">選択してください</option>
+                {SPECIALTIES.map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-tx mb-2 block">希望地域（複数選択可）</label>
+              <div className="flex flex-wrap gap-2">
+                {REGIONS.map(r => (
+                  <button
+                    key={r}
+                    onClick={() => toggleRegion(r)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                      profile.preferredRegions.includes(r)
+                        ? 'text-white border-transparent'
+                        : 'border-br text-muted hover:border-br2 bg-s0'
+                    }`}
+                    style={profile.preferredRegions.includes(r) ? { background: MC } : undefined}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* 経歴・PR */}
-      <div className="bg-s0 border border-br rounded-xl p-5">
-        <h2 className="text-sm font-bold text-tx mb-4 flex items-center gap-2">
-          <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold" style={{ background: MC }}>3</span>
-          経歴・自己PR
-        </h2>
-        <div className="space-y-3">
-          <TextArea label="部活・課外活動" value={profile.clubs} onChange={v => updateField('clubs', v)} placeholder="例: バスケットボール部 主将（4年間）、国際医療ボランティア" rows={2} />
-          <TextArea label="研究経験" value={profile.research} onChange={v => updateField('research', v)} placeholder="例: 循環器内科学教室で心不全に関する基礎研究（6年次）" rows={2} />
-          <TextArea label="自己PRポイント" value={profile.strengths} onChange={v => updateField('strengths', v)} placeholder="例: チームでの協調性、困難な状況でも粘り強く取り組む姿勢" rows={3} />
-          <TextArea label="志望動機" value={profile.motivation} onChange={v => updateField('motivation', v)} placeholder="例: 幅広い症例を経験し、地域医療に貢献できる総合力のある医師になりたい" rows={3} />
-        </div>
+      <div className="bg-s0 border border-br rounded-xl overflow-hidden">
+        <button onClick={() => toggle(3)} className="w-full flex items-center justify-between p-4 hover:bg-s1/50 transition-colors">
+          <span className="text-sm font-bold text-tx flex items-center gap-2">
+            <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold" style={{ background: MC }}>3</span>
+            経歴・自己PR
+            {profile.strengths && profile.motivation && <span className="text-[10px] text-ac">✓</span>}
+          </span>
+          <span className={`text-muted transition-transform ${openSection === 3 ? 'rotate-180' : ''}`}>▾</span>
+        </button>
+        {openSection === 3 && (
+          <div className="px-5 pb-5 space-y-3">
+            <TextArea label="部活・課外活動" value={profile.clubs} onChange={v => updateField('clubs', v)} placeholder="例: バスケットボール部 主将（4年間）、国際医療ボランティア" rows={2} />
+            <TextArea label="研究経験" value={profile.research} onChange={v => updateField('research', v)} placeholder="例: 循環器内科学教室で心不全に関する基礎研究（6年次）" rows={2} />
+            <TextArea label="自己PRポイント" value={profile.strengths} onChange={v => updateField('strengths', v)} placeholder="例: チームでの協調性、困難な状況でも粘り強く取り組む姿勢" rows={3} />
+            <TextArea label="志望動機" value={profile.motivation} onChange={v => updateField('motivation', v)} placeholder="例: 幅広い症例を経験し、地域医療に貢献できる総合力のある医師になりたい" rows={3} />
+          </div>
+        )}
       </div>
 
       {/* 保存ボタン */}
