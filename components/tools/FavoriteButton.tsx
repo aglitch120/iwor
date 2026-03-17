@@ -7,30 +7,56 @@ import ProModal from '@/components/pro/ProModal'
 // ── お気に入り管理（localStorage → Phase2: Supabase） ──
 const STORAGE_KEY = 'iwor_favorites'
 
-function getFavorites(): string[] {
+export interface FavoriteItem {
+  id: string
+  title: string
+  href: string
+  type: string   // 'calc' | 'interpret' | 'er' | 'acls' | 'icu' | 'compare' | 'drugs' | 'blog' | 'app'
+  icon?: string
+  addedAt: number
+}
+
+export function loadFavorites(): FavoriteItem[] {
   if (typeof window === 'undefined') return []
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    // Migration: old format was string[] of slugs
+    if (raw.length > 0 && typeof raw[0] === 'string') {
+      const migrated: FavoriteItem[] = raw.map((slug: string) => ({
+        id: slug,
+        title: slug,
+        href: `/tools/calc/${slug}`,
+        type: slug.startsWith('interpret-') ? 'interpret' : slug.startsWith('icu-') ? 'icu' : 'calc',
+        addedAt: Date.now(),
+      }))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated))
+      return migrated
+    }
+    return raw as FavoriteItem[]
   } catch { return [] }
 }
 
-function setFavorites(slugs: string[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(slugs))
+function saveFavorites(items: FavoriteItem[]) {
+  if (typeof window === 'undefined') return
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
 }
 
 // ── お気に入りボタン ──
 interface FavoriteButtonProps {
   slug: string
+  title?: string
+  href?: string
+  type?: string
   size?: 'sm' | 'md'
 }
 
-export default function FavoriteButton({ slug, size = 'md' }: FavoriteButtonProps) {
+export default function FavoriteButton({ slug, title, href, type, size = 'md' }: FavoriteButtonProps) {
   const { isPro } = useProStatus()
   const [isFav, setIsFav] = useState(false)
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-    setIsFav(getFavorites().includes(slug))
+    setIsFav(loadFavorites().some(f => f.id === slug))
   }, [slug])
 
   const handleClick = useCallback(() => {
@@ -39,21 +65,38 @@ export default function FavoriteButton({ slug, size = 'md' }: FavoriteButtonProp
       return
     }
 
-    const favs = getFavorites()
-    if (favs.includes(slug)) {
-      setFavorites(favs.filter(s => s !== slug))
+    const favs = loadFavorites()
+    if (favs.some(f => f.id === slug)) {
+      saveFavorites(favs.filter(f => f.id !== slug))
       setIsFav(false)
     } else {
-      setFavorites([...favs, slug])
+      const derivedType = type
+        || (slug.startsWith('interpret-') ? 'interpret'
+          : slug.startsWith('icu-') ? 'icu'
+          : slug.startsWith('er-') ? 'er'
+          : slug.startsWith('acls-') ? 'acls'
+          : 'calc')
+      const derivedHref = href
+        || (derivedType === 'interpret' ? `/tools/interpret/${slug.replace('interpret-', '')}`
+          : derivedType === 'icu' ? `/tools/icu/${slug.replace('icu-', '')}`
+          : derivedType === 'er' ? `/tools/er/${slug.replace('er-', '')}`
+          : derivedType === 'acls' ? `/tools/acls/${slug.replace('acls-', '')}`
+          : `/tools/calc/${slug}`)
+
+      saveFavorites([...favs, {
+        id: slug,
+        title: title || slug,
+        href: derivedHref,
+        type: derivedType,
+        addedAt: Date.now(),
+      }])
       setIsFav(true)
     }
 
     window.dispatchEvent(new CustomEvent('favorites-changed'))
-  }, [slug, isPro])
+  }, [slug, title, href, type, isPro])
 
-  const sizeClass = size === 'sm'
-    ? 'w-7 h-7 text-sm'
-    : 'w-9 h-9 text-lg'
+  const sizeClass = size === 'sm' ? 'w-7 h-7 text-sm' : 'w-9 h-9 text-lg'
 
   return (
     <>
@@ -69,7 +112,6 @@ export default function FavoriteButton({ slug, size = 'md' }: FavoriteButtonProp
       >
         {isFav ? '★' : '☆'}
       </button>
-
       {showModal && <ProModal feature="favorites" onClose={() => setShowModal(false)} />}
     </>
   )
@@ -77,12 +119,11 @@ export default function FavoriteButton({ slug, size = 'md' }: FavoriteButtonProp
 
 // ── お気に入りバー（ページ上部表示用） ──
 export function FavoritesBar() {
-  const [favorites, setFavoritesState] = useState<string[]>([])
+  const [favorites, setFavoritesState] = useState<FavoriteItem[]>([])
 
   useEffect(() => {
-    setFavoritesState(getFavorites())
-
-    const handler = () => setFavoritesState(getFavorites())
+    setFavoritesState(loadFavorites())
+    const handler = () => setFavoritesState(loadFavorites())
     window.addEventListener('favorites-changed', handler)
     return () => window.removeEventListener('favorites-changed', handler)
   }, [])
@@ -91,17 +132,12 @@ export function FavoritesBar() {
 
   return (
     <div className="mb-6 p-3 bg-[#FFF8E1] border border-[#F9A825]/50 rounded-xl">
-      <p className="text-xs font-medium text-[#E65100] mb-2 flex items-center gap-1">
-        ⭐ お気に入り
-      </p>
+      <p className="text-xs font-medium text-[#E65100] mb-2 flex items-center gap-1">⭐ お気に入り</p>
       <div className="flex flex-wrap gap-1.5">
-        {favorites.map(slug => (
-          <a
-            key={slug}
-            href={`/tools/calc/${slug}`}
-            className="text-xs px-2.5 py-1 bg-white border border-[#F9A825]/40 rounded-lg text-tx hover:bg-[#FFF8E1] transition-colors"
-          >
-            {slug}
+        {favorites.map(fav => (
+          <a key={fav.id} href={fav.href}
+            className="text-xs px-2.5 py-1 bg-white border border-[#F9A825]/40 rounded-lg text-tx hover:bg-[#FFF8E1] transition-colors">
+            {fav.title}
           </a>
         ))}
       </div>
