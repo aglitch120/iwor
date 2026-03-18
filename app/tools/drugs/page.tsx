@@ -7,8 +7,11 @@ import Link from 'next/link'
 const subTools = [
   { href: '/tools/drugs/antibiotics', icon: '🦠', name: '抗菌薬スペクトラム', desc: '18薬剤のスペクトラム一覧 + 感染症別エンピリック選択' },
   { href: '/tools/calc/steroid-converter', icon: '💉', name: 'ステロイド力価換算', desc: 'プレドニゾロン基準の等力価換算。6薬剤対応' },
+  { href: '/tools/drugs/steroid-cover', icon: '🛡️', name: 'ステロイドカバー & 副作用管理', desc: '周術期ストレスカバー + 長期使用時の副作用対策チェックリスト' },
   { href: '/tools/calc/opioid-conversion', icon: '💊', name: 'オピオイド換算表', desc: 'モルヒネ経口30mg基準のオピオイド相互換算' },
+  { href: '/tools/drugs/cancer-pain', icon: '🎗️', name: '癌性疼痛コントロール', desc: 'WHO除痛ラダー + レスキュー + ローテーション + 鎮痛補助薬' },
   { href: '/tools/calc/renal-dose-abx', icon: '🧪', name: '抗菌薬 腎機能別用量', desc: 'eGFR/CCr別の推奨用量。30薬剤対応' },
+  { href: '/tools/drugs/preop-drugs', icon: '🔪', name: '術前休薬リスト', desc: '抗凝固薬・抗血小板薬・糖尿病薬等の周術期休薬ガイド' },
   { href: '#', icon: '📋', name: 'DIデータベース', desc: '各薬剤の添付文書要約・相互作用・TDM情報', badge: '準備中' },
 ]
 
