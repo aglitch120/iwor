@@ -163,10 +163,9 @@ export default function DashboardApp(){
   const editLP=arc.find((p:any)=>p.id===editLogId);
 
   return(
-    <div style={{background:C.bg,minHeight:"100vh",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif",color:C.tx,maxWidth:720,margin:"0 auto",position:"relative",paddingBottom:80}}>
+    <div style={{background:C.bg,minHeight:"100vh",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif",color:C.tx,maxWidth:960,margin:"0 auto",position:"relative",paddingBottom:80}}>
       {/* Header */}
-      <div style={{background:C.s0,borderBottom:`1px solid ${C.br}`,padding:"14px 18px",display:"flex",alignItems:"center",gap:10,position:"sticky",top:56,zIndex:40}}>
-        <div style={{width:32,height:32,background:C.ac,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:14,fontWeight:700}}>iw</div>
+      <div style={{background:C.s0,borderBottom:`1px solid ${C.br}`,padding:"12px 18px",display:"flex",alignItems:"center",gap:10,position:"sticky",top:56,zIndex:40}}>
         <span style={{fontWeight:700,fontSize:17}}>病棟TODO</span>
         <span style={{fontSize:11,color:C.ac,background:C.acl,padding:"2px 7px",borderRadius:4,fontWeight:600}}>PRO</span>
         <FavoriteButton slug="app-dashboard" title="病棟TODO & 症例ログ" href="/dashboard" type="app" size="sm" />

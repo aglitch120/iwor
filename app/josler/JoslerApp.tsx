@@ -192,10 +192,9 @@ export default function JoslerApp() {
   if (!loaded) return <div style={{ textAlign: 'center', padding: '80px 20px', color: C.m }}>読み込み中...</div>
 
   return (
-    <div style={{ background: C.bg, minHeight: '100vh', fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif", color: C.tx, maxWidth: 720, margin: '0 auto', position: 'relative', paddingBottom: 80 }}>
+    <div style={{ background: C.bg, minHeight: '100vh', fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif", color: C.tx, maxWidth: 960, margin: '0 auto', position: 'relative', paddingBottom: 80 }}>
       {/* Header */}
-      <div style={{ background: C.s0, borderBottom: `1px solid ${C.br}`, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 56, zIndex: 40 }}>
-        <div style={{ width: 32, height: 32, background: C.ac, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 14, fontWeight: 700 }}>iw</div>
+      <div style={{ background: C.s0, borderBottom: `1px solid ${C.br}`, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 56, zIndex: 40 }}>
         <span style={{ fontWeight: 700, fontSize: 17 }}>J-OSLER管理</span>
         <span style={{ fontSize: 11, color: C.ac, background: C.acl, padding: '2px 7px', borderRadius: 4, fontWeight: 600 }}>PRO</span>
         <FavoriteButton slug="app-josler" title="J-OSLER管理" href="/josler" type="app" size="sm" />
