@@ -186,7 +186,7 @@ export default function JoslerApp() {
     { id: 'cases', l: '📊 症例' },
     { id: 'summaries', l: '📝 要約' },
     { id: 'other', l: '📎 その他' },
-    { id: 'guide', l: '📖 ガイド' },
+    { id: 'guide', l: '📖 病歴生成' },
   ]
 
   if (!loaded) return <div style={{ textAlign: 'center', padding: '80px 20px', color: C.m }}>読み込み中...</div>
@@ -874,9 +874,9 @@ function GuideTab({ openGuide, setOpenGuide }: any) {
   return (
     <>
       <Card>
-        <CardT>📖 病歴要約 作成ガイド</CardT>
+        <CardT>📖 病歴生成</CardT>
         <p style={{ fontSize: 12, color: C.m, lineHeight: 1.6, marginBottom: 12 }}>
-          J-OSLER準拠の病歴要約作成に必要なルールをまとめています。
+          疾患を選択すると病歴要約の一式例を表示。テキストをコピーしてJ-OSLER提出に活用できます。
         </p>
         {GUIDE_SECS.map(sec => {
           const isOpen = openGuide === sec.id
@@ -898,6 +898,12 @@ function GuideTab({ openGuide, setOpenGuide }: any) {
                       <div style={{ flex: 1, padding: '8px 10px', color: C.tx, lineHeight: 1.5 }}>{v}</div>
                     </div>
                   ))}
+                  <button onClick={() => {
+                    const text = sec.rows.map(([k, v]) => `【${k}】\n${v}`).join('\n\n')
+                    navigator.clipboard.writeText(text).then(() => alert('コピーしました'))
+                  }} style={{ width: '100%', padding: '8px 0', border: 'none', borderTop: `1px solid ${C.s1}`, background: C.acl, color: C.ac, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                    📋 テキストをコピー
+                  </button>
                 </div>
               )}
             </div>

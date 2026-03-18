@@ -170,6 +170,7 @@ export default function DashboardApp(){
         <span style={{fontSize:11,color:C.ac,background:C.acl,padding:"2px 7px",borderRadius:4,fontWeight:600}}>PRO</span>
         <FavoriteButton slug="app-dashboard" title="病棟TODO & 症例ログ" href="/dashboard" type="app" size="sm" />
         <span style={{flex:1}} />
+        <a href="/josler" style={{fontSize:11,padding:"3px 10px",borderRadius:8,border:`1px solid ${C.br}`,color:C.ac,background:C.acl,fontWeight:600,textDecoration:"none",whiteSpace:"nowrap"}}>J-OSLER管理 →</a>
         {isPro && (
           <span style={{fontSize:11,padding:"3px 8px",borderRadius:12,fontFamily:"monospace",background:saveStatus==="saved"?"#DCFCE7":saveStatus==="saving"||saveStatus==="dirty"?"#FEF3C7":saveStatus==="error"?"#FEE2E2":"#EEF4FF",color:saveStatus==="saved"?"#166534":saveStatus==="saving"||saveStatus==="dirty"?"#92400E":saveStatus==="error"?"#991B1B":"#1E40AF",transition:"all .3s"}}>
             {saveStatus==="saved"?"✓ 保存済み":saveStatus==="saving"||saveStatus==="dirty"?"⟳ 保存中…":saveStatus==="error"?"✕ 保存失敗":"☁ オフライン"}
