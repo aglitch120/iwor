@@ -8,7 +8,7 @@
 
 | # | 内容 | 影響範囲 |
 |---|------|---------|
-| A-1 | **読み方変更**: iwor（イウォル）→ iwor（イウォール） | サイト全体のテキスト・メタデータ・OGP・README・Custom Instructions |
+| A-1 | ✅ **読み方変更**: iwor（イウォール）に統一済 | サイト全体のテキスト・メタデータ・OGP・README・Custom Instructions |
 
 ---
 

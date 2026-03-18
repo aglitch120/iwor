@@ -51,7 +51,7 @@ git config user.name "aglitch120"
 
 ## プロジェクト概要
 
-**iwor（イウォル）** — 医師の臨床とキャリアを支える恵みの地
+**iwor（イウォール）** — 医師の臨床とキャリアを支える恵みの地
 
 - ドメイン: iwor.jp
 - 旧サイト: naikanavi.com（→ iwor.jpに301リダイレクト予定）

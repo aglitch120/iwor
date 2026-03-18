@@ -202,7 +202,7 @@ function Footer() {
                 className="rounded-lg"
               />
               <span className="font-semibold text-tx">iwor</span>
-              <span className="text-xs text-muted ml-1">（イウォル）</span>
+              <span className="text-xs text-muted ml-1">（イウォール）</span>
             </Link>
             <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted">
               <Link href="/blog" className="hover:text-ac">ブログ</Link>

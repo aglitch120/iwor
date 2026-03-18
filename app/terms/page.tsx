@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: '利用規約',
-  description: 'iwor（イウォル）の利用規約。サービスの利用条件について説明します。',
+  description: 'iwor（イウォール）の利用規約。サービスの利用条件について説明します。',
   alternates: {
     canonical: 'https://iwor.jp/terms',
   },
@@ -16,7 +16,7 @@ export default function TermsPage() {
 
       <Section title="第1条（適用）">
         <p>
-          本利用規約（以下「本規約」）は、iwor（イウォル、以下「本サービス」）の利用条件を定めるものです。
+          本利用規約（以下「本規約」）は、iwor（イウォール、以下「本サービス」）の利用条件を定めるものです。
           ユーザーは本規約に同意の上、本サービスを利用するものとします。
         </p>
       </Section>

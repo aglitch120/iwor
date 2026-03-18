@@ -4,7 +4,7 @@ import { IworIllustration } from '@/components/IworIllustration'
 
 export const metadata: Metadata = {
   title: 'iworとは',
-  description: 'iwor（イウォル）は医師の臨床とキャリアを支えるWebプラットフォーム。名前の由来、開発の経緯、提供する機能について。',
+  description: 'iwor（イウォール）は医師の臨床とキャリアを支えるWebプラットフォーム。名前の由来、開発の経緯、提供する機能について。',
   alternates: {
     canonical: 'https://iwor.jp/about',
   },
@@ -29,7 +29,7 @@ export default function AboutPage() {
         <div>
           <h2 className="text-base font-bold mb-3">なぜ「iwor」なのか</h2>
           <p>
-            アイヌの世界観に、<span className="font-bold">iwor</span>（イウォル）という概念があります。
+            アイヌの世界観に、<span className="font-bold">iwor</span>（イウォール）という概念があります。
             人が自然とともに暮らし、山や川から恵みを受け取りながら、
             健やかに生きていくための場所。
           </p>

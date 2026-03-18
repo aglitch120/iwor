@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'プライバシーポリシー',
-  description: 'iwor（イウォル）のプライバシーポリシー。個人情報の取り扱いについて説明します。',
+  description: 'iwor（イウォール）のプライバシーポリシー。個人情報の取り扱いについて説明します。',
   alternates: {
     canonical: 'https://iwor.jp/privacy',
   },
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
 
       <Section title="1. はじめに">
         <p>
-          本プライバシーポリシーは、iwor（イウォル、以下「本サービス」）におけるユーザーの個人情報の取扱いについて定めるものです。
+          本プライバシーポリシーは、iwor（イウォール、以下「本サービス」）におけるユーザーの個人情報の取扱いについて定めるものです。
           運営者は個人情報の保護に関する法律（個人情報保護法）を遵守し、適切な管理を行います。
         </p>
       </Section>

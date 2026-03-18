@@ -467,7 +467,7 @@ export function getTagName(slug: string): string | undefined {
 // サイト情報
 export const siteConfig = {
   name: 'iwor',
-  nameKana: 'イウォル',
+  nameKana: 'イウォール',
   description: '医学生から医師まで、ずっと臨床のそばに',
   url: 'https://iwor.jp',
   ogImage: 'https://iwor.jp/opengraph-image',
