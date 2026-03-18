@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { useState, useEffect, FormEvent } from 'react'
-import { registerWithOrderNumber, loginWithEmail, resetPassword, updateProfile, getProDetails, clearProSession } from '@/lib/pro-activation'
-import type { UserProfile } from '@/lib/pro-activation'
+import { registerWithOrderNumber, loginWithEmail, resetPassword, updateProfile, changePassword, fetchProfile, getProDetails, clearProSession } from '@/lib/pro-activation'
+import type { UserProfile, FetchedProfile } from '@/lib/pro-activation'
 import { useProStatus } from '@/components/pro/useProStatus'
 import { trackProRegister, trackProLogin } from '@/lib/gtag'
 
@@ -392,67 +392,7 @@ export default function ActivatePage() {
 
   // ── PRO会員 → マイページ ──
   if (isPro && proDetails) {
-    const expiresDate = proDetails.expiresAt ? new Date(proDetails.expiresAt) : null
-    const daysLeft = expiresDate ? Math.ceil((expiresDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null
-
-    return (
-      <div className="max-w-lg mx-auto -mt-2">
-        <Breadcrumb />
-        <div className="bg-s0 border border-br rounded-2xl p-8">
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-okl border border-okb rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">✓</span>
-            </div>
-            <h1 className="text-xl font-bold text-tx mb-2">マイページ</h1>
-            <p className="text-sm text-muted">iwor PROのすべての機能をご利用いただけます。</p>
-          </div>
-
-          <div className="bg-s1 rounded-xl p-4 text-left space-y-2 mb-6">
-            {proDetails.email && (
-              <div className="flex justify-between text-sm">
-                <span className="text-muted">メール</span>
-                <span className="font-medium text-tx">{proDetails.email}</span>
-              </div>
-            )}
-            <div className="flex justify-between text-sm">
-              <span className="text-muted">プラン</span>
-              <span className="font-medium text-tx">{planLabels[proDetails.plan] || proDetails.plan}</span>
-            </div>
-            {expiresDate && (
-              <div className="flex justify-between text-sm">
-                <span className="text-muted">有効期限</span>
-                <span className="font-medium text-tx">
-                  {expiresDate.toLocaleDateString('ja-JP')}
-                  {daysLeft !== null && <span className="text-muted ml-1">（残り{daysLeft}日）</span>}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-3">
-            <Link
-              href="/tools"
-              className="block w-full py-3 bg-ac text-white rounded-xl font-bold text-sm hover:bg-ac2 transition-colors text-center"
-            >
-              ツールを使う →
-            </Link>
-            <Link
-              href="/favorites"
-              className="block w-full py-3 bg-s1 text-tx border border-br rounded-xl font-bold text-sm hover:bg-s0 transition-colors text-center"
-            >
-              お気に入り →
-            </Link>
-          </div>
-
-          <button
-            onClick={() => { clearProSession(); refresh(); }}
-            className="block mx-auto mt-6 text-xs text-muted hover:text-dn transition-colors"
-          >
-            ログアウト
-          </button>
-        </div>
-      </div>
-    )
+    return <MyPage proDetails={proDetails} onLogout={() => { clearProSession(); refresh() }} />
   }
 
   // ── 登録/ログイン/リセット フォーム ──
@@ -712,5 +652,217 @@ function Breadcrumb() {
       <span className="mx-2">›</span>
       <span>アカウント</span>
     </nav>
+  )
+}
+
+const appLinks = [
+  { href: '/tools', icon: '🩺', title: '臨床ツール', sub: '計算・ER・ACLS・ICU・読影・薬剤', tag: 'FREE' },
+  { href: '/dashboard', icon: '📋', title: '病棟TODO', sub: '症例ログ & Stat tracker', tag: 'PRO' },
+  { href: '/learning', icon: '📚', title: '学習', sub: '専門医試験対策 & 講座', tag: 'PRO' },
+  { href: '/josler', icon: '📊', title: 'J-OSLER管理', sub: '症例登録 & 進捗管理', tag: 'PRO' },
+  { href: '/matching', icon: '🏥', title: 'マッチング対策', sub: '履歴書 & AI面接', tag: 'PRO' },
+  { href: '/journal', icon: '📄', title: '論文フィード', sub: '日本語要約 & ブックマーク', tag: 'FREEMIUM' },
+  { href: '/favorites', icon: '⭐', title: 'お気に入り', sub: '保存したツール一覧', tag: 'PRO' },
+]
+
+const roleLabels: Record<string, string> = { student: '医学生', doctor: '医師' }
+const hospitalLabels: Record<string, string> = {
+  university: '大学病院', large: '大規模（500床以上）', medium: '中規模（200〜499床）',
+  small: '小規模（200床未満）', clinic: 'クリニック・診療所', student: '学生（未所属）',
+}
+const specialtyLabels: Record<string, string> = {
+  general: '総合内科・総合診療', cardiology: '循環器内科', gastro: '消化器内科',
+  respiratory: '呼吸器内科', nephrology: '腎臓内科', endocrine: '内分泌・糖尿病内科',
+  neurology: '神経内科', hematology: '血液内科', rheumatology: '膠原病・リウマチ内科',
+  infectious: '感染症内科', emergency: '救急科', intensive: '集中治療科',
+  surgery: '外科系', pediatrics: '小児科', obgyn: '産婦人科',
+  psychiatry: '精神科', dermatology: '皮膚科', orthopedics: '整形外科',
+  urology: '泌尿器科', ophthalmology: '眼科', ent: '耳鼻咽喉科',
+  radiology: '放射線科', anesthesia: '麻酔科', pathology: '病理',
+  resident: '初期研修医', other: 'その他',
+}
+
+function MyPage({ proDetails, onLogout }: { proDetails: { email: string; plan: string; expiresAt: string }; onLogout: () => void }) {
+  const expiresDate = proDetails.expiresAt ? new Date(proDetails.expiresAt) : null
+  const daysLeft = expiresDate ? Math.ceil((expiresDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null
+
+  // プロフィール取得
+  const [profile, setProfile] = useState<FetchedProfile | null>(null)
+  useEffect(() => {
+    fetchProfile().then(res => { if (res.success && res.profile) setProfile(res.profile) })
+  }, [])
+
+  // パスワード変更
+  const [showPwChange, setShowPwChange] = useState(false)
+  const [currentPw, setCurrentPw] = useState('')
+  const [newPw, setNewPw] = useState('')
+  const [pwSubmitting, setPwSubmitting] = useState(false)
+  const [pwMsg, setPwMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null)
+
+  const handleChangePw = async () => {
+    setPwSubmitting(true)
+    setPwMsg(null)
+    const res = await changePassword(currentPw, newPw)
+    if (res.success) {
+      setPwMsg({ type: 'ok', text: 'パスワードを変更しました。' })
+      setCurrentPw('')
+      setNewPw('')
+      setShowPwChange(false)
+    } else {
+      setPwMsg({ type: 'err', text: res.error || '変更に失敗しました。' })
+    }
+    setPwSubmitting(false)
+  }
+
+  return (
+    <div className="max-w-lg mx-auto -mt-2">
+      <Breadcrumb />
+
+      {/* ヘッダー */}
+      <div className="bg-s0 border border-br rounded-2xl p-6 md:p-8 mb-4">
+        <div className="flex items-center gap-4 mb-5">
+          <div className="w-12 h-12 bg-acl border border-ac/20 rounded-full flex items-center justify-center shrink-0">
+            <span className="text-ac font-bold text-sm">PRO</span>
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-lg font-bold text-tx">マイページ</h1>
+            <p className="text-xs text-muted truncate">{proDetails.email}</p>
+          </div>
+        </div>
+
+        {/* アカウント情報 */}
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-muted">プラン</span>
+            <span className="font-medium text-tx">{planLabels[proDetails.plan] || proDetails.plan}</span>
+          </div>
+          {expiresDate && (
+            <div className="flex justify-between">
+              <span className="text-muted">有効期限</span>
+              <span className="font-medium text-tx">
+                {expiresDate.toLocaleDateString('ja-JP')}
+                {daysLeft !== null && <span className="text-muted ml-1">（残り{daysLeft}日）</span>}
+              </span>
+            </div>
+          )}
+          {profile?.role && (
+            <div className="flex justify-between">
+              <span className="text-muted">立場</span>
+              <span className="font-medium text-tx">{roleLabels[profile.role] || profile.role}</span>
+            </div>
+          )}
+          {profile?.university && (
+            <div className="flex justify-between">
+              <span className="text-muted">大学</span>
+              <span className="font-medium text-tx">{profile.university}</span>
+            </div>
+          )}
+          {profile?.graduationYear && (
+            <div className="flex justify-between">
+              <span className="text-muted">卒業年</span>
+              <span className="font-medium text-tx">{profile.graduationYear === 'student' ? '在学中' : `${profile.graduationYear}年`}</span>
+            </div>
+          )}
+          {profile?.hospitalSize && (
+            <div className="flex justify-between">
+              <span className="text-muted">病院規模</span>
+              <span className="font-medium text-tx">{hospitalLabels[profile.hospitalSize] || profile.hospitalSize}</span>
+            </div>
+          )}
+          {profile?.specialty && (
+            <div className="flex justify-between">
+              <span className="text-muted">診療科</span>
+              <span className="font-medium text-tx">{specialtyLabels[profile.specialty] || profile.specialty}</span>
+            </div>
+          )}
+        </div>
+
+        {/* パスワード変更 */}
+        <div className="mt-5 pt-4 border-t border-br">
+          {!showPwChange ? (
+            <button
+              onClick={() => setShowPwChange(true)}
+              className="text-sm text-ac hover:underline"
+            >
+              パスワードを変更する
+            </button>
+          ) : (
+            <div className="space-y-3">
+              <p className="text-xs font-medium text-tx">パスワード変更</p>
+              <input
+                type="password"
+                autoComplete="current-password"
+                placeholder="現在のパスワード"
+                value={currentPw}
+                onChange={e => setCurrentPw(e.target.value)}
+                className="w-full h-10 px-3 text-sm bg-bg border border-br rounded-lg focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all"
+              />
+              <input
+                type="password"
+                autoComplete="new-password"
+                placeholder="新しいパスワード（6文字以上）"
+                value={newPw}
+                onChange={e => setNewPw(e.target.value)}
+                className="w-full h-10 px-3 text-sm bg-bg border border-br rounded-lg focus:border-ac focus:ring-1 focus:ring-ac/30 outline-none transition-all"
+              />
+              <div className="flex gap-2">
+                <button
+                  onClick={handleChangePw}
+                  disabled={pwSubmitting || !currentPw || newPw.length < 6}
+                  className="flex-1 py-2 bg-ac text-white rounded-lg text-xs font-bold hover:bg-ac2 transition-colors disabled:bg-s1 disabled:text-muted disabled:border disabled:border-br"
+                >
+                  {pwSubmitting ? '変更中...' : '変更する'}
+                </button>
+                <button
+                  onClick={() => { setShowPwChange(false); setCurrentPw(''); setNewPw(''); setPwMsg(null) }}
+                  className="px-4 py-2 text-xs text-muted hover:text-tx border border-br rounded-lg transition-colors"
+                >
+                  キャンセル
+                </button>
+              </div>
+            </div>
+          )}
+          {pwMsg && (
+            <p className={`text-xs mt-2 ${pwMsg.type === 'ok' ? 'text-ok' : 'text-dn'}`}>{pwMsg.text}</p>
+          )}
+        </div>
+      </div>
+
+      {/* 7アプリリンク */}
+      <div className="bg-s0 border border-br rounded-2xl p-6 md:p-8 mb-4">
+        <h2 className="text-sm font-bold text-tx mb-4">サービス一覧</h2>
+        <div className="space-y-2">
+          {appLinks.map(app => (
+            <Link
+              key={app.href}
+              href={app.href}
+              className="flex items-center gap-3 p-3 rounded-xl hover:bg-s1 transition-colors group"
+            >
+              <span className="text-xl shrink-0">{app.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-tx group-hover:text-ac transition-colors">{app.title}</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                    app.tag === 'FREE' ? 'bg-okl text-ok' : app.tag === 'PRO' ? 'bg-acl text-ac' : 'bg-s1 text-muted'
+                  }`}>{app.tag}</span>
+                </div>
+                <p className="text-xs text-muted truncate">{app.sub}</p>
+              </div>
+              <span className="text-muted text-xs group-hover:text-ac transition-colors">→</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ログアウト */}
+      <div className="text-center">
+        <button
+          onClick={onLogout}
+          className="text-xs text-muted hover:text-dn transition-colors"
+        >
+          ログアウト
+        </button>
+      </div>
+    </div>
   )
 }
