@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 import MatchingApp from './MatchingApp'
 
 export const metadata: Metadata = {
-  title: 'マッチング対策 — iwor',
+  title: 'マッチング・転職対策 — iwor',
   description:
-    'プロフィール入力から履歴書自動生成、病院データベース検索、AI面接練習まで。医学生のマッチング対策をトータルサポート。',
+    'プロフィール入力から履歴書自動生成、書類・メール作成、病院データベース検索、AI面接練習まで。医学生のマッチングから専攻医・転職までトータルサポート。',
   alternates: { canonical: 'https://iwor.jp/matching' },
   openGraph: {
-    title: 'マッチング対策 — iwor',
+    title: 'マッチング・転職対策 — iwor',
     description:
-      'プロフィール入力→履歴書自動生成→病院DB→AI面接。マッチング対策をトータルサポート。',
+      'プロフィール→書類・メール→病院DB→AI面接。マッチング・転職対策をトータルサポート。',
     url: 'https://iwor.jp/matching',
     siteName: 'iwor',
     type: 'website',

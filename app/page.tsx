@@ -6,7 +6,7 @@ import { AppMockup } from '@/components/AppMockup'
 
 export const metadata: Metadata = {
   title: 'iwor（イウォール）— 医学生から医師まで、ずっと臨床のそばに',
-  description: '臨床計算ツール、ER対応、ACLS/BLS、ICU管理、検査読影、薬剤比較、薬剤ガイド。病棟TODO、J-OSLER管理、マッチング対策、論文フィード。医学生から医師まで、すべてがここに。',
+  description: '臨床計算ツール、ER対応、ACLS/BLS、ICU管理、検査読影、薬剤比較、薬剤ガイド。病棟TODO、J-OSLER管理、マッチング・転職対策、論文フィード。医学生から医師まで、すべてがここに。',
   alternates: { canonical: 'https://iwor.jp' },
 }
 
@@ -104,7 +104,7 @@ export default function HomePage() {
               icon: <><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></> },
             { href: '/josler', title: 'J-OSLER管理', sub: '症例登録 & 進捗管理', tag: 'PRO',
               icon: <><path d="M12 20V10" /><path d="M18 20V4" /><path d="M6 20v-4" /></> },
-            { href: '/matching', title: 'マッチング対策', sub: '履歴書 & AI面接', tag: 'PRO',
+            { href: '/matching', title: 'マッチング・転職対策', sub: '書類・メール & AI面接', tag: 'PRO',
               icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5" /></> },
             { href: '/journal', title: '論文フィード', sub: '日本語要約 & ブックマーク', tag: 'FREEMIUM',
               icon: <><path d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" /></> },

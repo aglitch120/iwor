@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'アプリ — iwor',
-  description: '臨床ツール、病棟TODO、学習、J-OSLER管理、マッチング対策、論文フィード、ブログ。7つのサービスでキャリアを支援。',
+  description: '臨床ツール、病棟TODO、学習、J-OSLER管理、マッチング・転職対策、論文フィード、ブログ。7つのサービスでキャリアを支援。',
 }
 
 const services = [
@@ -43,7 +43,7 @@ const services = [
   },
   {
     href: '/matching',
-    title: 'マッチング対策',
+    title: 'マッチング・転職対策',
     sub: '履歴書 & AI面接',
     tag: 'PRO',
     icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5" /></>,
