@@ -83,7 +83,7 @@ export default function CardiacEchoPage() {
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🫀 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">心エコー 系統的評価チェックリスト</h1>
         <p className="text-sm text-muted">左室機能→右室→弁膜症→心膜の順に評価。所見を選択すると鑑別疾患・次のアクションを表示。</p>
-      </div><ProPulseHint><FavoriteButton slug="interpret-cardiac-echo" /></ProPulseHint></div></header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-cardiac-echo" title="心エコー 系統的評価チェックリスト" /></ProPulseHint></div></header>
 
       <section className="space-y-4 mb-6">
         {categories.map(cat => (

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
+import FavoriteButton from '@/components/tools/FavoriteButton'
 import HospitalTab from './HospitalSection'
 import InterviewTab from './InterviewSection'
 
@@ -141,6 +142,7 @@ export default function MatchingApp() {
             <h1 className="text-xl font-bold text-tx">マッチング対策</h1>
             <p className="text-xs text-muted">プロフィール → 履歴書 → 病院検索 → AI面接</p>
           </div>
+          <FavoriteButton slug="app-matching" title="マッチング対策" href="/matching" type="app" size="sm" />
         </div>
       </div>
 

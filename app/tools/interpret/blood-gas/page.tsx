@@ -271,7 +271,7 @@ export default function BloodGasPage() {
         <p className="text-sm text-muted">
           pH・PCO₂・HCO₃⁻を入力 → 酸塩基障害をステップバイステップで自動解釈。AG・代償・A-aDO₂・P/F比まで一括評価。
         </p>
-      </div><ProPulseHint><FavoriteButton slug="interpret-blood-gas" /></ProPulseHint></div></header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-blood-gas" title="血液ガス分析 インタラクティブ解釈" /></ProPulseHint></div></header>
 
       {/* 入力 */}
       <section className="bg-s0 border border-br rounded-xl p-5 mb-6">

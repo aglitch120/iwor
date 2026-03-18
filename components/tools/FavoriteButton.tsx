@@ -33,7 +33,39 @@ export function loadFavorites(): FavoriteItem[] {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated))
       return migrated
     }
-    return raw as FavoriteItem[]
+    // Migration v2: fix broken hrefs and slug-as-title
+    const HREF_FIXES: Record<string, string> = {
+      'lifestyle': '/tools/lifestyle',
+      'icu-gamma-calc': '/tools/icu/vasopressor',
+    }
+    let needsSave = false
+    const fixed = (raw as FavoriteItem[]).map((f: FavoriteItem) => {
+      let changed = false
+      let item = { ...f }
+      // Fix known broken hrefs
+      if (HREF_FIXES[f.id] && f.href !== HREF_FIXES[f.id]) {
+        item.href = HREF_FIXES[f.id]
+        changed = true
+      }
+      // Fix interpret hrefs that point to /tools/calc/
+      if (f.id.startsWith('interpret-') && f.href.startsWith('/tools/calc/')) {
+        item.href = `/tools/interpret/${f.id.replace('interpret-', '')}`
+        item.type = 'interpret'
+        changed = true
+      }
+      // Fix app hrefs
+      if (f.id.startsWith('app-') && f.href.startsWith('/tools/calc/')) {
+        item.href = `/${f.id.replace('app-', '')}`
+        item.type = 'app'
+        changed = true
+      }
+      if (changed) needsSave = true
+      return item
+    })
+    if (needsSave) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(fixed))
+    }
+    return fixed
   } catch { return [] }
 }
 
@@ -76,12 +108,14 @@ export default function FavoriteButton({ slug, title, href, type, size = 'md' }:
           : slug.startsWith('icu-') ? 'icu'
           : slug.startsWith('er-') ? 'er'
           : slug.startsWith('acls-') ? 'acls'
+          : slug.startsWith('app-') ? 'app'
           : 'calc')
       const derivedHref = href
         || (derivedType === 'interpret' ? `/tools/interpret/${slug.replace('interpret-', '')}`
           : derivedType === 'icu' ? `/tools/icu/${slug.replace('icu-', '')}`
           : derivedType === 'er' ? `/tools/er/${slug.replace('er-', '')}`
           : derivedType === 'acls' ? `/tools/acls/${slug.replace('acls-', '')}`
+          : derivedType === 'app' ? `/${slug.replace('app-', '')}`
           : `/tools/calc/${slug}`)
 
       saveFavorites([...favs, {

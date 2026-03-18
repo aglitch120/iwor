@@ -137,7 +137,7 @@ export default function CalculatorLayout({
           </div>
           {slug && (
             <ProPulseHint>
-              <FavoriteButton slug={slug} />
+              <FavoriteButton slug={slug} title={title} href={`/tools/calc/${slug}`} type="calc" />
             </ProPulseHint>
           )}
         </div>

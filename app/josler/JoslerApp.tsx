@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { SPECIALTIES as SP, DISEASE_GROUPS as DG } from '@/lib/josler-data'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
+import FavoriteButton from '@/components/tools/FavoriteButton'
 import {
   loadJoslerData, saveJoslerData, saveToLocal,
   startAutoSave, stopAutoSave, setStatusCallback,
@@ -197,6 +198,7 @@ export default function JoslerApp() {
         <div style={{ width: 32, height: 32, background: C.ac, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 14, fontWeight: 700 }}>iw</div>
         <span style={{ fontWeight: 700, fontSize: 17 }}>J-OSLER管理</span>
         <span style={{ fontSize: 11, color: C.ac, background: C.acl, padding: '2px 7px', borderRadius: 4, fontWeight: 600 }}>PRO</span>
+        <FavoriteButton slug="app-josler" title="J-OSLER管理" href="/josler" type="app" size="sm" />
         <span style={{ flex: 1 }} />
         {isPro && (
           <span style={{ fontSize: 11, padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace', background: saveStatus === 'saved' ? '#DCFCE7' : saveStatus === 'saving' || saveStatus === 'dirty' ? '#FEF3C7' : saveStatus === 'error' ? '#FEE2E2' : '#EEF4FF', color: saveStatus === 'saved' ? '#166534' : saveStatus === 'saving' || saveStatus === 'dirty' ? '#92400E' : saveStatus === 'error' ? '#991B1B' : '#1E40AF', transition: 'all .3s' }}>

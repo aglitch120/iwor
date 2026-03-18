@@ -341,7 +341,7 @@ export default function ECGInterpretPage() {
         <p className="text-sm text-muted">
           心拍数 → リズム → P波 → PR間隔 → QRS → 軸 → ST変化 → T波 → QTc をステップバイステップで解釈。見落としを防ぐ9項目チェック。
         </p>
-      </div><ProPulseHint><FavoriteButton slug="interpret-ecg" /></ProPulseHint></div></header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-ecg" title="心電図（ECG）系統的読影フロー" /></ProPulseHint></div></header>
 
       {/* 模式的心電図波形 */}
       <div className="bg-s1 border border-br rounded-xl p-3 mb-6">

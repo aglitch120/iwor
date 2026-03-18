@@ -144,7 +144,7 @@ export default function AbdominalEchoPage() {
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🔊 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">腹部エコー 系統的評価チェックリスト</h1>
         <p className="text-sm text-muted">臓器別に評価。各セクションにホバーすると模式図の対応臓器がハイライト。</p>
-      </div><ProPulseHint><FavoriteButton slug="interpret-abdominal-echo" /></ProPulseHint></div></header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-abdominal-echo" title="腹部エコー 系統的評価チェックリスト" /></ProPulseHint></div></header>
       <div className="flex flex-col lg:flex-row gap-6 mb-6">
         <div className="lg:w-[320px] shrink-0"><div className="lg:sticky lg:top-4 bg-s1 border border-br rounded-xl p-3">
           <p className="text-xs font-bold text-tx mb-2 text-center">模式的腹部臓器配置</p>

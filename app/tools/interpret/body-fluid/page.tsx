@@ -428,7 +428,7 @@ export default function BodyFluidPage() {
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🧪 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">体液検査 インタラクティブ解釈</h1>
         <p className="text-sm text-muted">胸水（Light基準）・腹水（SAAG）・髄液（髄膜炎鑑別）をステップバイステップで評価。</p>
-      </div><ProPulseHint><FavoriteButton slug="interpret-body-fluid" /></ProPulseHint></div></header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-body-fluid" title="体液検査 インタラクティブ解釈" /></ProPulseHint></div></header>
 
       {/* Fluid type selector */}
       <div className="flex gap-2 mb-6">

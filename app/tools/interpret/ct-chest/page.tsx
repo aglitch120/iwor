@@ -79,7 +79,7 @@ export default function CTChestPage() {
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">🔍 検査読影</span>
         <h1 className="text-2xl font-bold text-tx mb-1">胸部CT 系統的評価チェックリスト</h1>
         <p className="text-sm text-muted">肺実質→胸膜→縦隔→骨・軟部の順に評価。所見を選択すると鑑別疾患と次のステップを表示。</p>
-      </div><ProPulseHint><FavoriteButton slug="interpret-ct-chest" /></ProPulseHint></div></header>
+      </div><ProPulseHint><FavoriteButton slug="interpret-ct-chest" title="胸部CT 系統的評価チェックリスト" /></ProPulseHint></div></header>
       <section className="space-y-4 mb-6">{categories.map(cat => (
         <div key={cat.key} className="bg-s0 border border-br rounded-xl p-4">
           <h2 className="text-sm font-bold text-tx mb-1">{cat.title}</h2><p className="text-[11px] text-muted mb-3">{cat.desc}</p>

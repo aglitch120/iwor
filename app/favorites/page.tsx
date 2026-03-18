@@ -10,6 +10,7 @@ const STORAGE_KEY = 'iwor_favorites'
 // カテゴリ定義
 const CATEGORIES = [
   { id: 'all', label: 'すべて', icon: '📌' },
+  { id: 'app', label: 'アプリ', icon: '📱' },
   { id: 'calc', label: '臨床計算', icon: '🧮' },
   { id: 'interpret', label: '検査読影', icon: '🔬' },
   { id: 'er', label: 'ER', icon: '🚑' },
