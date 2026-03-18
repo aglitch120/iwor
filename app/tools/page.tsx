@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: '臨床ツール — iwor',
-  description: '臨床計算79種、生活習慣病総合管理、ER対応6本、ACLS/BLS 4本、ICU管理4本、検査読影5本、薬剤比較25カテゴリ。すべて無料。',
+  description: '臨床計算、生活習慣病総合管理、ER・救急対応、ICU管理、検査読影、薬剤ガイド。すべて無料。',
 }
 
 // ── ツールカテゴリ（臨床ツールのみ） ──
@@ -12,54 +12,42 @@ const categories = [
     slug: 'calc',
     icon: '🧮',
     name: '臨床計算ツール',
-    description: '循環器・腎臓・呼吸器・神経・血液など診療科別に79種',
-    count: 152,
-    badge: null,
+    description: '循環器・腎臓・呼吸器・神経・血液など診療科別',
     available: true,
   },
   {
     slug: 'lifestyle',
     icon: '🩺',
     name: '生活習慣病 総合管理',
-    description: '7疾患を一括評価→次のアクション自動生成',
-    count: null,
-    badge: 'NEW',
+    description: '7疾患を一括評価→アクション自動生成',
     available: true,
   },
   {
     slug: 'er',
     icon: '🚨',
     name: 'ER・救急対応',
-    description: 'ER主訴別対応20本 + ACLS/BLS 4本。胸痛・意識障害・腹痛・失神・発熱・呼吸困難・けいれん・めまい・頭痛・腰背部痛・吐血下血・動悸・嘔吐・咽頭痛・喀血・脱力・咳・下痢・しびれ・院内発熱',
-    count: 24,
-    badge: 'NEW',
+    description: 'ER主訴別対応 + ACLS/BLS フロー',
     available: true,
   },
   {
     slug: 'icu',
     icon: '🫁',
     name: 'ICU管理',
-    description: '人工呼吸器・昇圧剤・栄養計算・鎮静/鎮痛/せん妄評価',
-    count: 4,
-    badge: 'NEW',
+    description: '人工呼吸器・γ計算・栄養・鎮静評価',
     available: true,
   },
   {
     slug: 'interpret',
     icon: '🔬',
     name: '検査読影',
-    description: '血ガス・心電図・胸部X線・腹部エコー・体液検査の系統的読影フロー。',
-    count: 5,
-    badge: 'NEW',
+    description: '血液検査・心電図・X線・CT・エコー・尿検査',
     available: true,
   },
   {
     slug: 'drugs',
     icon: '💊',
     name: '薬剤ガイド',
-    description: '抗菌薬スペクトラム・エンピリック選択 / ステロイド換算 / オピオイド換算 / 腎機能別用量調整',
-    count: null,
-    badge: 'NEW',
+    description: '抗菌薬・ステロイド・オピオイド・腎機能別用量',
     available: true,
   },
 ]
@@ -67,31 +55,13 @@ const categories = [
 function CategoryCard({ cat }: { cat: typeof categories[0] }) {
   const inner = (
     <>
-      <div className="flex items-start justify-between mb-3">
-        <div className="w-10 h-10 bg-ac/10 border border-ac/20 rounded-xl flex items-center justify-center">
-          <span className="text-xl">{cat.icon}</span>
-        </div>
-        <div className="flex gap-1.5">
-          {cat.count && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-ac/10 text-ac font-medium">
-              {cat.count}個
-            </span>
-          )}
-          {cat.badge && (
-            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-              cat.badge === 'PRO' ? 'bg-[#FFF8E1] text-[#E65100]' :
-              cat.badge === 'NEW' ? 'bg-ac/10 text-ac' :
-              'bg-s2 text-muted'
-            }`}>
-              {cat.badge}
-            </span>
-          )}
-        </div>
+      <div className="w-10 h-10 bg-ac/10 border border-ac/20 rounded-xl flex items-center justify-center mb-3">
+        <span className="text-xl">{cat.icon}</span>
       </div>
-      <h2 className="text-base font-bold text-tx group-hover:text-ac transition-colors">
+      <h2 className="text-sm font-bold text-tx group-hover:text-ac transition-colors">
         {cat.name}
       </h2>
-      <p className="text-sm text-muted mt-1">{cat.description}</p>
+      <p className="text-xs text-muted mt-1">{cat.description}</p>
     </>
   )
 

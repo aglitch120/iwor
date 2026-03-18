@@ -22,7 +22,7 @@ const tools = [
 
 export default function InterpretPage() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
+    <main className="max-w-5xl mx-auto px-4 py-8">
       <nav className="text-sm text-muted mb-6">
         <Link href="/" className="hover:text-ac">ホーム</Link>
         <span className="mx-2">›</span>
@@ -36,23 +36,17 @@ export default function InterpretPage() {
         <p className="text-muted text-sm">検査データを入力 → ステップバイステップで解釈。見落としを防ぐインタラクティブフロー。</p>
       </header>
 
-      <div className="grid gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {tools.map(t => t.live ? (
           <Link key={t.href} href={t.href}
             className="group block p-4 bg-s0 border border-ac/15 rounded-xl hover:border-ac/30 hover:bg-acl transition-all">
-            <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-base font-bold text-tx group-hover:text-ac transition-colors">{t.name}</h2>
-              {t.badge && <span className="text-[10px] px-1.5 py-0.5 rounded bg-ac/10 text-ac font-bold">{t.badge}</span>}
-            </div>
-            <p className="text-sm text-muted">{t.desc}</p>
+            <h2 className="text-sm font-bold text-tx group-hover:text-ac transition-colors mb-1.5">{t.name}</h2>
+            <p className="text-[11px] text-muted leading-relaxed line-clamp-2">{t.desc}</p>
           </Link>
         ) : (
           <div key={t.name} className="p-4 bg-s1/50 border border-br/50 rounded-xl opacity-50">
-            <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-base font-bold text-muted">{t.name}</h2>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-s2 text-muted font-bold">{t.badge}</span>
-            </div>
-            <p className="text-sm text-muted/70">{t.desc}</p>
+            <h2 className="text-sm font-bold text-muted mb-1.5">{t.name}</h2>
+            <p className="text-[11px] text-muted/70 leading-relaxed line-clamp-2">{t.desc}</p>
           </div>
         ))}
       </div>

@@ -6,7 +6,7 @@ import { AppMockup } from '@/components/AppMockup'
 
 export const metadata: Metadata = {
   title: 'iwor（イウォール）— 医学生から医師まで、ずっと臨床のそばに',
-  description: '臨床計算ツール79種、ER対応、ACLS/BLS、ICU管理、検査読影、薬剤比較155種。病棟TODO、J-OSLER管理、マッチング対策、論文フィード。医学生から医師まで、すべてがここに。',
+  description: '臨床計算ツール、ER対応、ACLS/BLS、ICU管理、検査読影、薬剤比較、薬剤ガイド。病棟TODO、J-OSLER管理、マッチング対策、論文フィード。医学生から医師まで、すべてがここに。',
   alternates: { canonical: 'https://iwor.jp' },
 }
 
@@ -20,7 +20,7 @@ export default function HomePage() {
       <section className="pt-12 pb-16 md:pt-20 md:pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-acl border border-ac/20 rounded-full text-xs font-medium text-ac mb-6">
           <span className="w-1.5 h-1.5 bg-ac rounded-full animate-pulse" />
-          123個の臨床ツール + 173記事、すべて無料
+          臨床ツール + 173記事、すべて無料
         </div>
         <p className="text-sm text-muted mb-3 tracking-wide">iwor（イウォール）</p>
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-tx leading-[1.15] tracking-tight mb-5">
@@ -81,8 +81,8 @@ export default function HomePage() {
                 <p className="text-xs text-muted">計算・ER・ACLS/BLS・ICU・読影・薬剤比較 — すべて無料</p>
               </div>
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-              {['臨床計算', 'ER対応', 'ACLS/BLS', 'ICU管理', '検査読影', '薬剤比較'].map(name => (
+            <div className="flex flex-wrap gap-2">
+              {['臨床計算', 'ER対応', 'ACLS/BLS', 'ICU管理', '検査読影', '薬剤比較', '薬剤ガイド'].map(name => (
                 <div key={name} className="bg-acl text-ac border border-ac/15 rounded-lg px-3 py-2.5 text-center">
                   <p className="text-xs font-bold">{name}</p>
                 </div>

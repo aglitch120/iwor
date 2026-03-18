@@ -39,22 +39,19 @@ const aclsFlows = [
 function FlowCard({ f }: { f: typeof erFlows[0] }) {
   return (
     <Link href={f.href}
-      className="group flex items-start gap-4 p-5 bg-s0 border border-ac/15 rounded-xl hover:border-ac/30 hover:bg-acl transition-all">
-      <div className="w-10 h-10 bg-ac/10 border border-ac/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-        <span className="text-xl">{f.emoji}</span>
+      className="group p-4 bg-s0 border border-ac/15 rounded-xl hover:border-ac/30 hover:bg-acl transition-all">
+      <div className="flex items-center gap-2.5 mb-2">
+        <span className="text-lg">{f.emoji}</span>
+        <h2 className="text-sm font-bold text-tx group-hover:text-ac transition-colors">{f.name}</h2>
       </div>
-      <div className="flex-1 min-w-0">
-        <h2 className="text-base font-bold text-tx group-hover:text-ac transition-colors mb-0.5">{f.name}</h2>
-        <p className="text-sm text-muted">{f.desc}</p>
-      </div>
-      <span className="text-muted group-hover:text-ac transition-colors mt-1">→</span>
+      <p className="text-[11px] text-muted leading-relaxed line-clamp-2">{f.desc}</p>
     </Link>
   )
 }
 
 export default function ERPage() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
+    <main className="max-w-5xl mx-auto px-4 py-8">
       <nav className="text-sm text-muted mb-6">
         <Link href="/" className="hover:text-ac">ホーム</Link>
         <span className="mx-2">›</span>
@@ -74,7 +71,7 @@ export default function ERPage() {
       {/* ── 主訴別ER対応 ── */}
       <section className="mb-8">
         <h2 className="text-sm font-bold text-muted uppercase tracking-wider mb-3">主訴別ER対応</h2>
-        <div className="grid gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {erFlows.map(f => <FlowCard key={f.href} f={f} />)}
         </div>
       </section>
@@ -87,7 +84,7 @@ export default function ERPage() {
             ⚠️ AHA / JRCガイドライン準拠。実際の蘇生場面では施設のプロトコル・チームリーダーの指示に従ってください。
           </p>
         </div>
-        <div className="grid gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {aclsFlows.map(f => <FlowCard key={f.href} f={f} />)}
         </div>
       </section>

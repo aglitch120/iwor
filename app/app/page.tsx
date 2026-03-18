@@ -18,7 +18,7 @@ const services = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
       </svg>
     ),
-    subcategories: ['臨床計算 79種', 'ER対応 6本', 'ACLS/BLS 4本', 'ICU管理 4本', '検査読影 5本', '薬剤比較 25カテゴリ'],
+    subcategories: ['臨床計算', 'ER対応', 'ACLS/BLS', 'ICU管理', '検査読影', '薬剤比較', '薬剤ガイド'],
   },
   {
     href: '/dashboard',
@@ -92,7 +92,7 @@ export default function AppPage() {
               <p className="text-xs text-muted">{featured.sub}</p>
             </div>
           </div>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+          <div className="flex flex-wrap gap-2">
             {featured.subcategories!.map(name => (
               <div key={name} className="bg-acl text-ac border border-ac/15 rounded-lg px-3 py-2.5 text-center">
                 <p className="text-xs font-bold">{name}</p>
