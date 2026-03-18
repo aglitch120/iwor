@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { ERTutorial } from '@/components/tutorials'
+
 export const metadata: Metadata = {
   title: 'ER・救急対応ツリー（主訴別 + ACLS/BLS）| iwor',
   description: '救急外来の主訴別に系統的アプローチ。胸痛・意識障害・腹痛・失神・発熱・呼吸困難・ショック・便秘など22主訴 + ACLS/BLS蘇生フロー。killer diseaseの見落としを防ぐ。',
@@ -104,6 +106,7 @@ export default function ERPage() {
           既存の計算ツールへのリンクも含まれています。当直中のセカンドオピニオンとしてご活用ください。
         </p>
       </section>
+      <ERTutorial />
     </main>
   )
 }

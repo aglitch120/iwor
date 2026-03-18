@@ -1,6 +1,7 @@
 'use client'
 import { useState, useMemo, useCallback } from 'react'
 import FavoriteButton from '@/components/tools/FavoriteButton'
+import { PresenterTutorial } from '@/components/tutorials'
 
 const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
@@ -235,6 +236,7 @@ export default function PresenterApp() {
           {/* PRO teaser */}
           <ProTeaser />
         </div>
+        <PresenterTutorial />
       </>
     )
   }

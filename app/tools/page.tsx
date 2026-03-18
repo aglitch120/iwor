@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ToolsTutorial } from "@/components/tutorials"
 
 export const metadata: Metadata = {
   title: '臨床ツール — iwor',
@@ -112,6 +113,7 @@ export default function ToolsHubPage() {
           <CategoryCard key={cat.slug} cat={cat} />
         ))}
       </div>
+    <ToolsTutorial />
     </main>
   )
 }

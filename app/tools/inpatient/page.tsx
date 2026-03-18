@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { InpatientTutorial } from "@/components/tutorials"
 
 export const metadata: Metadata = {
   title: '入院中トラブル対応 | iwor',
@@ -47,6 +48,7 @@ export default function InpatientPage() {
       <div className="grid sm:grid-cols-2 gap-3">
         {items.map(f => <Card key={f.href} f={f} />)}
       </div>
+    <InpatientTutorial />
     </main>
   )
 }

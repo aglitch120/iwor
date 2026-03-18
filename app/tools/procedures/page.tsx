@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { ProceduresTutorial } from '@/components/tutorials'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -407,6 +408,7 @@ export default function ProceduresPage() {
         <p className="font-semibold mb-1">⚠️ 医療上の免責事項</p>
         <p>本ガイドは手技の手順を学習目的で提供するものです。実際の手技は必ず指導医の監督下で行ってください。施設のプロトコルを優先してください。</p>
       </div>
+    <ProceduresTutorial />
     </main>
   )
 }

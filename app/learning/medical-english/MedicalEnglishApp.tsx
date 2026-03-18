@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import Link from 'next/link'
+import { MedicalEnglishTutorial } from '@/components/tutorials'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -334,6 +335,7 @@ export default function MedicalEnglishApp() {
             )
           })}
         </div>
+        <MedicalEnglishTutorial />
       </main>
     )
   }

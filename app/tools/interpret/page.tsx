@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { InterpretTutorial } from "@/components/tutorials"
 
 export const metadata: Metadata = {
   title: '検査読影ツール',
@@ -48,6 +49,7 @@ export default function InterpretPage() {
           </div>
         ))}
       </div>
+    <InterpretTutorial />
     </main>
   )
 }
