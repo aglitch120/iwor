@@ -139,6 +139,68 @@ export async function loginWithEmail(email: string, password: string): Promise<L
   }
 }
 
+// ── パスワード変更 ──
+
+export async function changePassword(currentPassword: string, newPassword: string): Promise<{ success: boolean; error?: string }> {
+  const sessionToken = typeof window !== 'undefined'
+    ? localStorage.getItem('iwor_session_token') || ''
+    : ''
+  if (!sessionToken) return { success: false, error: '認証情報がありません。再ログインしてください。' }
+
+  try {
+    const res = await fetch(`${API_URL}/api/change-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    })
+    const data = await res.json()
+    if (!res.ok || !data.ok) {
+      return { success: false, error: data.error || 'パスワード変更に失敗しました。' }
+    }
+    return { success: true }
+  } catch {
+    return { success: false, error: 'サーバーに接続できませんでした。' }
+  }
+}
+
+// ── プロフィール取得 ──
+
+export interface FetchedProfile {
+  email: string
+  plan: string
+  expiresAt: string
+  registeredAt: string
+  role: string | null
+  university: string | null
+  graduationYear: string | null
+  hospitalSize: string | null
+  specialty: string | null
+}
+
+export async function fetchProfile(): Promise<{ success: boolean; profile?: FetchedProfile; error?: string }> {
+  const sessionToken = typeof window !== 'undefined'
+    ? localStorage.getItem('iwor_session_token') || ''
+    : ''
+  if (!sessionToken) return { success: false, error: '認証情報がありません。' }
+
+  try {
+    const res = await fetch(`${API_URL}/api/profile`, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${sessionToken}` },
+    })
+    const data = await res.json()
+    if (!res.ok || !data.ok) {
+      return { success: false, error: data.error || 'プロフィール取得に失敗しました。' }
+    }
+    return { success: true, profile: data as FetchedProfile }
+  } catch {
+    return { success: false, error: 'サーバーに接続できませんでした。' }
+  }
+}
+
 // ── パスワードリセット ──
 
 interface ResetResult {
