@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'アプリ — iwor',
-  description: '臨床ツール、病棟TODO、学習、J-OSLER管理、マッチング・転職対策、論文フィード、ブログ。7つのサービスでキャリアを支援。',
+  description: '臨床ツール、病棟TODO、学習、J-OSLER管理、マッチング・転職対策、論文フィード、プレゼン資料生成。7つのサービスでキャリアを支援。',
 }
 
 const services = [
@@ -56,11 +56,11 @@ const services = [
     icon: <><path d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" /></>,
   },
   {
-    href: '/blog',
-    title: 'ブログ',
-    sub: 'J-OSLER & キャリア — 173記事',
-    tag: 'FREE',
-    icon: <><path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" /><circle cx="11" cy="11" r="2" /></>,
+    href: '/presenter',
+    title: 'プレゼン資料生成',
+    sub: '学会・カンファ・コンサル',
+    tag: 'PRO',
+    icon: <><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><path d="M8 21h8M12 17v4" /></>,
   },
 ]
 
