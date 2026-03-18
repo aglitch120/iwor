@@ -12,6 +12,7 @@ const subTools = [
   { href: '/tools/drugs/cancer-pain', icon: '🎗️', name: '癌性疼痛コントロール', desc: 'WHO除痛ラダー + レスキュー + ローテーション + 鎮痛補助薬' },
   { href: '/tools/calc/renal-dose-abx', icon: '🧪', name: '抗菌薬 腎機能別用量', desc: 'eGFR/CCr別の推奨用量。30薬剤対応' },
   { href: '/tools/drugs/preop-drugs', icon: '🔪', name: '術前休薬リスト', desc: '抗凝固薬・抗血小板薬・糖尿病薬等の周術期休薬ガイド' },
+  { href: '/tools/drugs/tube-admin', icon: '🧪', name: '簡易懸濁可否リスト', desc: '経管投与時の簡易懸濁法 可否一覧。55℃温湯法対応' },
   { href: '#', icon: '📋', name: 'DIデータベース', desc: '各薬剤の添付文書要約・相互作用・TDM情報', badge: '準備中' },
 ]
 
