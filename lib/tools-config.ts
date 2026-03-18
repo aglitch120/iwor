@@ -929,6 +929,17 @@ export const tools: ToolDefinition[] = [
   { slug: 'ibs-rome', name: 'IBS診断基準(Rome IV)', nameEn: 'Rome IV IBS Criteria', description: '過敏性腸症候群の診断基準。反復する腹痛+排便との関連。3ヶ月以上持続。', category: 'hepatology', tier: 3, keywords: ['IBS','過敏性腸症候群','Rome','腹痛','排便'], relatedSlugs: [] },
   { slug: 'bishop', name: 'Bishopスコア', nameEn: 'Bishop Score', description: '子宮頚管成熟度の内診評価。5項目。≧9で誘発分娩が成功しやすい。', category: 'general', tier: 3, keywords: ['Bishop','子宮頚管','分娩','誘発','産科'], relatedSlugs: ['apgar'] },
   { slug: 'sle-criteria', name: 'SLE分類基準(2019)', nameEn: 'EULAR/ACR SLE Classification', description: 'SLE分類基準。抗核抗体陽性が入口基準。7領域22項目の重み付けスコア。≧10で分類。', category: 'general', tier: 3, keywords: ['SLE','ループス','分類基準','ANA','EULAR'], relatedSlugs: [] },
+  // ── 追加ツール（D章） ──
+  { slug: 'drip-rate', name: '点滴速度計算', nameEn: 'IV Drip Rate Calculator', description: '輸液量・時間・滴係数から mL/h と 滴/分を計算。一般(20滴/mL)/小児用(60滴/mL)対応。', category: 'general', tier: 2, keywords: ['点滴','滴下','速度','輸液','drip'], relatedSlugs: ['maintenance-fluid','holiday-segar'] },
+  { slug: 'cardiac-index', name: '心係数 (CI)', nameEn: 'Cardiac Index', description: '心拍出量をBSAで補正。2.5-4.2 L/min/m²が正常。ショックの鑑別・循環管理に必須。', category: 'cardiology', tier: 2, keywords: ['CI','心係数','心拍出量','CO','cardiac index'], relatedSlugs: ['bsa','svri','map'] },
+  { slug: 'svri', name: '全身血管抵抗指数 (SVRI)', nameEn: 'Systemic Vascular Resistance Index', description: 'MAP・CVP・COからSVRIを算出。ショックの4分類鑑別（分布異常性↓/心原性↑）に有用。', category: 'cardiology', tier: 2, keywords: ['SVRI','SVR','血管抵抗','ショック','hemodynamic'], relatedSlugs: ['cardiac-index','map'] },
+  { slug: 'maddrey', name: 'Maddrey判別関数', nameEn: "Maddrey's Discriminant Function", description: 'アルコール性肝炎の重症度判定。≧32で重症→ステロイド治療適応。PT秒とビリルビンで計算。', category: 'hepatology', tier: 2, keywords: ['Maddrey','アルコール性肝炎','DF','ステロイド','肝炎'], relatedSlugs: ['meld','child-pugh'] },
+  { slug: 'iron-deficit', name: '鉄欠乏量（Ganzoni式）', nameEn: 'Iron Deficit (Ganzoni Formula)', description: '鉄欠乏性貧血の鉄補充必要量を計算。静注鉄剤（フェインジェクト/フェジン）の投与量決定に。', category: 'hematology', tier: 2, keywords: ['鉄','Ganzoni','鉄欠乏','貧血','フェジン','フェインジェクト'], relatedSlugs: ['rpi'] },
+  { slug: 'rpi', name: '網赤血球産生指数 (RPI)', nameEn: 'Reticulocyte Production Index', description: '貧血の原因鑑別。RPI≧2: 溶血/出血（骨髄反応あり）、<2: 産生低下。Hctで補正。', category: 'hematology', tier: 2, keywords: ['RPI','網赤血球','貧血','溶血','reticulocyte'], relatedSlugs: ['iron-deficit'] },
+  { slug: 'nnt', name: 'NNT（治療必要例数）', nameEn: 'Number Needed to Treat', description: '1人のイベントを回避するのに必要な治療人数。ARR/RRRも同時算出。EBM必須ツール。', category: 'general', tier: 3, keywords: ['NNT','NNH','ARR','RRR','EBM','治療必要例数'], relatedSlugs: ['post-test-probability'] },
+  { slug: 'post-test-probability', name: '検査後確率（尤度比）', nameEn: 'Post-test Probability (LR)', description: '検査前確率と尤度比から検査後確率を算出。Fagan nomogram。診断推論の基本。', category: 'general', tier: 3, keywords: ['尤度比','検査後確率','Bayes','Fagan','LR','感度','特異度'], relatedSlugs: ['nnt'] },
+  { slug: 'delta-gap', name: 'デルタギャップ（Delta ratio）', nameEn: 'Delta Gap / Delta-Delta', description: 'AG上昇型代謝性アシドーシスに他の酸塩基異常が合併しているか評価。ΔAG/ΔHCO3比で判定。', category: 'electrolyte', tier: 2, keywords: ['デルタ','delta','AG','アシドーシス','酸塩基','gap-gap'], relatedSlugs: ['anion-gap','winters-formula','aa-gradient'] },
+  { slug: 'oxygen-delivery', name: '酸素運搬量 (CaO2/DO2I)', nameEn: 'Oxygen Delivery (CaO2/DO2I)', description: '動脈血酸素含量CaO2と酸素供給指数DO2Iを計算。ICUでの酸素需給バランス評価に。', category: 'respiratory', tier: 2, keywords: ['CaO2','DO2I','酸素','oxygen delivery','ICU'], relatedSlugs: ['cardiac-index','aa-gradient'] },
 ]
 
 // 実装済みツールのslug一覧（新ツール追加時にここに追加）
@@ -943,6 +954,8 @@ export const implementedTools = new Set(['egfr', 'cha2ds2-vasc', 'chads2', 'has-
   // Tier 3
   'brinkman', 'borg-scale', 'ann-arbor', 'stop-bang', 'tds', 'gustilo', 'murray',
   'drip-score', 'ipss-prostate', 'kawasaki', 'westley-croup', 'anaphylaxis', 'siadh', 'la-classification', 'ibs-rome', 'bishop', 'burn-area', 'child-vital', 'design-r', 'sle-criteria', 'hyponatremia-flow',
+  // D章追加
+  'drip-rate', 'cardiac-index', 'svri', 'maddrey', 'iron-deficit', 'rpi', 'nnt', 'post-test-probability', 'delta-gap', 'oxygen-delivery',
 ])
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
