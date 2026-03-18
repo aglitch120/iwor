@@ -74,8 +74,8 @@ const FEATURES = [
 /* ── Future courses ── */
 const COURSES = [
   { emoji: '🇺🇸', title: '医学英語講座', desc: 'フラッシュカード＋4択クイズ・6カテゴリ', status: '公開中', href: '/learning/medical-english' },
-  { emoji: '🫀', title: '心エコー講座', desc: '基本断面・計測・病態評価', status: '企画中' },
-  { emoji: '💧', title: '輸液講座', desc: '電解質・酸塩基・輸液設計', status: '企画中' },
+  { emoji: '🫀', title: '心エコー講座', desc: '基本断面・計測・弁膜症・RUSH', status: '公開中', href: '/learning/echo' },
+  { emoji: '💧', title: '輸液講座', desc: '電解質・酸塩基・輸液設計', status: '公開中', href: '/learning/fluid' },
   { emoji: '💊', title: '抗菌薬講座', desc: 'スペクトラム・エンピリック・TDM', status: '企画中' },
   { emoji: '🫁', title: '人工呼吸器講座', desc: 'モード・設定・ウィーニング', status: '企画中' },
 ]
