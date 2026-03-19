@@ -26,7 +26,7 @@ export default function CCHRPage() {
     const h = highRisk.filter(c=>checks[c.id]).length
     const m = medRisk.filter(c=>checks[c.id]).length
     if(h>0) return { score:h+m, severity:'dn' as const, label:'高リスク: 頭部CT必須（脳外科的介入が必要な損傷リスク）' }
-    if(m>0) return { score:m, severity:'wn' as const, label:'中リスク: 頭部CT推奨（臨床的に重要な脳損傷リスク）' }
+    if(m>0) return { score:m, severity:'wn' as const, label:'中リスク: 頭部CT検討（臨床的に重要な脳損傷リスク）' }
     return { score:0, severity:'ok' as const, label:'低リスク: CT不要（適応基準を満たさない）' }
   },[checks])
   return(
@@ -36,7 +36,7 @@ export default function CCHRPage() {
       explanation={
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">カナダ頭部CTルールとは</h2>
-          <p>GCS 13-15の軽症頭部外傷成人患者に対し、頭部CTの適応を判断するルール。高リスク因子（5項目）が1つでもあれば脳外科介入が必要な損傷のリスクあり→CT必須。中リスク因子（2項目）が1つでもあれば臨床的に重要な脳損傷のリスクあり→CT推奨。</p>
+          <p>GCS 13-15の軽症頭部外傷成人患者に対し、頭部CTの適応を判断するルール。高リスク因子（5項目）が1つでもあれば脳外科介入が必要な損傷のリスクあり→CT必須。中リスク因子（2項目）が1つでもあれば臨床的に重要な脳損傷のリスクあり→CT検討。</p>
           <h3 className="font-bold text-tx">適応条件</h3>
           <p>成人（16歳以上）、GCS 13-15、受傷後24時間以内、鈍的外傷。除外：抗凝固薬使用中、開放性頭蓋骨折が明らか、不安定なバイタル。</p>
           <h3 className="font-bold text-tx">感度</h3>
@@ -48,7 +48,7 @@ export default function CCHRPage() {
       <div className="space-y-1">
         <p className="text-xs font-bold text-dn mb-2">高リスク因子（1つでも→CT必須）</p>
         {highRisk.map(c=><CheckItem key={c.id} id={c.id} label={c.label} checked={checks[c.id]} onChange={v=>setChecks(p=>({...p,[c.id]:v}))} />)}
-        <p className="text-xs font-bold text-wn mb-2 mt-4">中リスク因子（1つでも→CT推奨）</p>
+        <p className="text-xs font-bold text-wn mb-2 mt-4">中リスク因子（1つでも→CT検討）</p>
         {medRisk.map(c=><CheckItem key={c.id} id={c.id} label={c.label} checked={checks[c.id]} onChange={v=>setChecks(p=>({...p,[c.id]:v}))} />)}
       </div>
     </CalculatorLayout>

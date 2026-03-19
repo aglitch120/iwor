@@ -87,7 +87,7 @@ export default function NaCorrectionRatePage() {
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">Na補正速度の安全管理</h2>
           <p>低ナトリウム血症の補正が速すぎると浸透圧性脱髄症候群（ODS）を引き起こすリスクがあります。安全な補正速度を守ることが極めて重要です。</p>
-          <h3 className="font-bold text-tx">推奨補正速度上限</h3>
+          <h3 className="font-bold text-tx">参考補正速度上限</h3>
           <ul className="list-disc pl-5 space-y-1">
             <li>通常リスク: 24時間で10 mEq/L以内、48時間で18 mEq/L以内</li>
             <li>高リスク（慢性低Na、低K血症合併、アルコール、肝疾患、低栄養）: 24時間で8 mEq/L以内、48時間で14 mEq/L以内</li>

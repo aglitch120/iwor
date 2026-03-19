@@ -174,7 +174,7 @@ export default function SOFAPage() {
                 name: 'SOFAスコアとqSOFAの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'qSOFAは3項目のベッドサイドスクリーニング（検査不要）で、SOFAは6臓器系の詳細な評価（血液検査・血液ガスが必要）です。qSOFAで敗血症を疑った後にSOFAで臓器障害を定量化する流れが推奨されています。',
+                  text: 'qSOFAは3項目のベッドサイドスクリーニング（検査不要）で、SOFAは6臓器系の詳細な評価（血液検査・血液ガスが必要）です。qSOFAで敗血症を疑った後にSOFAで臓器障害を定量化する流れが示されています。',
                 },
               },
               {
@@ -328,7 +328,7 @@ export default function SOFAPage() {
                 <div>
                   <p className="font-medium">Q. SOFAスコアはどのくらいの頻度で評価しますか？</p>
                   <p className="text-muted mt-1">
-                    ICUでは入室時と24時間ごとの評価が推奨されます。トレンドの変化（改善 or 悪化）が予後予測に重要です。
+                    ICUでは入室時と24時間ごとの評価が示されます。トレンドの変化（改善 or 悪化）が予後予測に重要です。
                     初日からの改善は良好な予後と関連します（Ferreira FL, et al. JAMA 2001; PMID: 11594901）。
                   </p>
                 </div>

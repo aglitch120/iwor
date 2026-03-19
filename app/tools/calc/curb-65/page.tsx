@@ -104,7 +104,7 @@ export default function CURB65Page() {
                 name: 'CURB-65とは何ですか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'CURB-65は市中肺炎（CAP）の重症度を5項目（意識障害・BUN・呼吸数・血圧・年齢）で評価し、外来治療か入院かICUかのトリアージに使用するスコアです。British Thoracic Societyが推奨しています。',
+                  text: 'CURB-65は市中肺炎（CAP）の重症度を5項目（意識障害・BUN・呼吸数・血圧・年齢）で評価し、外来治療か入院かICUかのトリアージに使用するスコアです。British Thoracic Societyで示されています。',
                 },
               },
               {
@@ -120,7 +120,7 @@ export default function CURB65Page() {
                 name: 'CRB-65とCURB-65の違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'CRB-65はCURB-65からBUN（Urea）を除いた4項目版で、血液検査なしでベッドサイドやプライマリケアで迅速に評価できます。0点は外来、1-2点は入院検討、3-4点は緊急入院が推奨されます。',
+                  text: 'CRB-65はCURB-65からBUN（Urea）を除いた4項目版で、血液検査なしでベッドサイドやプライマリケアで迅速に評価できます。0点は外来、1-2点は入院検討、3-4点は緊急入院が示されます。',
                 },
               },
             ],
@@ -160,7 +160,7 @@ export default function CURB65Page() {
               <p className={`text-sm font-medium ${
                 result.score >= 3 ? 'text-dn' : result.score === 2 ? 'text-wn' : 'text-tx'
               }`}>
-                {result.score >= 3 ? '🏥' : result.score === 2 ? '⚡' : '✅'} 推奨マネジメント
+                {result.score >= 3 ? '🏥' : result.score === 2 ? '⚡' : '✅'} 参考マネジメント
               </p>
               <p className={`text-xs mt-1 ${
                 result.score >= 3 ? 'text-dn' : result.score === 2 ? 'text-wn' : 'text-muted'
@@ -176,17 +176,17 @@ export default function CURB65Page() {
               <h2 className="text-lg font-bold mb-2">CURB-65とは</h2>
               <p className="text-muted">
                 CURB-65は、市中肺炎（Community-Acquired Pneumonia: CAP）の重症度を迅速に評価するスコアです。
-                2003年にLimらがThorax誌で発表し、英国BTS（British Thoracic Society）ガイドラインで推奨されています。
+                2003年にLimらがThorax誌で発表し、英国BTS（British Thoracic Society）ガイドラインで示されています。
                 5つの臨床指標（Confusion, Urea, Respiratory rate, Blood pressure, 65歳以上）をチェックするだけで、
                 外来治療・入院・ICU管理のトリアージ判断を支援します。
               </p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold mb-2">スコア別の推奨マネジメント</h3>
+              <h3 className="text-base font-bold mb-2">スコア別の参考マネジメント</h3>
               <div className="space-y-2 text-muted">
                 <p><span className="font-medium text-tx">0-1点（低リスク）：</span>30日死亡率 0.6-2.7%。外来治療を検討。ただし社会的因子（独居、経口摂取困難等）があれば入院も考慮。</p>
-                <p><span className="font-medium text-tx">2点（中リスク）：</span>30日死亡率 6.8%。短期入院または Hospital-supervised outpatient treatment を推奨。</p>
+                <p><span className="font-medium text-tx">2点（中リスク）：</span>30日死亡率 6.8%。短期入院または Hospital-supervised outpatient treatment を検討。</p>
                 <p><span className="font-medium text-tx">3点以上（高リスク）：</span>30日死亡率 14-57%。入院管理が必要。4-5点ではICU入室を積極的に検討。</p>
               </div>
             </div>
@@ -196,17 +196,17 @@ export default function CURB65Page() {
               <p className="text-muted">
                 BUNを除いた4項目版がCRB-65です。プライマリケアや救急外来での初期評価に有用で、
                 血液検査結果を待たずにベッドサイドで迅速に判定できます。
-                0点は外来、1-2点は入院検討、3-4点は緊急入院が推奨されます。
+                0点は外来、1-2点は入院検討、3-4点は緊急入院が示されます。
               </p>
             </div>
 
             <div>
               <h3 className="text-base font-bold mb-2">A-DROPとの比較</h3>
               <p className="text-muted">
-                日本呼吸器学会は日本人データに基づく A-DROP スコアを推奨しています。
+                日本呼吸器学会は日本人データに基づく A-DROP スコアを検討しています。
                 CURB-65とA-DROPは類似の項目を評価しますが、A-DROPでは年齢基準に性差を設けている（男性≥70歳、女性≥75歳）点、
                 脱水指標としてBUNの代わりにSpO2を採用している点が異なります。
-                日本国内ではA-DROPの使用が推奨されますが、国際的な比較にはCURB-65が適しています。
+                日本国内ではA-DROPの使用が示されますが、国際的な比較にはCURB-65が適しています。
               </p>
             </div>
 

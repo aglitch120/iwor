@@ -126,7 +126,7 @@ export default function HASBLEDPage() {
               <h2 className="text-lg font-bold mb-2">HAS-BLEDスコアとは</h2>
               <p className="text-muted">
                 HAS-BLEDスコアは、心房細動患者の抗凝固療法中における大出血リスクを評価するツールです。
-                2010年にPistersらがChest誌で発表し、ESCガイドラインで出血リスク評価に推奨されています。
+                2010年にPistersらがChest誌で発表し、ESCガイドラインで出血リスク評価に示されています。
                 9項目（最大9点）で評価し、3点以上を「高リスク」とします。
               </p>
             </div>

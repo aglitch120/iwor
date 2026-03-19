@@ -31,16 +31,16 @@ export default function OttawaAnklePage() {
     const severity: 'ok'|'wn'|'dn' = anyPos ? 'dn' : 'ok'
     let label = ''
     if (!anyPos) label = '全項目陰性 — X線不要（感度 ~98%）'
-    else if (anklePos && footPos) label = '足関節+足部ともに陽性 — 両方のX線を推奨'
-    else if (anklePos) label = '足関節陽性 — 足関節X線を推奨'
-    else label = '足部陽性 — 足部X線を推奨'
+    else if (anklePos && footPos) label = '足関節+足部ともに陽性 — 両方のX線を検討'
+    else if (anklePos) label = '足関節陽性 — 足関節X線を検討'
+    else label = '足部陽性 — 足部X線を検討'
     return { anyPos, anklePos, footPos, severity, label }
   }, [ankleChecks, footChecks])
 
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard label="Ottawa Ankle Rules" value={result.anyPos ? 'X線推奨' : 'X線不要'} unit="" interpretation={result.label} severity={result.severity} />}
+      result={<ResultCard label="Ottawa Ankle Rules" value={result.anyPos ? 'X線検討' : 'X線不要'} unit="" interpretation={result.label} severity={result.severity} />}
       explanation={
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">Ottawa Ankle Rulesとは</h2>

@@ -89,7 +89,7 @@ export default function KclCorrectionPage() {
           interpretation={result.label}
           severity={result.severity}
           details={[
-            { label: '推奨', value: result.recommendation },
+            { label: '参考', value: result.recommendation },
             { label: '最大投与速度', value: `${result.dosePerHour} mEq/h` },
             { label: '最大濃度', value: result.maxConcentration },
             { label: '安全上の注意', value: result.safetyNote },

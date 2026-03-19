@@ -28,7 +28,7 @@ export default function PaduaPage() {
     const score = criteria.filter(c => checks[c.id]).reduce((s, c) => s + c.points, 0)
     const highRisk = score >= 4
     const severity: 'ok'|'wn'|'dn' = highRisk ? 'dn' : 'ok'
-    const label = highRisk ? '高リスク（≥4点）— 薬物的VTE予防を推奨' : '低リスク（<4点）— 薬物的VTE予防は推奨されない'
+    const label = highRisk ? '高リスク（≥4点）— 薬物的VTE予防を検討' : '低リスク（<4点）— 薬物的VTE予防は一般的でない'
     const vteRate = highRisk ? '約11%' : '約0.3%'
     return { score, severity, label, vteRate }
   }, [checks])
@@ -41,10 +41,10 @@ export default function PaduaPage() {
       explanation={
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">Padua Prediction Scoreとは</h2>
-          <p>内科入院患者のVTEリスクを評価するスコアです。4点以上で高リスクと判定され、薬物的VTE予防（低分子ヘパリン等）の適応となります。ACCPガイドラインでも推奨されています。</p>
+          <p>内科入院患者のVTEリスクを評価するスコアです。4点以上で高リスクと判定され、薬物的VTE予防（低分子ヘパリン等）の適応となります。ACCPガイドラインでも示されています。</p>
           <h3 className="font-bold text-tx">判定基準</h3>
           <ul className="list-disc pl-5 space-y-1">
-            <li>≥ 4点: 高リスク（VTE 11%）→ 薬物的予防を推奨</li>
+            <li>≥ 4点: 高リスク（VTE 11%）→ 薬物的予防を検討</li>
             <li>&lt; 4点: 低リスク（VTE 0.3%）→ 薬物的予防は不要</li>
           </ul>
         </section>

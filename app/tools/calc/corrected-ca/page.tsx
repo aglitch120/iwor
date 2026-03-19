@@ -95,7 +95,7 @@ export default function CorrectedCaPage() {
                 name: 'イオン化Caとの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'イオン化Ca（iCa）は生理活性を持つCaの直接測定値で、最も正確です。補正Caは簡便な推定式ですが、重症患者・酸塩基異常・高グロブリン血症では誤差が大きくなるため、これらの状況ではiCa測定が推奨されます。',
+                  text: 'イオン化Ca（iCa）は生理活性を持つCaの直接測定値で、最も正確です。補正Caは簡便な推定式ですが、重症患者・酸塩基異常・高グロブリン血症では誤差が大きくなるため、これらの状況ではiCa測定が示されます。',
                 },
               },
             ],
@@ -220,7 +220,7 @@ export default function CorrectedCaPage() {
                 <p>
                   Payneの式は広く使用されていますが、ICU患者では精度が低下することが報告されています
                   （Dickerson RN, et al. JPEN 2004; PMID: 15141404）。
-                  重症患者・酸塩基異常・高グロブリン血症ではイオン化Ca（iCa）の直接測定が推奨されます。
+                  重症患者・酸塩基異常・高グロブリン血症ではイオン化Ca（iCa）の直接測定が示されます。
                 </p>
               </div>
             </div>

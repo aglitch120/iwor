@@ -42,7 +42,7 @@ export default function MasccPage() {
       explanation={
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">MASCC Risk Indexとは</h2>
-          <p>発熱性好中球減少症（FN）患者の重篤合併症リスクを評価するスコアです。21点以上を低リスクとし、外来での経口抗菌薬治療を検討できます。IDSAガイドラインでも推奨されています。</p>
+          <p>発熱性好中球減少症（FN）患者の重篤合併症リスクを評価するスコアです。21点以上を低リスクとし、外来での経口抗菌薬治療を検討できます。IDSAガイドラインでも示されています。</p>
           <h3 className="font-bold text-tx">判定</h3>
           <ul className="list-disc pl-5 space-y-1">
             <li>≥21点: 低リスク — 外来経口抗菌薬治療を検討</li>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -273,6 +274,7 @@ export default function LabValuesPage() {
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mt-8 mb-8 text-sm text-wn">
         ⚠️ 基準値は施設・測定法により異なります。実際の判断は施設の基準値を参照してください。
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="基準値早見表" /></div>
       </div>
 
       <section className="text-xs text-muted space-y-1 mb-8">

@@ -68,7 +68,7 @@ export default function CorrectedPhenytoinPage() {
           <p className="font-mono bg-bg p-2 rounded text-xs">補正濃度 = 実測濃度 / (0.2 × Alb + 0.1)</p>
           <p className="font-mono bg-bg p-2 rounded text-xs mt-1">腎不全時: 補正濃度 = 実測濃度 / (0.1 × Alb + 0.1)</p>
           <h3 className="font-bold text-tx">臨床的注意</h3>
-          <p>遊離型フェニトイン濃度の直接測定が可能な施設ではそちらが推奨されます（治療域: 1〜2 μg/mL）。</p>
+          <p>遊離型フェニトイン濃度の直接測定が可能な施設ではそちらが示されます（治療域: 1〜2 μg/mL）。</p>
         </section>
       }
       relatedTools={toolDef.relatedSlugs

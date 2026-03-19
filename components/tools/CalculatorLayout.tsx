@@ -3,8 +3,8 @@
 import { ReactNode, useEffect, useState } from 'react'
 import Link from 'next/link'
 import FavoriteButton from '@/components/tools/FavoriteButton'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
-import ProGate from '@/components/pro/ProGate'
 import { trackToolUsage, getTotalToolUsage, useProStatus } from '@/components/pro/useProStatus'
 
 interface CalculatorLayoutProps {
@@ -16,10 +16,8 @@ interface CalculatorLayoutProps {
   categoryIcon: string
   children: ReactNode
   result?: ReactNode
-  /** SEO解説。自動的にProGate(interpretation)で包まれる。noProGate=trueで解除。 */
+  /** SEO解説 */
   explanation?: ReactNode
-  /** trueにするとexplanationのProGateラップを無効化 */
-  noProGate?: boolean
   relatedTools?: { slug: string; name: string }[]
   references?: { text: string; url?: string }[]
 }
@@ -103,7 +101,6 @@ export default function CalculatorLayout({
   children,
   result,
   explanation,
-  noProGate = false,
   relatedTools,
   references,
 }: CalculatorLayoutProps) {
@@ -168,18 +165,15 @@ export default function CalculatorLayout({
           診断・治療の最終判断は必ず担当医が行ってください。
           計算結果の正確性について保証するものではありません。
         </p>
+        <div className="mt-2 pt-2 border-t border-wnb/30">
+          <ErrorReportButton toolName={title} />
+        </div>
       </div>
 
-      {/* SEO解説（ProGateで自動ラップ） */}
+      {/* SEO解説 */}
       {explanation && (
         <section className="mb-8">
-          {noProGate ? (
-            explanation
-          ) : (
-            <ProGate feature="interpretation" previewHeight={80}>
-              {explanation}
-            </ProGate>
-          )}
+          {explanation}
         </section>
       )}
 

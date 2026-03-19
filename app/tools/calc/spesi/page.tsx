@@ -35,7 +35,7 @@ export default function SpesiPage() {
       explanation={
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">sPESI（簡易PESI）とは</h2>
-          <p>肺塞栓症（PE）確定後の短期予後（30日死亡率）を予測する簡易スコアです。0点なら低リスクとして外来治療を検討できます。ESCガイドラインでも推奨されています。</p>
+          <p>肺塞栓症（PE）確定後の短期予後（30日死亡率）を予測する簡易スコアです。0点なら低リスクとして外来治療を検討できます。ESCガイドラインでも示されています。</p>
           <h3 className="font-bold text-tx">判定</h3>
           <ul className="list-disc pl-5 space-y-1">
             <li>0点: 低リスク（30日死亡率 1.0%）→ 外来治療を検討</li>

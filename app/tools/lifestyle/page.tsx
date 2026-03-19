@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import FavoriteButton from '@/components/tools/FavoriteButton'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 import { trackToolUsage } from '@/components/pro/useProStatus'
 
@@ -138,7 +139,7 @@ function assessAll(d: PatientData) {
       tg2.push(`non-HDL-C目標: < ${cvd.nonHdlTarget} mg/dL`)
       if (tg >= 500) a.push({ category: 'medication', subcategory: 'lipid', disease: '脂質異常症', priority: 'high', title: '高TG治療', detail: 'TG≧500:膵炎リスク。フィブラート+禁酒' })
     } else if (ldl >= 120) { st = 'caution'; sm = 'LDL境界域高値' } else { sm = '脂質正常' }
-    if (st !== 'normal') a.push({ category: 'lifestyle', subcategory: 'diet', disease: '脂質異常症', priority: 'high', title: '食事指導（脂質）', detail: '飽和脂肪酸<7%。トランス脂肪酸回避。食物繊維25g/日。青魚推奨' })
+    if (st !== 'normal') a.push({ category: 'lifestyle', subcategory: 'diet', disease: '脂質異常症', priority: 'high', title: '食事指導（脂質）', detail: '飽和脂肪酸<7%。トランス脂肪酸回避。食物繊維25g/日。青魚が望ましい' })
     R.push({ name: '脂質異常症', status: st, summary: sm, targets: tg2, actions: a })
   }
 
@@ -147,7 +148,7 @@ function assessAll(d: PatientData) {
     const a: ActionItem[] = []; let st: DiseaseAssessment['status'] = 'normal'; let sm = ''; const tg2: string[] = []
     if (ua >= 9) { st = 'abnormal'; sm = `UA ${ua} — 薬物療法検討`; a.push({ category: 'medication', subcategory: 'uric', disease: '高尿酸血症', priority: 'high', title: '尿酸降下薬', detail: 'フェブキソスタット10mg or アロプリノール100mg' }) }
     else if (ua >= 7) { st = 'caution'; sm = `UA ${ua}` } else { sm = '尿酸正常' }
-    if (st !== 'normal') { tg2.push('UA目標: < 6.0'); a.push({ category: 'lifestyle', subcategory: 'diet', disease: '高尿酸血症', priority: 'medium', title: '食事指導', detail: 'プリン体制限。水分2L/日。乳製品推奨。果糖・アルコール制限' }) }
+    if (st !== 'normal') { tg2.push('UA目標: < 6.0'); a.push({ category: 'lifestyle', subcategory: 'diet', disease: '高尿酸血症', priority: 'medium', title: '食事指導', detail: 'プリン体制限。水分2L/日。乳製品が一般的。果糖・アルコール制限' }) }
     R.push({ name: '高尿酸血症', status: st, summary: sm, targets: tg2, actions: a })
   }
 
@@ -253,6 +254,6 @@ export default function LifestylePage() {
         </>}
     </>}
 
-    <div className="text-xs text-muted mt-8 pt-4 border-t border-br"><p className="font-semibold">出典:</p><p>JSH2019 / 糖尿病GL2024 / 動脈硬化GL2022 / CKD GL2023 / 高尿酸GL第3版 / MASLD GL2023</p></div>
+    <div className="text-xs text-muted mt-8 pt-4 border-t border-br"><p className="font-semibold">出典:</p><p>JSH2019 / 糖尿病GL2024 / 動脈硬化GL2022 / CKD GL2023 / 高尿酸GL第3版 / MASLD GL2023</p><div className="mt-2"><ErrorReportButton toolName="生活習慣病 総合管理ツール" /></div></div>
   </div>
 }

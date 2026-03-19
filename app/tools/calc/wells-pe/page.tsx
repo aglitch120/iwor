@@ -110,7 +110,7 @@ export default function WellsPEPage() {
                 name: '3段階モデルと2段階モデルの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '3段階モデル（低・中・高リスク）は元来のWellsスコアで、2段階モデル（PE unlikely ≤4点 / PE likely >4点）は簡便版です。2段階モデルはD-dimer検査との組み合わせで広く使用されており、ESCガイドライン等で推奨されています。',
+                  text: '3段階モデル（低・中・高リスク）は元来のWellsスコアで、2段階モデル（PE unlikely ≤4点 / PE likely >4点）は簡便版です。2段階モデルはD-dimer検査との組み合わせで広く使用されており、ESCガイドライン等で示されています。',
                 },
               },
               {
@@ -163,14 +163,14 @@ export default function WellsPEPage() {
               </p>
             </div>
 
-            {/* 推奨アクション */}
+            {/* 参考アクション */}
             <div className={`${
               result.severity === 'dn' ? 'bg-dnl border-dnb' : result.severity === 'wn' ? 'bg-wnl border-wnb' : 'bg-s0 border-br'
             } border rounded-xl p-4`}>
               <p className={`text-sm font-medium ${
                 result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-tx'
               }`}>
-                {result.severity === 'dn' ? '🚨' : '⚡'} 推奨アクション
+                {result.severity === 'dn' ? '🚨' : '⚡'} 参考アクション
               </p>
               <p className={`text-xs mt-1 ${
                 result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-muted'
@@ -186,7 +186,7 @@ export default function WellsPEPage() {
               <h2 className="text-lg font-bold mb-2">Wells PEスコアとは</h2>
               <p className="text-muted">
                 Wells PEスコアは、肺塞栓症（Pulmonary Embolism: PE）の臨床的検査前確率を評価するスコアリングシステムです。
-                2000年にWellsらがThrombosis and Haemostasis誌で発表し、現在ESC/AHA/ACCPのガイドラインで推奨されています。
+                2000年にWellsらがThrombosis and Haemostasis誌で発表し、現在ESC/AHA/ACCPのガイドラインで示されています。
                 7つの臨床項目を評価し、D-dimer検査やCTPA（造影CT肺動脈造影）の適応を判断します。
               </p>
             </div>
@@ -199,7 +199,7 @@ export default function WellsPEPage() {
                   <p>&lt;2点: 低リスク（PE確率 約3.6%）、2-6点: 中リスク（約20.5%）、&gt;6点: 高リスク（約66.7%）</p>
                 </div>
                 <div>
-                  <p className="font-medium text-tx">2段階モデル（Dichotomous）— ESC推奨</p>
+                  <p className="font-medium text-tx">2段階モデル（Dichotomous）— ESC参照</p>
                   <p>≤4点: PE unlikely → D-dimer施行。陰性ならPE除外。&gt;4点: PE likely → CTPAを直接施行。</p>
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function WellsPEPage() {
                   <p className="font-medium">Q. Wells PEとGeneva scoreの違いは？</p>
                   <p className="text-muted mt-1">
                     両者ともPEの検査前確率を評価するスコアです。Geneva score（改訂版）はすべて客観的項目で構成されており主観的判断が不要ですが、
-                    Wellsスコアの方が広く検証され使用されています。ESCガイドラインでは両方が推奨されています。
+                    Wellsスコアの方が広く検証され使用されています。ESCガイドラインでは両方が示されています。
                   </p>
                 </div>
                 <div>

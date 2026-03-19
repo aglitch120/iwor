@@ -72,7 +72,7 @@ function getInHospitalMortality(score: number): { risk: string; severity: 'ok' |
   return {
     risk: '高リスク（院内死亡率 >3%）',
     severity: 'dn',
-    recommendation: '緊急〜早期の侵襲的戦略（24時間以内のCAG）を強く推奨。GPIIb/IIIa阻害薬の使用も検討。',
+    recommendation: '緊急〜早期の侵襲的戦略（24時間以内のCAG）を強く検討。GPIIb/IIIa阻害薬の使用も検討。',
   }
 }
 
@@ -154,7 +154,7 @@ export default function GRACEPage() {
                 name: 'GRACEスコアとは何ですか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'GRACE（Global Registry of Acute Coronary Events）スコアは、急性冠症候群（ACS）患者の院内死亡リスクおよび退院後6ヶ月死亡リスクを予測するスコアです。8つの臨床変数から算出され、ESCガイドラインでNSTE-ACSのリスク層別化と侵襲的治療の適応判断に推奨されています。',
+                  text: 'GRACE（Global Registry of Acute Coronary Events）スコアは、急性冠症候群（ACS）患者の院内死亡リスクおよび退院後6ヶ月死亡リスクを予測するスコアです。8つの臨床変数から算出され、ESCガイドラインでNSTE-ACSのリスク層別化と侵襲的治療の適応判断に示されています。',
                 },
               },
               {
@@ -162,7 +162,7 @@ export default function GRACEPage() {
                 name: 'GRACEスコアで高リスクの場合はどうしますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'GRACE >140（高リスク）では早期の侵襲的戦略（24時間以内の冠動脈造影）が強く推奨されます。抗血栓療法の強化（DAPT + 抗凝固薬）や循環補助の検討も必要です。',
+                  text: 'GRACE >140（高リスク）では早期の侵襲的戦略（24時間以内の冠動脈造影）が強くとされています。抗血栓療法の強化（DAPT + 抗凝固薬）や循環補助の検討も必要です。',
                 },
               },
               {
@@ -210,7 +210,7 @@ export default function GRACEPage() {
                 <p className={`text-sm font-medium ${
                   result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-tx'
                 }`}>
-                  {result.severity === 'dn' ? '🚨 ESC推奨: 早期侵襲的戦略' : result.severity === 'wn' ? '⚡ 侵襲的戦略を検討' : '✅ 推奨マネジメント'}
+                  {result.severity === 'dn' ? '🚨 ESC参照: 早期侵襲的戦略' : result.severity === 'wn' ? '⚡ 侵襲的戦略を検討' : '✅ 参考マネジメント'}
                 </p>
                 <p className={`text-xs mt-1 ${
                   result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-muted'
@@ -234,7 +234,7 @@ export default function GRACEPage() {
                 GRACE（Global Registry of Acute Coronary Events）スコアは、急性冠症候群（ACS）患者の
                 短期・中期死亡リスクを予測するスコアリングシステムです。
                 2003年にGrangerらがArch Intern Med誌で発表し、ESCガイドラインでNSTE-ACS（非ST上昇型ACS）の
-                リスク層別化に推奨されています。8つの臨床変数（年齢、心拍数、収縮期血圧、クレアチニン、
+                リスク層別化に示されています。8つの臨床変数（年齢、心拍数、収縮期血圧、クレアチニン、
                 Killip分類、ST変化、心停止、心筋マーカー上昇）から算出されます。
               </p>
             </div>
@@ -244,7 +244,7 @@ export default function GRACEPage() {
               <div className="space-y-2 text-muted">
                 <p><span className="font-medium text-tx">≤108点（低リスク）：</span>院内死亡率 &lt;1%。保存的戦略も許容。非侵襲的評価で虚血を確認後、選択的CAGも可。</p>
                 <p><span className="font-medium text-tx">109-140点（中リスク）：</span>院内死亡率 1-3%。24-72時間以内の侵襲的戦略（CAG）を検討。</p>
-                <p><span className="font-medium text-tx">&gt;140点（高リスク）：</span>院内死亡率 &gt;3%。24時間以内の早期侵襲的戦略を強く推奨。</p>
+                <p><span className="font-medium text-tx">&gt;140点（高リスク）：</span>院内死亡率 &gt;3%。24時間以内の早期侵襲的戦略を強く検討。</p>
               </div>
             </div>
 
@@ -273,7 +273,7 @@ export default function GRACEPage() {
                   <p className="font-medium">Q. TIMIスコアとの違いは？</p>
                   <p className="text-muted mt-1">
                     GRACEスコアはより多くの変数を使用し、連続変数として予測精度が高いとされています。
-                    TIMIスコアは7項目で簡便ですが、ESCガイドラインではGRACEがより推奨されています。
+                    TIMIスコアは7項目で簡便ですが、ESCガイドラインではGRACEがより示されています。
                   </p>
                 </div>
               </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -247,6 +248,7 @@ export default function CancerPainPage() {
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mb-8 text-sm text-wn">
         ⚠️ 癌性疼痛の管理は緩和ケアチームとの連携が重要です。用量は個別に調整してください。
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="がん性疼痛ガイド" /></div>
       </div>
 
       {/* 出典 */}

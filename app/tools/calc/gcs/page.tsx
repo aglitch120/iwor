@@ -87,7 +87,7 @@ export default function GcsPage() {
             <li>3〜8: 重症（気管挿管の目安: GCS ≤ 8）</li>
           </ul>
           <h3 className="font-bold text-tx">臨床的注意点</h3>
-          <p>GCSは合計点だけでなく、各要素の内訳（例: E2V3M5 = 10）を記録することが推奨されます。特に運動反応（M）が予後予測に最も重要です。</p>
+          <p>GCSは合計点だけでなく、各要素の内訳（例: E2V3M5 = 10）を記録することが示されます。特に運動反応（M）が予後予測に最も重要です。</p>
         </section>
       }
       relatedTools={toolDef.relatedSlugs

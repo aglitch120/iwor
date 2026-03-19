@@ -243,7 +243,7 @@ export default function MELDPage() {
               <div className="space-y-2 text-muted">
                 <p><span className="font-medium text-tx">≤9点：</span>3ヶ月死亡率 1.9%。外来経過観察。</p>
                 <p><span className="font-medium text-tx">10-19点：</span>3ヶ月死亡率 6.0%。移植の適応を検討開始。</p>
-                <p><span className="font-medium text-tx">20-29点：</span>3ヶ月死亡率 19.6%。移植リスト登録を推奨。</p>
+                <p><span className="font-medium text-tx">20-29点：</span>3ヶ月死亡率 19.6%。移植リスト登録を検討。</p>
                 <p><span className="font-medium text-tx">30-39点：</span>3ヶ月死亡率 52.6%。緊急移植を検討。</p>
                 <p><span className="font-medium text-tx">40点：</span>3ヶ月死亡率 71.3%。最重症。</p>
               </div>

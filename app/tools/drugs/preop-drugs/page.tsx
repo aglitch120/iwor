@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -52,7 +53,7 @@ const CATEGORIES = [
       { name: 'β遮断薬', stop: '継続（中止禁忌）', restart: '—', bridge: '', note: '急な中止でリバウンド頻脈・虚血悪化。経口不可時はiv（ランジオロール等）' },
       { name: 'ACE-I / ARB', stop: '手術当日朝休薬', restart: '術後血圧安定後', bridge: '', note: '術中低血圧リスク。ただし心不全コントロール中は継続も考慮' },
       { name: 'Ca拮抗薬', stop: '継続', restart: '—', bridge: '', note: '中止不要' },
-      { name: 'スタチン', stop: '継続', restart: '—', bridge: '', note: '周術期の心血管イベント抑制効果あり。継続推奨' },
+      { name: 'スタチン', stop: '継続', restart: '—', bridge: '', note: '周術期の心血管イベント抑制効果あり。継続が一般的' },
       { name: '利尿薬', stop: '手術当日朝休薬', restart: '術後脱水・電解質確認後', bridge: '', note: '脱水・低K防止のため当日休薬が一般的' },
     ],
   },
@@ -145,6 +146,7 @@ export default function PreopDrugsPage() {
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mt-8 mb-8 text-sm text-wn">
         ⚠️ 休薬期間は手術の出血リスク・患者の血栓リスクにより個別判断が必要です。担当医・麻酔科・処方医と事前に相談してください。
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="術前休薬ガイド" /></div>
       </div>
 
       {/* 出典 */}

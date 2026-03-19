@@ -24,13 +24,13 @@ function getInterpretation(fib4: number): { text: string; severity: 'ok' | 'wn' 
     text: '中間リスク（判定保留）',
     severity: 'wn',
     fibrosis: '線維化の程度が不確定',
-    recommendation: 'エラストグラフィ（FibroScan等）またはELFテストによる追加評価を推奨。',
+    recommendation: 'エラストグラフィ（FibroScan等）またはELFテストによる追加評価を検討。',
   }
   return {
     text: '高リスク（F3-F4）',
     severity: 'dn',
     fibrosis: '進行した線維化（F3-F4）の可能性が高い（PPV 65%以上）',
-    recommendation: '肝臓専門医への紹介を推奨。肝生検・エラストグラフィ・画像評価を検討。肝硬変合併症のスクリーニングも必要。',
+    recommendation: '肝臓専門医への紹介を検討。肝生検・エラストグラフィ・画像評価を検討。肝硬変合併症のスクリーニングも必要。',
   }
 }
 
@@ -105,7 +105,7 @@ export default function FIB4Page() {
                 name: 'FIB-4のカットオフ値は？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '一般的に <1.3 は進行線維化の可能性が低く（低リスク）、>2.67 は進行線維化の可能性が高い（高リスク）とされます。1.3-2.67 は中間（グレーゾーン）で追加検査が推奨されます。65歳以上では >2.0 をカットオフとする提案もあります。',
+                  text: '一般的に <1.3 は進行線維化の可能性が低く（低リスク）、>2.67 は進行線維化の可能性が高い（高リスク）とされます。1.3-2.67 は中間（グレーゾーン）で追加検査が示されます。65歳以上では >2.0 をカットオフとする提案もあります。',
                 },
               },
               {
@@ -158,7 +158,7 @@ export default function FIB4Page() {
                 <p className={`text-sm font-medium ${
                   result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-tx'
                 }`}>
-                  {result.severity === 'dn' ? '🏥' : result.severity === 'wn' ? '⚡' : '✅'} 推奨アクション
+                  {result.severity === 'dn' ? '🏥' : result.severity === 'wn' ? '⚡' : '✅'} 参考アクション
                 </p>
                 <p className={`text-xs mt-1 ${
                   result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-muted'
@@ -181,7 +181,7 @@ export default function FIB4Page() {
                 FIB-4 indexは、肝線維化の進行度を年齢・AST・ALT・血小板数の4項目から非侵襲的に評価するスコアです。
                 2006年にSterlingらがHIV/HCV共感染患者で開発し（Hepatology 2006; PMID: 16729309）、
                 その後NAFLD/MASLDやアルコール性肝疾患でも広く検証されています。
-                EASLガイドライン（2021）では、プライマリケアでの肝線維化スクリーニングの第一選択として推奨されています。
+                EASLガイドライン（2021）では、プライマリケアでの肝線維化スクリーニングの第一選択として示されています。
               </p>
             </div>
 
@@ -198,8 +198,8 @@ export default function FIB4Page() {
               <h3 className="text-base font-bold mb-2">カットオフ値と臨床的意義</h3>
               <div className="space-y-2 text-muted">
                 <p><span className="font-medium text-tx">&lt;1.3（低リスク）：</span>進行線維化（F3-F4）の陰性的中率 90%以上。追加検査不要。原因疾患の治療を継続し、定期的に再評価。</p>
-                <p><span className="font-medium text-tx">1.3-2.67（中間）：</span>グレーゾーン。エラストグラフィ（FibroScan: LSM）やELFテストで追加評価を推奨。</p>
-                <p><span className="font-medium text-tx">&gt;2.67（高リスク）：</span>進行線維化（F3-F4）の陽性的中率 65%以上。肝臓専門医への紹介を推奨。</p>
+                <p><span className="font-medium text-tx">1.3-2.67（中間）：</span>グレーゾーン。エラストグラフィ（FibroScan: LSM）やELFテストで追加評価を検討。</p>
+                <p><span className="font-medium text-tx">&gt;2.67（高リスク）：</span>進行線維化（F3-F4）の陽性的中率 65%以上。肝臓専門医への紹介を検討。</p>
               </div>
             </div>
 

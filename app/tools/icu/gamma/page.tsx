@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 import { trackToolUsage } from '@/components/pro/useProStatus'
@@ -56,7 +57,7 @@ const DRUGS: Drug[] = [
   { id:'midazolam', name:'ミダゾラム', nameEn:'Midazolam', category:'sedative',
     unit:'mg/kg/h', weightBased:true, gammaMin:0.02, gammaMax:0.2, gammaUnit:'mg/kg/h', unitLabel:'mg',
     dilutions:[{label:'50mg/50mL 生食',drugMg:50,totalMl:50},{label:'100mg/50mL 生食',drugMg:100,totalMl:50}],
-    notes:'BZD系。蓄積しやすい（特に肝・腎障害・高齢者）。せん妄リスク↑→プロポフォール or DEX推奨。'},
+    notes:'BZD系。蓄積しやすい（特に肝・腎障害・高齢者）。せん妄リスク↑→プロポフォール or DEXが一般的。'},
   { id:'dex', name:'デクスメデトミジン', nameEn:'Dexmedetomidine', category:'sedative',
     unit:'μg/kg/h', weightBased:true, gammaMin:0.2, gammaMax:0.7, gammaUnit:'μg/kg/h', unitLabel:'mg',
     dilutions:[{label:'200μg/50mL 生食',drugMg:0.2,totalMl:50},{label:'400μg/100mL 生食',drugMg:0.4,totalMl:100}],
@@ -287,7 +288,7 @@ export default function GammaCalcPage(){
       {/* γ範囲（プリセット薬剤のみ） */}
       {!isCustom&&(
       <div className="bg-acl border border-ac/20 rounded-xl p-4 mb-4">
-        <p className="text-xs font-bold text-ac mb-1">{drug.name} — 推奨γ範囲</p>
+        <p className="text-xs font-bold text-ac mb-1">{drug.name} — 参考γ範囲</p>
         <p className="text-lg font-bold text-tx">{drug.gammaMin} ～ {drug.gammaMax} <span className="text-sm font-normal text-muted">{drug.gammaUnit}</span></p>
         {rangeRates&&<p className="text-xs text-muted mt-1">→ {rangeRates.min.toFixed(1)} ～ {rangeRates.max.toFixed(1)} mL/h{drug.weightBased?`（体重${weight}kg時）`:''}</p>}
       </div>
@@ -322,8 +323,8 @@ export default function GammaCalcPage(){
             ):(
               <><p className="text-xs text-muted mb-1">{result.rate} mL/h</p>
               <p className="text-3xl font-bold text-ac">{result.gamma.toFixed(3)} <span className="text-base font-normal">{drug.gammaUnit}</span></p>
-              {!isCustom&&result.gamma<drug.gammaMin&&<p className="text-xs text-wn font-medium mt-1">⚠️ 推奨範囲未満</p>}
-              {!isCustom&&result.gamma>drug.gammaMax&&<p className="text-xs text-dn font-medium mt-1">⚠️ 推奨範囲超過</p>}</>
+              {!isCustom&&result.gamma<drug.gammaMin&&<p className="text-xs text-wn font-medium mt-1">⚠️ 参考範囲未満</p>}
+              {!isCustom&&result.gamma>drug.gammaMax&&<p className="text-xs text-dn font-medium mt-1">⚠️ 参考範囲超過</p>}</>
             )}
           </div>
         )}
@@ -341,6 +342,7 @@ export default function GammaCalcPage(){
       <div className="bg-wnl border border-wnb rounded-lg p-4 mb-8 text-sm text-wn">
         <p className="font-semibold mb-1">⚠️ 医療上の免責事項</p>
         <p>本ツールは計算の補助です。薬剤の選択・用量は患者の状態に基づき担当医が決定してください。添付文書の最新版を確認してください。</p>
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="γ計算" /></div>
       </div>
 
       <section className="mb-8">

@@ -32,7 +32,7 @@ export default function Abcd2Page() {
     let label = ''
     if (score <= 3) label = '低リスク — 外来フォロー可'
     else if (score <= 5) label = '中リスク — 入院精査を考慮'
-    else label = '高リスク — 入院・緊急精査を推奨'
+    else label = '高リスク — 入院・緊急精査を検討'
 
     return { score, risk2d, risk7d, risk90d, severity, label }
   }, [age, bp, clinical, duration, diabetes])

@@ -18,7 +18,7 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
   if (score < 2) return {
     text: 'qSOFA 陰性',
     severity: 'ok',
-    recommendation: '敗血症の可能性は低いが、感染症が疑われる場合は引き続き経過観察。バイタルの継続モニタリングを推奨。',
+    recommendation: '敗血症の可能性は低いが、感染症が疑われる場合は引き続き経過観察。バイタルの継続モニタリングを検討。',
   }
   return {
     text: 'qSOFA 陽性（≥2点）— 敗血症を疑う',
@@ -90,7 +90,7 @@ export default function QSOFAPage() {
                 name: 'qSOFAとSOFAの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'qSOFAは3項目のスクリーニングツール（検査不要）で、SOFAは6臓器系の詳細な臓器障害評価スコア（検査値が必要）です。qSOFA陽性時にSOFAで臓器障害を定量評価する二段階アプローチが推奨されています。',
+                  text: 'qSOFAは3項目のスクリーニングツール（検査不要）で、SOFAは6臓器系の詳細な臓器障害評価スコア（検査値が必要）です。qSOFA陽性時にSOFAで臓器障害を定量評価する二段階アプローチが示されています。',
                 },
               },
               {
@@ -134,7 +134,7 @@ export default function QSOFAPage() {
               result.score >= 2 ? 'bg-dnl border-dnb' : 'bg-s0 border-br'
             } border rounded-xl p-4`}>
               <p className={`text-sm font-medium ${result.score >= 2 ? 'text-dn' : 'text-tx'}`}>
-                {result.score >= 2 ? '🚨 次のアクション' : '✅ 推奨'}
+                {result.score >= 2 ? '🚨 次のアクション' : '✅ 参考'}
               </p>
               <p className={`text-xs mt-1 ${result.score >= 2 ? 'text-dn' : 'text-muted'}`}>
                 {result.recommendation}
@@ -195,7 +195,7 @@ export default function QSOFAPage() {
               <p className="text-muted">
                 従来のSIRS基準（体温、心拍数、呼吸数、白血球数）は感度が高い一方で特異度が低く、
                 感染のない患者でも陽性になることが多い点が問題でした。Sepsis-3ではSIRSに代わり
-                qSOFA/SOFAが推奨されていますが、SIRSが完全に不要になったわけではなく、
+                qSOFA/SOFAが示されていますが、SIRSが完全に不要になったわけではなく、
                 施設やガイドラインによってはSIRSも併用されています。
               </p>
             </div>

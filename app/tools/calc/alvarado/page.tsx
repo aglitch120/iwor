@@ -24,7 +24,7 @@ export default function AlvaradoPage() {
   const result = useMemo(() => {
     const score = criteria.filter(c => checks[c.id]).reduce((s, c) => s + c.points, 0)
     const severity: 'ok'|'wn'|'dn' = score <= 4 ? 'ok' : score <= 6 ? 'wn' : 'dn'
-    const label = score <= 4 ? '虫垂炎の可能性低い — 経過観察' : score <= 6 ? '虫垂炎の可能性あり — CT検査を推奨' : '虫垂炎の可能性高い — 外科コンサルト'
+    const label = score <= 4 ? '虫垂炎の可能性低い — 経過観察' : score <= 6 ? '虫垂炎の可能性あり — CT検査を検討' : '虫垂炎の可能性高い — 外科コンサルト'
     return { score, severity, label }
   }, [checks])
 
@@ -39,7 +39,7 @@ export default function AlvaradoPage() {
           <h3 className="font-bold text-tx">判定目安</h3>
           <ul className="list-disc pl-5 space-y-1">
             <li>0-4点: 虫垂炎の可能性低い</li>
-            <li>5-6点: 虫垂炎の可能性あり → CT推奨</li>
+            <li>5-6点: 虫垂炎の可能性あり → CT検討</li>
             <li>7-10点: 虫垂炎の可能性高い → 外科コンサルト</li>
           </ul>
         </section>

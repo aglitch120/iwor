@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 
 // ── スペクトラムデータ ──
 type Coverage = 'good' | 'some' | 'none' | 'variable'
@@ -130,7 +131,8 @@ export default function AntibioticsPage() {
 
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mb-6 text-sm text-wn">
-        ⚠️ 抗菌薬の選択・用量は施設のアンチバイオグラム・患者の状態に基づき担当医が決定してください。本ガイドは一般的な推奨であり、施設プロトコルを優先してください。
+        ⚠️ 抗菌薬の選択・用量は施設のアンチバイオグラム・患者の状態に基づき担当医が決定してください。本ガイドは一般的な参考情報であり、施設プロトコルを優先してください。
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="抗菌薬ガイド" /></div>
       </div>
 
       {/* タブ */}

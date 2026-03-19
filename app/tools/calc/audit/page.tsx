@@ -134,7 +134,7 @@ export default function AuditPage() {
           interpretation={result.interpretation}
           severity={result.severity}
           details={[
-            { label: '推奨対応', value: result.recommendation },
+            { label: '参考対応', value: result.recommendation },
             { label: '低リスク', value: '0〜7' },
             { label: '危険飲酒', value: '8〜15' },
             { label: '依存疑い', value: '20以上' },

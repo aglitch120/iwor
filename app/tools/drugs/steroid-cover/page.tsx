@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -124,7 +125,7 @@ const SIDE_EFFECTS = [
       'B型肝炎: HBs抗原/抗体/HBc抗体スクリーニング → 陽性時は肝臓内科コンサルト',
       'CMV: 臓器移植・高度免疫抑制時にモニタリング',
       '結核: IGRA/ツ反 → 潜在性結核感染症(LTBI)ならINH予防投与検討',
-      'インフルエンザ・肺炎球菌ワクチン推奨（生ワクチンは禁忌）',
+      'インフルエンザ・肺炎球菌ワクチン参考（生ワクチンは禁忌）',
     ],
   },
   {
@@ -275,6 +276,7 @@ export default function SteroidCoverPage() {
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mb-8 text-sm text-wn">
         ⚠️ 用量・管理方針は患者の状態・施設プロトコルに基づき担当医が判断してください。
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="ステロイドカバー" /></div>
       </div>
 
       {/* 出典 */}

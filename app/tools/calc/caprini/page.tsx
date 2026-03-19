@@ -64,7 +64,7 @@ export default function CapriniPage() {
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Caprini Score" value={result.score} unit="点" interpretation={result.label} severity={result.severity}
-        details={[{ label: '推奨予防策', value: result.prevention }]} />}
+        details={[{ label: '参考予防策', value: result.prevention }]} />}
       explanation={
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">Caprini スコアとは</h2>

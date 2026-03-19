@@ -120,7 +120,7 @@ export default function WellsDVTPage() {
                 name: 'D-dimer陰性ならDVTは否定できますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Wells DVTスコアが低〜中リスク（またはDVT unlikely）でD-dimer陰性の場合、DVTの除外が可能です（陰性的中率 >99%）。高リスク群ではD-dimer陰性でもエコー検査が推奨されます。',
+                  text: 'Wells DVTスコアが低〜中リスク（またはDVT unlikely）でD-dimer陰性の場合、DVTの除外が可能です（陰性的中率 >99%）。高リスク群ではD-dimer陰性でもエコー検査が示されます。',
                 },
               },
             ],
@@ -165,14 +165,14 @@ export default function WellsDVTPage() {
               </p>
             </div>
 
-            {/* 推奨アクション */}
+            {/* 参考アクション */}
             <div className={`${
               result.severity === 'dn' ? 'bg-dnl border-dnb' : result.severity === 'wn' ? 'bg-wnl border-wnb' : 'bg-s0 border-br'
             } border rounded-xl p-4`}>
               <p className={`text-sm font-medium ${
                 result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-tx'
               }`}>
-                {result.severity === 'dn' ? '🚨' : '⚡'} 推奨アクション
+                {result.severity === 'dn' ? '🚨' : '⚡'} 参考アクション
               </p>
               <p className={`text-xs mt-1 ${
                 result.severity === 'dn' ? 'text-dn' : result.severity === 'wn' ? 'text-wn' : 'text-muted'
@@ -201,7 +201,7 @@ export default function WellsDVTPage() {
                   <p>≤0点: 低リスク（DVT確率 約5%）、1-2点: 中リスク（約17%）、≥3点: 高リスク（約53%）</p>
                 </div>
                 <div>
-                  <p className="font-medium text-tx">2段階モデル（Dichotomous）— 推奨</p>
+                  <p className="font-medium text-tx">2段階モデル（Dichotomous）— 一般的</p>
                   <p>≤1点: DVT unlikely → D-dimer施行。陰性ならDVT除外。≥2点: DVT likely → 下肢静脈エコー直接施行。</p>
                 </div>
               </div>

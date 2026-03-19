@@ -44,8 +44,8 @@ function getRecommendation(score: number, isFemale: boolean): string {
   // 女性で性別ポイントのみ（実質0点）の場合
   const effectiveScore = isFemale ? score - 1 : score
   if (effectiveScore === 0) return '抗凝固療法は不要（低リスク）'
-  if (effectiveScore === 1) return '抗凝固療法を考慮（DOAC推奨）'
-  return '抗凝固療法を推奨（DOAC推奨）'
+  if (effectiveScore === 1) return '抗凝固療法を考慮（DOAC参照）'
+  return '抗凝固療法を検討（DOAC参照）'
 }
 
 function getSeverity(score: number, isFemale: boolean): 'ok' | 'wn' | 'dn' {
@@ -139,16 +139,16 @@ export default function CHA2DS2VAScPage() {
               <p className="text-muted">
                 CHA₂DS₂-VAScスコアは、非弁膜症性心房細動（NVAF）患者における脳卒中・全身性塞栓症のリスクを評価するスコアリングシステムです。
                 CHADS₂スコアを拡張し、より詳細なリスク層別化を可能にしました。
-                ESC・AHAガイドラインで抗凝固療法の適応判断に推奨されています。
+                ESC・AHAガイドラインで抗凝固療法の適応判断に示されています。
               </p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold mb-2">抗凝固療法の推奨</h3>
+              <h3 className="text-base font-bold mb-2">抗凝固療法の参考</h3>
               <div className="bg-s1 rounded-lg p-4 space-y-2 text-muted">
                 <p><span className="font-medium text-ok">0点（男性）/ 1点（女性のみ）：</span> 抗凝固療法は不要</p>
-                <p><span className="font-medium text-wn">1点（男性）/ 2点（女性）：</span> 抗凝固療法を考慮（DOAC推奨）</p>
-                <p><span className="font-medium text-dn">≥2点（男性）/ ≥3点（女性）：</span> 抗凝固療法を推奨（DOAC推奨）</p>
+                <p><span className="font-medium text-wn">1点（男性）/ 2点（女性）：</span> 抗凝固療法を考慮（DOAC参照）</p>
+                <p><span className="font-medium text-dn">≥2点（男性）/ ≥3点（女性）：</span> 抗凝固療法を検討（DOAC参照）</p>
               </div>
               <p className="text-xs text-muted mt-2">
                 ※ 女性の性別ポイント（+1）は単独ではリスク因子とならないため、実質スコアから1を引いて判断します。
@@ -178,7 +178,7 @@ export default function CHA2DS2VAScPage() {
                   <p className="font-medium">Q. HAS-BLEDスコアが高い場合、抗凝固は中止すべきですか？</p>
                   <p className="text-muted mt-1">
                     いいえ。HAS-BLEDスコアが高いことは抗凝固中止の理由にはなりません。
-                    出血リスク因子の是正（血圧管理、不要なNSAID中止等）を行いつつ、抗凝固を継続することが推奨されます。
+                    出血リスク因子の是正（血圧管理、不要なNSAID中止等）を行いつつ、抗凝固を継続することが示されます。
                   </p>
                 </div>
               </div>

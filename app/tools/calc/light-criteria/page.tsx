@@ -71,7 +71,7 @@ export default function LightCriteriaPage() {
             <li>胸水LDH &gt; 血清LDH正常上限の2/3</li>
           </ul>
           <h3 className="font-bold text-tx">注意</h3>
-          <p>利尿剤使用中の心不全患者では偽陽性（漏出性が滲出性と判定される）が起きやすく、血清-胸水アルブミン差（&gt;1.2 g/dLで漏出性）の併用が推奨されます。</p>
+          <p>利尿剤使用中の心不全患者では偽陽性（漏出性が滲出性と判定される）が起きやすく、血清-胸水アルブミン差（&gt;1.2 g/dLで漏出性）の併用が示されます。</p>
         </section>
       }
       relatedTools={[]}

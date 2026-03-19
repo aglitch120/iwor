@@ -78,7 +78,7 @@ export default function InsulinSlidingPage() {
       categoryIcon={categoryIcons[toolDef.category]}
       result={
         <ResultCard
-          label={`推奨インスリン量（${sensitivityLabel}）`}
+          label={`参考インスリン量（${sensitivityLabel}）`}
           value={result.dose}
           unit=""
           interpretation={result.label}
@@ -101,7 +101,7 @@ export default function InsulinSlidingPage() {
           </ul>
           <h3 className="font-bold text-tx">注意点</h3>
           <ul className="list-disc pl-5 space-y-1">
-            <li>スライディングスケール単独での血糖管理は推奨されない（基礎インスリンとの併用が原則）</li>
+            <li>スライディングスケール単独での血糖管理は一般的でない（基礎インスリンとの併用が原則）</li>
             <li>低血糖（&lt; 70 mg/dL）時はブドウ糖10〜20gを経口投与</li>
             <li>持続的な高血糖はベースのインスリン量調整が必要</li>
           </ul>

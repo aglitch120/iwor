@@ -59,7 +59,7 @@ export default function MapPage() {
           <p>MAPは1心周期における平均的な動脈圧で、臓器灌流の指標です。拡張期が心周期の約2/3を占めるため、拡張期寄りに計算されます。</p>
           <p className="font-mono bg-bg p-2 rounded text-xs">MAP = DBP + (SBP − DBP) / 3</p>
           <h3 className="font-bold text-tx">臨床的意義</h3>
-          <p>Surviving Sepsis Campaign（SSCG）では敗血症性ショック時のMAP目標を65 mmHg以上と推奨。脳卒中急性期では適切なMAP維持が重要です。</p>
+          <p>Surviving Sepsis Campaign（SSCG）では敗血症性ショック時のMAP目標を65 mmHg以上とが一般的。脳卒中急性期では適切なMAP維持が重要です。</p>
         </section>
       }
       relatedTools={toolDef.relatedSlugs

@@ -61,7 +61,7 @@ const antibiotics: Antibiotic[] = [
   // グリコペプチド系
   { id: 'vcm', name: 'バンコマイシン（VCM）', nameEn: 'Vancomycin', category: 'グリコペプチド系',
     doses: ['15-20mg/kg q8-12h', '15-20mg/kg q12-24h', '15-20mg/kg q24h', '15-20mg/kg q48-72h', '15-20mg/kg（HD後投与）'],
-    note: 'AUC/MIC 400-600目標。TDM推奨' },
+    note: 'AUC/MIC 400-600目標。TDMが一般的' },
 
   // ニューキノロン系
   { id: 'lvfx', name: 'レボフロキサシン（LVFX）', nameEn: 'Levofloxacin', category: 'ニューキノロン系',
@@ -143,7 +143,7 @@ export default function RenalDoseAbxPage() {
           <h3 className="font-bold text-tx">注意事項</h3>
           <ul className="list-disc pl-5 space-y-1">
             <li>本表は一般的な目安であり、各施設のプロトコル・添付文書を優先してください</li>
-            <li>アミノグリコシド系・バンコマイシンはTDM（血中薬物濃度モニタリング）が推奨</li>
+            <li>アミノグリコシド系・バンコマイシンはTDM（血中薬物濃度モニタリング）が一般的</li>
             <li>透析患者では透析後の追加投与タイミングに注意</li>
             <li>急性腎障害（AKI）では腎機能が急速に変動するため頻回の再評価が必要</li>
           </ul>

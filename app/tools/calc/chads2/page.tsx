@@ -29,7 +29,7 @@ const strokeRisk: Record<number, string> = {
 function getRecommendation(score: number): string {
   if (score === 0) return '低リスク — 抗凝固療法は不要（またはアスピリン考慮）'
   if (score === 1) return '中リスク — 抗凝固療法を考慮'
-  return '高リスク — 抗凝固療法を推奨'
+  return '高リスク — 抗凝固療法を検討'
 }
 
 function getSeverity(score: number): 'ok' | 'wn' | 'dn' {
@@ -140,7 +140,7 @@ export default function CHADS2Page() {
               <h3 className="text-base font-bold mb-2">CHA₂DS₂-VAScとの使い分け</h3>
               <p className="text-muted">
                 CHADS₂は簡便ですが、0-1点の低〜中リスク層の識別が粗いという限界があります。
-                CHADS₂ 0点でもCHA₂DS₂-VAScで2点以上になる場合は抗凝固療法が推奨されるため、
+                CHADS₂ 0点でもCHA₂DS₂-VAScで2点以上になる場合は抗凝固療法が示されるため、
                 低リスク例ではCHA₂DS₂-VAScでの再評価が重要です。
               </p>
             </div>

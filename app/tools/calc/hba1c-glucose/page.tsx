@@ -41,7 +41,7 @@ export default function HbA1cGlucosePage() {
         interpretation = '糖尿病の診断基準域 — 食事・運動療法の評価、薬物療法の検討'
         severity = 'wn'
       } else if (a1c >= 6.0) {
-        interpretation = '境界域（糖尿病予備群） — 生活習慣の改善が推奨される'
+        interpretation = '境界域（糖尿病予備群） — 生活習慣の改善が示される'
         severity = 'wn'
       } else {
         interpretation = '正常範囲（4.6〜6.2%）'

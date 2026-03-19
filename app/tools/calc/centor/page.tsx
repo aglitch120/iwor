@@ -26,7 +26,7 @@ export default function CentorPage() {
     let recommendation = ''
     if (score <= 0) recommendation = '検査・治療不要'
     else if (score <= 1) recommendation = '迅速抗原検査不要（GAS確率 <10%）'
-    else if (score <= 3) recommendation = '迅速抗原検査を推奨'
+    else if (score <= 3) recommendation = '迅速抗原検査を検討'
     else recommendation = '経験的抗菌薬投与 or 迅速検査'
 
     return { score: Math.max(score, 0), gasProb, severity, recommendation }
@@ -41,7 +41,7 @@ export default function CentorPage() {
         <section className="space-y-4 text-sm text-muted">
           <h2 className="text-base font-bold text-tx">Centor スコア（McIsaac変法）とは</h2>
           <p>急性咽頭炎患者におけるA群溶血性連鎖球菌（GAS）感染の確率を評価するスコアです。McIsaac変法では年齢因子を追加し、小児〜成人まで対応します。不要な抗菌薬処方の削減に有用です。</p>
-          <h3 className="font-bold text-tx">推奨アクション</h3>
+          <h3 className="font-bold text-tx">参考アクション</h3>
           <ul className="list-disc pl-5 space-y-1">
             <li>0-1点: 検査・抗菌薬不要</li>
             <li>2-3点: 迅速抗原検査を実施 → 陽性なら抗菌薬</li>

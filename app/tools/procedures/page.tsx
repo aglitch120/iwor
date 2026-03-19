@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import { ProceduresTutorial } from '@/components/tutorials'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
@@ -89,8 +90,8 @@ const PROCEDURES: Procedure[] = [
     id: 'cvc', name: '中心静脈カテーテル（CVC）', icon: '🔵', category: '救急・ICU',
     steps: [
       '適応: 末梢確保困難、昇圧剤/高カロリー輸液/高浸透圧薬の投与、CVP測定',
-      '穿刺部位: 内頸静脈（推奨）> 鎖骨下静脈 > 大腿静脈',
-      'エコーガイド下穿刺（推奨: 合併症↓、成功率↑）',
+      '穿刺部位: 内頸静脈（一般的）> 鎖骨下静脈 > 大腿静脈',
+      'エコーガイド下穿刺（参考: 合併症↓、成功率↑）',
       'Maximal barrier precaution: キャップ+マスク+ガウン+大型ドレープ+手袋',
       '【内頸静脈】頭低位(Trendelenburg)→エコーで内頸静脈を確認（総頸動脈の外側）→局所麻酔→エコーガイド下穿刺',
       'Seldinger法: 穿刺針→ガイドワイヤー挿入→針を抜去→ダイレーター→カテーテル挿入→ガイドワイヤー抜去',
@@ -99,7 +100,7 @@ const PROCEDURES: Procedure[] = [
       '胸部X線でカテーテル先端位置を確認（上大静脈/右房接合部付近が理想）',
       '気胸がないことも確認（特に鎖骨下穿刺時）',
     ],
-    tips: ['エコーガイド下が標準。ランドマーク法は非推奨', 'ガイドワイヤーは常に視認/把持。体内に迷入させない', 'CLABSI予防: 日常的にカテーテルの必要性を評価し、不要なら早期抜去'],
+    tips: ['エコーガイド下が標準。ランドマーク法は注意', 'ガイドワイヤーは常に視認/把持。体内に迷入させない', 'CLABSI予防: 日常的にカテーテルの必要性を評価し、不要なら早期抜去'],
     complications: ['気胸（鎖骨下静脈で多い）', '動脈穿刺', '空気塞栓', '不整脈（ワイヤーが右心房に触れる）', 'CRBSI（カテーテル関連血流感染）'],
     youtubeQuery: '中心静脈カテーテル 内頸静脈 エコーガイド',
   },
@@ -237,7 +238,7 @@ const PROCEDURES: Procedure[] = [
       '絹糸で固定縫合。水封ドレーンに接続（-10〜-20cmH2O）',
       '呼吸性変動（呼吸に合わせた水位の変動）を確認。胸部X線でドレーン位置確認',
     ],
-    tips: ['safe triangle: 大胸筋外側縁、広背筋外側縁、乳頭ライン（第5肋間）で囲まれた三角', 'トロッカー法は臓器損傷リスク高い→鈍的剥離法推奨', '呼吸性変動がない→ドレーン閉塞/肺が膨張完了の可能性'],
+    tips: ['safe triangle: 大胸筋外側縁、広背筋外側縁、乳頭ライン（第5肋間）で囲まれた三角', 'トロッカー法は臓器損傷リスク高い→鈍的剥離法が一般的', '呼吸性変動がない→ドレーン閉塞/肺が膨張完了の可能性'],
     complications: ['臓器損傷（肺/肝/脾/横隔膜）', '出血（肋間動脈損傷）', '皮下気腫', '再膨張性肺水腫（大量排液後）', '感染'],
     youtubeQuery: '胸腔ドレーン 挿入 手技',
   },
@@ -245,7 +246,7 @@ const PROCEDURES: Procedure[] = [
     id: 'abdominal-drain', name: '腹腔ドレーン（腹腔穿刺）', icon: '🩺', category: '消化器手技',
     steps: [
       '適応: 腹水の診断的穿刺、緊張性腹水の排液、腹膜炎の排液',
-      '穿刺部位: 左下腹部（McBurney点の対側）が推奨。エコーで腹水を確認+腸管/血管を避ける',
+      '穿刺部位: 左下腹部（McBurney点の対側）がが一般的。エコーで腹水を確認+腸管/血管を避ける',
       '膀胱を空にしておく（カテ留置 or 排尿確認）',
       '消毒+局所麻酔。Z-tracking technique（皮膚を引いてから穿刺→抜針後の漏出防止）',
       '穿刺針 or カテーテル（14-16G）をエコーガイド下で刺入',
@@ -407,6 +408,7 @@ export default function ProceduresPage() {
       <div className="bg-wnl border border-wnb rounded-lg p-4 mt-8 text-sm text-wn">
         <p className="font-semibold mb-1">⚠️ 医療上の免責事項</p>
         <p>本ガイドは手技の手順を学習目的で提供するものです。実際の手技は必ず指導医の監督下で行ってください。施設のプロトコルを優先してください。</p>
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="手技ガイド" /></div>
       </div>
     <ProceduresTutorial />
     </main>

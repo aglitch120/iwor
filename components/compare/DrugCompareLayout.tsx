@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 
 export interface DrugEntry {
   generic: string       // 一般名
@@ -106,6 +107,9 @@ export default function DrugCompareLayout({ data }: { data: CompareData }) {
       <div className="bg-wnl border border-wnb rounded-lg p-4 mb-8 text-sm text-wn">
         <p className="font-semibold mb-1">⚠️ 医療上の免責事項</p>
         <p>本比較表は添付文書の公開情報に基づく概要であり、全ての適応・用法・注意事項を網羅するものではありません。処方の際は必ず最新の添付文書をご確認ください。用量の記載は意図的に省略しています。</p>
+        <div className="mt-2 pt-2 border-t border-wnb/30">
+          <ErrorReportButton toolName={data.title} />
+        </div>
       </div>
 
       {/* SEO解説 */}

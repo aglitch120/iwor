@@ -74,7 +74,7 @@ export default function UrineOsmolalityPage() {
           <h3 className="font-bold text-tx">低Na血症の鑑別での使い方</h3>
           <p>尿浸透圧 &lt; 100 mOsm/kg → ADH抑制（水中毒・心因性多飲）。尿浸透圧 &gt; 100 mOsm/kg → ADH分泌あり（SIADH・副腎不全・甲状腺機能低下症などを鑑別）。</p>
           <h3 className="font-bold text-tx">注意点</h3>
-          <p>尿糖(+)・尿蛋白大量・造影剤使用後は尿比重が偽高値となり、推算値が実際より高くなります。正確な評価には実測浸透圧を推奨します。</p>
+          <p>尿糖(+)・尿蛋白大量・造影剤使用後は尿比重が偽高値となり、推算値が実際より高くなります。正確な評価には実測浸透圧を検討します。</p>
         </section>
       }
       relatedTools={toolDef.relatedSlugs

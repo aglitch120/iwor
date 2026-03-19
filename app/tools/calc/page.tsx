@@ -71,7 +71,7 @@ export default function ToolsPage() {
         <p className="text-sm text-muted leading-relaxed mb-3">
           iworでは、内科専攻医・内科医が日常診療で頻繁に使用する臨床スコア・計算ツールを無料で提供しています。
           eGFR（CKD-EPI 2021）、CHA₂DS₂-VASc、Child-Pugh、CURB-65、Wells スコア、SOFA スコアなど、
-          ガイドラインで推奨される主要な臨床スコアをカバー。
+          ガイドラインで示される主要な臨床スコアをカバー。
           さらに抗菌薬の腎機能別用量調整、輸液・電解質補正計算、ステロイド換算ツールなど、
           当直中やベッドサイドで必要になる実践的なツールも順次追加しています。
         </p>

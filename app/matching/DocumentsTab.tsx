@@ -748,7 +748,7 @@ const RESUME_SECTIONS: { title: string; icon: string; items: { label: string; im
     title: '記入前の準備', icon: '🖊️',
     items: [
       { label: '印鑑を用意した（シャチハタは不可）' },
-      { label: '写真を用意した（6ヶ月以内・スタジオ撮影推奨）', important: true },
+      { label: '写真を用意した（6ヶ月以内・スタジオ撮影が望ましい）', important: true },
       { label: '必要に応じて定規を用意した' },
     ],
   },
@@ -781,7 +781,7 @@ const RESUME_SECTIONS: { title: string; icon: string; items: { label: string; im
     title: '写真チェックリスト', icon: '📷',
     items: [
       { label: '6ヶ月以内に撮影したもの', important: true },
-      { label: 'プロが撮影（写真館やスタジオ推奨）', important: true },
+      { label: 'プロが撮影（写真館やスタジオが望ましい）', important: true },
       { label: 'サイズが指定に合っている（一般的に縦4cm×横3cm）' },
       { label: 'スーツ姿・ネクタイ/ジャケット着用' },
       { label: '清潔感のある髪型' },

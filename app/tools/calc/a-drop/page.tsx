@@ -110,7 +110,7 @@ export default function ADROPPage() {
                 name: 'A-DROPとCURB-65の違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'A-DROPは日本人データに基づいて開発され、年齢基準に性差（男性≥70歳、女性≥75歳）を設定しています。また呼吸不全の指標にSpO2を使用する点がCURB-65（呼吸数を使用）と異なります。日本国内ではA-DROPの使用が推奨されています。',
+                  text: 'A-DROPは日本人データに基づいて開発され、年齢基準に性差（男性≥70歳、女性≥75歳）を設定しています。また呼吸不全の指標にSpO2を使用する点がCURB-65（呼吸数を使用）と異なります。日本国内ではA-DROPの使用が示されています。',
                 },
               },
               {
@@ -118,7 +118,7 @@ export default function ADROPPage() {
                 name: 'A-DROPで何点から入院が必要ですか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '日本呼吸器学会のガイドラインでは、0点は外来治療、1-2点は外来または入院、3点は入院（集中治療検討）、4-5点はICU管理が推奨されています。',
+                  text: '日本呼吸器学会のガイドラインでは、0点は外来治療、1-2点は外来または入院、3点は入院（集中治療検討）、4-5点はICU管理が示されています。',
                 },
               },
             ],
@@ -157,7 +157,7 @@ export default function ADROPPage() {
               <p className={`text-sm font-medium ${
                 result.score >= 3 ? 'text-dn' : result.score >= 1 ? 'text-wn' : 'text-tx'
               }`}>
-                {result.score >= 3 ? '🏥' : result.score >= 1 ? '⚡' : '✅'} 推奨マネジメント（日本呼吸器学会ガイドライン）
+                {result.score >= 3 ? '🏥' : result.score >= 1 ? '⚡' : '✅'} 参考マネジメント（日本呼吸器学会ガイドライン）
               </p>
               <p className={`text-xs mt-1 ${
                 result.score >= 3 ? 'text-dn' : result.score >= 1 ? 'text-wn' : 'text-muted'
@@ -185,12 +185,12 @@ export default function ADROPPage() {
                 A-DROPは、日本呼吸器学会が日本人の市中肺炎（CAP）データに基づいて開発した重症度分類です。
                 Age（年齢）、Dehydration（脱水）、Respiration（呼吸不全）、Orientation（見当識障害）、Pressure（血圧低下）の
                 5項目を評価し、軽症・中等症・重症・超重症の4段階に分類します。
-                成人肺炎診療ガイドライン2017で推奨されており、日本国内での標準的な肺炎重症度評価ツールです。
+                成人肺炎診療ガイドライン2017で示されており、日本国内での標準的な肺炎重症度評価ツールです。
               </p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold mb-2">スコア別の推奨マネジメント</h3>
+              <h3 className="text-base font-bold mb-2">スコア別の参考マネジメント</h3>
               <div className="space-y-2 text-muted">
                 <p><span className="font-medium text-tx">0点（軽症）：</span>外来治療。経口抗菌薬で治療可能。</p>
                 <p><span className="font-medium text-tx">1-2点（中等症）：</span>外来または入院。1点は社会的因子を考慮して判断。2点は原則入院。</p>

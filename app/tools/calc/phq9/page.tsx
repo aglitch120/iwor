@@ -34,7 +34,7 @@ export default function Phq9Page() {
     if (total <= 4) { label = '症状なし〜最小限'; severity = 'ok' }
     else if (total <= 9) { label = '軽度うつ病'; severity = 'ok' }
     else if (total <= 14) { label = '中等度うつ病 — 治療を検討'; severity = 'wn' }
-    else if (total <= 19) { label = '中等度〜重度うつ病 — 治療を推奨'; severity = 'dn' }
+    else if (total <= 19) { label = '中等度〜重度うつ病 — 治療を検討'; severity = 'dn' }
     else { label = '重度うつ病 — 積極的治療が必要'; severity = 'dn' }
     const q9 = parseInt(scores[8]) > 0
     return { total, severity, label, q9 }
@@ -54,7 +54,7 @@ export default function Phq9Page() {
             <li>0-4: 症状なし〜最小限</li>
             <li>5-9: 軽度</li>
             <li>10-14: 中等度（治療検討）</li>
-            <li>15-19: 中等度〜重度（治療推奨）</li>
+            <li>15-19: 中等度〜重度（治療を検討）</li>
             <li>20-27: 重度（積極的治療）</li>
           </ul>
           <p className="font-medium text-tx">問9（希死念慮）が1点以上の場合は必ず安全性の評価を行ってください。</p>

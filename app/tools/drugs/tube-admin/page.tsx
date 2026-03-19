@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 
@@ -72,7 +73,7 @@ const CATEGORIES: { title: string; drugs: Drug[] }[] = [
       { name: 'テグレトール錠', generic: 'カルバマゼピン', status: 'ok', method: '粉砕+55℃温湯', note: '細粒あり' },
       { name: 'リスパダール錠', generic: 'リスペリドン', status: 'ok', method: 'OD錠/内用液あり', note: '内用液を優先使用' },
       { name: 'クエチアピン錠', generic: 'クエチアピン', status: 'ok', method: '粉砕+55℃温湯', note: '細粒あり' },
-      { name: 'マイスリー錠', generic: 'ゾルピデム', status: 'ok', method: '55℃温湯で崩壊', note: 'OD錠推奨' },
+      { name: 'マイスリー錠', generic: 'ゾルピデム', status: 'ok', method: '55℃温湯で崩壊', note: 'OD錠が望ましい' },
       { name: 'デパス錠', generic: 'エチゾラム', status: 'ok', method: '粉砕+55℃温湯', note: '細粒あり' },
     ],
   },
@@ -180,6 +181,7 @@ export default function TubeAdminPage() {
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mt-8 mb-8 text-sm text-wn">
         ⚠️ 本リストは参考情報です。簡易懸濁法の可否は各施設の薬剤部に確認してください。チューブ径・材質によっても可否が異なります。
+        <div className="mt-2 pt-2 border-t border-wnb/30"><ErrorReportButton toolName="簡易懸濁法一覧" /></div>
       </div>
 
       <section className="text-xs text-muted space-y-1 mb-8">
