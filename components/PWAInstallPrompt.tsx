@@ -18,6 +18,7 @@ export default function PWAInstallPrompt() {
   const [showBanner, setShowBanner] = useState(false)
   const [showIOSGuide, setShowIOSGuide] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
+  const [isIOSNonSafari, setIsIOSNonSafari] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
   const checkedRef = useRef(false)
 
@@ -43,6 +44,12 @@ export default function PWAInstallPrompt() {
       /iPad|iPhone|iPod/.test(ua) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
     setIsIOS(ios)
+
+    // iOS上のSafari以外のブラウザを検出（Chrome=CriOS, Firefox=FxiOS, Edge=EdgiOS等）
+    if (ios) {
+      const nonSafari = /CriOS|FxiOS|EdgiOS|OPiOS|GSA\//.test(ua)
+      setIsIOSNonSafari(nonSafari)
+    }
 
     // Track tool usage for re-prompting
     const path = window.location.pathname
@@ -121,6 +128,20 @@ export default function PWAInstallPrompt() {
   }
 
   if (!showBanner || isStandalone) return null
+
+  const stepCircleStyle: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 22,
+    height: 22,
+    borderRadius: '50%',
+    background: 'var(--ac)',
+    color: '#fff',
+    fontSize: '0.7rem',
+    fontWeight: 700,
+    flexShrink: 0,
+  }
 
   return (
     <div
@@ -252,89 +273,98 @@ export default function PWAInstallPrompt() {
               lineHeight: 1.6,
             }}
           >
-            <div style={{ fontWeight: 600, marginBottom: '8px' }}>
-              追加方法（Safari）
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '6px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span
+            {isIOSNonSafari ? (
+              /* iOS Chrome / Firefox / Edge 等 → Safariへ誘導 */
+              <>
+                <div style={{ fontWeight: 600, marginBottom: '8px' }}>
+                  Safariで開いてください
+                </div>
+                <p style={{ fontSize: '0.78rem', color: 'var(--m)', margin: '0 0 10px' }}>
+                  iOSではSafariからのみホーム画面に追加できます。
+                </p>
+                <div
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 22,
-                    height: 22,
-                    borderRadius: '50%',
-                    background: 'var(--ac)',
-                    color: '#fff',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    flexShrink: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '6px',
                   }}
                 >
-                  1
-                </span>
-                <span>
-                  下の <strong>共有ボタン</strong>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--ac)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{ verticalAlign: 'middle', margin: '0 2px' }}
-                  >
-                    <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
-                    <polyline points="16 6 12 2 8 6" />
-                    <line x1="12" y1="2" x2="12" y2="15" />
-                  </svg>
-                  をタップ
-                </span>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={stepCircleStyle}>1</span>
+                    <span>アドレスバーの <strong>URL を長押し</strong> → コピー</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={stepCircleStyle}>2</span>
+                    <span><strong>Safari</strong> を開いて貼り付け</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={stepCircleStyle}>3</span>
+                    <span>
+                      共有ボタン
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="var(--ac)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{ verticalAlign: 'middle', margin: '0 2px' }}
+                      >
+                        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+                        <polyline points="16 6 12 2 8 6" />
+                        <line x1="12" y1="2" x2="12" y2="15" />
+                      </svg>
+                      →「<strong>ホーム画面に追加</strong>」
+                    </span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* iOS Safari → 通常の共有ガイド */
+              <>
+                <div style={{ fontWeight: 600, marginBottom: '8px' }}>
+                  追加方法（Safari）
+                </div>
+                <div
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 22,
-                    height: 22,
-                    borderRadius: '50%',
-                    background: 'var(--ac)',
-                    color: '#fff',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    flexShrink: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '6px',
                   }}
                 >
-                  2
-                </span>
-                <span>
-                  「<strong>ホーム画面に追加</strong>」を選択
-                </span>
-              </div>
-            </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={stepCircleStyle}>1</span>
+                    <span>
+                      下の <strong>共有ボタン</strong>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="var(--ac)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{ verticalAlign: 'middle', margin: '0 2px' }}
+                      >
+                        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+                        <polyline points="16 6 12 2 8 6" />
+                        <line x1="12" y1="2" x2="12" y2="15" />
+                      </svg>
+                      をタップ
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={stepCircleStyle}>2</span>
+                    <span>
+                      「<strong>ホーム画面に追加</strong>」を選択
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <button
