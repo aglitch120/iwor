@@ -940,6 +940,11 @@ export const tools: ToolDefinition[] = [
   { slug: 'post-test-probability', name: '検査後確率（尤度比）', nameEn: 'Post-test Probability (LR)', description: '検査前確率と尤度比から検査後確率を算出。Fagan nomogram。診断推論の基本。', category: 'general', tier: 3, keywords: ['尤度比','検査後確率','Bayes','Fagan','LR','感度','特異度'], relatedSlugs: ['nnt'] },
   { slug: 'delta-gap', name: 'デルタギャップ（Delta ratio）', nameEn: 'Delta Gap / Delta-Delta', description: 'AG上昇型代謝性アシドーシスに他の酸塩基異常が合併しているか評価。ΔAG/ΔHCO3比で判定。', category: 'electrolyte', tier: 2, keywords: ['デルタ','delta','AG','アシドーシス','酸塩基','gap-gap'], relatedSlugs: ['anion-gap','winters-formula','aa-gradient'] },
   { slug: 'oxygen-delivery', name: '酸素運搬量 (CaO2/DO2I)', nameEn: 'Oxygen Delivery (CaO2/DO2I)', description: '動脈血酸素含量CaO2と酸素供給指数DO2Iを計算。ICUでの酸素需給バランス評価に。', category: 'respiratory', tier: 2, keywords: ['CaO2','DO2I','酸素','oxygen delivery','ICU'], relatedSlugs: ['cardiac-index','aa-gradient'] },
+  // ── v6追加ツール ──
+  { slug: 'plasma-osmolality', name: '血漿浸透圧（推算）', nameEn: 'Estimated Plasma Osmolality', description: 'Na・血糖・BUNから血漿浸透圧を推算。低Na/高Na血症・浸透圧ギャップの評価に。275-295 mOsm/kg が正常。', category: 'electrolyte', tier: 2, keywords: ['浸透圧','血漿浸透圧','Posm','高Na','低Na','osmolality'], relatedSlugs: ['osmolality-gap','na-correction-rate','na-deficit','hyponatremia-flow'] },
+  { slug: 'urine-osmolality', name: '尿浸透圧（推算）', nameEn: 'Estimated Urine Osmolality', description: '尿比重から尿浸透圧を推算。低Na血症の鑑別（ADH適切/不適切分泌）や腎濃縮能評価に。', category: 'nephrology', tier: 2, keywords: ['尿浸透圧','尿比重','Uosm','濃縮能','SIADH','希釈尿'], relatedSlugs: ['plasma-osmolality','hyponatremia-flow','siadh','fena'] },
+  { slug: 'tsat', name: 'TSAT（トランスフェリン飽和度）', nameEn: 'Transferrin Saturation', description: '血清鉄とTIBCからTSATを算出。鉄欠乏（<20%）や鉄過剰（>45%）の評価に。貧血の鑑別に必須。', category: 'hematology', tier: 2, keywords: ['TSAT','トランスフェリン飽和度','鉄','TIBC','鉄欠乏','貧血','フェリチン'], relatedSlugs: ['iron-deficit','rpi'] },
+  { slug: 'hba1c-glucose', name: 'HbA1c ↔ 平均血糖値換算', nameEn: 'HbA1c ↔ Estimated Average Glucose', description: 'HbA1cから推定平均血糖値(eAG)、または血糖値からHbA1cを推算。NGSP/ADAG/日本の実臨床データに基づく3方式対応。', category: 'general', tier: 2, keywords: ['HbA1c','eAG','平均血糖','糖尿病','血糖コントロール','NGSP','グリコヘモグロビン'], relatedSlugs: ['homa','bmi'] },
 ]
 
 // 実装済みツールのslug一覧（新ツール追加時にここに追加）
@@ -956,6 +961,8 @@ export const implementedTools = new Set(['egfr', 'cha2ds2-vasc', 'chads2', 'has-
   'drip-score', 'ipss-prostate', 'kawasaki', 'westley-croup', 'anaphylaxis', 'siadh', 'la-classification', 'ibs-rome', 'bishop', 'burn-area', 'child-vital', 'design-r', 'sle-criteria', 'hyponatremia-flow',
   // D章追加
   'drip-rate', 'cardiac-index', 'svri', 'maddrey', 'iron-deficit', 'rpi', 'nnt', 'post-test-probability', 'delta-gap', 'oxygen-delivery',
+  // v6追加
+  'plasma-osmolality', 'urine-osmolality', 'tsat', 'hba1c-glucose',
 ])
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
