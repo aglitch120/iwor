@@ -16,49 +16,13 @@
 - `app/study/` — iwor Study（フラッシュカード）← 新規
 - `components/pro/` — ProGate, ProModal, useProStatus, ProPulseHint
 - `components/tools/` — CalculatorLayout等の共通コンポーネント
-- `content/blog/` — MDX記事（臨床系記事は削除予定）
+- `content/blog/` — MDX記事
 - `lib/tools-config.ts` — ツール一覧・メタデータ定義
 - `lib/tools-metadata.ts` — SEO用メタデータ生成
 
-> **削除予定ディレクトリ** (ピボット対応): `app/tools/er/`, `app/tools/acls/`, `app/tools/interpret/` (lab-values以外), `components/tools/interpret/`
-
 ## 🎨 デザインシステム
 
-### カラーパレット（既存アプリと統一）
-```css
-:root {
-  --bg: #F5F4F0;      /* ページ背景 */
-  --s0: #FEFEFC;      /* カード表面 */
-  --s1: #F0EDE7;      /* ネスト背景 */
-  --br: #DDD9D2;      /* ボーダー */
-  --tx: #1A1917;      /* メインテキスト */
-  --m: #6B6760;       /* ミュートテキスト */
-  --ac: #1B4F3A;      /* グリーンアクセント */
-  --acl: #E8F0EC;     /* アクセント薄 */
-}
-```
-
-### クラスターカラー
-| クラスター | 背景色 | 用途 |
-|-----------|--------|------|
-| A: J-OSLER基礎 | `#1E3A5F` | 信頼感（ネイビー） |
-| B: 症例登録 | `#3D5A80` | 実務（ブルー） |
-| C: 病歴要約 | `#1B4F3A` | ブランドカラー（グリーン） |
-| D: 疾患別病歴要約 | `#2D6A4F` | 効率（ティール） |
-| E: 進捗管理 | `#0D7377` | 管理（ダークシアン） |
-| F: JMECC・講習 | `#4A5568` | 講習（グレー） |
-| G: 内科専門医試験 | `#7F1D1D` | 緊急（レッド） |
-| H: 試験領域別 | `#9B2C2C` | 試験（ダークレッド） |
-| I: 総合内科専門医 | `#B7410E` | 上級（オレンジレッド） |
-| J: AI・ツール | `#4338CA` | テック（インディゴ） |
-| K: メンタル・生活 | `#134E4A` | 癒し（ダークティール） |
-| L: バイト・収入 | `#4C1D95` | 副収入（パープル） |
-| M: 税金・節税 | `#92400E` | お金（オレンジ） |
-| N: キャリア | `#2B6CB0` | 成長（ブルー） |
-| O: 学会・論文 | `#6D28D9` | 学術（バイオレット） |
-| P: 結婚・出産 | `#9D174D` | ライフ（ピンク） |
-| Q: サブスペJ-OSLER | `#5B6ABF` | サブスペ（スレートブルー） |
-| R: その他 | `#6B6760` | その他（グレー） |
+→ **DESIGN_SYSTEM.md** を参照（カラーパレット、クラスターカラー、タイポグラフィ、コンポーネントスタイルの単一ソース）
 
 ## 📊 トピッククラスター設計
 
@@ -378,210 +342,24 @@ import { ProGate } from '@/components/pro/ProGate'
 
 ---
 
-# アーキテクチャ図
+# アーキテクチャ・インフラ・依存サービス
 
-> 最終更新日: 2026-03-15
+→ インフラ構成、依存サービス、コスト、アカウント一覧は **OPERATIONS.md** を参照
 
-## システム構成
+## 技術スタック（概要）
 
-```
-┌─────────────────────────────────────────────────┐
-│                   ユーザー                        │
-│            (ブラウザ / モバイル)                    │
-└──────────────────────┬──────────────────────────┘
-                       │ HTTPS
-                       ▼
-┌─────────────────────────────────────────────────┐
-│              Cloudflare CDN / DNS                │
-│                  iwor.jp                         │
-│  ┌─────────────┐  ┌──────────────────────────┐  │
-│  │ DNS管理     │  │ CDN (キャッシュ/配信)     │  │
-│  └─────────────┘  └──────────────────────────┘  │
-└──────────────────────┬──────────────────────────┘
-                       │
-          ┌────────────┴────────────┐
-          ▼                         ▼
-┌──────────────────┐   ┌────────────────────────┐
-│ Cloudflare Pages │   │ Cloudflare Workers     │
-│  (Next.js SSG)   │   │  (API / KV) [Phase2]   │
-│                  │   │                        │
-│ ・ブログ記事     │   │ ・認証API              │
-│ ・臨床ツール     │   │ ・PRO機能API           │
-│ ・固定ページ     │   │ ・キャッシュ管理       │
-└──────────────────┘   └───────────┬────────────┘
-                                   │ [Phase 2]
-                                   ▼
-                       ┌────────────────────────┐
-                       │      Supabase          │
-                       │                        │
-                       │ ・Auth (認証)          │
-                       │ ・PostgreSQL (DB)      │
-                       │ ・症例データ           │
-                       │ ・ユーザープロファイル │
-                       └────────────────────────┘
-```
+| レイヤー | 技術 |
+|---------|------|
+| フロントエンド | Next.js 14 + React 18 + Tailwind CSS 3.4 |
+| コンテンツ | MDX (next-mdx-remote) |
+| ホスティング | Cloudflare Pages (SSG, Git連携自動デプロイ) |
+| API | Cloudflare Workers + KV |
+| DB [Phase 2] | Supabase PostgreSQL + Auth |
+| 決済 [移行中] | Paddle (MoR) |
 
-## データフロー
-
-```
-[無料ユーザー]
-  → Cloudflare CDN → Pages (静的HTML/JS)
-  → ブラウザ内で完結（計算はクライアントサイド）
-
-[PROユーザー] (Phase 1: 現在)
-  → Pages (UI) → Workers (API) → KV (データ保存)
-  → 認証: localStorage + sessionToken
-
-[PROユーザー] (Phase 2: 100人超)
-  → Pages (UI) → Workers (API) → Supabase (データ永続化)
-  → 認証: Supabase Auth (JWT)
-
-[学会情報自動収集] (将来)
-  → Worker cron (月2回) → 43学会URL fetch → Claude Haiku (構造化抽出)
-  → KV保存 → 管理者承認 → フロント反映
-```
-
-## 技術スタック詳細
-
-| レイヤー | 技術 | 備考 |
-|---------|------|------|
-| フロントエンド | Next.js 14 + React 18 | SSG (Static Site Generation) |
-| スタイリング | Tailwind CSS 3.4 | カスタムカラーシステム |
-| コンテンツ | MDX (next-mdx-remote) | ブログ記事 + ツール解説 |
-| ホスティング | Cloudflare Pages | 自動デプロイ (Git連携) |
-| DNS | Cloudflare DNS | Xserverドメインから移管 |
-| 計測 | GA4 + GSC | G-VTCJT6XFHG |
-| API | Cloudflare Workers + KV | Edge Runtime |
-| DB [Phase 2] | Supabase PostgreSQL | Auth一体型 |
-| 決済 [移行中] | Paddle (MoR) | 実名非公開可 |
-| 決済 [Phase 2] | Paddle or Stripe | 法人化後 |
-| AI [将来] | Claude API (Haiku) | 学会情報自動収集 |
-
-## ディレクトリ構造
-
-```
-iwor/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx          # ルートレイアウト (Header/Footer/GA4)
-│   ├── page.tsx            # トップページ
-│   ├── blog/               # ブログ一覧・カテゴリ・個別記事
-│   ├── tools/              # 臨床ツール
-│   │   ├── page.tsx        # ツールハブ
-│   │   └── calc/           # 計算ツール (36個)
-│   ├── about/              # サイト概要
-│   ├── privacy/            # プライバシーポリシー
-│   ├── terms/              # 利用規約
-│   ├── tokushoho/          # 特商法表示
-│   └── contact/            # お問い合わせ
-├── components/             # 共通コンポーネント
-│   ├── Header.tsx
-│   ├── BottomNav.tsx
-│   ├── blog/               # ブログ用コンポーネント
-│   └── tools/              # ツール用コンポーネント
-│       ├── CalculatorLayout.tsx
-│       ├── ResultCard.tsx
-│       └── InputFields.tsx
-├── content/blog/           # MDX記事 (173本)
-├── lib/                    # ユーティリティ
-│   ├── blog-config.ts      # ブログ設定・カテゴリ定義
-│   ├── tools-config.ts     # ツール定義・メタデータ
-│   ├── seo.ts              # 構造化データ
-│   └── mdx.ts              # MDXパーサー
-├── docs/                   # ドキュメント
-├── tests/                  # テスト
-├── scripts/                # ビルドスクリプト
-└── public/                 # 静的アセット
-```
-
----
-
-# 依存サービス一覧
-
-> 最終更新日: 2026-03-15
-
-## 本番インフラ
-
-| サービス | 用途 | アカウント | 料金 | 備考 |
-|---------|------|-----------|------|------|
-| **Cloudflare Pages** | ホスティング・CDN | Cloudflareアカウント | 無料（Freeプラン） | iwor.jpのデプロイ先 |
-| **Cloudflare DNS** | DNS管理 | 同上 | 無料 | Xserverからネームサーバー変更済み |
-| **Xserverドメイン** | ドメイン registrar | Xserverアカウント | 年額約1,300円 | iwor.jp, 自動更新要確認 |
-| **GitHub** | ソースコード管理 | aglitch120 | 無料 | aglitch120/iwor |
-
-## 分析・計測
-
-| サービス | 用途 | ID | 料金 |
-|---------|------|-----|------|
-| **Google Analytics 4** | アクセス解析 | G-VTCJT6XFHG | 無料 |
-| **Google Search Console** | SEO・インデックス管理 | ドメインプロパティ | 無料 |
-
-## 将来導入予定
-
-| サービス | 用途 | 導入条件 | 想定料金 |
-|---------|------|---------|---------|
-| **Supabase** | Auth + PostgreSQL (PRO機能) | Phase 2（100人超） | 無料〜$25/月 |
-| **Claude API (Haiku)** | 学会情報自動収集 | 学会カレンダー実装時 | 月額約¥25 |
-| **Paddle** | 決済（MoRモデル） | 審査通過後 | 手数料5%+$0.50 |
-
-## 月額コスト（現時点）
-
-| 項目 | 金額 |
-|------|------|
-| Cloudflare Pages | ¥0 |
-| GitHub | ¥0 |
-| GA4 / GSC | ¥0 |
-| ドメイン（年割） | 約 ¥108/月 |
-| **合計** | **約 ¥108/月** |
-
-## 事業譲渡時の移転対象
-
-1. **GitHub リポジトリ**: aglitch120/iwor → 譲渡先orgに転送
-2. **Cloudflare アカウント**: iwor.jpゾーンを譲渡先に移管
-3. **Xserver ドメイン**: ドメイン移管（auth code発行）
-4. **GA4 / GSC**: プロパティのオーナー権限を譲渡
-5. **Supabase**: プロジェクト移管（Phase 2以降）
-6. **Paddle**: アカウント情報引継ぎ
-
----
-
-# 依存パッケージ ライセンス確認
+## 依存パッケージ ライセンス
 
 > 最終確認日: 2026-03-15
 
-## 結論
-
 **GPL混入なし。** 全パッケージがMITまたはMPL-2.0で、商用利用・事業譲渡に問題なし。
-
-## 直接依存パッケージ
-
-| パッケージ | ライセンス | 備考 |
-|-----------|-----------|------|
-| next | MIT | |
-| react | MIT | |
-| react-dom | MIT | |
-| next-mdx-remote | MPL-2.0 | 弱いコピーレフト。同ファイルの変更のみ開示義務。プロジェクト全体には波及しない |
-| @mdx-js/loader | MIT | |
-| @mdx-js/react | MIT | |
-| @next/mdx | MIT | |
-| autoprefixer | MIT | |
-| gray-matter | MIT | |
-| postcss | MIT | |
-| reading-time | MIT | |
-| rehype-autolink-headings | MIT | |
-| rehype-slug | MIT | |
-| remark-gfm | MIT | |
-| tailwindcss | MIT | |
-
-## devDependencies
-
-| パッケージ | ライセンス |
-|-----------|-----------|
-| @types/node | MIT |
-| @types/react | MIT |
-| typescript | Apache-2.0 |
-
-## MPL-2.0について
-
-next-mdx-remoteのMPL-2.0は「ファイルレベルのコピーレフト」。
-next-mdx-remote自体のソースを改変して再配布する場合のみ、改変部分の開示義務がある。
-プロジェクトのコードやビジネスロジックには波及しない。事業譲渡に影響なし。
+唯一のコピーレフト: next-mdx-remote（MPL-2.0）— ファイルレベルのみ。プロジェクト全体には波及しない。
