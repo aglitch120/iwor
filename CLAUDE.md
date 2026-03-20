@@ -16,10 +16,7 @@ bash scripts/docs-check.sh  # must pass with 0 errors before push
 
 ## Git Rules — IMPORTANT
 
-- **Feature branch + PR経由でマージ。main直push禁止**
-  - `git checkout -b feat/xxx` or `fix/xxx` でブランチ作成
-  - 作業完了後 `git push origin <branch>` → GitHub上でPR作成
-  - CIが通ったらマージ
+- `git push origin main` で直接プッシュ（CIが自動で走る）
 - `git add -A` is FORBIDDEN. Use `git add <file>` individually
 - NEVER commit node_modules/
 - Small commits: 1 task = 1 commit with prefix (feat:, fix:, docs:, refactor:, style:)
