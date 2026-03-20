@@ -238,10 +238,13 @@
 | # | 内容 | 状態 |
 |---|------|------|
 | R-1 | **Phase 1: レポート自動生成** — Research/Analytics/Legal/CSの情報収集+レポート | 🟡 |
-| R-2 | **Phase 2: ドラフト作成** — Workers cron + Claude API、人間承認フロー | 🟢 |
+| R-2 | **Phase 2: Cowork Scheduled Tasks実装** — 7つの定期タスク設定（→STRATEGY.md参照） | 🟡 |
 | R-3 | **Phase 3: 自律実行** — 低リスク全自動 + 高リスク承認ゲート | 🟢 |
-| R-4 | **共有コンテキスト層構築**: docs/ SSOT + メトリクスDB + フィードバックキュー | 🟡 R-1の前提 |
+| R-4 | **共有コンテキスト層構築**: ~/iwor-ops/ フォルダ構造 + 各エージェント.claude-md | 🟡 R-1の前提 |
 | R-5 | **CEOコクピットダッシュボード**: /admin/cockpit/ モバイルPWA。全エージェント監視+スワイプ承認 | 🟡 R-2と同時 |
+| R-6 | **MCP接続セットアップ**: GA4, X API, Gmail, Firecrawl, GSC, Cloudflare API | 🟡 R-2の前提 |
+| R-7 | **朝のブリーフィング（毎日7:30）**: PV/DAU + X言及 + 問合せ要約 | 🟡 R-2に含む |
+| R-8 | **週次CEOレポート（毎月曜8:30）**: 全レポート統合 + TODO更新提案 | 🟡 R-2に含む |
 
 ---
 

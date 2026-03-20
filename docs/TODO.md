@@ -186,10 +186,11 @@
 - [ ] 年末ラップアップ（Spotify Wrapped型）: 年間まとめSNSシェア
 
 ### 自律運用システム
-- [ ] Phase 1: レポート自動生成（Research/Analytics/Legal/CS）
-- [ ] Phase 2: ドラフト作成（Workers cron + Claude API + 人間承認）
+- [ ] Phase 1: ~/iwor-ops/ フォルダ構造 + 各エージェント.claude-md作成
+- [ ] Phase 1: MCP接続セットアップ（GA4, X API, Gmail, Firecrawl, GSC, Cloudflare API）
+- [ ] Phase 2: Cowork Scheduled Tasks 7つ設定（朝ブリーフィング/Marketing/Legal/Analytics/Research/CEO/SEO）
+- [ ] Phase 2: CEOコクピットダッシュボード（/admin/cockpit/ モバイルPWA、スワイプ承認）
 - [ ] Phase 3: 自律実行（低リスク全自動 + 高リスク承認ゲート）
-- [ ] CEOコクピットダッシュボード（/admin/cockpit/ モバイルPWA、スワイプ承認）
 
 ### 開発基盤（AI駆動ベストプラクティス）
 - [x] CLAUDE.md全面書き直し（Agent OS Manual化）
