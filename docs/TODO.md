@@ -135,7 +135,7 @@ Phase F 自律運用（E完了後 or 並行）
 
 ### A4. 開発基盤強化
 - [ ] テスト基盤構築: 主要ページ結合テスト + 計算ツールロジックテスト拡充（S-5）
-- [ ] .claude/skills/ 構築: study, matching, tools, blog, worker（S-3）
+- [x] .claude/skills/ 構築: study, matching, tools, blog, worker（S-3）（2026-03-20完了）
 
 ---
 
