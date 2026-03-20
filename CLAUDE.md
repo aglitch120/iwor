@@ -1,92 +1,105 @@
-# CLAUDE.md
+# CLAUDE.md — iwor Agent Operating Manual
 
-このファイルはClaude（claude.ai/Claude Code）がこのリポジトリで作業する際のガイドラインです。
+## Identity
 
----
+iwor（イウォール）— 医師のためのワークスペース。iwor.jp。個人開発SaaS。
 
-## GitHub認証情報
+## First Steps (every session)
 
 ```bash
-# リポジトリクローン後、最初に実行
-git remote set-url origin https://TOKEN@github.com/aglitch120/iwor.git
-git config user.email "aglitch120@users.noreply.github.com"
-git config user.name "aglitch120"
+# 1. Read docs/README.md FIRST — it defines which file owns what info
+cat docs/README.md
+# 2. Read the specific docs relevant to your task
+# 3. After docs/ changes, ALWAYS run:
+bash scripts/docs-check.sh  # must pass with 0 errors before push
 ```
 
-**注意**: トークンはセキュリティのためここには記載しない。会話開始時にユーザーから受け取ること。
+## Git Rules — IMPORTANT
 
----
+- `git add -A` is FORBIDDEN. Use `git add <file>` individually
+- NEVER commit node_modules/
+- Small commits: 1 task = 1 commit with prefix (feat:, fix:, docs:, refactor:, style:)
+- ALWAYS push after commit. Work is not done until pushed
+- docs/ changes require `bash scripts/docs-check.sh` pass before push
+- Commit messages: Japanese OK
 
-## 作業ルール
+## Docs Structure (SSOT — Single Source of Truth)
 
-### 1. 作業開始時に必ず行うこと
-- リポジトリをcloneして最新状態を確認する
-- `docs/` フォルダ内の以下のガイドラインを読み、内容に従うこと：
-  - `docs/BUSINESS_OVERVIEW.md` — ビジネス概要・収益モデル・3セグメント商品設計
-  - `docs/PRO_STRATEGY.md` — PLGフリーミアム戦略・ProGate設計・DB設計・ゲート基準
-  - `docs/EXIT_STRATEGY.md` — EXIT戦略・ロードマップ
-  - `docs/EXIT_TODO.md` — TODOトラッカー（WS0〜WS4）
-  - `docs/DESIGN_SYSTEM.md` — カラー・タイポグラフィ・コンポーネント規約
-  - `docs/SEO_GUIDELINE.md` — 記事作成ルール・KW設計・メタデータ
-  - `docs/IMPLEMENTATION_GUIDE.md` — 技術実装・フォルダ構成・デプロイ手順
+Each piece of info lives in exactly ONE file. Check docs/README.md for ownership.
 
-### 2. コミットルール
-- 小さなタスク（1ファイル、1機能）ごとにコミット
-- コミット後は必ずプッシュ
-- `git add -A` 禁止 → `git add <ファイル名>` で個別指定
-- `node_modules/` は絶対にコミットしない
-- コミットメッセージは日本語OK、プレフィックス付き（docs:, feat:, fix:, refactor:）
+| File | Owns | Does NOT own |
+|------|------|-------------|
+| STRATEGY.md | Price, roadmap, competitors, brand, business model | Product specs, code |
+| PRODUCT.md | Feature specs, PRO/FREE gates, DB schema, PLG design | Price, roadmap |
+| IMPLEMENTATION.md | Tech stack, coding rules, SEO implementation | Product specs |
+| DESIGN_SYSTEM.md | Colors, fonts, spacing, component styles | Code logic |
+| TODO.md | Tasks, progress, completion dates | Strategy reasoning |
+| FEATURE_REQUESTS_v6.md | Feature backlog with priority (🔴🟠🟡🟢) | Implementation details |
 
-### 3. タスク管理
-- `docs/EXIT_TODO.md` をタスク完了ごとに更新してpush
-- 長い作業は途中で進捗報告
+When adding info: find the owner in docs/README.md → write there ONLY.
+When referencing: don't copy, write "→ STRATEGY.md 参照".
 
-### 4. コードスタイル
-- TypeScript + Next.js 14 App Router
-- Tailwind CSS でスタイリング（カスタムCSSは最小限）
-- コンポーネントは `components/` に配置
-- MDX記事は `content/blog/` に配置
+## Tech Stack
 
----
+- Next.js 14 App Router + TypeScript + Tailwind CSS
+- Cloudflare Pages (frontend) + Workers + KV (API/data)
+- MDX for blog (content/blog/)
+- No external UI library — custom components only
 
-## プロジェクト概要
+## Code Style
 
-**iwor（イウォール）** — 医師の臨床とキャリアを支える恵みの地
+- Functional React components only (no class components)
+- Server Components by default, 'use client' only when needed
+- Tailwind utilities, minimal custom CSS
+- Design tokens: → DESIGN_SYSTEM.md (colors, spacing, typography)
+- Components in components/, pages in app/, data/config in lib/
+- Japanese comments OK, English variable/function names
 
-- ドメイン: iwor.jp
-- 旧サイト: naikanavi.com（→ iwor.jpに301リダイレクト予定）
-- 技術: Next.js 14 + MDX + Tailwind + Cloudflare Pages / Workers / KV
+## Key Files
 
-### サイト構造
-```
-iwor.jp/
-├── /tools/        ← 臨床計算ツール群（無料）
-├── /compare/      ← 薬剤比較（無料）
-├── /blog/         ← SEOコンテンツ（173記事＋新規）
-├── /josler/       ← J-OSLER対策（PRO）
-├── /interpret/    ← 検査読影インタラクティブ（将来）
-├── /emergency/    ← ACLS・緊急対応（将来）
-├── /er/           ← 主訴別ER対応（将来）
-├── /icu/          ← ICU管理ツール（将来）
-├── /dashboard/    ← 病棟管理ダッシュボード（将来・PRO）
-├── /journal/      ← 論文フィード（将来・PRO）
-├── /matching/     ← マッチング対策（将来・PRO）
-├── /specialist/   ← 他科専門医対策（将来）
-└── /hospitals/    ← 病院DB（将来）
+- `lib/tools-config.ts` — all 166 calculator tool definitions
+- `components/pro/` — ProGate, ProModal, useProStatus (PRO gating system)
+- `app/study/` — iwor Study (FSRS flashcards, core product)
+- `app/page.tsx` — home screen (10 icon grid + search bar)
+- `workers/api.js` — Worker API (auth, PRO validation, journal cache)
+
+## Deploy
+
+```bash
+# Frontend: push to main triggers Cloudflare Pages auto-build
+git push origin main
+# Worker API:
+cd workers && npx wrangler deploy
+# Worker local test:
+cd workers && npx wrangler dev
 ```
 
-### ビジネスモデル（PLGフリーミアム）
-- 無料: 全ツールのUI/操作（入力＋計算＋結果）＋ER/ICU/ACLS全公開 → SEO集客＋信頼構築
-- PROゲート: 解釈セクション（モザイク）＋データ永続化＋お気に入り → PROモーダル誘導
-- 有料: iwor PRO 年額9,800円 → 解釈閲覧・データ保存・パーソナライズ
-- 安全性ファースト: 緊急ツール（ER/ICU/ACLS/計算結果）は絶対にゲートしない
+## Current State (2026-03-20)
 
-詳細は `docs/BUSINESS_OVERVIEW.md` および `docs/PRO_STRATEGY.md` を参照。
+- 10 services on home screen (tools, record, credits, conferences, matching, journal, presenter, shift, study, money)
+- 166 clinical calculators + drug guides + procedure guides
+- Study: FSRS MVP with 3 default decks (150 cards) + custom deck CRUD
+- PRO: Worker API + BOOTH (migrating to Paddle)
+- Price: Monthly ¥980 / 6mo ¥5,400 (decoy) / Annual ¥9,800
+- Blog: 173 articles
 
----
+See TODO.md for current priorities.
 
-## 注意事項
+## Gotchas — Claude's Known Failure Points
 
-- ソースコード内に `naikanavi` の参照が多数残っている（移行中）
-- 本番ドメインは iwor.jp に移行予定（Cloudflare接続後）
-- naikanavi.com からの301リダイレクトを設定予定
+1. **Overwrites entire files**: When editing large files, use targeted edits (str_replace), not full rewrites
+2. **Ignores DESIGN_SYSTEM.md colors**: ALWAYS check DESIGN_SYSTEM.md before writing any color/style. The palette uses CSS custom properties (--bg, --fg, etc.)
+3. **Duplicates info across docs**: Before writing to any doc, check docs/README.md for the correct owner file
+4. **Forgets ProGate pattern**: PRO features use ProGate wrapper component. Check components/pro/ before implementing any PRO feature
+5. **Creates unnecessary API calls**: Frontend is static-first (Cloudflare Pages). Use localStorage/KV, not database calls, unless specifically needed
+6. **Blog MDX format errors**: Check content/blog/ for existing examples before creating new articles. Frontmatter must match lib/blog-config.ts categories
+7. **Breaks search index**: After adding/removing tools, regenerate with `node scripts/generate-search-index.mjs`
+8. **Context drift in long sessions**: At 50% context usage, run /compact. For new tasks, prefer /clear and restart
+
+## What NOT to do
+
+- Do NOT create patient data features (legal risk — SaMD)
+- Do NOT add pharmaceutical ads (brand promise: 製薬・医療広告ゼロ)
+- Do NOT use free-text input for clinical data (dropdown only)
+- Do NOT reference deleted services: ER actions, imaging interpretation, ward TODO, AI interview, ACLS/BLS
+- Do NOT change prices without explicit CEO approval

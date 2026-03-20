@@ -191,6 +191,13 @@
 - [ ] Phase 3: 自律実行（低リスク全自動 + 高リスク承認ゲート）
 - [ ] CEOコクピットダッシュボード（/admin/cockpit/ モバイルPWA、スワイプ承認）
 
+### 開発基盤（AI駆動ベストプラクティス）
+- [x] CLAUDE.md全面書き直し（Agent OS Manual化）
+- [x] CUSTOM_INSTRUCTIONS_v3.md削除（CLAUDE.mdに統合）
+- [ ] .claude/skills/ 構築（study, matching, tools, blog, worker）
+- [ ] .claude/agents/ 構築（dev/marketing/legal サブエージェント定義）
+- [ ] テスト基盤構築（主要ページ結合テスト + 計算ツールロジックテスト拡充）
+
 ---
 
 ## 並行タスク（常時）

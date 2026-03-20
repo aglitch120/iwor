@@ -245,6 +245,19 @@
 
 ---
 
+## S. 開発基盤（AI駆動ベストプラクティス）
+
+| # | 内容 | 状態 |
+|---|------|------|
+| S-1 | ~~**CLAUDE.md全面書き直し**: 2026ベストプラクティス準拠（Agent OS Manual化）~~ | ✅ |
+| S-2 | ~~**CUSTOM_INSTRUCTIONS_v3.md削除**: CLAUDE.mdに統合~~ | ✅ |
+| S-3 | **.claude/skills/ 構築**: 機能別スキル（study, matching, tools, blog, worker） | 🟠 |
+| S-4 | **.claude/agents/ 構築**: dev/marketing/legal サブエージェント定義 | 🟡 R-1と連動 |
+| S-5 | **テスト基盤構築**: 主要ページの結合テスト + 計算ツールロジックテスト拡充 | 🟠 |
+| S-6 | **Gotchasセクション継続更新**: Claudeの失敗パターンをCLAUDE.mdに蓄積 | 常時 |
+
+---
+
 ## ❌ ピボットにより削除/延期された旧項目
 
 | 内容 | 判定 | 理由 |
@@ -255,3 +268,4 @@
 | 検査読影改修 | ❌ 削除 | 検査読影自体が削除 |
 | AI面接UX改善 | ❌ 削除 | AI面接自体が削除 |
 | 2年パス・3年パス | ❌ 廃止 | 月額+年額モデルに移行 |
+| CUSTOM_INSTRUCTIONS_v3.md | ❌ 削除 | CLAUDE.mdに統合 |
