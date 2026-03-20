@@ -1,0 +1,218 @@
+{
+  "timestamp": "2026-03-20T02:32:37.796Z",
+  "summary": {
+    "pass": 18,
+    "warn": 14,
+    "fail": 0
+  },
+  "tools": [
+    {
+      "id": "icu-gamma-calc",
+      "path": "app/tools/icu/gamma/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: b80e0b0dc5e8963a)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "WARN",
+          "message": "⚠️ SaMD危険ワード検出: 「が必要」（治療文脈）。「参照」「ガイドライン記載」に置換検討"
+        }
+      ]
+    },
+    {
+      "id": "renal-dose-abx",
+      "path": "app/tools/calc/renal-dose-abx/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: abe55245727068ef)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "WARN",
+          "message": "⚠️ SaMD危険ワード検出: 「が必要」（治療文脈）。「参照」「ガイドライン記載」に置換検討"
+        }
+      ]
+    },
+    {
+      "id": "antibiotics",
+      "path": "app/tools/drugs/antibiotics/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: 07b993ec42c0b0d3)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "SaMD危険ワードなし"
+        }
+      ]
+    },
+    {
+      "id": "steroid-cover",
+      "path": "app/tools/drugs/steroid-cover/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: 0843e09de6ae83af)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "WARN",
+          "message": "⚠️ SaMD危険ワード検出: 「が必要」（治療文脈）。「参照」「ガイドライン記載」に置換検討"
+        }
+      ]
+    },
+    {
+      "id": "preop-drugs",
+      "path": "app/tools/drugs/preop-drugs/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: 3b4d422236d9f28f)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "WARN",
+          "message": "⚠️ SaMD危険ワード検出: 「が必要」（治療文脈）。「参照」「ガイドライン記載」に置換検討"
+        }
+      ]
+    },
+    {
+      "id": "na-correction-rate",
+      "path": "app/tools/calc/na-correction-rate/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: 5b68d41d1ed77836)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "WARN",
+          "message": "⚠️ SaMD危険ワード検出: 「が必要」（治療文脈）。「参照」「ガイドライン記載」に置換検討"
+        }
+      ]
+    },
+    {
+      "id": "opioid-conversion",
+      "path": "app/tools/calc/opioid-conversion/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: 36494823a32b6719)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "SaMD危険ワードなし"
+        }
+      ]
+    },
+    {
+      "id": "fio2-table",
+      "path": "app/tools/calc/fio2-table/page.tsx",
+      "checks": [
+        {
+          "check": "SOURCE_CITATION",
+          "status": "WARN",
+          "message": "⚠️ SourceCitation が未実装。出典表示を追加してください"
+        },
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "初回スキャン (hash: 80d63ec333c2383a)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "用量フォーマットに問題なし"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "WARN",
+          "message": "⚠️ SaMD危険ワード検出: 「が必要」（治療文脈）。「参照」「ガイドライン記載」に置換検討"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+name: 医学データ検証（週次）
+
+on:
+  schedule:
+    # 毎週月曜 9:00 JST (0:00 UTC)
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # 手動実行も可能
+  push:
+    paths:
+      - 'app/tools/**'
+      - 'lib/source-registry.ts'
+
+jobs:
+  verify-sources:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 医学データ検証スクリプト実行
+        run: node scripts/verify-sources.mjs
+
+      - name: レポートをアーティファクトとして保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-verify-report
+          path: docs/source-verify-report.json
+
+      - name: WARN/FAIL がある場合にIssueを作成
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('docs/source-verify-report.json', 'utf-8'));
+            const body = report.tools.map(t => {
+              const checks = t.checks.map(c => `- ${c.status === 'PASS' ? '✅' : c.status === 'WARN' ? '⚠️' : '❌'} [${c.check}] ${c.message}`).join('\n');
+              return `### ${t.id}\n${checks}`;
+            }).join('\n\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `⚠️ 医学データ検証: ${report.summary.warn} WARN / ${report.summary.fail} FAIL`,
+              body: `## 自動検証レポート\n\n${body}\n\n---\n実行日時: ${report.timestamp}`,
+              labels: ['medical-data', 'verification']
+            });
