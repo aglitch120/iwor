@@ -96,7 +96,6 @@ const data: CompareData = {
     { href: '/tools/calc/fib4', name: 'FIB-4' },
     { href: '/tools/calc/egfr', name: 'eGFR' },
     { href: '/tools/calc/framingham', name: 'Framingham' },
-    { href: '/tools/lifestyle', name: '生活習慣病管理' },
   ],
 }
 

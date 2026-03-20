@@ -107,7 +107,6 @@ const data: CompareData = {
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
     { href: '/tools/calc/cockcroft-gault', name: 'Cockcroft-Gault' },
-    { href: '/tools/lifestyle', name: '生活習慣病管理' },
     { href: '/compare/statin', name: 'スタチン比較' },
   ],
 }

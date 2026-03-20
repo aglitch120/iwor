@@ -29,7 +29,6 @@ const data: CompareData = {
   ],
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
-    { href: '/tools/lifestyle', name: '生活習慣病管理' },
     { href: '/compare/sglt2i', name: 'SGLT2阻害薬比較' },
   ],
 }

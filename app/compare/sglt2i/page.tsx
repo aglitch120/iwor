@@ -95,7 +95,6 @@ const data: CompareData = {
   ],
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
-    { href: '/tools/lifestyle', name: '生活習慣病管理' },
     { href: '/compare/dpp4i', name: 'DPP-4阻害薬比較' },
     { href: '/compare/arb', name: 'ARB比較' },
   ],

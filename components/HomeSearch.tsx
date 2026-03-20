@@ -36,7 +36,6 @@ const appEntries: SearchResult[] = [
   { slug: 'procedures', title: '手技ガイド', description: 'CV・Aライン・腰椎穿刺・胸腔穿刺・腹腔穿刺・気管挿管', categoryName: 'ツール', type: 'tool', href: '/tools/procedures' },
   { slug: 'lab-values', title: '基準値早見表', description: '血算・生化学・凝固・血液ガスの基準値', categoryName: 'ツール', type: 'tool', href: '/tools/interpret/lab-values' },
   { slug: 'gamma', title: 'γ計算', description: 'DOA・DOB・NAd・ニカルジピン・ニトログリセリン', categoryName: 'ツール', type: 'tool', href: '/tools/icu/gamma' },
-  { slug: 'lifestyle', title: '生活習慣病 総合管理', description: '高血圧・脂質異常症・糖尿病の包括管理', categoryName: 'ツール', type: 'tool', href: '/tools/lifestyle' },
   { slug: 'combination', title: '配合錠リスト', description: '高血圧・脂質異常症・糖尿病の配合錠一覧。エックスフォージ・ロスーゼット・カナリア', categoryName: 'ツール', type: 'tool', href: '/tools/drugs/combination' },
 ]
 

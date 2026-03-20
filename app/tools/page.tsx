@@ -17,13 +17,6 @@ const categories = [
     href: '/tools/calc',
   },
   {
-    slug: 'lifestyle',
-    icon: '🩺',
-    name: '生活習慣病 総合管理',
-    description: '7疾患を一括評価→アクション自動生成',
-    href: '/tools/lifestyle',
-  },
-  {
     slug: 'drugs',
     icon: '💊',
     name: '薬剤ガイド',

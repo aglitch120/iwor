@@ -25,7 +25,6 @@ const data: CompareData = {
   ],
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
-    { href: '/tools/lifestyle', name: '生活習慣病管理' },
     { href: '/compare/nsaids', name: 'NSAIDs比較' },
   ],
 }

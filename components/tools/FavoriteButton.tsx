@@ -35,7 +35,6 @@ export function loadFavorites(): FavoriteItem[] {
     }
     // Migration v2: fix broken hrefs and slug-as-title
     const HREF_FIXES: Record<string, string> = {
-      'lifestyle': '/tools/lifestyle',
       'icu-gamma-calc': '/tools/icu/gamma',
     }
     let needsSave = false

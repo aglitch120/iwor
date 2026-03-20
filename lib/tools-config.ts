@@ -410,17 +410,7 @@ export const tools: ToolDefinition[] = [
     relatedSlugs: ['na-deficit', 'free-water-deficit'],
     updatedAt: '2026-03',
   },
-  {
-    slug: 'kcl-correction',
-    name: 'KCl補正計算',
-    nameEn: 'Potassium Correction',
-    description: '低カリウム血症のKCl補充量・投与速度を計算。',
-    category: 'electrolyte',
-    tier: 2,
-    keywords: ['KCl', 'カリウム', '低K血症', '補正'],
-    relatedSlugs: ['na-deficit'],
-    updatedAt: '2026-03',
-  },
+
 
   // ── 抗菌薬・薬剤 ──
   {
@@ -445,17 +435,7 @@ export const tools: ToolDefinition[] = [
     relatedSlugs: ['egfr', 'cockcroft-gault'],
     updatedAt: '2026-03',
   },
-  {
-    slug: 'insulin-sliding',
-    name: 'インスリンスライディングスケール',
-    nameEn: 'Insulin Sliding Scale',
-    description: '血糖値に応じたインスリン投与量の目安。当直での血糖管理に。',
-    category: 'antimicrobial',
-    tier: 2,
-    keywords: ['インスリン', 'スライディングスケール', '血糖', '当直'],
-    relatedSlugs: [],
-    updatedAt: '2026-03',
-  },
+
 
   // ── Tier 3（専門スコア） ──
   {
@@ -939,8 +919,7 @@ export const tools: ToolDefinition[] = [
   { slug: 'pecarn', name: 'PECARN小児頭部外傷ルール', nameEn: 'PECARN Pediatric Head Injury Rule', description: '小児頭部外傷のCT適応。2歳未満/2歳以上で基準が異なる。ciTBIリスク<0.02%なら観察可。', category: 'neurology', tier: 1, keywords: ['PECARN','小児','頭部外傷','CT適応'], relatedSlugs: ['cchr','gcs'], updatedAt: '2026-03' },
   { slug: 'canadian-cspine', name: 'Canadian C-Spine Rule', nameEn: 'Canadian C-Spine Rule', description: '頚椎損傷の画像検査適応判断。外傷患者で頚椎CTが不要な低リスク群を同定。', category: 'neurology', tier: 1, keywords: ['CCR','頚椎','Cスパイン','外傷'], relatedSlugs: ['nexus'], updatedAt: '2026-03' },
   { slug: 'nexus', name: 'NEXUS頚椎外傷基準', nameEn: 'NEXUS Criteria', description: '頚椎外傷の画像検査不要基準。5項目すべて陰性なら頚椎画像不要。', category: 'neurology', tier: 1, keywords: ['NEXUS','頚椎','外傷','画像'], relatedSlugs: ['canadian-cspine'], updatedAt: '2026-03' },
-  { slug: 'rtpa-checklist', name: 'rt-PAチェックリスト', nameEn: 'rt-PA Checklist', description: '脳梗塞のrt-PA静注血栓溶解療法の適応・禁忌チェック。発症4.5時間以内。', category: 'neurology', tier: 1, keywords: ['rt-PA','tPA','血栓溶解','脳梗塞','アルテプラーゼ'], relatedSlugs: ['nihss','aspects'], updatedAt: '2026-03' },
-  { slug: 'aspects', name: 'ASPECTSスコア', nameEn: 'ASPECTS', description: '急性期脳梗塞のCT早期虚血変化の定量評価。10点満点。MCA領域を10区域で評価。', category: 'neurology', tier: 1, keywords: ['ASPECTS','脳梗塞','CT','MCA','早期虚血'], relatedSlugs: ['nihss','rtpa-checklist'], updatedAt: '2026-03' },
+  { slug: 'aspects', name: 'ASPECTSスコア', nameEn: 'ASPECTS', description: '急性期脳梗塞のCT早期虚血変化の定量評価。10点満点。MCA領域を10区域で評価。', category: 'neurology', tier: 1, keywords: ['ASPECTS','脳梗塞','CT','MCA','早期虚血'], relatedSlugs: ['nihss'], updatedAt: '2026-03' },
   { slug: 'add-risk', name: 'ADDリスクスコア', nameEn: 'Aortic Dissection Detection Risk Score', description: '大動脈解離の検査前確率評価。0-1点かつDダイマー<0.5で解離除外。', category: 'cardiology', tier: 1, keywords: ['ADD','大動脈解離','解離','Dダイマー'], relatedSlugs: [], updatedAt: '2026-03' },
   { slug: 'lrinec', name: 'LRINECスコア', nameEn: 'LRINEC Score', description: '壊死性筋膜炎の補助診断。≧6で壊死性筋膜炎を疑う。ただし低値でも否定できない。', category: 'infectious', tier: 1, keywords: ['LRINEC','壊死性筋膜炎','軟部組織感染'], relatedSlugs: [], updatedAt: '2026-03' },
   { slug: 'fisher', name: 'Fisher分類', nameEn: 'Fisher Scale', description: 'SAHのCTによる脳血管攣縮リスク分類。Grade 1-4。出血パターンで評価。', category: 'neurology', tier: 1, keywords: ['Fisher','SAH','くも膜下出血','血管攣縮'], relatedSlugs: ['hunt-hess','wfns'], updatedAt: '2026-03' },
@@ -974,7 +953,7 @@ export const tools: ToolDefinition[] = [
   { slug: 'pni', name: 'PNI（予後推定栄養指数）', nameEn: 'Prognostic Nutritional Index', description: '小野寺PNI。アルブミン×10+リンパ球数×0.005。<40で手術リスク高。', category: 'general', tier: 2, keywords: ['PNI','小野寺','栄養','手術リスク'], relatedSlugs: ['gnri','conut'], updatedAt: '2026-03' },
   { slug: 'nrs2002', name: 'NRS 2002', nameEn: 'Nutritional Risk Screening 2002', description: '入院患者の栄養スクリーニング。≧3で栄養リスクあり。ESPENの推奨ツール。', category: 'general', tier: 2, keywords: ['NRS','栄養','スクリーニング','ESPEN'], relatedSlugs: ['gnri','conut','pni'], updatedAt: '2026-03' },
   { slug: 'sarc-f', name: 'SARC-F', nameEn: 'SARC-F Questionnaire', description: 'サルコペニアスクリーニング。5項目(筋力/歩行/起立/階段/転倒)。≧4で疑い。', category: 'general', tier: 2, keywords: ['SARC-F','サルコペニア','筋力低下','スクリーニング'], relatedSlugs: ['cfs','barthel-index'], updatedAt: '2026-03' },
-  { slug: 'ttkg', name: 'TTKG', nameEn: 'Transtubular K Gradient', description: '尿細管カリウム濃度勾配。高K血症の腎性/非腎性の鑑別。>7で腎排泄正常。', category: 'nephrology', tier: 2, keywords: ['TTKG','カリウム','高K','低K','尿細管'], relatedSlugs: ['fena','kcl-correction'], updatedAt: '2026-03' },
+  { slug: 'ttkg', name: 'TTKG', nameEn: 'Transtubular K Gradient', description: '尿細管カリウム濃度勾配。高K血症の腎性/非腎性の鑑別。>7で腎排泄正常。', category: 'nephrology', tier: 2, keywords: ['TTKG','カリウム','高K','低K','尿細管'], relatedSlugs: ['fena'], updatedAt: '2026-03' },
   { slug: 'geckler', name: 'Geckler分類', nameEn: 'Geckler Classification', description: '喀痰検体の顕微鏡的評価。好中球/扁平上皮で1-6群に分類。4-5群が良質検体。', category: 'respiratory', tier: 2, keywords: ['Geckler','喀痰','グラム染色','検体品質'], relatedSlugs: [], updatedAt: '2026-03' },
   { slug: 'stone-score', name: 'STONEスコア', nameEn: 'STONE Score', description: '尿路結石の予測。性別/発症時間/悪心嘔吐/赤血球/疼痛の5項目。', category: 'nephrology', tier: 2, keywords: ['STONE','尿路結石','腎結石','腎疝痛'], relatedSlugs: [], updatedAt: '2026-03' },
   { slug: 'cpc', name: 'CPC/OPC', nameEn: 'Cerebral Performance Category', description: '心肺蘇生後の機能評価。CPC 1(良好)〜5(脳死)。ROSC後の神経学的予後指標。', category: 'neurology', tier: 2, keywords: ['CPC','OPC','心肺蘇生','ROSC','予後'], relatedSlugs: ['gcs','four-score'], updatedAt: '2026-03' },
@@ -1029,9 +1008,9 @@ export const tools: ToolDefinition[] = [
 ]
 
 // 実装済みツールのslug一覧（新ツール追加時にここに追加）
-export const implementedTools = new Set(['egfr', 'cha2ds2-vasc', 'chads2', 'has-bled', 'child-pugh', 'meld', 'curb-65', 'a-drop', 'wells-pe', 'wells-dvt', 'qsofa', 'sofa', 'fib-4', 'corrected-ca', 'aa-gradient', 'grace', 'bmi', 'bsa', 'cockcroft-gault', 'gcs', 'rcri', 'anion-gap', 'abcd2', 'mrs', 'ecog', 'karnofsky', 'maintenance-fluid', 'na-deficit', 'free-water-deficit', 'nihss', 'apache2', 'na-correction-rate', 'kcl-correction', 'steroid-converter', 'insulin-sliding', 'renal-dose-abx', 'glasgow-blatchford', 'aims65', 'heart-score', 'timi', 'news2', 'charlson', 'centor', 'caprini', 'padua', 'mascc', 'alvarado', 'perc', 'ottawa-ankle', 'rockall', 'spesi', 'phq9', 'gad7', 'isth-dic', 'light-criteria', 'qtc', 'map', 'fena', 'osmolality-gap', 'winters-formula', 'corrected-phenytoin', 'ibw', 'anc', 'meld-na', 'ranson', 'bisap', 'audit', 'ldl-friedewald', 'parkland', 'jcs', 'sirs', 'fio2-table', 'harris-benedict', 'nyha', 'homa', 'cam-icu', 'rass', 'barthel-index',
+export const implementedTools = new Set(['egfr', 'cha2ds2-vasc', 'chads2', 'has-bled', 'child-pugh', 'meld', 'curb-65', 'a-drop', 'wells-pe', 'wells-dvt', 'qsofa', 'sofa', 'fib-4', 'corrected-ca', 'aa-gradient', 'grace', 'bmi', 'bsa', 'cockcroft-gault', 'gcs', 'rcri', 'anion-gap', 'abcd2', 'mrs', 'ecog', 'karnofsky', 'maintenance-fluid', 'na-deficit', 'free-water-deficit', 'nihss', 'apache2', 'na-correction-rate', 'steroid-converter', 'renal-dose-abx', 'glasgow-blatchford', 'aims65', 'heart-score', 'timi', 'news2', 'charlson', 'centor', 'caprini', 'padua', 'mascc', 'alvarado', 'perc', 'ottawa-ankle', 'rockall', 'spesi', 'phq9', 'gad7', 'isth-dic', 'light-criteria', 'qtc', 'map', 'fena', 'osmolality-gap', 'winters-formula', 'corrected-phenytoin', 'ibw', 'anc', 'meld-na', 'ranson', 'bisap', 'audit', 'ldl-friedewald', 'parkland', 'jcs', 'sirs', 'fio2-table', 'harris-benedict', 'nyha', 'homa', 'cam-icu', 'rass', 'barthel-index',
   // Tier 1 NEW
-  'cchr', 'pecarn', 'canadian-cspine', 'nexus', 'rtpa-checklist', 'aspects', 'add-risk', 'lrinec', 'fisher', 'hunt-hess', 'wfns', 'ciwa-ar', 'four-score', 'cage', 'psi-port', 'smart-cop', 'geneva', 'toast', 'duke-criteria', 'ottawa-sah', 'san-francisco-syncope', 'sapsii',
+  'cchr', 'pecarn', 'canadian-cspine', 'nexus', 'aspects', 'add-risk', 'lrinec', 'fisher', 'hunt-hess', 'wfns', 'ciwa-ar', 'four-score', 'cage', 'psi-port', 'smart-cop', 'geneva', 'toast', 'duke-criteria', 'ottawa-sah', 'san-francisco-syncope', 'sapsii',
   // Tier 2
   'apgar', 'asa-ps', 'gir', 'cfs', 'opioid-conversion', 'gnri', 'conut', 'ttkg', 'holiday-segar',
   'pni', 'cpc', 'sarc-f', 'eat10', 'mmrc',
