@@ -66,7 +66,7 @@ const services = [
     href: '/shift',
     title: '当直シフト作成',
     sub: 'ブラウザ完結・共有リンク',
-    tag: '準備中',
+    tag: 'NEW',
     icon: <><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></>,
   },
   {

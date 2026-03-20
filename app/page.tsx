@@ -108,7 +108,7 @@ const apps = [
   {
     href: '/shift',
     label: '当直シフト',
-    badge: '準備中',
+    badge: 'NEW',
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
