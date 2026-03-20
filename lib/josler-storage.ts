@@ -8,11 +8,13 @@
  */
 
 import { EpocData, createDefaultEpocData } from './epoc-data'
+import { UserCreditsData } from './credits-data'
 
 const API_URL = 'https://iwor-api.mightyaddnine.workers.dev'
 const LS_KEY = 'iwor_josler_data'
 const EPOC_LS_KEY = 'iwor_epoc_data'
 const MODE_LS_KEY = 'iwor_record_mode'
+const CREDITS_LS_KEY = 'iwor_credits_data'
 
 export type SaveStatus = 'saved' | 'saving' | 'dirty' | 'error' | 'offline'
 
@@ -237,4 +239,64 @@ export async function loadEpocData(): Promise<EpocData> {
     }
   }
   return loadEpocFromLocal()
+}
+
+// ══════════════════════════════════════
+//  Credits Storage (専門医単位)
+// ══════════════════════════════════════
+
+const defaultCreditsData: UserCreditsData = {
+  selectedSpecialty: null,
+  entries: [],
+  targetDate: undefined,
+}
+
+export function saveCreditsToLocal(data: UserCreditsData): void {
+  try { localStorage.setItem(CREDITS_LS_KEY, JSON.stringify(data)) } catch {}
+}
+
+export function loadCreditsFromLocal(): UserCreditsData {
+  try {
+    const raw = localStorage.getItem(CREDITS_LS_KEY)
+    if (raw) return JSON.parse(raw) as UserCreditsData
+  } catch {}
+  return { ...defaultCreditsData }
+}
+
+export async function saveCreditsToCloud(data: UserCreditsData): Promise<boolean> {
+  const token = getSessionToken()
+  if (!token) return false
+  try {
+    const res = await fetch(`${API_URL}/api/credits`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ data }),
+    })
+    return res.ok
+  } catch { return false }
+}
+
+export async function loadCreditsFromCloud(): Promise<UserCreditsData | null> {
+  const token = getSessionToken()
+  if (!token) return null
+  try {
+    const res = await fetch(`${API_URL}/api/credits`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+    if (!res.ok) return null
+    const json = await res.json()
+    return json.data || null
+  } catch { return null }
+}
+
+export async function loadCreditsData(): Promise<UserCreditsData> {
+  const token = getSessionToken()
+  if (token) {
+    const cloudData = await loadCreditsFromCloud()
+    if (cloudData) {
+      saveCreditsToLocal(cloudData)
+      return cloudData
+    }
+  }
+  return loadCreditsFromLocal()
 }

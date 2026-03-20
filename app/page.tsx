@@ -36,7 +36,7 @@ const apps = [
   {
     href: '/credits',
     label: '専門医単位',
-    badge: '準備中',
+    badge: 'PRO',
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />

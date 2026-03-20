@@ -19,6 +19,8 @@
 //    GET  /api/journal            — 論文フィード（PubMedキャッシュ）
 //    PUT  /api/epoc             — EPOCデータ保存
 //    GET  /api/epoc             — EPOCデータ読み込み
+//    PUT  /api/credits          — 専門医単位データ保存
+//    GET  /api/credits          — 専門医単位データ読み込み
 //    GET  /api/admin/orders     — 管理者: 注文一覧
 //    GET  /api/admin/users      — 管理者: ユーザー一覧
 //    POST /api/admin/add-order  — 管理者: 手動で注文追加
@@ -1214,6 +1216,44 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
       } catch {}
 
       return json({ attending: userData.attending }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
+    //  専門医単位データ保存
+    //  PUT /api/credits
+    //  Authorization: Bearer {sessionToken}
+    // ══════════════════════════════════════════════════
+    if (path === "/api/credits" && request.method === "PUT") {
+      const authResult = await authenticate(request, env, { checkExpiry: false });
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
+      if (!checkPayloadSize(body.data)) return json({ error: "Payload too large" }, 413, request);
+
+      await env.IWOR_KV.put(`credits:${authResult.email}`, JSON.stringify({
+        data: body.data,
+        updatedAt: new Date().toISOString(),
+      }));
+
+      return json({ ok: true, updatedAt: new Date().toISOString() }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
+    //  専門医単位データ読み込み
+    //  GET /api/credits
+    //  Authorization: Bearer {sessionToken}
+    // ══════════════════════════════════════════════════
+    if (path === "/api/credits" && request.method === "GET") {
+      const authResult = await authenticate(request, env, { checkExpiry: false });
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+
+      const raw = await env.IWOR_KV.get(`credits:${authResult.email}`);
+
+      if (!raw) return json({ ok: true, data: null }, 200, request);
+
+      const parsed = JSON.parse(raw);
+      return json({ ok: true, data: parsed.data, updatedAt: parsed.updatedAt }, 200, request);
     }
 
     // ── 404 ──
