@@ -5,7 +5,6 @@ import Link from 'next/link'
 import UpdatedAt from '@/components/tools/UpdatedAt'
 import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
-import ProPulseHint from '@/components/pro/ProPulseHint'
 
 /* ── カテゴリ定義 ── */
 type CategoryId = 'hypertension' | 'lipid' | 'diabetes'
@@ -179,7 +178,6 @@ export default function CombinationDrugsPage() {
         <div className="flex items-center gap-2 mb-2">
           <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium">💊 薬剤ガイド</span>
           <FavoriteButton slug="tool-combination-tablets" title="配合錠リスト" href="/tools/drugs/combination" type="tool" size="sm" />
-          <ProPulseHint />
         </div>
         <h1 className="text-2xl font-bold text-tx mb-2">配合錠リスト</h1>
         <p className="text-sm text-muted">

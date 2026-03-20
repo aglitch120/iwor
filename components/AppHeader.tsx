@@ -53,10 +53,9 @@ export default function AppHeader({
 
         <div className="flex items-center gap-2 flex-shrink-0">
           {favoriteSlug && (
-            <>
+            <ProPulseHint>
               <FavoriteButton slug={favoriteSlug} title={title} href={favoriteHref || '#'} type="app" size="sm" />
-              <ProPulseHint />
-            </>
+            </ProPulseHint>
           )}
           {rightSlot}
         </div>
