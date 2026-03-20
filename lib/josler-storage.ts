@@ -7,8 +7,12 @@
  * - 自動保存: 30秒間隔 + 変更検知
  */
 
+import { EpocData, createDefaultEpocData } from './epoc-data'
+
 const API_URL = 'https://iwor-api.mightyaddnine.workers.dev'
 const LS_KEY = 'iwor_josler_data'
+const EPOC_LS_KEY = 'iwor_epoc_data'
+const MODE_LS_KEY = 'iwor_record_mode'
 
 export type SaveStatus = 'saved' | 'saving' | 'dirty' | 'error' | 'offline'
 
@@ -165,4 +169,72 @@ export function startAutoSave(getData: () => JoslerData) {
 export function stopAutoSave() {
   const cleanup = (window as any)?.__joslerCleanup
   if (cleanup) cleanup()
+}
+
+// ══════════════════════════════════════
+//  EPOC Storage
+// ══════════════════════════════════════
+
+export type RecordMode = 'josler' | 'epoc'
+
+export function loadRecordMode(): RecordMode {
+  try {
+    const raw = localStorage.getItem(MODE_LS_KEY)
+    if (raw === 'epoc') return 'epoc'
+  } catch {}
+  return 'josler'
+}
+
+export function saveRecordMode(mode: RecordMode): void {
+  try { localStorage.setItem(MODE_LS_KEY, mode) } catch {}
+}
+
+export function saveEpocToLocal(data: EpocData): void {
+  try { localStorage.setItem(EPOC_LS_KEY, JSON.stringify(data)) } catch {}
+}
+
+export function loadEpocFromLocal(): EpocData {
+  try {
+    const raw = localStorage.getItem(EPOC_LS_KEY)
+    if (raw) return JSON.parse(raw) as EpocData
+  } catch {}
+  return createDefaultEpocData()
+}
+
+export async function saveEpocToCloud(data: EpocData): Promise<boolean> {
+  const token = getSessionToken()
+  if (!token) return false
+  try {
+    const res = await fetch(`${API_URL}/api/epoc`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ data }),
+    })
+    return res.ok
+  } catch { return false }
+}
+
+export async function loadEpocFromCloud(): Promise<EpocData | null> {
+  const token = getSessionToken()
+  if (!token) return null
+  try {
+    const res = await fetch(`${API_URL}/api/epoc`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+    if (!res.ok) return null
+    const json = await res.json()
+    return json.data || null
+  } catch { return null }
+}
+
+export async function loadEpocData(): Promise<EpocData> {
+  const token = getSessionToken()
+  if (token) {
+    const cloudData = await loadEpocFromCloud()
+    if (cloudData) {
+      saveEpocToLocal(cloudData)
+      return cloudData
+    }
+  }
+  return loadEpocFromLocal()
 }

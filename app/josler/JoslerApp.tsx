@@ -10,7 +10,14 @@ import {
   loadJoslerData, saveJoslerData, saveToLocal,
   startAutoSave, stopAutoSave, setStatusCallback,
   type JoslerData, type SaveStatus,
+  type RecordMode, loadRecordMode, saveRecordMode,
+  loadEpocData, saveEpocToLocal, saveEpocToCloud,
 } from '@/lib/josler-storage'
+import {
+  EPOC_SYMPTOMS, EPOC_DISEASES, EPOC_PROCEDURES,
+  SYMPTOM_CATEGORIES, DISEASE_CATEGORIES, PROCEDURE_CATEGORIES,
+  type EpocData, createDefaultEpocData,
+} from '@/lib/epoc-data'
 
 /* ── Colors ── */
 const C = { bg: '#F5F4F0', s0: '#FEFEFC', s1: '#F0EDE7', s2: '#E8E5DF', br: '#DDD9D2', br2: '#C8C4BC', tx: '#1A1917', m: '#6B6760', ac: '#1B4F3A', acl: '#E8F0EC', ac2: '#155230', ok: '#166534', wn: '#B45309' }
@@ -82,6 +89,7 @@ function recalc(eg: any) {
 ════════════════════════════════════ */
 export default function JoslerApp() {
   const { isPro } = useProStatus()
+  const [mode, setMode] = useState<RecordMode>('josler')
   const [tab, setTab] = useState('overview')
   const [eg, setEg] = useState(() => buildEG())
   const [summaries, setSummaries] = useState(() => makeSums())
@@ -89,6 +97,11 @@ export default function JoslerApp() {
   const [loaded, setLoaded] = useState(false)
   const [showProModal, setShowProModal] = useState(false)
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved')
+
+  // EPOC state
+  const [epocData, setEpocData] = useState<EpocData>(() => createDefaultEpocData())
+  const [epocTab, setEpocTab] = useState<'overview' | 'symptoms' | 'diseases' | 'procedures'>('overview')
+  const [epocLoaded, setEpocLoaded] = useState(false)
 
   // UI state
   const [openSp, setOpenSp] = useState<string | null>(null)
@@ -101,17 +114,40 @@ export default function JoslerApp() {
 
   // ── Data load on mount ──
   useEffect(() => {
-    (async () => {
-      const data = await loadJoslerData()
-      if (data) {
-        if (data.eg) setEg(data.eg)
-        if (data.summaries) setSummaries(data.summaries)
-        if (data.other) setOther(data.other)
+    setMode(loadRecordMode())
+    ;(async () => {
+      const [joslerResult, epocResult] = await Promise.all([
+        loadJoslerData(),
+        loadEpocData(),
+      ])
+      if (joslerResult) {
+        if (joslerResult.eg) setEg(joslerResult.eg)
+        if (joslerResult.summaries) setSummaries(joslerResult.summaries)
+        if (joslerResult.other) setOther(joslerResult.other)
       }
+      setEpocData(epocResult)
+      setEpocLoaded(true)
       setLoaded(true)
     })()
     setStatusCallback(setSaveStatus)
     return () => { stopAutoSave() }
+  }, [])
+
+  // ── EPOC auto-save ──
+  const epocSaveTimer = useRef<any>(null)
+  useEffect(() => {
+    if (!epocLoaded) return
+    saveEpocToLocal(epocData)
+    if (isPro) {
+      if (epocSaveTimer.current) clearTimeout(epocSaveTimer.current)
+      epocSaveTimer.current = setTimeout(() => { saveEpocToCloud(epocData) }, 2000)
+    }
+  }, [epocData, epocLoaded, isPro])
+
+  // ── Mode switch handler ──
+  const switchMode = useCallback((newMode: RecordMode) => {
+    setMode(newMode)
+    saveRecordMode(newMode)
   }, [])
 
   // ── Auto-save: debounced on every state change ──
@@ -181,6 +217,14 @@ export default function JoslerApp() {
   const updSum = (id: number, upd: any) => setSummaries(p => p.map(s => s.id === id ? { ...s, ...upd } : s))
   const updOther = (upd: any) => setOther((p: any) => ({ ...p, ...upd }))
 
+  // ── EPOC toggles ──
+  const toggleEpocItem = useCallback((section: 'symptoms' | 'diseases' | 'procedures', id: string) => {
+    setEpocData(prev => ({
+      ...prev,
+      [section]: { ...prev[section], [id]: !prev[section][id] },
+    }))
+  }, [])
+
   const TABS = [
     { id: 'overview', l: '📋 概要' },
     { id: 'cases', l: '📊 症例' },
@@ -191,14 +235,86 @@ export default function JoslerApp() {
 
   if (!loaded) return <div style={{ textAlign: 'center', padding: '80px 20px', color: C.m }}>読み込み中...</div>
 
+  // ── モード切り替えUI ──
+  const ModeSwitch = () => (
+    <div style={{ display: 'flex', background: C.s1, borderRadius: 10, padding: 3, margin: '12px 18px 0' }}>
+      {([
+        { id: 'epoc' as RecordMode, label: '初期研修', sub: 'EPOC' },
+        { id: 'josler' as RecordMode, label: '内科専攻', sub: 'J-OSLER' },
+      ]).map(m => (
+        <button key={m.id} onClick={() => switchMode(m.id)} style={{
+          flex: 1, padding: '8px 4px', border: 'none', borderRadius: 8, cursor: 'pointer',
+          background: mode === m.id ? C.s0 : 'transparent',
+          boxShadow: mode === m.id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+          transition: 'all .2s',
+        }}>
+          <div style={{ fontSize: 12, fontWeight: mode === m.id ? 700 : 400, color: mode === m.id ? C.ac : C.m }}>{m.label}</div>
+          <div style={{ fontSize: 10, color: mode === m.id ? C.ac : C.br2 }}>{m.sub}</div>
+        </button>
+      ))}
+    </div>
+  )
+
+  // ── EPOC画面 ──
+  if (mode === 'epoc') {
+    const symDone = Object.values(epocData.symptoms).filter(Boolean).length
+    const disDone = Object.values(epocData.diseases).filter(Boolean).length
+    const proDone = Object.values(epocData.procedures).filter(Boolean).length
+    const totalDone = symDone + disDone + proDone
+    const totalAll = 29 + 26 + 14
+    const overallPct = Math.round(totalDone / totalAll * 100)
+
+    const EPOC_TABS = [
+      { id: 'overview' as const, l: '📋 概要' },
+      { id: 'symptoms' as const, l: `🩺 症候 ${symDone}/29` },
+      { id: 'diseases' as const, l: `📊 疾病 ${disDone}/26` },
+      { id: 'procedures' as const, l: `🔧 手技 ${proDone}/14` },
+    ]
+
+    return (
+      <div style={{ background: C.bg, minHeight: '100vh', fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif", color: C.tx, maxWidth: 960, margin: '0 auto', position: 'relative', paddingBottom: 80 }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 18px 0', fontSize: 12, color: C.m }}>
+          <a href="/" style={{ color: C.m, textDecoration: 'none' }}>ホーム</a>
+          <span>›</span>
+          <span style={{ color: C.tx, fontWeight: 500 }}>研修記録</span>
+        </nav>
+        <ModeSwitch />
+        <div style={{ background: C.s0, borderBottom: `1px solid ${C.br}`, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 56, zIndex: 40 }}>
+          <span style={{ fontWeight: 700, fontSize: 17 }}>EPOC 研修記録</span>
+          <FavoriteButton slug="app-josler" title="研修記録" href="/josler" type="app" size="sm" />
+        </div>
+        <div style={{ display: 'flex', background: C.s0, borderBottom: `1px solid ${C.br}`, overflowX: 'auto' }}>
+          {EPOC_TABS.map(t => (
+            <button key={t.id} onClick={() => setEpocTab(t.id)} style={{
+              flex: 1, padding: '11px 4px', border: 'none', background: 'none', cursor: 'pointer', whiteSpace: 'nowrap',
+              borderBottom: epocTab === t.id ? `2.5px solid ${C.ac}` : '2.5px solid transparent',
+              color: epocTab === t.id ? C.ac : C.m, fontWeight: epocTab === t.id ? 600 : 400, fontSize: 12,
+            }}>
+              {t.l}
+            </button>
+          ))}
+        </div>
+        <div style={{ padding: '12px 14px' }}>
+          {epocTab === 'overview' && <EpocOverview symDone={symDone} disDone={disDone} proDone={proDone} overallPct={overallPct} />}
+          {epocTab === 'symptoms' && <EpocChecklist section="symptoms" data={epocData.symptoms} items={EPOC_SYMPTOMS} categories={SYMPTOM_CATEGORIES} toggle={toggleEpocItem} color="#2D6A4F" />}
+          {epocTab === 'diseases' && <EpocChecklist section="diseases" data={epocData.diseases} items={EPOC_DISEASES} categories={DISEASE_CATEGORIES} toggle={toggleEpocItem} color="#5B7FA6" />}
+          {epocTab === 'procedures' && <EpocChecklist section="procedures" data={epocData.procedures} items={EPOC_PROCEDURES} categories={PROCEDURE_CATEGORIES} toggle={toggleEpocItem} color="#9A3B3B" />}
+        </div>
+        {showProModal && <ProModal feature="full_access" onClose={() => setShowProModal(false)} />}
+      </div>
+    )
+  }
+
+  // ── J-OSLER画面（既存）──
   return (
     <div style={{ background: C.bg, minHeight: '100vh', fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif", color: C.tx, maxWidth: 960, margin: '0 auto', position: 'relative', paddingBottom: 80 }}>
       {/* Breadcrumb */}
       <nav style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 18px 0', fontSize: 12, color: C.m }}>
         <a href="/" style={{ color: C.m, textDecoration: 'none' }}>ホーム</a>
         <span>›</span>
-        <span style={{ color: C.tx, fontWeight: 500 }}>J-OSLER管理</span>
+        <span style={{ color: C.tx, fontWeight: 500 }}>研修記録</span>
       </nav>
+      <ModeSwitch />
       {/* Header */}
       <div style={{ background: C.s0, borderBottom: `1px solid ${C.br}`, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 56, zIndex: 40 }}>
         <span style={{ fontWeight: 700, fontSize: 17 }}>J-OSLER管理</span>
@@ -924,6 +1040,134 @@ function GuideTab({ openGuide, setOpenGuide }: any) {
           )
         })}
       </Card>
+    </>
+  )
+}
+
+/* ═══════════════════════════════════
+   EPOC OVERVIEW
+═══════════════════════════════════ */
+function EpocOverview({ symDone, disDone, proDone, overallPct }: { symDone: number; disDone: number; proDone: number; overallPct: number }) {
+  return (
+    <>
+      <Card>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ position: 'relative', width: 88, height: 88, flexShrink: 0 }}>
+            <Ring pct={overallPct} />
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: 22, fontWeight: 800, color: C.ac }}>{overallPct}%</span>
+              <span style={{ fontSize: 9, color: C.m }}>総合進捗</span>
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 3 }}>初期臨床研修 到達目標</div>
+            <div style={{ fontSize: 11, color: C.m }}>29症候 / 26疾病 / 14手技</div>
+          </div>
+        </div>
+      </Card>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 10 }}>
+        {[
+          { l: '症候', v: symDone, mx: 29, c: '#2D6A4F', p: symDone / 29 * 100 },
+          { l: '疾病・病態', v: disDone, mx: 26, c: '#5B7FA6', p: disDone / 26 * 100 },
+          { l: '手技', v: proDone, mx: 14, c: '#9A3B3B', p: proDone / 14 * 100 },
+        ].map((s, i) => (
+          <Card key={i} style={{ marginBottom: 0 }}>
+            <div style={{ fontSize: 10, color: C.m, marginBottom: 4 }}>{s.l}</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+              <span style={{ fontSize: 22, fontWeight: 700, color: s.c }}>{s.v}</span>
+              <span style={{ fontSize: 11, color: C.m }}>/ {s.mx}</span>
+            </div>
+            <PBar pct={s.p} color={s.c} />
+          </Card>
+        ))}
+      </div>
+
+      <Card style={{ background: C.s1 }}>
+        <div style={{ fontSize: 12, color: C.m, lineHeight: 1.7 }}>
+          <p style={{ fontWeight: 600, color: C.tx, marginBottom: 4 }}>EPOC（初期臨床研修評価）とは</p>
+          <p>2年間の初期臨床研修で経験すべき症候29項目・疾病26項目・手技14項目をチェックリスト形式で管理できます。</p>
+          <p style={{ fontSize: 11, color: C.br2, marginTop: 8 }}>出典: 厚生労働省 医師臨床研修指導ガイドライン / PG-EPOC (UMIN)</p>
+        </div>
+      </Card>
+    </>
+  )
+}
+
+/* ═══════════════════════════════════
+   EPOC CHECKLIST (症候/疾病/手技 共通)
+═══════════════════════════════════ */
+function EpocChecklist({ section, data, items, categories, toggle, color }: {
+  section: 'symptoms' | 'diseases' | 'procedures'
+  data: Record<string, boolean>
+  items: readonly { id: string; name: string; category: string }[]
+  categories: readonly string[]
+  toggle: (section: 'symptoms' | 'diseases' | 'procedures', id: string) => void
+  color: string
+}) {
+  const done = Object.values(data).filter(Boolean).length
+  const total = items.length
+
+  return (
+    <>
+      <Card>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+          <div>
+            <span style={{ fontSize: 22, fontWeight: 700, color }}>{done}</span>
+            <span style={{ fontSize: 12, color: C.m }}> / {total}</span>
+          </div>
+          <PBar pct={done / total * 100} color={color} />
+        </div>
+        <div style={{ fontSize: 10, color: C.m }}>タップで経験済みをチェック</div>
+      </Card>
+
+      {categories.map(cat => {
+        const catItems = items.filter(i => i.category === cat)
+        const catDone = catItems.filter(i => data[i.id]).length
+
+        return (
+          <Card key={cat}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+              <CardT>{cat}</CardT>
+              <span style={{ fontSize: 11, fontWeight: 600, color: catDone === catItems.length ? C.ok : C.m }}>
+                {catDone}/{catItems.length}
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {catItems.map(item => {
+                const checked = data[item.id]
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => toggle(section, item.id)}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px',
+                      borderRadius: 8, cursor: 'pointer', transition: 'all .15s',
+                      border: `1.5px solid ${checked ? color + '88' : C.br}`,
+                      background: checked ? color + '10' : C.bg,
+                    }}
+                  >
+                    <div style={{
+                      width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+                      border: `2px solid ${checked ? color : C.br2}`,
+                      background: checked ? color : 'transparent',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      {checked && <span style={{ color: '#fff', fontSize: 11, fontWeight: 900 }}>✓</span>}
+                    </div>
+                    <span style={{
+                      fontSize: 13, fontWeight: checked ? 600 : 400,
+                      color: checked ? color : C.tx,
+                    }}>
+                      {item.name}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </Card>
+        )
+      })}
     </>
   )
 }
