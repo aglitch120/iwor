@@ -39,7 +39,11 @@ function getCors(request) {
 const json = (data, status = 200, request = null) =>
   new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json", ...getCors(request) },
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      ...getCors(request),
+    },
   });
 
 // ── 暗号化ユーティリティ ──
@@ -50,9 +54,17 @@ async function sha256(str) {
 
 function generatePassword() {
   const chars = "abcdefghjkmnpqrstuvwxyz23456789";
-  const arr = new Uint8Array(8);
-  crypto.getRandomValues(arr);
-  return Array.from(arr).map(b => chars[b % chars.length]).join("");
+  const len = chars.length; // 30
+  const limit = 256 - (256 % len); // rejection sampling boundary
+  const result = [];
+  while (result.length < 10) {
+    const arr = new Uint8Array(16);
+    crypto.getRandomValues(arr);
+    for (const b of arr) {
+      if (b < limit && result.length < 10) result.push(chars[b % len]);
+    }
+  }
+  return result.join("");
 }
 
 // ── プラン判定 ──
@@ -71,6 +83,43 @@ const userKey = (email) => `user:${email}`;
 
 const SALT = "iwor_pro_2026";
 
+// ── 安全なJSONパース ──
+async function parseBody(request) {
+  try {
+    return await request.json();
+  } catch {
+    return null;
+  }
+}
+
+// ── セッション認証＋プラン有効期限チェック ──
+async function authenticate(request, env, { checkExpiry = true } = {}) {
+  const auth = request.headers.get("Authorization") || "";
+  const token = auth.replace("Bearer ", "").trim();
+  if (!token) return { error: "Unauthorized", status: 401 };
+
+  const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
+  if (!sessionRaw) return { error: "Invalid session", status: 401 };
+
+  const session = JSON.parse(sessionRaw);
+  const userRaw = await env.IWOR_KV.get(userKey(session.email));
+  if (!userRaw) return { error: "User not found", status: 404 };
+
+  const user = JSON.parse(userRaw);
+
+  if (checkExpiry && user.expiresAt && new Date() > new Date(user.expiresAt)) {
+    return { error: "PRO期限が切れています。更新してください。", status: 403 };
+  }
+
+  return { session, user, email: session.email };
+}
+
+// ── ペイロードサイズ制限（デフォルト1MB） ──
+const MAX_PAYLOAD = 1024 * 1024;
+function checkPayloadSize(data) {
+  return JSON.stringify(data).length <= MAX_PAYLOAD;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -88,7 +137,9 @@ export default {
       const key = request.headers.get("X-Api-Key");
       if (key !== env.GAS_KEY) return json({ error: "Forbidden" }, 403, request);
 
-      const { orderNumber, productName, buyerEmail } = await request.json();
+      const storeBody = await parseBody(request);
+      if (!storeBody) return json({ error: "Invalid JSON" }, 400, request);
+      const { orderNumber, productName, buyerEmail } = storeBody;
       if (!orderNumber) return json({ error: "orderNumber required" }, 400, request);
 
       const existing = await env.IWOR_KV.get(orderKey(orderNumber));
@@ -120,7 +171,8 @@ export default {
     //  → パスワード自動生成、返却
     // ══════════════════════════════════════════════════
     if (path === "/api/register" && request.method === "POST") {
-      const body = await request.json();
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
       const orderNumber = String(body.orderNumber || "").trim();
       const email = String(body.email || "").trim().toLowerCase();
 
@@ -135,18 +187,18 @@ export default {
       // 注文番号チェック
       const orderRaw = await env.IWOR_KV.get(orderKey(orderNumber));
       if (!orderRaw) {
-        return json({ error: "注文番号が見つかりません。購入時の注文確認メールに記載の番号をご確認ください。" }, 404, request);
+        return json({ error: "登録情報を確認できませんでした。入力内容をご確認ください。" }, 400, request);
       }
       const order = JSON.parse(orderRaw);
 
       if (order.used) {
-        return json({ error: `この注文番号は登録済みです。ログインしてください。` }, 409, request);
+        return json({ error: "登録情報を確認できませんでした。入力内容をご確認ください。" }, 400, request);
       }
 
       // メール重複チェック
       const existingUser = await env.IWOR_KV.get(userKey(email));
       if (existingUser) {
-        return json({ error: "このメールアドレスは既に登録されています。ログインしてください。" }, 409, request);
+        return json({ error: "登録情報を確認できませんでした。入力内容をご確認ください。" }, 400, request);
       }
 
       // パスワード生成＆ハッシュ化
@@ -210,7 +262,17 @@ export default {
     //  Body: { email, password }
     // ══════════════════════════════════════════════════
     if (path === "/api/login" && request.method === "POST") {
-      const body = await request.json();
+      // レート制限: IP単位で10回/15分
+      const loginIP = request.headers.get("CF-Connecting-IP") || "unknown";
+      const loginRateKey = `rate:login:${loginIP}`;
+      const loginCountRaw = await env.IWOR_KV.get(loginRateKey);
+      const loginCount = loginCountRaw ? parseInt(loginCountRaw, 10) : 0;
+      if (loginCount >= 10) {
+        return json({ error: "ログイン試行回数が上限に達しました。15分後に再度お試しください。" }, 429, request);
+      }
+
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
       const email = String(body.email || "").trim().toLowerCase();
       const password = String(body.password || "");
 
@@ -220,14 +282,16 @@ export default {
 
       const userRaw = await env.IWOR_KV.get(userKey(email));
       if (!userRaw) {
-        return json({ error: "アカウントが見つかりません。先に会員登録してください。" }, 404, request);
+        await env.IWOR_KV.put(loginRateKey, String(loginCount + 1), { expirationTtl: 900 });
+        return json({ error: "メールアドレスまたはパスワードが正しくありません。" }, 401, request);
       }
 
       const user = JSON.parse(userRaw);
       const inputHash = await sha256(password + email + SALT);
 
       if (inputHash !== user.passwordHash) {
-        return json({ error: "パスワードが正しくありません。" }, 401, request);
+        await env.IWOR_KV.put(loginRateKey, String(loginCount + 1), { expirationTtl: 900 });
+        return json({ error: "メールアドレスまたはパスワードが正しくありません。" }, 401, request);
       }
 
       // 期限チェック
@@ -262,7 +326,8 @@ export default {
     //  → 注文番号+メールが一致すれば新パスワード発行
     // ══════════════════════════════════════════════════
     if (path === "/api/reset-password" && request.method === "POST") {
-      const body = await request.json();
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
       const orderNumber = String(body.orderNumber || "").trim();
       const email = String(body.email || "").trim().toLowerCase();
 
@@ -320,21 +385,13 @@ export default {
     //  Body: { role, university?, graduationYear?, hospitalSize?, specialty? }
     // ══════════════════════════════════════════════════
     if (path === "/api/profile" && request.method === "PUT") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
 
-      const session = JSON.parse(sessionRaw);
-      const userRaw = await env.IWOR_KV.get(userKey(session.email));
-      if (!userRaw) return json({ error: "User not found" }, 404, request);
-
-      const user = JSON.parse(userRaw);
-      const body = await request.json();
-
-      // プロフィールフィールドを更新（既存フィールドは保持）
+      const { user, email } = authResult;
       const updatedUser = {
         ...user,
         role: String(body.role || "").trim() || user.role,
@@ -345,17 +402,17 @@ export default {
         profileUpdatedAt: new Date().toISOString(),
       };
 
-      await env.IWOR_KV.put(userKey(session.email), JSON.stringify(updatedUser));
+      await env.IWOR_KV.put(userKey(email), JSON.stringify(updatedUser));
 
       return json({ ok: true }, 200, request);
     }
 
     // ══════════════════════════════════════════════════
     //  管理者: 注文一覧
-    //  GET /api/admin/orders?key={ADMIN_KEY}
+    //  GET /api/admin/orders  (X-Admin-Key header)
     // ══════════════════════════════════════════════════
     if (path === "/api/admin/orders" && request.method === "GET") {
-      const key = url.searchParams.get("key");
+      const key = request.headers.get("X-Admin-Key");
       if (key !== env.ADMIN_KEY) return json({ error: "Forbidden" }, 403, request);
 
       const list = await env.IWOR_KV.list({ prefix: "order:" });
@@ -371,10 +428,10 @@ export default {
 
     // ══════════════════════════════════════════════════
     //  管理者: ユーザー一覧
-    //  GET /api/admin/users?key={ADMIN_KEY}
+    //  GET /api/admin/users  (X-Admin-Key header)
     // ══════════════════════════════════════════════════
     if (path === "/api/admin/users" && request.method === "GET") {
-      const key = url.searchParams.get("key");
+      const key = request.headers.get("X-Admin-Key");
       if (key !== env.ADMIN_KEY) return json({ error: "Forbidden" }, 403, request);
 
       const list = await env.IWOR_KV.list({ prefix: "user:" });
@@ -400,7 +457,9 @@ export default {
       const key = request.headers.get("X-Admin-Key");
       if (key !== env.ADMIN_KEY) return json({ error: "Forbidden" }, 403, request);
 
-      const { orderNumber, productName, buyerEmail } = await request.json();
+      const addBody = await parseBody(request);
+      if (!addBody) return json({ error: "Invalid JSON" }, 400, request);
+      const { orderNumber, productName, buyerEmail } = addBody;
       if (!orderNumber) return json({ error: "orderNumber required" }, 400, request);
 
       const plan = detectPlan(productName || "iwor PRO 1年パス");
@@ -424,10 +483,10 @@ export default {
 
     // ══════════════════════════════════════════════════
     //  管理者: 注文削除
-    //  DELETE /api/admin/order?key={ADMIN_KEY}&order={orderNumber}
+    //  DELETE /api/admin/order?order={orderNumber}  (X-Admin-Key header)
     // ══════════════════════════════════════════════════
     if (path === "/api/admin/order" && request.method === "DELETE") {
-      const key = url.searchParams.get("key");
+      const key = request.headers.get("X-Admin-Key");
       if (key !== env.ADMIN_KEY) return json({ error: "Forbidden" }, 403, request);
 
       const orderNumber = url.searchParams.get("order");
@@ -443,17 +502,14 @@ export default {
     //  Authorization: Bearer {sessionToken}
     // ══════════════════════════════════════════════════
     if (path === "/api/dashboard" && request.method === "PUT") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
+      if (!checkPayloadSize(body.data)) return json({ error: "Payload too large" }, 413, request);
 
-      const session = JSON.parse(sessionRaw);
-      const body = await request.json();
-
-      await env.IWOR_KV.put(`dashboard:${session.email}`, JSON.stringify({
+      await env.IWOR_KV.put(`dashboard:${authResult.email}`, JSON.stringify({
         data: body.data,
         updatedAt: new Date().toISOString(),
       }));
@@ -467,15 +523,10 @@ export default {
     //  Authorization: Bearer {sessionToken}
     // ══════════════════════════════════════════════════
     if (path === "/api/dashboard" && request.method === "GET") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
-
-      const session = JSON.parse(sessionRaw);
-      const raw = await env.IWOR_KV.get(`dashboard:${session.email}`);
+      const raw = await env.IWOR_KV.get(`dashboard:${authResult.email}`);
 
       if (!raw) return json({ ok: true, data: null }, 200, request);
 
@@ -489,17 +540,14 @@ export default {
     //  Authorization: Bearer {sessionToken}
     // ══════════════════════════════════════════════════
     if (path === "/api/josler" && request.method === "PUT") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
+      if (!checkPayloadSize(body.data)) return json({ error: "Payload too large" }, 413, request);
 
-      const session = JSON.parse(sessionRaw);
-      const body = await request.json();
-
-      await env.IWOR_KV.put(`josler:${session.email}`, JSON.stringify({
+      await env.IWOR_KV.put(`josler:${authResult.email}`, JSON.stringify({
         data: body.data,
         updatedAt: new Date().toISOString(),
       }));
@@ -513,15 +561,10 @@ export default {
     //  Authorization: Bearer {sessionToken}
     // ══════════════════════════════════════════════════
     if (path === "/api/josler" && request.method === "GET") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
-
-      const session = JSON.parse(sessionRaw);
-      const raw = await env.IWOR_KV.get(`josler:${session.email}`);
+      const raw = await env.IWOR_KV.get(`josler:${authResult.email}`);
 
       if (!raw) return json({ ok: true, data: null }, 200, request);
 
@@ -535,17 +578,14 @@ export default {
     //  Authorization: Bearer {sessionToken}
     // ══════════════════════════════════════════════════
     if (path === "/api/matching-profile" && request.method === "PUT") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
+      if (!checkPayloadSize(body.data)) return json({ error: "Payload too large" }, 413, request);
 
-      const session = JSON.parse(sessionRaw);
-      const body = await request.json();
-
-      await env.IWOR_KV.put(`matching-profile:${session.email}`, JSON.stringify({
+      await env.IWOR_KV.put(`matching-profile:${authResult.email}`, JSON.stringify({
         data: body.data,
         updatedAt: new Date().toISOString(),
       }));
@@ -559,15 +599,10 @@ export default {
     //  Authorization: Bearer {sessionToken}
     // ══════════════════════════════════════════════════
     if (path === "/api/matching-profile" && request.method === "GET") {
-      const auth = request.headers.get("Authorization") || "";
-      const token = auth.replace("Bearer ", "").trim();
-      if (!token) return json({ error: "Unauthorized" }, 401, request);
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
 
-      const sessionRaw = await env.IWOR_KV.get(`session:${token}`);
-      if (!sessionRaw) return json({ error: "Invalid session" }, 401, request);
-
-      const session = JSON.parse(sessionRaw);
-      const raw = await env.IWOR_KV.get(`matching-profile:${session.email}`);
+      const raw = await env.IWOR_KV.get(`matching-profile:${authResult.email}`);
 
       if (!raw) return json({ ok: true, data: null }, 200, request);
 
@@ -612,20 +647,27 @@ export default {
         await env.IWOR_KV.put(rateKey, String(count + 1), { expirationTtl: 86400 });
       }
 
-      const body = await request.json();
-      const { mode, systemPrompt, userMessage, question, answer, profile } = body;
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
+      const { mode, userMessage, question, answer, profile } = body;
 
-      // 面接会話モード
+      // 面接会話モード（systemPromptはサーバー側で固定）
+      const INTERVIEW_SYSTEM_PROMPT = `あなたは医学部マッチング面接の面接官です。
+医学生が面接練習をしています。リアルな面接官として振る舞い、日本語で応答してください。
+- 1回の応答は2〜3文で簡潔に
+- 面接官らしい口調を維持
+- 適切にフォローアップ質問をする`;
+
       if (mode === "interview") {
-        if (!systemPrompt || !userMessage) {
-          return json({ error: "systemPrompt and userMessage required" }, 400, request);
+        if (!userMessage) {
+          return json({ error: "userMessage required" }, 400, request);
         }
         try {
           const aiResponse = await env.AI.run(
             "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
             {
               messages: [
-                { role: "system", content: systemPrompt },
+                { role: "system", content: INTERVIEW_SYSTEM_PROMPT },
                 { role: "user", content: userMessage },
               ],
               max_tokens: 300,
@@ -635,12 +677,12 @@ export default {
           return json({ ok: true, feedback, isPro, source: "workers-ai" }, 200, request);
         } catch (err) {
           console.error("Workers AI error:", err);
-          return json({ error: "AI processing failed", detail: err.message }, 500, request);
+          return json({ error: "AI processing failed" }, 500, request);
         }
       }
 
       // フィードバックモード（旧互換 + mode="feedback"）
-      const q = question || systemPrompt || "";
+      const q = question || "";
       const a = answer || userMessage || "";
       if (!q || !a) {
         return json({ error: "question and answer required" }, 400, request);
@@ -688,7 +730,7 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
         return json({ ok: true, feedback }, 200, request);
       } catch (err) {
         console.error("Workers AI error:", err);
-        return json({ error: "AI processing failed", detail: err.message }, 500, request);
+        return json({ error: "AI processing failed" }, 500, request);
       }
     }
 
