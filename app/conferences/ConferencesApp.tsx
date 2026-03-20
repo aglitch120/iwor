@@ -133,9 +133,9 @@ export default function ConferencesApp() {
         </div>
       )}
 
-      {/* カレンダー表示はC2-1-3で実装 */}
+      {/* カレンダー表示 */}
       {viewMode === 'calendar' && (
-        <CalendarPlaceholder conferences={sorted} />
+        <CalendarGrid conferences={sorted} />
       )}
     </div>
   )
@@ -191,12 +191,174 @@ function ConferenceCard({ conf }: { conf: Conference }) {
   )
 }
 
-// カレンダーグリッドのプレースホルダー（C2-1-3で実装）
-function CalendarPlaceholder({ conferences }: { conferences: Conference[] }) {
+// ── カレンダーグリッド ──
+function CalendarGrid({ conferences }: { conferences: Conference[] }) {
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    // 最も近い未来の学会の月、なければ4月
+    const now = new Date()
+    const upcoming = conferences.find(c => new Date(c.startDate + 'T00:00:00') >= now)
+    if (upcoming) {
+      const d = new Date(upcoming.startDate + 'T00:00:00')
+      return new Date(d.getFullYear(), d.getMonth(), 1)
+    }
+    return new Date(2026, 3, 1)
+  })
+
+  const year = currentMonth.getFullYear()
+  const month = currentMonth.getMonth()
+
+  // この月の学会
+  const monthConfs = useMemo(() => {
+    return conferences.filter(c => {
+      const start = new Date(c.startDate + 'T00:00:00')
+      const end = new Date(c.endDate + 'T00:00:00')
+      return (start.getMonth() === month && start.getFullYear() === year) ||
+             (end.getMonth() === month && end.getFullYear() === year)
+    })
+  }, [conferences, year, month])
+
+  // カレンダーグリッド生成
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const weeks: (number | null)[][] = []
+  let week: (number | null)[] = Array(firstDay).fill(null)
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    week.push(d)
+    if (week.length === 7) {
+      weeks.push(week)
+      week = []
+    }
+  }
+  if (week.length > 0) {
+    while (week.length < 7) week.push(null)
+    weeks.push(week)
+  }
+
+  // 日付→学会マッピング
+  const dayConfs = useMemo(() => {
+    const map = new Map<number, Conference[]>()
+    for (const c of monthConfs) {
+      const start = new Date(c.startDate + 'T00:00:00')
+      const end = new Date(c.endDate + 'T00:00:00')
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        if (d.getMonth() === month && d.getFullYear() === year) {
+          const day = d.getDate()
+          if (!map.has(day)) map.set(day, [])
+          map.get(day)!.push(c)
+        }
+      }
+    }
+    return map
+  }, [monthConfs, year, month])
+
+  const [selectedConf, setSelectedConf] = useState<Conference | null>(null)
+
+  const prev = () => setCurrentMonth(new Date(year, month - 1, 1))
+  const next = () => setCurrentMonth(new Date(year, month + 1, 1))
+
+  const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土']
+
   return (
-    <div className="text-center py-8 bg-s0 border border-br rounded-xl">
-      <p className="text-2xl mb-2">📅</p>
-      <p className="text-sm text-muted">月表示（カレンダー）を読み込み中...</p>
+    <div>
+      {/* 月ナビ */}
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={prev} className="p-2 rounded-lg hover:bg-s1 text-muted hover:text-tx transition-colors">◀</button>
+        <h3 className="text-sm font-bold text-tx">{year}年{month + 1}月</h3>
+        <button onClick={next} className="p-2 rounded-lg hover:bg-s1 text-muted hover:text-tx transition-colors">▶</button>
+      </div>
+
+      {/* 曜日ヘッダー */}
+      <div className="grid grid-cols-7 mb-1">
+        {WEEKDAYS.map(w => (
+          <div key={w} className="text-center text-[10px] font-bold text-muted py-1">{w}</div>
+        ))}
+      </div>
+
+      {/* グリッド */}
+      <div className="border border-br rounded-xl overflow-hidden">
+        {weeks.map((week, wi) => (
+          <div key={wi} className="grid grid-cols-7 border-b border-br last:border-b-0">
+            {week.map((day, di) => {
+              const confs = day ? (dayConfs.get(day) || []) : []
+              return (
+                <div
+                  key={di}
+                  className="min-h-[52px] p-0.5 border-r border-br last:border-r-0"
+                  style={{ background: day ? 'var(--s0)' : 'var(--bg)' }}
+                >
+                  {day && (
+                    <>
+                      <p className="text-[10px] text-muted text-center">{day}</p>
+                      {confs.slice(0, 2).map(c => {
+                        const cat = getSpecialtyCategory(c.specialtyArea)
+                        const color = SPECIALTY_COLORS[cat]
+                        return (
+                          <button
+                            key={c.id}
+                            onClick={() => setSelectedConf(c)}
+                            className="w-full text-[8px] font-bold truncate rounded px-0.5 py-px mt-0.5 text-white leading-tight"
+                            style={{ background: color }}
+                            title={c.meetingName}
+                          >
+                            {c.societyShort}
+                          </button>
+                        )
+                      })}
+                      {confs.length > 2 && (
+                        <p className="text-[8px] text-muted text-center">+{confs.length - 2}</p>
+                      )}
+                    </>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        ))}
+      </div>
+
+      {/* この月の学会リスト */}
+      {monthConfs.length > 0 && (
+        <div className="mt-4 space-y-2">
+          <p className="text-xs font-bold text-muted">{month + 1}月の学会（{monthConfs.length}件）</p>
+          {monthConfs.map(c => (
+            <ConferenceCard key={c.id} conf={c} />
+          ))}
+        </div>
+      )}
+
+      {monthConfs.length === 0 && (
+        <div className="mt-4 text-center py-4">
+          <p className="text-sm text-muted">この月に学会はありません</p>
+        </div>
+      )}
+
+      {/* 学会詳細ポップアップ */}
+      {selectedConf && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setSelectedConf(null)}>
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+          <div
+            className="relative bg-bg border border-br rounded-2xl shadow-xl max-w-sm w-full p-5"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedConf(null)}
+              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full text-muted hover:text-tx hover:bg-s1"
+            >
+              ✕
+            </button>
+            <p className="text-xs font-bold mb-1" style={{ color: SPECIALTY_COLORS[getSpecialtyCategory(selectedConf.specialtyArea)] }}>
+              {formatDateRange(selectedConf.startDate, selectedConf.endDate)}
+            </p>
+            <h3 className="text-sm font-bold text-tx mb-2">{selectedConf.meetingName}</h3>
+            <p className="text-xs text-muted mb-1">📍 {selectedConf.venue}（{selectedConf.city}）</p>
+            {selectedConf.theme && <p className="text-xs text-muted italic mb-1">「{selectedConf.theme}」</p>}
+            {selectedConf.president && (
+              <p className="text-xs text-muted">会長: {selectedConf.president}{selectedConf.presidentAffiliation && `（${selectedConf.presidentAffiliation}）`}</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
