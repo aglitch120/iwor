@@ -4,19 +4,14 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import AppHeader from '@/components/AppHeader'
 import { CBT_CARDS, TAGS, FlashCard } from './cbt-cards'
+import {
+  Rating, CardData,
+  createNewCard, reviewCard, getScheduledIntervals,
+  getDueCards, loadAllCardData, saveAllCardData,
+} from './fsrs'
 
 const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
-
-// ── シャッフル ──
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]]
-  }
-  return a
-}
 
 // ── セッション統計（localStorage） ──
 const STATS_KEY = 'iwor_study_stats'
@@ -41,57 +36,110 @@ function saveTodayStats(stats: DayStats) {
 // ── メインコンポーネント ──
 type Screen = 'home' | 'study' | 'result'
 
+const RATING_BUTTONS: { rating: Rating; label: string; color: string; bgColor: string; borderColor: string }[] = [
+  { rating: 1, label: 'もう一度', color: '#DC2626', bgColor: '#FEF2F2', borderColor: '#FECACA' },
+  { rating: 2, label: '難しい',  color: '#D97706', bgColor: '#FFFBEB', borderColor: '#FDE68A' },
+  { rating: 3, label: '正解',    color: '#059669', bgColor: '#ECFDF5', borderColor: '#A7F3D0' },
+  { rating: 4, label: '余裕',    color: '#2563EB', bgColor: '#EFF6FF', borderColor: '#BFDBFE' },
+]
+
 export default function StudyApp() {
   const [screen, setScreen] = useState<Screen>('home')
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set())
-  const [cards, setCards] = useState<FlashCard[]>([])
+  const [studyQueue, setStudyQueue] = useState<number[]>([])
   const [currentIdx, setCurrentIdx] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [sessionCorrect, setSessionCorrect] = useState(0)
   const [sessionTotal, setSessionTotal] = useState(0)
   const [dayStats, setDayStats] = useState<DayStats>({ date: '', reviewed: 0, correct: 0 })
+  const [cardDataMap, setCardDataMap] = useState<Map<number, CardData>>(new Map())
 
+  // Load data on mount
   useEffect(() => {
     setDayStats(getTodayStats())
+    setCardDataMap(loadAllCardData())
   }, [])
 
-  // ── デッキ開始 ──
+  // ── Filtered card IDs ──
+  const filteredIds = useMemo(() => {
+    if (selectedTags.size === 0) return CBT_CARDS.map(c => c.id)
+    return CBT_CARDS.filter(c => selectedTags.has(c.tag)).map(c => c.id)
+  }, [selectedTags])
+
+  // ── Due counts ──
+  const dueInfo = useMemo(() => {
+    const now = new Date()
+    let dueCount = 0
+    let newCount = 0
+    let learningCount = 0
+
+    for (const id of filteredIds) {
+      const data = cardDataMap.get(id)
+      if (!data || data.state === 'new') {
+        newCount++
+        continue
+      }
+      if (data.state === 'learning' || data.state === 'relearning') {
+        learningCount++
+        dueCount++
+        continue
+      }
+      if (data.lastReview) {
+        const elapsed = (now.getTime() - new Date(data.lastReview).getTime()) / (1000 * 60 * 60 * 24)
+        if (elapsed >= data.scheduledDays) dueCount++
+      }
+    }
+
+    return { dueCount, newCount, learningCount, total: filteredIds.length }
+  }, [filteredIds, cardDataMap])
+
+  // ── Start session ──
   const startSession = useCallback(() => {
-    const pool = selectedTags.size === 0
-      ? CBT_CARDS
-      : CBT_CARDS.filter(c => selectedTags.has(c.tag))
-    setCards(shuffle(pool))
+    const queue = getDueCards(cardDataMap, filteredIds)
+    if (queue.length === 0) return
+    setStudyQueue(queue)
     setCurrentIdx(0)
     setFlipped(false)
     setSessionCorrect(0)
     setSessionTotal(0)
     setScreen('study')
-  }, [selectedTags])
+  }, [cardDataMap, filteredIds])
 
-  // ── 回答 ──
-  const answer = useCallback((correct: boolean) => {
-    const newTotal = sessionTotal + 1
-    const newCorrect = sessionCorrect + (correct ? 1 : 0)
-    setSessionTotal(newTotal)
-    setSessionCorrect(newCorrect)
+  // ── Answer with FSRS rating ──
+  const answer = useCallback((rating: Rating) => {
+    const cardId = studyQueue[currentIdx]
+    const existing = cardDataMap.get(cardId) || createNewCard(cardId)
+    const updated = reviewCard(existing, rating)
 
-    // 統計更新
+    // Update map
+    const newMap = new Map<number, CardData>()
+    cardDataMap.forEach((v, k) => newMap.set(k, v))
+    newMap.set(cardId, updated)
+    setCardDataMap(newMap)
+    saveAllCardData(newMap)
+
+    // Session stats
+    const isCorrect = rating >= 3
+    setSessionTotal(prev => prev + 1)
+    if (isCorrect) setSessionCorrect(prev => prev + 1)
+
+    // Day stats
     const stats = getTodayStats()
     stats.reviewed++
-    if (correct) stats.correct++
+    if (isCorrect) stats.correct++
     saveTodayStats(stats)
     setDayStats({ ...stats })
 
-    // 次のカード or 結果
-    if (currentIdx + 1 >= cards.length) {
+    // Next card or result
+    if (currentIdx + 1 >= studyQueue.length) {
       setScreen('result')
     } else {
       setCurrentIdx(currentIdx + 1)
       setFlipped(false)
     }
-  }, [sessionTotal, sessionCorrect, currentIdx, cards])
+  }, [studyQueue, currentIdx, cardDataMap])
 
-  // ── タグトグル ──
+  // ── Tag toggle ──
   const toggleTag = useCallback((tag: string) => {
     setSelectedTags(prev => {
       const n = new Set(prev)
@@ -100,20 +148,25 @@ export default function StudyApp() {
     })
   }, [])
 
-  const filteredCount = useMemo(() => {
-    return selectedTags.size === 0
-      ? CBT_CARDS.length
-      : CBT_CARDS.filter(c => selectedTags.has(c.tag)).length
-  }, [selectedTags])
+  // ── Current card helpers ──
+  const currentCard = useMemo(() => {
+    if (screen !== 'study' || studyQueue.length === 0) return null
+    return CBT_CARDS.find(c => c.id === studyQueue[currentIdx]) || null
+  }, [screen, studyQueue, currentIdx])
+
+  const intervalPreviews = useMemo(() => {
+    if (!currentCard) return []
+    const data = cardDataMap.get(currentCard.id) || createNewCard(currentCard.id)
+    return getScheduledIntervals(data)
+  }, [currentCard, cardDataMap])
 
   // ──────── ホーム画面 ────────
   if (screen === 'home') {
     return (
       <div className="px-4 py-8 max-w-lg mx-auto">
-        {/* ヘッダー */}
         <AppHeader
           title="iwor Study"
-          subtitle="医学フラッシュカード — カードをめくって知識を定着。"
+          subtitle="医学フラッシュカード — FSRS搭載の科学的復習スケジューラー"
           badge="NEW"
           favoriteSlug="app-study"
           favoriteHref="/study"
@@ -152,12 +205,25 @@ export default function StudyApp() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-tx">CBT基礎</p>
-                  <p className="text-[11px] text-muted">{filteredCount}枚 — 医学部4年CBT対策</p>
+                  <p className="text-[11px] text-muted">{dueInfo.total}枚</p>
                 </div>
               </div>
-              <svg className="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+              {/* Due badges */}
+              <div className="flex items-center gap-1.5">
+                {dueInfo.dueCount > 0 && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 border border-emerald-200">
+                    復習 {dueInfo.dueCount}
+                  </span>
+                )}
+                {dueInfo.newCount > 0 && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 border border-blue-200">
+                    新規 {dueInfo.newCount}
+                  </span>
+                )}
+                <svg className="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </div>
           </button>
         </div>
@@ -206,7 +272,12 @@ export default function StudyApp() {
           ))}
         </div>
 
-        {/* フッターリンク */}
+        {/* FSRS説明 */}
+        <div className="bg-s1 rounded-xl p-4 mb-6 text-[11px] text-muted leading-relaxed">
+          <p className="font-bold text-tx mb-1">📊 FSRSアルゴリズム搭載</p>
+          <p>科学的な復習スケジューリングで効率よく記憶を定着。回答の自信度に応じて次の復習タイミングを最適化します。</p>
+        </div>
+
         <div className="text-center">
           <Link href="/" className="text-xs text-muted hover:text-ac transition-colors">
             ← ホームに戻る
@@ -217,9 +288,8 @@ export default function StudyApp() {
   }
 
   // ──────── 学習画面 ────────
-  if (screen === 'study') {
-    const card = cards[currentIdx]
-    const progress = ((currentIdx) / cards.length) * 100
+  if (screen === 'study' && currentCard) {
+    const progress = ((currentIdx) / studyQueue.length) * 100
 
     return (
       <div className="px-4 py-6 max-w-lg mx-auto">
@@ -231,9 +301,9 @@ export default function StudyApp() {
             </svg>
             戻る
           </button>
-          <span className="text-xs font-medium text-muted">{currentIdx + 1} / {cards.length}</span>
+          <span className="text-xs font-medium text-muted">{currentIdx + 1} / {studyQueue.length}</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: MCL, color: MC }}>
-            {card.tag}
+            {currentCard.tag}
           </span>
         </div>
 
@@ -269,7 +339,7 @@ export default function StudyApp() {
                   Question
                 </span>
                 <p className="text-base font-bold text-tx leading-relaxed">
-                  {card.front}
+                  {currentCard.front}
                 </p>
                 <p className="text-xs text-muted mt-6">タップで回答を表示</p>
               </div>
@@ -289,29 +359,34 @@ export default function StudyApp() {
                   Answer
                 </span>
                 <div className="text-sm text-tx leading-relaxed whitespace-pre-line">
-                  {card.back}
+                  {currentCard.back}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 回答ボタン */}
+        {/* FSRS 4択回答ボタン */}
         {flipped && (
-          <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <button
-              onClick={() => answer(false)}
-              className="flex-1 py-3.5 rounded-xl text-sm font-bold border-2 border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
-            >
-              ✕ 不正解
-            </button>
-            <button
-              onClick={() => answer(true)}
-              className="flex-1 py-3.5 rounded-xl text-sm font-bold text-white transition-colors hover:opacity-90"
-              style={{ background: MC }}
-            >
-              ○ 正解
-            </button>
+          <div className="grid grid-cols-4 gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {RATING_BUTTONS.map((btn, i) => {
+              const preview = intervalPreviews[i]
+              return (
+                <button
+                  key={btn.rating}
+                  onClick={() => answer(btn.rating)}
+                  className="py-3 rounded-xl text-center border-2 transition-all hover:opacity-90 active:scale-95"
+                  style={{
+                    color: btn.color,
+                    background: btn.bgColor,
+                    borderColor: btn.borderColor,
+                  }}
+                >
+                  <span className="text-[10px] font-bold block">{preview?.label || ''}</span>
+                  <span className="text-xs font-bold block mt-0.5">{btn.label}</span>
+                </button>
+              )
+            })}
           </div>
         )}
 
