@@ -272,8 +272,11 @@ function main() {
     }
   }
 
-  // Exit code
-  const exitCode = report.summary.fail > 0 ? 1 : 0
+  // Exit code: WARN も FAIL も非ゼロで終了（GitHub Actionsでissue作成をトリガー）
+  const exitCode = (report.summary.fail > 0 || report.summary.warn > 0) ? 1 : 0
+  if (exitCode > 0) {
+    console.log(`\n🚨 WARN or FAIL が検出されました。CI/CDでIssueが作成されます。`)
+  }
   process.exit(exitCode)
 }
 
