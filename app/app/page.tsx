@@ -3,14 +3,14 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'アプリ — iwor',
-  description: '臨床ツール、研修記録、マッチング・転職対策、論文フィード、プレゼン資料生成。医師のためのワークスペース。',
+  description: '臨床ツール、研修記録、マッチング・転職対策、論文フィード、プレゼン資料生成、医学フラッシュカード。医師のためのワークスペース。',
 }
 
 const services = [
   {
     href: '/tools',
     title: '臨床ツール',
-    sub: '計算152種・薬剤ガイド・比較・手技・基準値・γ計算 — すべて無料',
+    sub: '計算166種・薬剤ガイド・比較・手技・基準値・γ計算 — すべて無料',
     tag: 'FREE',
     featured: true,
     icon: (
@@ -19,6 +19,13 @@ const services = [
       </svg>
     ),
     subcategories: ['臨床計算', '薬剤ガイド', '薬剤比較', '手技ガイド', '基準値', 'γ計算'],
+  },
+  {
+    href: '/study',
+    title: 'iwor Study',
+    sub: '医学フラッシュカード — CBT・国試・専門医対策',
+    tag: 'NEW',
+    icon: <><path d="M12 6.253v13M12 6.253C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></>,
   },
   {
     href: '/josler',
@@ -103,6 +110,7 @@ export default function AppPage() {
             <span className={`absolute top-3 right-3 text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-md ${
               s.tag === 'FREE' ? 'text-muted bg-s1 border border-br'
               : s.tag === 'FREEMIUM' ? 'text-muted bg-s1 border border-br'
+              : s.tag === 'NEW' ? 'text-white bg-ac'
               : 'text-ac bg-acl border border-ac/15'
             }`}>
               {s.tag}
