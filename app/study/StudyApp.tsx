@@ -12,7 +12,9 @@ import {
 import {
   Deck, loadAllDecks, createCustomDeck, updateCustomDeck, deleteCustomDeck,
   addCardToDeck, updateCardInDeck, deleteCardFromDeck, getDeckCards, getDeckTags,
+  importDeckWithCards,
 } from './decks'
+import { parseApkgFile, ApkgImportResult } from './apkg-import'
 
 const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
@@ -146,6 +148,11 @@ export default function StudyApp() {
   const [examFormName, setExamFormName] = useState('')
   const [examFormDate, setExamFormDate] = useState('')
   const [examFormEmoji, setExamFormEmoji] = useState('📖')
+
+  // Import states
+  const [importLoading, setImportLoading] = useState(false)
+  const [importError, setImportError] = useState('')
+  const [importResult, setImportResult] = useState<ApkgImportResult | null>(null)
 
   // ── Init ──
   useEffect(() => {
@@ -297,6 +304,39 @@ export default function StudyApp() {
     deleteCardFromDeck(activeDeckId, cardId)
     setDecks(loadAllDecks())
   }, [activeDeckId])
+
+  // ── .apkgインポート ──
+  const handleImportApkg = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    // input をリセット（同じファイルを再選択可能にする）
+    e.target.value = ''
+
+    setImportLoading(true)
+    setImportError('')
+    setImportResult(null)
+
+    try {
+      const result = await parseApkgFile(file)
+      const deck = importDeckWithCards(
+        result.deckName,
+        '📥',
+        `Ankiからインポート（${result.importedCards}枚）`
+      , result.cards)
+      setDecks(loadAllDecks())
+      setImportResult(result)
+      setActiveDeckId(deck.id)
+      // 少し表示してからデッキ画面へ
+      setTimeout(() => {
+        setImportResult(null)
+        setScreen('deck')
+      }, 2000)
+    } catch (err) {
+      setImportError(err instanceof Error ? err.message : 'インポートに失敗しました')
+    } finally {
+      setImportLoading(false)
+    }
+  }, [])
 
   // ── Navigation helpers ──
   const openDeck = useCallback((deckId: string) => {
@@ -473,14 +513,50 @@ export default function StudyApp() {
           </div>
         </div>
 
-        {/* 自作デッキ作成 */}
-        <button
-          onClick={() => { setFormName(''); setFormEmoji('📚'); setFormDesc(''); setScreen('create-deck') }}
-          className="w-full border-2 border-dashed border-br rounded-xl p-4 text-center hover:border-ac/40 transition-colors mb-8"
-        >
-          <span className="text-lg">＋</span>
-          <p className="text-xs font-medium text-muted mt-1">自作デッキを作成</p>
-        </button>
+        {/* 自作デッキ作成 & .apkgインポート */}
+        <div className="flex gap-3 mb-4">
+          <button
+            onClick={() => { setFormName(''); setFormEmoji('📚'); setFormDesc(''); setScreen('create-deck') }}
+            className="flex-1 border-2 border-dashed border-br rounded-xl p-4 text-center hover:border-ac/40 transition-colors"
+          >
+            <span className="text-lg">＋</span>
+            <p className="text-xs font-medium text-muted mt-1">自作デッキ</p>
+          </button>
+          <label
+            className="flex-1 border-2 border-dashed border-br rounded-xl p-4 text-center hover:border-ac/40 transition-colors cursor-pointer"
+          >
+            <input
+              type="file"
+              accept=".apkg"
+              onChange={handleImportApkg}
+              className="hidden"
+              disabled={importLoading}
+            />
+            <span className="text-lg">{importLoading ? '⏳' : '📥'}</span>
+            <p className="text-xs font-medium text-muted mt-1">
+              {importLoading ? '読み込み中...' : '.apkgインポート'}
+            </p>
+          </label>
+        </div>
+
+        {/* インポート結果 */}
+        {importResult && (
+          <div className="mb-4 p-3 rounded-xl bg-green-50 border border-green-200 text-center">
+            <p className="text-sm font-bold text-green-700">✓ インポート完了</p>
+            <p className="text-xs text-green-600 mt-1">
+              「{importResult.deckName}」{importResult.importedCards}枚
+              {importResult.skippedEmpty > 0 && `（${importResult.skippedEmpty}枚スキップ）`}
+            </p>
+          </div>
+        )}
+
+        {/* インポートエラー */}
+        {importError && (
+          <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200">
+            <p className="text-xs text-red-600">{importError}</p>
+            <button onClick={() => setImportError('')} className="text-[10px] text-red-400 mt-1 underline">閉じる</button>
+          </div>
+        )}
 
         {/* FSRS説明 */}
         <div className="bg-s1 rounded-xl p-4 mb-6 text-[11px] text-muted leading-relaxed">

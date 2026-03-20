@@ -213,6 +213,31 @@ export function deleteCardFromDeck(deckId: string, cardId: string): boolean {
   return true
 }
 
+/** .apkgインポート: カード付きでカスタムデッキを一括作成 */
+export function importDeckWithCards(name: string, emoji: string, description: string, cards: FlashCard[]): Deck {
+  const id = `custom-${generateId()}`
+  const now = new Date().toISOString()
+  const meta: CustomDeckMeta = { id, name, emoji, description, createdAt: now, updatedAt: now }
+
+  const metas = loadCustomDeckMetas()
+  metas.push(meta)
+  saveCustomDeckMetas(metas)
+
+  // カードIDをこのデッキのIDに付け替え
+  const deckCards = cards.map((c, i) => ({
+    ...c,
+    id: `${id}-${i + 1}`,
+  }))
+  saveCustomCards(id, deckCards)
+
+  return {
+    ...meta,
+    cards: deckCards,
+    tags: Array.from(new Set(deckCards.map(c => c.tag).filter(Boolean))),
+    isDefault: false,
+  }
+}
+
 /** 特定デッキのカード一覧を取得 */
 export function getDeckCards(deckId: string): FlashCard[] {
   const defaultDeck = DEFAULT_DECKS.find(d => d.id === deckId)
