@@ -37,6 +37,39 @@ function saveTodayStats(stats: DayStats) {
   localStorage.setItem(STATS_KEY, JSON.stringify(stats))
 }
 
+// ── ストリーク追跡 ──
+const STREAK_KEY = 'iwor_study_streak'
+interface StreakData { lastDate: string; count: number; best: number }
+
+function getStreak(): StreakData {
+  try {
+    const raw = localStorage.getItem(STREAK_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {}
+  return { lastDate: '', count: 0, best: 0 }
+}
+
+function updateStreak(): StreakData {
+  const today = new Date().toISOString().split('T')[0]
+  const streak = getStreak()
+  if (streak.lastDate === today) return streak // 今日すでに更新済み
+
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+  const yesterdayStr = yesterday.toISOString().split('T')[0]
+
+  let newCount: number
+  if (streak.lastDate === yesterdayStr) {
+    newCount = streak.count + 1 // 連続
+  } else {
+    newCount = 1 // リセット
+  }
+  const newBest = Math.max(newCount, streak.best)
+  const updated = { lastDate: today, count: newCount, best: newBest }
+  localStorage.setItem(STREAK_KEY, JSON.stringify(updated))
+  return updated
+}
+
 // ── 画面定義 ──
 type Screen = 'home' | 'deck' | 'study' | 'result' | 'create-deck' | 'edit-deck' | 'add-card' | 'edit-card' | 'card-list'
 
@@ -72,12 +105,14 @@ export default function StudyApp() {
   const [formTag, setFormTag] = useState('')
   const [editingCardId, setEditingCardId] = useState<string | null>(null)
   const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const [streak, setStreak] = useState<StreakData>({ lastDate: '', count: 0, best: 0 })
 
   // ── Init ──
   useEffect(() => {
     setDayStats(getTodayStats())
     setCardDataMap(loadAllCardData())
     setDecks(loadAllDecks())
+    setStreak(getStreak())
   }, [])
 
   // ── Active deck ──
@@ -163,6 +198,7 @@ export default function StudyApp() {
     setDayStats({ ...stats })
 
     if (currentIdx + 1 >= studyQueue.length) {
+      setStreak(updateStreak())
       setScreen('result')
     } else {
       setCurrentIdx(currentIdx + 1)
@@ -868,34 +904,99 @@ export default function StudyApp() {
   }
 
   // ══════════════════════════════════════════
-  //  結果画面
+  //  結果画面（Peak-End）
   // ══════════════════════════════════════════
   const accuracy = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0
-  const emoji = accuracy >= 80 ? '🎉' : accuracy >= 60 ? '👍' : '💪'
-  const message = accuracy >= 80 ? '素晴らしい！' : accuracy >= 60 ? 'いい調子！' : 'もう一周しよう！'
+  const isNewBest = streak.count === streak.best && streak.count > 1
+  const streakMilestone = [3, 7, 14, 30, 50, 100].includes(streak.count)
+
+  // メッセージ選択（ストリーク × 正答率）
+  const getMessage = () => {
+    if (streakMilestone) return `${streak.count}日連続達成！`
+    if (isNewBest) return '自己ベスト更新！'
+    if (accuracy >= 90) return 'パーフェクト！'
+    if (accuracy >= 80) return '素晴らしい！'
+    if (accuracy >= 60) return 'いい調子！'
+    return 'コツコツが大事！'
+  }
+  const getEmoji = () => {
+    if (streakMilestone || isNewBest) return '🏆'
+    if (accuracy >= 90) return '🎉'
+    if (accuracy >= 80) return '✨'
+    if (accuracy >= 60) return '👍'
+    return '💪'
+  }
 
   return (
     <div className="px-4 py-8 max-w-lg mx-auto">
-      <div className="bg-s0 border border-br rounded-2xl p-8 text-center">
-        <div className="text-5xl mb-4">{emoji}</div>
-        <h2 className="text-xl font-bold text-tx mb-1">{message}</h2>
+      {/* メインカード */}
+      <div className="bg-s0 border border-br rounded-2xl p-8 text-center relative overflow-hidden">
+        {/* 祝福アニメーション（高スコアまたはマイルストーン時） */}
+        {(accuracy >= 80 || streakMilestone) && (
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-2 h-2 rounded-full opacity-0"
+                style={{
+                  left: `${10 + (i * 7.5)}%`,
+                  top: '-8px',
+                  background: ['#1B4F3A', '#2D6A4F', '#059669', '#FCD34D', '#F59E0B', '#2563EB'][i % 6],
+                  animation: `confetti-fall ${1.5 + (i % 3) * 0.5}s ease-in ${i * 0.1}s forwards`,
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="text-5xl mb-3">{getEmoji()}</div>
+        <h2 className="text-xl font-bold text-tx mb-1">{getMessage()}</h2>
         <p className="text-sm text-muted mb-6">セッション完了</p>
 
-        <div className="flex gap-4 justify-center mb-8">
-          <div className="bg-bg rounded-xl p-4 flex-1">
+        {/* ストリーク（メイン指標） */}
+        <div
+          className="mx-auto mb-6 rounded-2xl p-5 border"
+          style={{
+            background: streak.count >= 3 ? MCL : 'var(--bg)',
+            borderColor: streak.count >= 3 ? 'rgba(27,79,58,0.2)' : 'var(--br)',
+          }}
+        >
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <span className="text-2xl">🔥</span>
+            <span className="text-3xl font-bold" style={{ color: MC }}>{streak.count}</span>
+            <span className="text-sm font-medium text-muted">日連続</span>
+          </div>
+          {isNewBest && (
+            <p className="text-[11px] font-bold" style={{ color: MC }}>
+              🏅 自己ベスト！
+            </p>
+          )}
+          {streak.best > streak.count && (
+            <p className="text-[10px] text-muted">
+              ベスト: {streak.best}日
+            </p>
+          )}
+        </div>
+
+        {/* セッション統計 */}
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="bg-bg rounded-xl p-3">
             <p className="text-2xl font-bold" style={{ color: MC }}>{sessionTotal}</p>
             <p className="text-[10px] text-muted">学習枚数</p>
           </div>
-          <div className="bg-bg rounded-xl p-4 flex-1">
-            <p className="text-2xl font-bold" style={{ color: MC }}>{accuracy}%</p>
+          <div className="bg-bg rounded-xl p-3">
+            <p className="text-2xl font-bold" style={{ color: accuracy >= 80 ? '#059669' : accuracy >= 60 ? '#D97706' : '#DC2626' }}>
+              {accuracy}%
+            </p>
             <p className="text-[10px] text-muted">正答率</p>
           </div>
-          <div className="bg-bg rounded-xl p-4 flex-1">
+          <div className="bg-bg rounded-xl p-3">
             <p className="text-2xl font-bold" style={{ color: MC }}>{sessionCorrect}</p>
             <p className="text-[10px] text-muted">正解数</p>
           </div>
         </div>
 
+        {/* ボタン */}
         <div className="space-y-3">
           <button
             onClick={startSession}
@@ -929,6 +1030,14 @@ export default function StudyApp() {
           </div>
         </div>
       </div>
+
+      {/* confetti animation */}
+      <style jsx>{`
+        @keyframes confetti-fall {
+          0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+          100% { opacity: 0; transform: translateY(300px) rotate(720deg) scale(0.3); }
+        }
+      `}</style>
     </div>
   )
 }
