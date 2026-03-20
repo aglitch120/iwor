@@ -193,6 +193,12 @@ export default function JoslerApp() {
 
   return (
     <div style={{ background: C.bg, minHeight: '100vh', fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN',sans-serif", color: C.tx, maxWidth: 960, margin: '0 auto', position: 'relative', paddingBottom: 80 }}>
+      {/* Breadcrumb */}
+      <nav style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 18px 0', fontSize: 12, color: C.m }}>
+        <a href="/" style={{ color: C.m, textDecoration: 'none' }}>ホーム</a>
+        <span>›</span>
+        <span style={{ color: C.tx, fontWeight: 500 }}>J-OSLER管理</span>
+      </nav>
       {/* Header */}
       <div style={{ background: C.s0, borderBottom: `1px solid ${C.br}`, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 56, zIndex: 40 }}>
         <span style={{ fontWeight: 700, fontSize: 17 }}>J-OSLER管理</span>

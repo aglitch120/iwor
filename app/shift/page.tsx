@@ -596,10 +596,10 @@ export default function ShiftPage() {
 // ─── Breadcrumb ───
 function Breadcrumb() {
   return (
-    <div className="flex items-center gap-2 mb-4 print:hidden">
-      <Link href="/" className="text-xs text-muted hover:text-ac transition-colors">ホーム</Link>
-      <span className="text-xs text-muted">/</span>
-      <span className="text-xs text-tx font-medium">当直シフト作成</span>
-    </div>
+    <nav className="flex items-center gap-2 mb-4 text-xs text-muted print:hidden">
+      <Link href="/" className="hover:text-ac transition-colors">ホーム</Link>
+      <span>›</span>
+      <span className="text-tx font-medium">当直シフト作成</span>
+    </nav>
   )
 }

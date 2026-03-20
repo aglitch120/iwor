@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useCallback } from 'react'
-import FavoriteButton from '@/components/tools/FavoriteButton'
+import AppHeader from '@/components/AppHeader'
 import { PresenterTutorial } from '@/components/tutorials'
 
 const MC = '#1B4F3A'
@@ -336,20 +336,13 @@ export default function PresenterApp() {
 // ── 共通パーツ ──
 function Header() {
   return (
-    <div className="mb-6 pt-2">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: MCL }}>
-          <svg className="w-5 h-5" style={{ stroke: MC }} viewBox="0 0 24 24" fill="none" strokeWidth={2} strokeLinecap="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><path d="M8 21h8M12 17v4" />
-          </svg>
-        </div>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-bold text-tx">プレゼン資料生成</h1>
-          <p className="text-[11px] text-muted">タイプ・対象者・時間を設定 → 構成テンプレートを生成</p>
-        </div>
-        <FavoriteButton slug="app-presenter" title="プレゼン資料生成" href="/presenter" type="app" size="sm" />
-      </div>
-    </div>
+    <AppHeader
+      title="プレゼン資料生成"
+      subtitle="タイプ・対象者・時間を設定 → 構成テンプレートを生成"
+      badge="PRO"
+      favoriteSlug="app-presenter"
+      favoriteHref="/presenter"
+    />
   )
 }
 

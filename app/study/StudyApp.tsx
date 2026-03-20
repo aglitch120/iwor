@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import AppHeader from '@/components/AppHeader'
 import { CBT_CARDS, TAGS, FlashCard } from './cbt-cards'
 
 const MC = '#1B4F3A'
@@ -110,20 +111,13 @@ export default function StudyApp() {
     return (
       <div className="px-4 py-8 max-w-lg mx-auto">
         {/* ヘッダー */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl" style={{ background: MCL }}>
-              📚
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-tx">iwor Study</h1>
-              <p className="text-xs text-muted">医学フラッシュカード</p>
-            </div>
-          </div>
-          <p className="text-sm text-muted">
-            カードをめくって知識を定着。タップで裏面を表示し、理解度を自己評価。
-          </p>
-        </div>
+        <AppHeader
+          title="iwor Study"
+          subtitle="医学フラッシュカード — カードをめくって知識を定着。"
+          badge="NEW"
+          favoriteSlug="app-study"
+          favoriteHref="/study"
+        />
 
         {/* 今日の統計 */}
         {dayStats.reviewed > 0 && (

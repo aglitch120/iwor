@@ -79,8 +79,13 @@ export default function ToolsHubPage() {
     <main className="max-w-5xl mx-auto px-4 py-8">
       {/* ヘッダー */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-tx">臨床ツール</h1>
-        <p className="text-muted mt-2">
+        <nav className="flex items-center gap-2 mb-3 text-xs text-muted">
+          <Link href="/" className="hover:text-ac transition-colors">ホーム</Link>
+          <span>›</span>
+          <span className="text-tx font-medium">臨床ツール</span>
+        </nav>
+        <h1 className="text-xl font-bold text-tx">臨床ツール</h1>
+        <p className="text-xs text-muted mt-0.5">
           計算・薬剤・手技・基準値 — すべて<span className="font-bold text-ac">無料</span>。
         </p>
       </div>

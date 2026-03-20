@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
-import FavoriteButton from '@/components/tools/FavoriteButton'
+import AppHeader from '@/components/AppHeader'
 import HospitalTab from './HospitalSection'
 import DocumentsTab from './DocumentsTab'
 import ProfileWizard from './ProfileWizard'
@@ -80,20 +80,13 @@ export default function MatchingApp() {
     <>
       {/* ── ヘッダー ── */}
       <div className="mb-4 pt-2">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: MCL }}>
-            <svg className="w-5 h-5" style={{ stroke: MC }} viewBox="0 0 24 24" fill="none" strokeWidth={2} strokeLinecap="round">
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/>
-            </svg>
-          </div>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-bold text-tx">マッチング・転職対策</h1>
-            <p className="text-[11px] text-muted">
-              {mode === 'matching' ? 'プロフィール → 書類・メール → 病院検索' : 'プロフィール → 書類・メール'}
-            </p>
-          </div>
-          <FavoriteButton slug="app-matching" title="マッチング・転職対策" href="/matching" type="app" size="sm" />
-        </div>
+        <AppHeader
+          title="マッチング・転職対策"
+          subtitle={mode === 'matching' ? 'プロフィール → 書類・メール → 病院検索' : 'プロフィール → 書類・メール'}
+          badge="FREE"
+          favoriteSlug="app-matching"
+          favoriteHref="/matching"
+        />
 
         {/* ── モード切替 ── */}
         <div className="flex bg-s1 rounded-xl p-1 mb-4">

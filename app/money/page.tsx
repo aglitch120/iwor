@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import FurusatoRanking from '@/components/FurusatoRanking'
+import AppHeader from '@/components/AppHeader'
 
 // ─── ふるさと納税上限概算 ───
 function FurusatoCalc() {
@@ -302,15 +303,13 @@ export default function MoneyPage() {
   return (
     <main className="max-w-2xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <Link href="/" className="text-xs text-muted hover:text-ac transition-colors">ホーム</Link>
-          <span className="text-xs text-muted">/</span>
-          <span className="text-xs text-tx font-medium">マネー</span>
-        </div>
-        <h1 className="text-2xl font-bold text-tx">マネー</h1>
-        <p className="text-sm text-muted mt-1">ふるさと納税・手取り・NISA・確定申告の概算ツール</p>
-      </div>
+      <AppHeader
+        title="マネー"
+        subtitle="ふるさと納税・手取り・NISA・確定申告の概算ツール"
+        badge="NEW"
+        favoriteSlug="app-money"
+        favoriteHref="/money"
+      />
 
       {/* Tool Tabs */}
       <div className="grid grid-cols-4 gap-2 mb-6">

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
-import FavoriteButton from '@/components/tools/FavoriteButton'
+import AppHeader from '@/components/AppHeader'
 import { JOURNALS, Journal, TOP4_IDS, SPECIALTIES } from './journals-data'
 
 const MC = '#1B4F3A'
@@ -146,20 +146,13 @@ export default function JournalApp() {
   return (
     <div className="px-4 py-8">
       {/* ── Header ── */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: MCL }}>
-            <svg className="w-5 h-5" style={{ stroke: MC }} viewBox="0 0 24 24" fill="none" strokeWidth={2} strokeLinecap="round">
-              <path d="M4 19.5A2.5 2.5 0 016.5 17H20" /><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" />
-            </svg>
-          </div>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-bold text-tx">論文フィード</h1>
-            <p className="text-[11px] text-muted">PubMedから最新論文を定期取得。{JOURNALS.length}誌対応。</p>
-          </div>
-          <FavoriteButton slug="app-journal" title="論文フィード" href="/journal" type="app" size="sm" />
-        </div>
-      </div>
+      <AppHeader
+        title="論文フィード"
+        subtitle={`PubMedから最新論文を定期取得。${JOURNALS.length}誌対応。`}
+        badge="FREEMIUM"
+        favoriteSlug="app-journal"
+        favoriteHref="/journal"
+      />
 
       {/* ── Filter Mode Toggle ── */}
       <div className="flex gap-1 mb-4 bg-s1 rounded-xl p-1">
