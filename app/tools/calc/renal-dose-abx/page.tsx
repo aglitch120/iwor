@@ -103,6 +103,11 @@ function getEgfrIndex(egfr: number): number {
 export default function RenalDoseAbxPage() {
   const [egfr, setEgfr] = useState('60')
   const [selectedAbx, setSelectedAbx] = useState('all')
+  const [showCcrCalc, setShowCcrCalc] = useState(false)
+  const [ccrAge, setCcrAge] = useState('')
+  const [ccrWeight, setCcrWeight] = useState('')
+  const [ccrCr, setCcrCr] = useState('')
+  const [ccrFemale, setCcrFemale] = useState(false)
 
   const egfrIndex = useMemo(() => {
     const v = parseFloat(egfr)
@@ -136,19 +141,7 @@ export default function RenalDoseAbxPage() {
           ]}
         />
       }
-      explanation={
-        <section className="space-y-4 text-sm text-muted">
-          <h2 className="text-base font-bold text-tx">抗菌薬の腎機能別用量調整</h2>
-          <p>腎排泄型の抗菌薬は腎機能低下時に血中濃度が上昇し、副作用リスクが増大します。eGFRまたはCrClに基づいて投与量・投与間隔を調整する必要があります。</p>
-          <h3 className="font-bold text-tx">注意事項</h3>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>本表は一般的な目安であり、各施設のプロトコル・添付文書を優先してください</li>
-            <li>アミノグリコシド系・バンコマイシンはTDM（血中薬物濃度モニタリング）が一般的</li>
-            <li>透析患者では透析後の追加投与タイミングに注意</li>
-            <li>急性腎障害（AKI）では腎機能が急速に変動するため頻回の再評価が必要</li>
-          </ul>
-        </section>
-      }
+      explanation={undefined}
       relatedTools={toolDef.relatedSlugs
         .map(s => {
           const t = implementedTools.has(s) ? getToolBySlug(s) : null
@@ -162,7 +155,50 @@ export default function RenalDoseAbxPage() {
       ]}
     >
       <div className="space-y-4">
-        <NumberInput id="egfr" label="eGFR（またはCrCl）" unit="mL/min/1.73m²" value={egfr} onChange={setEgfr} step={1} />
+        <NumberInput id="egfr" label="eGFR / CrCl" unit="mL/min" value={egfr} onChange={setEgfr} step={1} />
+
+        {/* CCr計算オプション */}
+        <div>
+          <button onClick={() => setShowCcrCalc(!showCcrCalc)}
+            className="text-xs text-ac font-medium hover:underline">
+            {showCcrCalc ? '▲ CCr計算を閉じる' : '▼ Cockcroft-Gault式でCCrを計算'}
+          </button>
+          {showCcrCalc && (
+            <div className="mt-2 p-3 bg-s1 border border-br rounded-lg space-y-2">
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="text-[10px] text-muted block mb-1">年齢</label>
+                  <input type="number" value={ccrAge} onChange={e => setCcrAge(e.target.value)}
+                    placeholder="70" className="w-full px-2 py-1.5 rounded border border-br text-xs" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-muted block mb-1">体重(kg)</label>
+                  <input type="number" value={ccrWeight} onChange={e => setCcrWeight(e.target.value)}
+                    placeholder="60" className="w-full px-2 py-1.5 rounded border border-br text-xs" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-muted block mb-1">Cr(mg/dL)</label>
+                  <input type="number" step="0.1" value={ccrCr} onChange={e => setCcrCr(e.target.value)}
+                    placeholder="1.2" className="w-full px-2 py-1.5 rounded border border-br text-xs" />
+                </div>
+              </div>
+              <label className="flex items-center gap-2 text-xs text-muted">
+                <input type="checkbox" checked={ccrFemale} onChange={e => setCcrFemale(e.target.checked)} />
+                女性（×0.85）
+              </label>
+              <button onClick={() => {
+                const a = parseFloat(ccrAge), w = parseFloat(ccrWeight), c = parseFloat(ccrCr)
+                if (a && w && c) {
+                  const ccr = (140 - a) * w / (72 * c) * (ccrFemale ? 0.85 : 1)
+                  setEgfr(String(Math.round(ccr * 10) / 10))
+                }
+              }} className="w-full py-1.5 bg-ac text-white text-xs font-bold rounded-lg">
+                計算してeGFR欄に反映
+              </button>
+            </div>
+          )}
+        </div>
+
         <SelectInput
           id="abx-category"
           label="薬剤カテゴリで絞り込み"
@@ -176,10 +212,10 @@ export default function RenalDoseAbxPage() {
 
         {/* 用量テーブル */}
         <div className="mt-4 border border-br rounded-xl overflow-x-auto">
-          <table className="w-full text-xs sm:text-sm min-w-[600px]">
+          <table className="w-full text-xs min-w-[500px]">
             <thead className="bg-s1">
               <tr>
-                <th className="text-left px-3 py-2 text-tx font-medium sticky left-0 bg-s1 z-10">薬剤名</th>
+                <th className="text-left px-2 py-2 text-tx font-medium sticky left-0 bg-s1 z-10 w-[90px] max-w-[90px]">薬剤</th>
                 {egfrRanges.map((r, i) => (
                   <th
                     key={r.label}
@@ -193,8 +229,8 @@ export default function RenalDoseAbxPage() {
             <tbody className="divide-y divide-br">
               {filteredAbx.map(abx => (
                 <tr key={abx.id} className="hover:bg-s1/50">
-                  <td className="px-3 py-2 text-tx sticky left-0 bg-bg z-10">
-                    <div className="font-medium">{abx.name}</div>
+                  <td className="px-2 py-2 text-tx sticky left-0 bg-bg z-10 w-[90px] max-w-[90px]">
+                    <div className="font-medium text-xs leading-tight truncate">{abx.name}</div>
                     {abx.note && <div className="text-xs text-wn mt-0.5">⚠ {abx.note}</div>}
                   </td>
                   {abx.doses.map((dose, i) => (
@@ -212,7 +248,7 @@ export default function RenalDoseAbxPage() {
         </div>
 
         <div className="p-3 bg-wnl border border-wnb rounded-lg text-xs text-wn">
-          ⚠ 免責: 本ツールは一般的な参考情報であり、臨床判断の代替とはなりません。実際の投与量は添付文書・施設プロトコル・TDM結果に基づいて決定してください。
+          ⚠ 掲載情報は下記文献の転記であり、正確性は保証しません。必ず添付文書をご確認ください。
         </div>
       </div>
     </CalculatorLayout>
