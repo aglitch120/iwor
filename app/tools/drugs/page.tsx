@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -29,6 +30,7 @@ export default function DrugsHubPage() {
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">💊 薬剤ガイド</span>
         <h1 className="text-2xl font-bold text-tx mb-2">薬剤ガイド</h1>
         <p className="text-sm text-muted">抗菌薬・ステロイド・オピオイド・腎機能別用量。臨床で頻用する薬剤情報をまとめて。</p>
+        <UpdatedAt />
       </header>
 
       <div className="grid gap-3">

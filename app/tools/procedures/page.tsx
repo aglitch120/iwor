@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 import { useState } from 'react'
 import Link from 'next/link'
 import ErrorReportButton from '@/components/tools/ErrorReportButton'
@@ -305,6 +306,7 @@ export default function ProceduresPage() {
           </div>
           <ProPulseHint><FavoriteButton slug="app-procedures" title="手技ガイド" href="/tools/procedures" type="app" /></ProPulseHint>
         </div>
+        <UpdatedAt />
       </header>
 
       {/* カテゴリフィルタ */}

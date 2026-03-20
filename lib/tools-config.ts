@@ -10,6 +10,8 @@ export interface ToolDefinition {
   tier: 1 | 2 | 3
   keywords: string[]
   relatedSlugs: string[]
+  /** 最終更新日（YYYY-MM形式） */
+  updatedAt?: string
 }
 
 export type ToolCategory =
@@ -61,6 +63,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['eGFR', '計算', 'CKD-EPI', '腎機能', 'CKD', 'ステージ', 'クレアチニン'],
     relatedSlugs: ['corrected-ca', 'fib-4'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'cha2ds2-vasc',
@@ -71,6 +74,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['CHA2DS2-VASc', '心房細動', '脳卒中', 'リスク', '抗凝固'],
     relatedSlugs: ['chads2', 'has-bled'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'chads2',
@@ -81,6 +85,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['CHADS2', '心房細動', '脳卒中'],
     relatedSlugs: ['cha2ds2-vasc', 'has-bled'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'has-bled',
@@ -91,6 +96,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['HAS-BLED', '出血', '抗凝固', '心房細動'],
     relatedSlugs: ['cha2ds2-vasc', 'chads2'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'child-pugh',
@@ -101,6 +107,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['Child-Pugh', '肝硬変', '重症度'],
     relatedSlugs: ['meld', 'fib-4'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'meld',
@@ -111,6 +118,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['MELD', '肝疾患', '肝移植'],
     relatedSlugs: ['child-pugh', 'fib-4'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'curb-65',
@@ -121,6 +129,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['CURB-65', '肺炎', '重症度', 'CAP'],
     relatedSlugs: ['a-drop', 'qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'a-drop',
@@ -131,6 +140,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['A-DROP', '肺炎', '日本呼吸器学会'],
     relatedSlugs: ['curb-65', 'qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'wells-pe',
@@ -141,6 +151,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['Wells', '肺塞栓', 'PE', 'D-dimer'],
     relatedSlugs: ['wells-dvt'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'wells-dvt',
@@ -151,6 +162,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['Wells', 'DVT', '深部静脈血栓症'],
     relatedSlugs: ['wells-pe'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'grace',
@@ -161,6 +173,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['GRACE', 'ACS', '急性冠症候群'],
     relatedSlugs: ['cha2ds2-vasc'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'qsofa',
@@ -171,6 +184,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['qSOFA', '敗血症', 'sepsis'],
     relatedSlugs: ['sofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'sofa',
@@ -181,6 +195,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['SOFA', '臓器障害', '敗血症', 'Sepsis-3'],
     relatedSlugs: ['qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'fib-4',
@@ -191,6 +206,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['FIB-4', '肝線維化', 'NAFLD'],
     relatedSlugs: ['child-pugh', 'meld'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'corrected-ca',
@@ -201,6 +217,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['補正Ca', 'カルシウム', 'アルブミン', 'Payne'],
     relatedSlugs: ['egfr'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'aa-gradient',
@@ -211,6 +228,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['A-aDO2', '酸素分圧較差', '低酸素血症'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
 
   // ── Tier 2（16種） ──
@@ -223,6 +241,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Cockcroft-Gault', 'CCr', 'クレアチニンクリアランス', '腎機能'],
     relatedSlugs: ['egfr'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'bmi',
@@ -233,6 +252,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['BMI', '体格指数', '肥満'],
     relatedSlugs: ['bsa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'bsa',
@@ -243,6 +263,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['BSA', '体表面積', 'Du Bois'],
     relatedSlugs: ['bmi'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'rcri',
@@ -253,6 +274,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['RCRI', '術前評価', '心血管リスク', '周術期'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
   {
     slug: 'apache2',
@@ -263,6 +285,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['APACHE', 'ICU', '重症度', '予後'],
     relatedSlugs: ['sofa', 'qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'gcs',
@@ -273,6 +296,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['GCS', '意識レベル', 'Glasgow', '昏睡'],
     relatedSlugs: ['nihss'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'nihss',
@@ -283,6 +307,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['NIHSS', '脳卒中', '重症度', 't-PA'],
     relatedSlugs: ['gcs', 'mrs', 'abcd2'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'mrs',
@@ -293,6 +318,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['mRS', 'Rankin', '機能障害', '脳卒中'],
     relatedSlugs: ['nihss'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'karnofsky',
@@ -303,6 +329,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Karnofsky', 'PS', '全身状態', 'がん'],
     relatedSlugs: ['ecog'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'ecog',
@@ -313,6 +340,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['ECOG', 'PS', '全身状態'],
     relatedSlugs: ['karnofsky'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'anion-gap',
@@ -323,6 +351,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['アニオンギャップ', 'AG', 'アシドーシス', '代謝性'],
     relatedSlugs: ['corrected-ca'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'abcd2',
@@ -333,6 +362,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['ABCD2', 'TIA', '脳梗塞', 'リスク'],
     relatedSlugs: ['nihss'],
+    updatedAt: '2026-03',
   },
 
   // ── 電解質・輸液計算群 ──
@@ -345,6 +375,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['維持輸液', '4-2-1', 'Holliday-Segar', '輸液速度'],
     relatedSlugs: ['na-deficit', 'free-water-deficit'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'na-deficit',
@@ -355,6 +386,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Na欠乏量', 'ナトリウム', '低Na血症', '補正'],
     relatedSlugs: ['na-correction-rate', 'free-water-deficit'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'free-water-deficit',
@@ -365,6 +397,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['自由水', '高Na血症', 'ナトリウム', '脱水'],
     relatedSlugs: ['na-deficit', 'na-correction-rate'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'na-correction-rate',
@@ -375,6 +408,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Na補正速度', 'ODS', '浸透圧性脱髄', '補正'],
     relatedSlugs: ['na-deficit', 'free-water-deficit'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'kcl-correction',
@@ -385,6 +419,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['KCl', 'カリウム', '低K血症', '補正'],
     relatedSlugs: ['na-deficit'],
+    updatedAt: '2026-03',
   },
 
   // ── 抗菌薬・薬剤 ──
@@ -397,6 +432,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['ステロイド', '換算', 'プレドニゾロン', 'デキサメタゾン', 'PSL'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
   {
     slug: 'renal-dose-abx',
@@ -407,6 +443,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['抗菌薬', '腎機能', '用量調整', 'eGFR', '減量'],
     relatedSlugs: ['egfr', 'cockcroft-gault'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'insulin-sliding',
@@ -417,6 +454,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['インスリン', 'スライディングスケール', '血糖', '当直'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
 
   // ── Tier 3（専門スコア） ──
@@ -429,6 +467,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Glasgow-Blatchford', 'GBS', '上部消化管出血', 'GI bleeding'],
     relatedSlugs: ['aims65'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'aims65',
@@ -439,6 +478,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['AIMS65', '上部消化管出血', '死亡率'],
     relatedSlugs: ['glasgow-blatchford'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'heart-score',
@@ -449,6 +489,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['HEART', '胸痛', 'MACE', 'ER'],
     relatedSlugs: ['grace', 'timi'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'timi',
@@ -459,6 +500,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['TIMI', 'ACS', 'NSTEMI', '不安定狭心症'],
     relatedSlugs: ['grace', 'heart-score'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'news2',
@@ -469,6 +511,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['NEWS', 'NEWS2', '早期警戒', 'EWS', '急変'],
     relatedSlugs: ['qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'charlson',
@@ -479,6 +522,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Charlson', 'CCI', '併存疾患', 'comorbidity'],
     relatedSlugs: ['ecog', 'karnofsky'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'centor',
@@ -489,6 +533,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Centor', 'McIsaac', '咽頭炎', '溶連菌', 'GAS'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
   {
     slug: 'caprini',
@@ -499,6 +544,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Caprini', 'VTE', '血栓予防', '周術期'],
     relatedSlugs: ['wells-pe', 'wells-dvt', 'padua'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'padua',
@@ -509,6 +555,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Padua', 'VTE', '内科入院', '血栓予防'],
     relatedSlugs: ['wells-pe', 'wells-dvt', 'caprini'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'mascc',
@@ -519,6 +566,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['MASCC', '発熱性好中球減少', 'FN', 'febrile neutropenia'],
     relatedSlugs: ['qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'alvarado',
@@ -529,6 +577,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Alvarado', 'MANTRELS', '虫垂炎', '急性腹症'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
   {
     slug: 'perc',
@@ -539,6 +588,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['PERC', '肺塞栓', 'PE除外', 'rule-out'],
     relatedSlugs: ['wells-pe'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'ottawa-ankle',
@@ -549,6 +599,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Ottawa', '足関節', '足部', 'X線適応', '骨折'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
   {
     slug: 'rockall',
@@ -559,6 +610,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Rockall', '再出血', 'GI出血', '内視鏡後'],
     relatedSlugs: ['glasgow-blatchford', 'aims65'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'spesi',
@@ -569,6 +621,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['sPESI', 'PESI', '肺塞栓', '重症度', '外来治療'],
     relatedSlugs: ['wells-pe', 'perc'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'phq9',
@@ -579,6 +632,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['PHQ-9', 'うつ病', '抑うつ', 'スクリーニング'],
     relatedSlugs: ['gad7'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'gad7',
@@ -589,6 +643,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['GAD-7', '不安障害', '不安', 'スクリーニング'],
     relatedSlugs: ['phq9'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'isth-dic',
@@ -599,6 +654,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['DIC', 'ISTH', '播種性血管内凝固', 'FDP', 'Dダイマー'],
     relatedSlugs: ['sofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'light-criteria',
@@ -609,6 +665,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Light', '胸水', '滲出性', '漏出性', '胸腔穿刺'],
     relatedSlugs: [],
+    updatedAt: '2026-03',
   },
   // ── 追加12種（67個完成） ──
   {
@@ -620,6 +677,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['QTc', 'Bazett', 'Fridericia', 'QT延長', 'TdP', '心電図'],
     relatedSlugs: ['cha2ds2-vasc', 'heart-score'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'map',
@@ -630,6 +688,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['MAP', '平均動脈圧', '灌流圧', 'ICU', '血圧'],
     relatedSlugs: ['qsofa', 'sofa', 'news2'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'fena',
@@ -640,6 +699,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['FENa', 'AKI', '急性腎障害', '腎前性', '尿中Na'],
     relatedSlugs: ['egfr', 'cockcroft-gault', 'na-deficit'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'osmolality-gap',
@@ -650,6 +710,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['浸透圧ギャップ', 'Osmolal gap', '中毒', 'メタノール', 'エチレングリコール'],
     relatedSlugs: ['anion-gap', 'na-deficit'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'winters-formula',
@@ -660,6 +721,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Winters', '代償', 'pCO2', '血ガス', '代謝性アシドーシス'],
     relatedSlugs: ['anion-gap', 'aa-gradient'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'corrected-phenytoin',
@@ -670,6 +732,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['フェニトイン', 'Sheiner-Tozer', 'アレビアチン', '低アルブミン', 'TDM'],
     relatedSlugs: ['corrected-ca'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'ibw',
@@ -680,6 +743,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['IBW', '理想体重', '調整体重', 'ABW', 'Devine', '人工呼吸器'],
     relatedSlugs: ['bmi', 'bsa', 'maintenance-fluid'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'anc',
@@ -690,6 +754,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['ANC', '好中球', 'FN', '発熱性好中球減少', '白血球'],
     relatedSlugs: ['mascc', 'sofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'meld-na',
@@ -700,6 +765,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['MELD-Na', 'MELD', '肝移植', '肝硬変', '予後'],
     relatedSlugs: ['meld', 'child-pugh'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'ranson',
@@ -710,6 +776,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['Ranson', '急性膵炎', '重症度', '膵炎'],
     relatedSlugs: ['bisap', 'apache2'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'bisap',
@@ -720,6 +787,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['BISAP', '急性膵炎', '重症度', 'BUN', 'SIRS'],
     relatedSlugs: ['ranson', 'apache2', 'qsofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'audit',
@@ -730,6 +798,7 @@ export const tools: ToolDefinition[] = [
     tier: 3,
     keywords: ['AUDIT', 'アルコール', '飲酒', 'スクリーニング', '依存'],
     relatedSlugs: ['phq9', 'gad7'],
+    updatedAt: '2026-03',
   },
   // ── ER/ICU系追加 ──
   {
@@ -741,6 +810,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['LDL', 'Friedewald', 'コレステロール', '脂質', 'non-HDL'],
     relatedSlugs: ['bmi', 'egfr'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'dopamine-dose',
@@ -751,6 +821,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['γ計算', 'ガンマ', '昇圧剤', 'ドパミン', 'ノルアドレナリン', 'ICU'],
     relatedSlugs: ['map', 'qsofa', 'sofa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'parkland',
@@ -761,6 +832,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Parkland', 'Baxter', '熱傷', '輸液', 'TBSA', '熱傷面積'],
     relatedSlugs: ['maintenance-fluid', 'ibw'],
+    updatedAt: '2026-03',
   },
   // ── HOKUTO対抗 追加9種 ──
   {
@@ -772,6 +844,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['JCS', '意識障害', '意識レベル', 'Japan Coma Scale'],
     relatedSlugs: ['gcs', 'nihss'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'sirs',
@@ -782,6 +855,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['SIRS', '敗血症', '炎症', '全身性炎症反応'],
     relatedSlugs: ['qsofa', 'sofa', 'news2'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'fio2-table',
@@ -792,6 +866,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['FiO2', '酸素', '鼻カニューラ', 'マスク', 'リザーバー', '酸素投与量'],
     relatedSlugs: ['aa-gradient', 'ibw'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'harris-benedict',
@@ -802,6 +877,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Harris-Benedict', 'BEE', 'TEE', '基礎代謝', '栄養', 'カロリー'],
     relatedSlugs: ['bmi', 'ibw', 'bsa'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'nyha',
@@ -812,6 +888,7 @@ export const tools: ToolDefinition[] = [
     tier: 1,
     keywords: ['NYHA', '心不全', '心機能', '分類'],
     relatedSlugs: ['cha2ds2-vasc', 'map'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'homa',
@@ -822,6 +899,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['HOMA-IR', 'HOMA-β', 'インスリン抵抗性', 'インスリン分泌', '糖尿病'],
     relatedSlugs: ['bmi', 'ldl-friedewald'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'cam-icu',
@@ -832,6 +910,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['CAM-ICU', 'せん妄', 'ICU', 'delirium'],
     relatedSlugs: ['gcs', 'jcs', 'rass'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'rass',
@@ -842,6 +921,7 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['RASS', '鎮静', 'ICU', '人工呼吸'],
     relatedSlugs: ['gcs', 'cam-icu', 'jcs'],
+    updatedAt: '2026-03',
   },
   {
     slug: 'barthel-index',
@@ -852,99 +932,100 @@ export const tools: ToolDefinition[] = [
     tier: 2,
     keywords: ['Barthel', 'ADL', '日常生活動作', 'リハビリ', '介護'],
     relatedSlugs: ['mrs', 'ecog', 'karnofsky'],
+    updatedAt: '2026-03',
   },
   // ===== NEW TIER 1: ER/ICU必須 =====
-  { slug: 'cchr', name: 'カナダ頭部CTルール (CCHR)', nameEn: 'Canadian CT Head Rule', description: '成人軽症頭部外傷(GCS13-15)のCT適応判断。高リスク・中リスクで層別化。', category: 'neurology', tier: 1, keywords: ['CCHR','頭部CT','頭部外傷','GCS'], relatedSlugs: ['gcs'] },
-  { slug: 'pecarn', name: 'PECARN小児頭部外傷ルール', nameEn: 'PECARN Pediatric Head Injury Rule', description: '小児頭部外傷のCT適応。2歳未満/2歳以上で基準が異なる。ciTBIリスク<0.02%なら観察可。', category: 'neurology', tier: 1, keywords: ['PECARN','小児','頭部外傷','CT適応'], relatedSlugs: ['cchr','gcs'] },
-  { slug: 'canadian-cspine', name: 'Canadian C-Spine Rule', nameEn: 'Canadian C-Spine Rule', description: '頚椎損傷の画像検査適応判断。外傷患者で頚椎CTが不要な低リスク群を同定。', category: 'neurology', tier: 1, keywords: ['CCR','頚椎','Cスパイン','外傷'], relatedSlugs: ['nexus'] },
-  { slug: 'nexus', name: 'NEXUS頚椎外傷基準', nameEn: 'NEXUS Criteria', description: '頚椎外傷の画像検査不要基準。5項目すべて陰性なら頚椎画像不要。', category: 'neurology', tier: 1, keywords: ['NEXUS','頚椎','外傷','画像'], relatedSlugs: ['canadian-cspine'] },
-  { slug: 'rtpa-checklist', name: 'rt-PAチェックリスト', nameEn: 'rt-PA Checklist', description: '脳梗塞のrt-PA静注血栓溶解療法の適応・禁忌チェック。発症4.5時間以内。', category: 'neurology', tier: 1, keywords: ['rt-PA','tPA','血栓溶解','脳梗塞','アルテプラーゼ'], relatedSlugs: ['nihss','aspects'] },
-  { slug: 'aspects', name: 'ASPECTSスコア', nameEn: 'ASPECTS', description: '急性期脳梗塞のCT早期虚血変化の定量評価。10点満点。MCA領域を10区域で評価。', category: 'neurology', tier: 1, keywords: ['ASPECTS','脳梗塞','CT','MCA','早期虚血'], relatedSlugs: ['nihss','rtpa-checklist'] },
-  { slug: 'add-risk', name: 'ADDリスクスコア', nameEn: 'Aortic Dissection Detection Risk Score', description: '大動脈解離の検査前確率評価。0-1点かつDダイマー<0.5で解離除外。', category: 'cardiology', tier: 1, keywords: ['ADD','大動脈解離','解離','Dダイマー'], relatedSlugs: [] },
-  { slug: 'lrinec', name: 'LRINECスコア', nameEn: 'LRINEC Score', description: '壊死性筋膜炎の補助診断。≧6で壊死性筋膜炎を疑う。ただし低値でも否定できない。', category: 'infectious', tier: 1, keywords: ['LRINEC','壊死性筋膜炎','軟部組織感染'], relatedSlugs: [] },
-  { slug: 'fisher', name: 'Fisher分類', nameEn: 'Fisher Scale', description: 'SAHのCTによる脳血管攣縮リスク分類。Grade 1-4。出血パターンで評価。', category: 'neurology', tier: 1, keywords: ['Fisher','SAH','くも膜下出血','血管攣縮'], relatedSlugs: ['hunt-hess','wfns'] },
-  { slug: 'hunt-hess', name: 'Hunt and Hess分類', nameEn: 'Hunt and Hess Scale', description: 'SAH重症度分類。Grade I-V。臨床症状に基づく。', category: 'neurology', tier: 1, keywords: ['Hunt','Hess','SAH','くも膜下出血','重症度'], relatedSlugs: ['fisher','wfns'] },
-  { slug: 'wfns', name: 'WFNS分類', nameEn: 'WFNS SAH Grading', description: 'SAH重症度分類（GCSベース）。Grade I-V。国際的に広く使用。', category: 'neurology', tier: 1, keywords: ['WFNS','SAH','くも膜下出血','GCS'], relatedSlugs: ['fisher','hunt-hess','gcs'] },
-  { slug: 'ciwa-ar', name: 'CIWA-Arスコア', nameEn: 'CIWA-Ar', description: 'アルコール離脱症候群の重症度評価。10項目67点満点。≧20で重症。', category: 'general', tier: 1, keywords: ['CIWA','アルコール離脱','振戦せん妄','DT'], relatedSlugs: ['audit','cage'] },
-  { slug: 'four-score', name: 'FOURスコア', nameEn: 'FOUR Score', description: '意識障害評価（GCSの代替）。眼・運動・脳幹反射・呼吸の4項目。挿管患者にも使用可。', category: 'neurology', tier: 1, keywords: ['FOUR','意識障害','昏睡','GCS代替'], relatedSlugs: ['gcs','jcs'] },
-  { slug: 'cage', name: 'CAGEテスト', nameEn: 'CAGE Questionnaire', description: 'アルコール依存症スクリーニング。4問中2問以上陽性で依存症を疑う。', category: 'general', tier: 1, keywords: ['CAGE','アルコール','依存症','スクリーニング'], relatedSlugs: ['audit','ciwa-ar'] },
-  { slug: 'psi-port', name: 'PSI/PORTスコア', nameEn: 'Pneumonia Severity Index', description: '市中肺炎の重症度分類。20項目でClass I-Vに層別化。入院判断の指標。', category: 'respiratory', tier: 1, keywords: ['PSI','PORT','肺炎','重症度','入院'], relatedSlugs: ['curb-65','a-drop','smart-cop'] },
-  { slug: 'smart-cop', name: 'SMART-COP', nameEn: 'SMART-COP', description: '市中肺炎のICU/人工呼吸器/昇圧薬の必要性予測。8項目。≧3でICU考慮。', category: 'respiratory', tier: 1, keywords: ['SMART-COP','肺炎','ICU','人工呼吸器'], relatedSlugs: ['curb-65','a-drop','psi-port'] },
-  { slug: 'geneva', name: '改訂Genevaスコア', nameEn: 'Revised Geneva Score', description: 'PE診断の臨床的確率評価。Wells代替。0-3低、4-10中、≧11高リスク。', category: 'cardiology', tier: 1, keywords: ['Geneva','PE','肺塞栓','診断予測'], relatedSlugs: ['wells-pe','perc','spesi'] },
-  { slug: 'toast', name: 'TOAST分類', nameEn: 'TOAST Classification', description: '脳梗塞の病型分類。大血管/小血管/心原性/その他/原因不明の5型。', category: 'neurology', tier: 1, keywords: ['TOAST','脳梗塞','病型分類','アテローム','ラクナ','心原性'], relatedSlugs: ['nihss','aspects'] },
-  { slug: 'duke-criteria', name: 'Duke診断基準（感染性心内膜炎）', nameEn: 'Modified Duke Criteria', description: '感染性心内膜炎(IE)の診断基準。大基準・小基準の組み合わせで確定/疑い/否定。', category: 'infectious', tier: 1, keywords: ['Duke','感染性心内膜炎','IE','心内膜炎'], relatedSlugs: [] },
-  { slug: 'ottawa-sah', name: 'Ottawa SAHルール', nameEn: 'Ottawa SAH Rule', description: '頭痛患者のSAH除外。6項目すべて陰性で感度100%。15歳以上の急性頭痛が対象。', category: 'neurology', tier: 1, keywords: ['Ottawa','SAH','くも膜下出血','頭痛','除外'], relatedSlugs: ['fisher','hunt-hess'] },
-  { slug: 'san-francisco-syncope', name: 'サンフランシスコ失神ルール (CHESS)', nameEn: 'San Francisco Syncope Rule', description: '失神患者の短期重大イベント予測。5項目(CHESS)。1つでも陽性なら入院検討。', category: 'cardiology', tier: 1, keywords: ['CHESS','失神','syncope','入院適応'], relatedSlugs: ['abcd2'] },
-  { slug: 'sapsii', name: 'SAPS II', nameEn: 'SAPS II', description: 'ICU入室患者の重症度・院内死亡率予測。17項目。APACHE IIの代替として使用。', category: 'general', tier: 1, keywords: ['SAPS','ICU','重症度','死亡率'], relatedSlugs: ['apache2','sofa'] },
+  { slug: 'cchr', name: 'カナダ頭部CTルール (CCHR)', nameEn: 'Canadian CT Head Rule', description: '成人軽症頭部外傷(GCS13-15)のCT適応判断。高リスク・中リスクで層別化。', category: 'neurology', tier: 1, keywords: ['CCHR','頭部CT','頭部外傷','GCS'], relatedSlugs: ['gcs'], updatedAt: '2026-03' },
+  { slug: 'pecarn', name: 'PECARN小児頭部外傷ルール', nameEn: 'PECARN Pediatric Head Injury Rule', description: '小児頭部外傷のCT適応。2歳未満/2歳以上で基準が異なる。ciTBIリスク<0.02%なら観察可。', category: 'neurology', tier: 1, keywords: ['PECARN','小児','頭部外傷','CT適応'], relatedSlugs: ['cchr','gcs'], updatedAt: '2026-03' },
+  { slug: 'canadian-cspine', name: 'Canadian C-Spine Rule', nameEn: 'Canadian C-Spine Rule', description: '頚椎損傷の画像検査適応判断。外傷患者で頚椎CTが不要な低リスク群を同定。', category: 'neurology', tier: 1, keywords: ['CCR','頚椎','Cスパイン','外傷'], relatedSlugs: ['nexus'], updatedAt: '2026-03' },
+  { slug: 'nexus', name: 'NEXUS頚椎外傷基準', nameEn: 'NEXUS Criteria', description: '頚椎外傷の画像検査不要基準。5項目すべて陰性なら頚椎画像不要。', category: 'neurology', tier: 1, keywords: ['NEXUS','頚椎','外傷','画像'], relatedSlugs: ['canadian-cspine'], updatedAt: '2026-03' },
+  { slug: 'rtpa-checklist', name: 'rt-PAチェックリスト', nameEn: 'rt-PA Checklist', description: '脳梗塞のrt-PA静注血栓溶解療法の適応・禁忌チェック。発症4.5時間以内。', category: 'neurology', tier: 1, keywords: ['rt-PA','tPA','血栓溶解','脳梗塞','アルテプラーゼ'], relatedSlugs: ['nihss','aspects'], updatedAt: '2026-03' },
+  { slug: 'aspects', name: 'ASPECTSスコア', nameEn: 'ASPECTS', description: '急性期脳梗塞のCT早期虚血変化の定量評価。10点満点。MCA領域を10区域で評価。', category: 'neurology', tier: 1, keywords: ['ASPECTS','脳梗塞','CT','MCA','早期虚血'], relatedSlugs: ['nihss','rtpa-checklist'], updatedAt: '2026-03' },
+  { slug: 'add-risk', name: 'ADDリスクスコア', nameEn: 'Aortic Dissection Detection Risk Score', description: '大動脈解離の検査前確率評価。0-1点かつDダイマー<0.5で解離除外。', category: 'cardiology', tier: 1, keywords: ['ADD','大動脈解離','解離','Dダイマー'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'lrinec', name: 'LRINECスコア', nameEn: 'LRINEC Score', description: '壊死性筋膜炎の補助診断。≧6で壊死性筋膜炎を疑う。ただし低値でも否定できない。', category: 'infectious', tier: 1, keywords: ['LRINEC','壊死性筋膜炎','軟部組織感染'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'fisher', name: 'Fisher分類', nameEn: 'Fisher Scale', description: 'SAHのCTによる脳血管攣縮リスク分類。Grade 1-4。出血パターンで評価。', category: 'neurology', tier: 1, keywords: ['Fisher','SAH','くも膜下出血','血管攣縮'], relatedSlugs: ['hunt-hess','wfns'], updatedAt: '2026-03' },
+  { slug: 'hunt-hess', name: 'Hunt and Hess分類', nameEn: 'Hunt and Hess Scale', description: 'SAH重症度分類。Grade I-V。臨床症状に基づく。', category: 'neurology', tier: 1, keywords: ['Hunt','Hess','SAH','くも膜下出血','重症度'], relatedSlugs: ['fisher','wfns'], updatedAt: '2026-03' },
+  { slug: 'wfns', name: 'WFNS分類', nameEn: 'WFNS SAH Grading', description: 'SAH重症度分類（GCSベース）。Grade I-V。国際的に広く使用。', category: 'neurology', tier: 1, keywords: ['WFNS','SAH','くも膜下出血','GCS'], relatedSlugs: ['fisher','hunt-hess','gcs'], updatedAt: '2026-03' },
+  { slug: 'ciwa-ar', name: 'CIWA-Arスコア', nameEn: 'CIWA-Ar', description: 'アルコール離脱症候群の重症度評価。10項目67点満点。≧20で重症。', category: 'general', tier: 1, keywords: ['CIWA','アルコール離脱','振戦せん妄','DT'], relatedSlugs: ['audit','cage'], updatedAt: '2026-03' },
+  { slug: 'four-score', name: 'FOURスコア', nameEn: 'FOUR Score', description: '意識障害評価（GCSの代替）。眼・運動・脳幹反射・呼吸の4項目。挿管患者にも使用可。', category: 'neurology', tier: 1, keywords: ['FOUR','意識障害','昏睡','GCS代替'], relatedSlugs: ['gcs','jcs'], updatedAt: '2026-03' },
+  { slug: 'cage', name: 'CAGEテスト', nameEn: 'CAGE Questionnaire', description: 'アルコール依存症スクリーニング。4問中2問以上陽性で依存症を疑う。', category: 'general', tier: 1, keywords: ['CAGE','アルコール','依存症','スクリーニング'], relatedSlugs: ['audit','ciwa-ar'], updatedAt: '2026-03' },
+  { slug: 'psi-port', name: 'PSI/PORTスコア', nameEn: 'Pneumonia Severity Index', description: '市中肺炎の重症度分類。20項目でClass I-Vに層別化。入院判断の指標。', category: 'respiratory', tier: 1, keywords: ['PSI','PORT','肺炎','重症度','入院'], relatedSlugs: ['curb-65','a-drop','smart-cop'], updatedAt: '2026-03' },
+  { slug: 'smart-cop', name: 'SMART-COP', nameEn: 'SMART-COP', description: '市中肺炎のICU/人工呼吸器/昇圧薬の必要性予測。8項目。≧3でICU考慮。', category: 'respiratory', tier: 1, keywords: ['SMART-COP','肺炎','ICU','人工呼吸器'], relatedSlugs: ['curb-65','a-drop','psi-port'], updatedAt: '2026-03' },
+  { slug: 'geneva', name: '改訂Genevaスコア', nameEn: 'Revised Geneva Score', description: 'PE診断の臨床的確率評価。Wells代替。0-3低、4-10中、≧11高リスク。', category: 'cardiology', tier: 1, keywords: ['Geneva','PE','肺塞栓','診断予測'], relatedSlugs: ['wells-pe','perc','spesi'], updatedAt: '2026-03' },
+  { slug: 'toast', name: 'TOAST分類', nameEn: 'TOAST Classification', description: '脳梗塞の病型分類。大血管/小血管/心原性/その他/原因不明の5型。', category: 'neurology', tier: 1, keywords: ['TOAST','脳梗塞','病型分類','アテローム','ラクナ','心原性'], relatedSlugs: ['nihss','aspects'], updatedAt: '2026-03' },
+  { slug: 'duke-criteria', name: 'Duke診断基準（感染性心内膜炎）', nameEn: 'Modified Duke Criteria', description: '感染性心内膜炎(IE)の診断基準。大基準・小基準の組み合わせで確定/疑い/否定。', category: 'infectious', tier: 1, keywords: ['Duke','感染性心内膜炎','IE','心内膜炎'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'ottawa-sah', name: 'Ottawa SAHルール', nameEn: 'Ottawa SAH Rule', description: '頭痛患者のSAH除外。6項目すべて陰性で感度100%。15歳以上の急性頭痛が対象。', category: 'neurology', tier: 1, keywords: ['Ottawa','SAH','くも膜下出血','頭痛','除外'], relatedSlugs: ['fisher','hunt-hess'], updatedAt: '2026-03' },
+  { slug: 'san-francisco-syncope', name: 'サンフランシスコ失神ルール (CHESS)', nameEn: 'San Francisco Syncope Rule', description: '失神患者の短期重大イベント予測。5項目(CHESS)。1つでも陽性なら入院検討。', category: 'cardiology', tier: 1, keywords: ['CHESS','失神','syncope','入院適応'], relatedSlugs: ['abcd2'], updatedAt: '2026-03' },
+  { slug: 'sapsii', name: 'SAPS II', nameEn: 'SAPS II', description: 'ICU入室患者の重症度・院内死亡率予測。17項目。APACHE IIの代替として使用。', category: 'general', tier: 1, keywords: ['SAPS','ICU','重症度','死亡率'], relatedSlugs: ['apache2','sofa'], updatedAt: '2026-03' },
   // ===== NEW TIER 2: 病棟頻用 =====
-  { slug: 'apgar', name: 'APGARスコア', nameEn: 'APGAR Score', description: '出生直後の新生児評価。1分後・5分後に5項目(外観/脈拍/しかめ面/活動/呼吸)を評価。', category: 'general', tier: 2, keywords: ['APGAR','新生児','出生','Apgar'], relatedSlugs: [] },
-  { slug: 'asa-ps', name: 'ASA-PS分類', nameEn: 'ASA Physical Status', description: 'アメリカ麻酔科学会による術前の全身状態分類。Class I-VI。手術リスク評価の基本。', category: 'general', tier: 2, keywords: ['ASA','PS','麻酔','術前','全身状態'], relatedSlugs: ['rcri'] },
-  { slug: 'gir', name: 'GIR（ブドウ糖投与速度）', nameEn: 'Glucose Infusion Rate', description: 'ブドウ糖投与速度の算出。低血糖管理・TPN管理に使用。通常4-6mg/kg/min目標。', category: 'electrolyte', tier: 2, keywords: ['GIR','ブドウ糖','血糖','TPN','低血糖'], relatedSlugs: ['maintenance-fluid'] },
-  { slug: 'candida-score', name: 'Candidaスコア', nameEn: 'Candida Score', description: '非好中球減少ICU患者のカンジダ感染リスク。≧3で侵襲性カンジダ症を疑う。', category: 'infectious', tier: 2, keywords: ['Candida','カンジダ','真菌','ICU'], relatedSlugs: ['mascc'] },
-  { slug: 'cpot', name: 'CPOT', nameEn: 'Critical-Care Pain Observation Tool', description: '重症患者の疼痛評価。表情/身体動作/筋緊張/人工呼吸器順応の4項目。≧3で疼痛あり。', category: 'general', tier: 2, keywords: ['CPOT','疼痛','痛み','ICU','鎮痛'], relatedSlugs: ['rass','cam-icu'] },
-  { slug: 'bps-pain', name: 'BPS（疼痛評価）', nameEn: 'Behavioral Pain Scale', description: '鎮静患者の疼痛評価。表情/上肢/人工呼吸器順応の3項目。3-12点。≧6で疼痛あり。', category: 'general', tier: 2, keywords: ['BPS','疼痛','痛み','鎮静','ICU'], relatedSlugs: ['cpot','rass'] },
-  { slug: 'cfs', name: 'CFS臨床虚弱尺度', nameEn: 'Clinical Frailty Scale', description: 'フレイル評価。1(非常に元気)〜9(終末期)の9段階。高齢者の治療方針決定に。', category: 'general', tier: 2, keywords: ['CFS','フレイル','虚弱','高齢者','Clinical Frailty'], relatedSlugs: ['barthel-index','ecog'] },
-  { slug: 'hds-r', name: 'HDS-R（長谷川式）', nameEn: 'Hasegawa Dementia Scale-Revised', description: '認知機能の簡易評価。9項目30点満点。20点以下で認知症の疑い。日本で最も使用される。', category: 'neurology', tier: 2, keywords: ['HDS-R','長谷川式','認知症','認知機能'], relatedSlugs: ['gcs','jcs'] },
-  { slug: 'mmrc', name: '修正MRC息切れスケール', nameEn: 'mMRC Dyspnea Scale', description: 'mMRC息切れ評価。Grade 0-4。COPD重症度評価やリハビリ目標設定に使用。', category: 'respiratory', tier: 2, keywords: ['mMRC','MRC','息切れ','COPD','呼吸困難'], relatedSlugs: ['nyha','bode'] },
-  { slug: 'gold-copd', name: 'COPD病期分類(GOLD)', nameEn: 'GOLD COPD Classification', description: 'COPD重症度分類。FEV1%に基づくGrade 1-4 + ABCD群分類。', category: 'respiratory', tier: 2, keywords: ['GOLD','COPD','FEV1','病期','重症度'], relatedSlugs: ['mmrc','bode'] },
-  { slug: 'bode', name: 'BODE指数', nameEn: 'BODE Index', description: 'COPD生存期間予測。BMI/FEV1%/mMRC/6分間歩行距離の4因子。', category: 'respiratory', tier: 2, keywords: ['BODE','COPD','予後','6分間歩行'], relatedSlugs: ['gold-copd','mmrc'] },
-  { slug: 'gnri', name: 'GNRI', nameEn: 'Geriatric Nutritional Risk Index', description: '栄養の予後予測指標。アルブミン値と体重から算出。<82高リスク、82-92中リスク。', category: 'general', tier: 2, keywords: ['GNRI','栄養','アルブミン','予後'], relatedSlugs: ['conut','pni'] },
-  { slug: 'conut', name: 'CONUTスコア', nameEn: 'CONUT Score', description: '栄養の予後予測指標。アルブミン/リンパ球数/T-Cholから算出。0-12点。', category: 'general', tier: 2, keywords: ['CONUT','栄養','アルブミン','リンパ球'], relatedSlugs: ['gnri','pni'] },
-  { slug: 'pni', name: 'PNI（予後推定栄養指数）', nameEn: 'Prognostic Nutritional Index', description: '小野寺PNI。アルブミン×10+リンパ球数×0.005。<40で手術リスク高。', category: 'general', tier: 2, keywords: ['PNI','小野寺','栄養','手術リスク'], relatedSlugs: ['gnri','conut'] },
-  { slug: 'nrs2002', name: 'NRS 2002', nameEn: 'Nutritional Risk Screening 2002', description: '入院患者の栄養スクリーニング。≧3で栄養リスクあり。ESPENの推奨ツール。', category: 'general', tier: 2, keywords: ['NRS','栄養','スクリーニング','ESPEN'], relatedSlugs: ['gnri','conut','pni'] },
-  { slug: 'sarc-f', name: 'SARC-F', nameEn: 'SARC-F Questionnaire', description: 'サルコペニアスクリーニング。5項目(筋力/歩行/起立/階段/転倒)。≧4で疑い。', category: 'general', tier: 2, keywords: ['SARC-F','サルコペニア','筋力低下','スクリーニング'], relatedSlugs: ['cfs','barthel-index'] },
-  { slug: 'ttkg', name: 'TTKG', nameEn: 'Transtubular K Gradient', description: '尿細管カリウム濃度勾配。高K血症の腎性/非腎性の鑑別。>7で腎排泄正常。', category: 'nephrology', tier: 2, keywords: ['TTKG','カリウム','高K','低K','尿細管'], relatedSlugs: ['fena','kcl-correction'] },
-  { slug: 'geckler', name: 'Geckler分類', nameEn: 'Geckler Classification', description: '喀痰検体の顕微鏡的評価。好中球/扁平上皮で1-6群に分類。4-5群が良質検体。', category: 'respiratory', tier: 2, keywords: ['Geckler','喀痰','グラム染色','検体品質'], relatedSlugs: [] },
-  { slug: 'stone-score', name: 'STONEスコア', nameEn: 'STONE Score', description: '尿路結石の予測。性別/発症時間/悪心嘔吐/赤血球/疼痛の5項目。', category: 'nephrology', tier: 2, keywords: ['STONE','尿路結石','腎結石','腎疝痛'], relatedSlugs: [] },
-  { slug: 'cpc', name: 'CPC/OPC', nameEn: 'Cerebral Performance Category', description: '心肺蘇生後の機能評価。CPC 1(良好)〜5(脳死)。ROSC後の神経学的予後指標。', category: 'neurology', tier: 2, keywords: ['CPC','OPC','心肺蘇生','ROSC','予後'], relatedSlugs: ['gcs','four-score'] },
-  { slug: 'opioid-conversion', name: 'オピオイド換算表', nameEn: 'Opioid Conversion Table', description: 'モルヒネ経口30mgを基準としたオピオイド相互換算。緩和ケアのローテーションに必須。', category: 'general', tier: 2, keywords: ['オピオイド','モルヒネ','フェンタニル','換算','緩和ケア'], relatedSlugs: ['steroid-converter'] },
-  { slug: 'eat10', name: 'EAT-10', nameEn: 'Eating Assessment Tool', description: '簡易嚥下評価スコア。10項目。≧3で嚥下障害の疑い。スクリーニング目的。', category: 'general', tier: 2, keywords: ['EAT-10','嚥下','誤嚥','スクリーニング'], relatedSlugs: [] },
-  { slug: 'design-r', name: 'DESIGN-R 2020', nameEn: 'DESIGN-R 2020', description: '褥瘡状態評価スケール。深さ/滲出液/大きさ/炎症/肉芽/壊死/ポケットの7項目。', category: 'general', tier: 2, keywords: ['DESIGN','褥瘡','床ずれ','創傷'], relatedSlugs: [] },
-  { slug: 'drip-score', name: 'DRIPスコア', nameEn: 'DRIP Score', description: '抗菌薬耐性市中肺炎のリスク評価。耐性菌カバーの広域抗菌薬必要性を判断。', category: 'infectious', tier: 2, keywords: ['DRIP','耐性菌','市中肺炎','MRSA','ESBL'], relatedSlugs: ['curb-65','psi-port'] },
-  { slug: 'i-road', name: 'I-ROADスコア', nameEn: 'I-ROAD Score', description: '院内肺炎の重症度分類。日本の成人肺炎診療GLで使用。A群/B群/C群に層別化。', category: 'respiratory', tier: 2, keywords: ['I-ROAD','院内肺炎','HAP','重症度'], relatedSlugs: ['curb-65','a-drop'] },
-  { slug: 'infusion-list', name: '輸液製剤の組成一覧', nameEn: 'IV Fluid Composition', description: '主要輸液製剤の電解質組成一覧。生食/リンゲル/1-4号液/ブドウ糖液。', category: 'electrolyte', tier: 2, keywords: ['輸液','生食','リンゲル','ブドウ糖','電解質'], relatedSlugs: ['maintenance-fluid'] },
-  { slug: 'holiday-segar', name: 'Holiday-Segarの小児輸液', nameEn: 'Holiday-Segar Formula', description: '小児の維持輸液量(4-2-1ルール)。体重に基づく24時間の維持輸液量計算。', category: 'electrolyte', tier: 2, keywords: ['Holiday-Segar','小児','輸液','4-2-1','維持輸液'], relatedSlugs: ['maintenance-fluid'] },
-  { slug: 'periop-stop', name: '周術期の中止薬一覧', nameEn: 'Perioperative Drug Discontinuation', description: '抗血栓薬・糖尿病治療薬・抗がん剤などの手術前休薬期間一覧。', category: 'general', tier: 2, keywords: ['周術期','休薬','抗血栓薬','手術前','中止薬'], relatedSlugs: ['rcri','asa-ps'] },
-  { slug: 'tetanus', name: '破傷風予防', nameEn: 'Tetanus Prophylaxis', description: '外傷時の破傷風予防フロー。トキソイド/TIG投与の判断。', category: 'infectious', tier: 2, keywords: ['破傷風','トキソイド','TIG','外傷','予防'], relatedSlugs: [] },
-  { slug: 'abpc-score', name: '非定型肺炎スコア', nameEn: 'Atypical Pneumonia Score', description: '細菌性肺炎とマイコプラズマ肺炎の鑑別。6項目中4項目以上で非定型疑い。', category: 'respiratory', tier: 2, keywords: ['非定型','マイコプラズマ','肺炎','鑑別'], relatedSlugs: ['curb-65','a-drop'] },
-  { slug: 'naranjo', name: 'Naranjo評価スケール', nameEn: 'Naranjo Adverse Drug Reaction Scale', description: '薬物有害事象の因果関係評価。10項目。確実/probable/possible/unlikely。', category: 'general', tier: 2, keywords: ['Naranjo','副作用','有害事象','因果関係'], relatedSlugs: [] },
-  { slug: 'mcmahon', name: 'McMahonスコア', nameEn: 'McMahon Score', description: '横紋筋融解症の腎不全・死亡リスク予測。≧6で高リスク。', category: 'nephrology', tier: 2, keywords: ['McMahon','横紋筋融解','CK','腎不全','ミオグロビン'], relatedSlugs: [] },
+  { slug: 'apgar', name: 'APGARスコア', nameEn: 'APGAR Score', description: '出生直後の新生児評価。1分後・5分後に5項目(外観/脈拍/しかめ面/活動/呼吸)を評価。', category: 'general', tier: 2, keywords: ['APGAR','新生児','出生','Apgar'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'asa-ps', name: 'ASA-PS分類', nameEn: 'ASA Physical Status', description: 'アメリカ麻酔科学会による術前の全身状態分類。Class I-VI。手術リスク評価の基本。', category: 'general', tier: 2, keywords: ['ASA','PS','麻酔','術前','全身状態'], relatedSlugs: ['rcri'], updatedAt: '2026-03' },
+  { slug: 'gir', name: 'GIR（ブドウ糖投与速度）', nameEn: 'Glucose Infusion Rate', description: 'ブドウ糖投与速度の算出。低血糖管理・TPN管理に使用。通常4-6mg/kg/min目標。', category: 'electrolyte', tier: 2, keywords: ['GIR','ブドウ糖','血糖','TPN','低血糖'], relatedSlugs: ['maintenance-fluid'], updatedAt: '2026-03' },
+  { slug: 'candida-score', name: 'Candidaスコア', nameEn: 'Candida Score', description: '非好中球減少ICU患者のカンジダ感染リスク。≧3で侵襲性カンジダ症を疑う。', category: 'infectious', tier: 2, keywords: ['Candida','カンジダ','真菌','ICU'], relatedSlugs: ['mascc'], updatedAt: '2026-03' },
+  { slug: 'cpot', name: 'CPOT', nameEn: 'Critical-Care Pain Observation Tool', description: '重症患者の疼痛評価。表情/身体動作/筋緊張/人工呼吸器順応の4項目。≧3で疼痛あり。', category: 'general', tier: 2, keywords: ['CPOT','疼痛','痛み','ICU','鎮痛'], relatedSlugs: ['rass','cam-icu'], updatedAt: '2026-03' },
+  { slug: 'bps-pain', name: 'BPS（疼痛評価）', nameEn: 'Behavioral Pain Scale', description: '鎮静患者の疼痛評価。表情/上肢/人工呼吸器順応の3項目。3-12点。≧6で疼痛あり。', category: 'general', tier: 2, keywords: ['BPS','疼痛','痛み','鎮静','ICU'], relatedSlugs: ['cpot','rass'], updatedAt: '2026-03' },
+  { slug: 'cfs', name: 'CFS臨床虚弱尺度', nameEn: 'Clinical Frailty Scale', description: 'フレイル評価。1(非常に元気)〜9(終末期)の9段階。高齢者の治療方針決定に。', category: 'general', tier: 2, keywords: ['CFS','フレイル','虚弱','高齢者','Clinical Frailty'], relatedSlugs: ['barthel-index','ecog'], updatedAt: '2026-03' },
+  { slug: 'hds-r', name: 'HDS-R（長谷川式）', nameEn: 'Hasegawa Dementia Scale-Revised', description: '認知機能の簡易評価。9項目30点満点。20点以下で認知症の疑い。日本で最も使用される。', category: 'neurology', tier: 2, keywords: ['HDS-R','長谷川式','認知症','認知機能'], relatedSlugs: ['gcs','jcs'], updatedAt: '2026-03' },
+  { slug: 'mmrc', name: '修正MRC息切れスケール', nameEn: 'mMRC Dyspnea Scale', description: 'mMRC息切れ評価。Grade 0-4。COPD重症度評価やリハビリ目標設定に使用。', category: 'respiratory', tier: 2, keywords: ['mMRC','MRC','息切れ','COPD','呼吸困難'], relatedSlugs: ['nyha','bode'], updatedAt: '2026-03' },
+  { slug: 'gold-copd', name: 'COPD病期分類(GOLD)', nameEn: 'GOLD COPD Classification', description: 'COPD重症度分類。FEV1%に基づくGrade 1-4 + ABCD群分類。', category: 'respiratory', tier: 2, keywords: ['GOLD','COPD','FEV1','病期','重症度'], relatedSlugs: ['mmrc','bode'], updatedAt: '2026-03' },
+  { slug: 'bode', name: 'BODE指数', nameEn: 'BODE Index', description: 'COPD生存期間予測。BMI/FEV1%/mMRC/6分間歩行距離の4因子。', category: 'respiratory', tier: 2, keywords: ['BODE','COPD','予後','6分間歩行'], relatedSlugs: ['gold-copd','mmrc'], updatedAt: '2026-03' },
+  { slug: 'gnri', name: 'GNRI', nameEn: 'Geriatric Nutritional Risk Index', description: '栄養の予後予測指標。アルブミン値と体重から算出。<82高リスク、82-92中リスク。', category: 'general', tier: 2, keywords: ['GNRI','栄養','アルブミン','予後'], relatedSlugs: ['conut','pni'], updatedAt: '2026-03' },
+  { slug: 'conut', name: 'CONUTスコア', nameEn: 'CONUT Score', description: '栄養の予後予測指標。アルブミン/リンパ球数/T-Cholから算出。0-12点。', category: 'general', tier: 2, keywords: ['CONUT','栄養','アルブミン','リンパ球'], relatedSlugs: ['gnri','pni'], updatedAt: '2026-03' },
+  { slug: 'pni', name: 'PNI（予後推定栄養指数）', nameEn: 'Prognostic Nutritional Index', description: '小野寺PNI。アルブミン×10+リンパ球数×0.005。<40で手術リスク高。', category: 'general', tier: 2, keywords: ['PNI','小野寺','栄養','手術リスク'], relatedSlugs: ['gnri','conut'], updatedAt: '2026-03' },
+  { slug: 'nrs2002', name: 'NRS 2002', nameEn: 'Nutritional Risk Screening 2002', description: '入院患者の栄養スクリーニング。≧3で栄養リスクあり。ESPENの推奨ツール。', category: 'general', tier: 2, keywords: ['NRS','栄養','スクリーニング','ESPEN'], relatedSlugs: ['gnri','conut','pni'], updatedAt: '2026-03' },
+  { slug: 'sarc-f', name: 'SARC-F', nameEn: 'SARC-F Questionnaire', description: 'サルコペニアスクリーニング。5項目(筋力/歩行/起立/階段/転倒)。≧4で疑い。', category: 'general', tier: 2, keywords: ['SARC-F','サルコペニア','筋力低下','スクリーニング'], relatedSlugs: ['cfs','barthel-index'], updatedAt: '2026-03' },
+  { slug: 'ttkg', name: 'TTKG', nameEn: 'Transtubular K Gradient', description: '尿細管カリウム濃度勾配。高K血症の腎性/非腎性の鑑別。>7で腎排泄正常。', category: 'nephrology', tier: 2, keywords: ['TTKG','カリウム','高K','低K','尿細管'], relatedSlugs: ['fena','kcl-correction'], updatedAt: '2026-03' },
+  { slug: 'geckler', name: 'Geckler分類', nameEn: 'Geckler Classification', description: '喀痰検体の顕微鏡的評価。好中球/扁平上皮で1-6群に分類。4-5群が良質検体。', category: 'respiratory', tier: 2, keywords: ['Geckler','喀痰','グラム染色','検体品質'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'stone-score', name: 'STONEスコア', nameEn: 'STONE Score', description: '尿路結石の予測。性別/発症時間/悪心嘔吐/赤血球/疼痛の5項目。', category: 'nephrology', tier: 2, keywords: ['STONE','尿路結石','腎結石','腎疝痛'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'cpc', name: 'CPC/OPC', nameEn: 'Cerebral Performance Category', description: '心肺蘇生後の機能評価。CPC 1(良好)〜5(脳死)。ROSC後の神経学的予後指標。', category: 'neurology', tier: 2, keywords: ['CPC','OPC','心肺蘇生','ROSC','予後'], relatedSlugs: ['gcs','four-score'], updatedAt: '2026-03' },
+  { slug: 'opioid-conversion', name: 'オピオイド換算表', nameEn: 'Opioid Conversion Table', description: 'モルヒネ経口30mgを基準としたオピオイド相互換算。緩和ケアのローテーションに必須。', category: 'general', tier: 2, keywords: ['オピオイド','モルヒネ','フェンタニル','換算','緩和ケア'], relatedSlugs: ['steroid-converter'], updatedAt: '2026-03' },
+  { slug: 'eat10', name: 'EAT-10', nameEn: 'Eating Assessment Tool', description: '簡易嚥下評価スコア。10項目。≧3で嚥下障害の疑い。スクリーニング目的。', category: 'general', tier: 2, keywords: ['EAT-10','嚥下','誤嚥','スクリーニング'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'design-r', name: 'DESIGN-R 2020', nameEn: 'DESIGN-R 2020', description: '褥瘡状態評価スケール。深さ/滲出液/大きさ/炎症/肉芽/壊死/ポケットの7項目。', category: 'general', tier: 2, keywords: ['DESIGN','褥瘡','床ずれ','創傷'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'drip-score', name: 'DRIPスコア', nameEn: 'DRIP Score', description: '抗菌薬耐性市中肺炎のリスク評価。耐性菌カバーの広域抗菌薬必要性を判断。', category: 'infectious', tier: 2, keywords: ['DRIP','耐性菌','市中肺炎','MRSA','ESBL'], relatedSlugs: ['curb-65','psi-port'], updatedAt: '2026-03' },
+  { slug: 'i-road', name: 'I-ROADスコア', nameEn: 'I-ROAD Score', description: '院内肺炎の重症度分類。日本の成人肺炎診療GLで使用。A群/B群/C群に層別化。', category: 'respiratory', tier: 2, keywords: ['I-ROAD','院内肺炎','HAP','重症度'], relatedSlugs: ['curb-65','a-drop'], updatedAt: '2026-03' },
+  { slug: 'infusion-list', name: '輸液製剤の組成一覧', nameEn: 'IV Fluid Composition', description: '主要輸液製剤の電解質組成一覧。生食/リンゲル/1-4号液/ブドウ糖液。', category: 'electrolyte', tier: 2, keywords: ['輸液','生食','リンゲル','ブドウ糖','電解質'], relatedSlugs: ['maintenance-fluid'], updatedAt: '2026-03' },
+  { slug: 'holiday-segar', name: 'Holiday-Segarの小児輸液', nameEn: 'Holiday-Segar Formula', description: '小児の維持輸液量(4-2-1ルール)。体重に基づく24時間の維持輸液量計算。', category: 'electrolyte', tier: 2, keywords: ['Holiday-Segar','小児','輸液','4-2-1','維持輸液'], relatedSlugs: ['maintenance-fluid'], updatedAt: '2026-03' },
+  { slug: 'periop-stop', name: '周術期の中止薬一覧', nameEn: 'Perioperative Drug Discontinuation', description: '抗血栓薬・糖尿病治療薬・抗がん剤などの手術前休薬期間一覧。', category: 'general', tier: 2, keywords: ['周術期','休薬','抗血栓薬','手術前','中止薬'], relatedSlugs: ['rcri','asa-ps'], updatedAt: '2026-03' },
+  { slug: 'tetanus', name: '破傷風予防', nameEn: 'Tetanus Prophylaxis', description: '外傷時の破傷風予防フロー。トキソイド/TIG投与の判断。', category: 'infectious', tier: 2, keywords: ['破傷風','トキソイド','TIG','外傷','予防'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'abpc-score', name: '非定型肺炎スコア', nameEn: 'Atypical Pneumonia Score', description: '細菌性肺炎とマイコプラズマ肺炎の鑑別。6項目中4項目以上で非定型疑い。', category: 'respiratory', tier: 2, keywords: ['非定型','マイコプラズマ','肺炎','鑑別'], relatedSlugs: ['curb-65','a-drop'], updatedAt: '2026-03' },
+  { slug: 'naranjo', name: 'Naranjo評価スケール', nameEn: 'Naranjo Adverse Drug Reaction Scale', description: '薬物有害事象の因果関係評価。10項目。確実/probable/possible/unlikely。', category: 'general', tier: 2, keywords: ['Naranjo','副作用','有害事象','因果関係'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'mcmahon', name: 'McMahonスコア', nameEn: 'McMahon Score', description: '横紋筋融解症の腎不全・死亡リスク予測。≧6で高リスク。', category: 'nephrology', tier: 2, keywords: ['McMahon','横紋筋融解','CK','腎不全','ミオグロビン'], relatedSlugs: [], updatedAt: '2026-03' },
   // ===== NEW TIER 3: 専門科・表/分類 =====
-  { slug: 'ann-arbor', name: 'Ann Arbor分類', nameEn: 'Ann Arbor Staging', description: '悪性リンパ腫の病期分類。Stage I-IV + A/B症状。', category: 'hematology', tier: 3, keywords: ['Ann Arbor','リンパ腫','病期','ステージング'], relatedSlugs: [] },
-  { slug: 'borg-scale', name: '修正ボルグスケール', nameEn: 'Modified Borg Scale', description: '息切れなど主観的運動強度の指標。0-10。リハビリテーションで使用。', category: 'respiratory', tier: 3, keywords: ['Borg','ボルグ','息切れ','運動強度'], relatedSlugs: ['mmrc','nyha'] },
-  { slug: 'brinkman', name: 'ブリンクマン指数', nameEn: 'Brinkman Index', description: '喫煙の累積影響評価。1日本数×喫煙年数。≧400で肺癌リスク↑。', category: 'general', tier: 3, keywords: ['ブリンクマン','喫煙','本数','pack-year'], relatedSlugs: [] },
-  { slug: 'burn-area', name: '熱傷面積算出', nameEn: 'Burn Area Calculation', description: '9の法則・手掌法・Lund-Browder法。Parkland公式と組み合わせて輸液量決定。', category: 'general', tier: 3, keywords: ['熱傷','9の法則','手掌法','Lund','TBSA'], relatedSlugs: ['parkland'] },
-  { slug: 'child-vital', name: '小児バイタル正常範囲', nameEn: 'Pediatric Vital Signs', description: '年齢別の小児バイタルサイン一覧。心拍数/血圧/呼吸数の正常値。', category: 'general', tier: 3, keywords: ['小児','バイタル','心拍数','血圧','正常値'], relatedSlugs: ['holiday-segar'] },
-  { slug: 'anaphylaxis', name: 'アナフィラキシー診断基準', nameEn: 'Anaphylaxis Criteria', description: 'WAO 2020/アナフィラキシーGL 2022の診断基準。3つの臨床基準。', category: 'general', tier: 3, keywords: ['アナフィラキシー','アレルギー','ショック','WAO'], relatedSlugs: [] },
-  { slug: 'gustilo', name: 'Gustilo-Anderson分類', nameEn: 'Gustilo-Anderson Classification', description: '開放骨折の重症度分類。Type I/II/IIIA/IIIB/IIIC。抗菌薬選択の指標。', category: 'general', tier: 3, keywords: ['Gustilo','開放骨折','骨折','重症度'], relatedSlugs: ['tetanus'] },
-  { slug: 'stop-bang', name: 'STOP-Bang', nameEn: 'STOP-Bang Questionnaire', description: 'OSASスクリーニング。8項目。≧3で中等度以上のOSASリスク。', category: 'respiratory', tier: 3, keywords: ['STOP-Bang','OSAS','睡眠時無呼吸','いびき'], relatedSlugs: [] },
-  { slug: 'tds', name: 'TDS（タバコ依存症スクリーニング）', nameEn: 'Tobacco Dependence Screener', description: 'ニコチン依存症スクリーニング。10項目。≧5でニコチン依存症。禁煙外来の適応判断。', category: 'general', tier: 3, keywords: ['TDS','ニコチン','禁煙','依存症','スクリーニング'], relatedSlugs: ['brinkman'] },
-  { slug: 'ipss-prostate', name: 'IPSS（前立腺症状スコア）', nameEn: 'IPSS', description: '前立腺肥大症の症状評価。7項目35点。軽症(0-7)/中等症(8-19)/重症(20-35)。', category: 'general', tier: 3, keywords: ['IPSS','前立腺','排尿','前立腺肥大'], relatedSlugs: [] },
-  { slug: 'siadh', name: 'SIADH診断基準', nameEn: 'SIADH Diagnostic Criteria', description: 'バソプレシン分泌過剰症の診断基準。低Na/低浸透圧/不適切な尿濃縮の3要素。', category: 'electrolyte', tier: 3, keywords: ['SIADH','低Na','バソプレシン','低ナトリウム'], relatedSlugs: ['na-correction-rate','na-deficit','hyponatremia-flow'] },
-  { slug: 'hyponatremia-flow', name: '低Na血症の診断フロー', nameEn: 'Hyponatremia Diagnostic Algorithm', description: '尿浸透圧・尿Na濃度に基づく低ナトリウム血症の鑑別フローチャート。', category: 'electrolyte', tier: 3, keywords: ['低Na','低ナトリウム','フローチャート','鑑別'], relatedSlugs: ['siadh','na-correction-rate','osmolality-gap'] },
-  { slug: 'la-classification', name: '逆流性食道炎 改訂LA分類', nameEn: 'LA Classification of Esophagitis', description: '逆流性食道炎の内視鏡所見分類。Grade N/M/A/B/C/D。', category: 'hepatology', tier: 3, keywords: ['LA分類','逆流性食道炎','GERD','内視鏡'], relatedSlugs: [] },
-  { slug: 'murray', name: 'Murrayスコア', nameEn: 'Murray Lung Injury Score', description: '急性肺障害の重症度/ECMO適応判断。4項目。>2.5でECMO考慮。', category: 'respiratory', tier: 3, keywords: ['Murray','ARDS','ECMO','肺障害','LIS'], relatedSlugs: ['sofa','apache2'] },
-  { slug: 'westley-croup', name: 'Westleyクループスコア', nameEn: 'Westley Croup Score', description: 'クループ症候群の重症度。意識/チアノーゼ/stridor/air entry/陥没呼吸。≦2軽症。', category: 'general', tier: 3, keywords: ['Westley','クループ','小児','stridor'], relatedSlugs: [] },
-  { slug: 'kawasaki', name: '川崎病の診断基準', nameEn: 'Kawasaki Disease Criteria', description: '川崎病診断の手引き改訂6版。主要6症状中5つ以上（4つ+冠動脈病変で不全型）。', category: 'general', tier: 3, keywords: ['川崎病','冠動脈','小児','診断基準'], relatedSlugs: [] },
-  { slug: 'ibs-rome', name: 'IBS診断基準(Rome IV)', nameEn: 'Rome IV IBS Criteria', description: '過敏性腸症候群の診断基準。反復する腹痛+排便との関連。3ヶ月以上持続。', category: 'hepatology', tier: 3, keywords: ['IBS','過敏性腸症候群','Rome','腹痛','排便'], relatedSlugs: [] },
-  { slug: 'bishop', name: 'Bishopスコア', nameEn: 'Bishop Score', description: '子宮頚管成熟度の内診評価。5項目。≧9で誘発分娩が成功しやすい。', category: 'general', tier: 3, keywords: ['Bishop','子宮頚管','分娩','誘発','産科'], relatedSlugs: ['apgar'] },
-  { slug: 'sle-criteria', name: 'SLE分類基準(2019)', nameEn: 'EULAR/ACR SLE Classification', description: 'SLE分類基準。抗核抗体陽性が入口基準。7領域22項目の重み付けスコア。≧10で分類。', category: 'general', tier: 3, keywords: ['SLE','ループス','分類基準','ANA','EULAR'], relatedSlugs: [] },
+  { slug: 'ann-arbor', name: 'Ann Arbor分類', nameEn: 'Ann Arbor Staging', description: '悪性リンパ腫の病期分類。Stage I-IV + A/B症状。', category: 'hematology', tier: 3, keywords: ['Ann Arbor','リンパ腫','病期','ステージング'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'borg-scale', name: '修正ボルグスケール', nameEn: 'Modified Borg Scale', description: '息切れなど主観的運動強度の指標。0-10。リハビリテーションで使用。', category: 'respiratory', tier: 3, keywords: ['Borg','ボルグ','息切れ','運動強度'], relatedSlugs: ['mmrc','nyha'], updatedAt: '2026-03' },
+  { slug: 'brinkman', name: 'ブリンクマン指数', nameEn: 'Brinkman Index', description: '喫煙の累積影響評価。1日本数×喫煙年数。≧400で肺癌リスク↑。', category: 'general', tier: 3, keywords: ['ブリンクマン','喫煙','本数','pack-year'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'burn-area', name: '熱傷面積算出', nameEn: 'Burn Area Calculation', description: '9の法則・手掌法・Lund-Browder法。Parkland公式と組み合わせて輸液量決定。', category: 'general', tier: 3, keywords: ['熱傷','9の法則','手掌法','Lund','TBSA'], relatedSlugs: ['parkland'], updatedAt: '2026-03' },
+  { slug: 'child-vital', name: '小児バイタル正常範囲', nameEn: 'Pediatric Vital Signs', description: '年齢別の小児バイタルサイン一覧。心拍数/血圧/呼吸数の正常値。', category: 'general', tier: 3, keywords: ['小児','バイタル','心拍数','血圧','正常値'], relatedSlugs: ['holiday-segar'], updatedAt: '2026-03' },
+  { slug: 'anaphylaxis', name: 'アナフィラキシー診断基準', nameEn: 'Anaphylaxis Criteria', description: 'WAO 2020/アナフィラキシーGL 2022の診断基準。3つの臨床基準。', category: 'general', tier: 3, keywords: ['アナフィラキシー','アレルギー','ショック','WAO'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'gustilo', name: 'Gustilo-Anderson分類', nameEn: 'Gustilo-Anderson Classification', description: '開放骨折の重症度分類。Type I/II/IIIA/IIIB/IIIC。抗菌薬選択の指標。', category: 'general', tier: 3, keywords: ['Gustilo','開放骨折','骨折','重症度'], relatedSlugs: ['tetanus'], updatedAt: '2026-03' },
+  { slug: 'stop-bang', name: 'STOP-Bang', nameEn: 'STOP-Bang Questionnaire', description: 'OSASスクリーニング。8項目。≧3で中等度以上のOSASリスク。', category: 'respiratory', tier: 3, keywords: ['STOP-Bang','OSAS','睡眠時無呼吸','いびき'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'tds', name: 'TDS（タバコ依存症スクリーニング）', nameEn: 'Tobacco Dependence Screener', description: 'ニコチン依存症スクリーニング。10項目。≧5でニコチン依存症。禁煙外来の適応判断。', category: 'general', tier: 3, keywords: ['TDS','ニコチン','禁煙','依存症','スクリーニング'], relatedSlugs: ['brinkman'], updatedAt: '2026-03' },
+  { slug: 'ipss-prostate', name: 'IPSS（前立腺症状スコア）', nameEn: 'IPSS', description: '前立腺肥大症の症状評価。7項目35点。軽症(0-7)/中等症(8-19)/重症(20-35)。', category: 'general', tier: 3, keywords: ['IPSS','前立腺','排尿','前立腺肥大'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'siadh', name: 'SIADH診断基準', nameEn: 'SIADH Diagnostic Criteria', description: 'バソプレシン分泌過剰症の診断基準。低Na/低浸透圧/不適切な尿濃縮の3要素。', category: 'electrolyte', tier: 3, keywords: ['SIADH','低Na','バソプレシン','低ナトリウム'], relatedSlugs: ['na-correction-rate','na-deficit','hyponatremia-flow'], updatedAt: '2026-03' },
+  { slug: 'hyponatremia-flow', name: '低Na血症の診断フロー', nameEn: 'Hyponatremia Diagnostic Algorithm', description: '尿浸透圧・尿Na濃度に基づく低ナトリウム血症の鑑別フローチャート。', category: 'electrolyte', tier: 3, keywords: ['低Na','低ナトリウム','フローチャート','鑑別'], relatedSlugs: ['siadh','na-correction-rate','osmolality-gap'], updatedAt: '2026-03' },
+  { slug: 'la-classification', name: '逆流性食道炎 改訂LA分類', nameEn: 'LA Classification of Esophagitis', description: '逆流性食道炎の内視鏡所見分類。Grade N/M/A/B/C/D。', category: 'hepatology', tier: 3, keywords: ['LA分類','逆流性食道炎','GERD','内視鏡'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'murray', name: 'Murrayスコア', nameEn: 'Murray Lung Injury Score', description: '急性肺障害の重症度/ECMO適応判断。4項目。>2.5でECMO考慮。', category: 'respiratory', tier: 3, keywords: ['Murray','ARDS','ECMO','肺障害','LIS'], relatedSlugs: ['sofa','apache2'], updatedAt: '2026-03' },
+  { slug: 'westley-croup', name: 'Westleyクループスコア', nameEn: 'Westley Croup Score', description: 'クループ症候群の重症度。意識/チアノーゼ/stridor/air entry/陥没呼吸。≦2軽症。', category: 'general', tier: 3, keywords: ['Westley','クループ','小児','stridor'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'kawasaki', name: '川崎病の診断基準', nameEn: 'Kawasaki Disease Criteria', description: '川崎病診断の手引き改訂6版。主要6症状中5つ以上（4つ+冠動脈病変で不全型）。', category: 'general', tier: 3, keywords: ['川崎病','冠動脈','小児','診断基準'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'ibs-rome', name: 'IBS診断基準(Rome IV)', nameEn: 'Rome IV IBS Criteria', description: '過敏性腸症候群の診断基準。反復する腹痛+排便との関連。3ヶ月以上持続。', category: 'hepatology', tier: 3, keywords: ['IBS','過敏性腸症候群','Rome','腹痛','排便'], relatedSlugs: [], updatedAt: '2026-03' },
+  { slug: 'bishop', name: 'Bishopスコア', nameEn: 'Bishop Score', description: '子宮頚管成熟度の内診評価。5項目。≧9で誘発分娩が成功しやすい。', category: 'general', tier: 3, keywords: ['Bishop','子宮頚管','分娩','誘発','産科'], relatedSlugs: ['apgar'], updatedAt: '2026-03' },
+  { slug: 'sle-criteria', name: 'SLE分類基準(2019)', nameEn: 'EULAR/ACR SLE Classification', description: 'SLE分類基準。抗核抗体陽性が入口基準。7領域22項目の重み付けスコア。≧10で分類。', category: 'general', tier: 3, keywords: ['SLE','ループス','分類基準','ANA','EULAR'], relatedSlugs: [], updatedAt: '2026-03' },
   // ── 追加ツール（D章） ──
-  { slug: 'drip-rate', name: '点滴速度計算', nameEn: 'IV Drip Rate Calculator', description: '輸液量・時間・滴係数から mL/h と 滴/分を計算。一般(20滴/mL)/小児用(60滴/mL)対応。', category: 'general', tier: 2, keywords: ['点滴','滴下','速度','輸液','drip'], relatedSlugs: ['maintenance-fluid','holiday-segar'] },
-  { slug: 'cardiac-index', name: '心係数 (CI)', nameEn: 'Cardiac Index', description: '心拍出量をBSAで補正。2.5-4.2 L/min/m²が正常。ショックの鑑別・循環管理に必須。', category: 'cardiology', tier: 2, keywords: ['CI','心係数','心拍出量','CO','cardiac index'], relatedSlugs: ['bsa','svri','map'] },
-  { slug: 'svri', name: '全身血管抵抗指数 (SVRI)', nameEn: 'Systemic Vascular Resistance Index', description: 'MAP・CVP・COからSVRIを算出。ショックの4分類鑑別（分布異常性↓/心原性↑）に有用。', category: 'cardiology', tier: 2, keywords: ['SVRI','SVR','血管抵抗','ショック','hemodynamic'], relatedSlugs: ['cardiac-index','map'] },
-  { slug: 'maddrey', name: 'Maddrey判別関数', nameEn: "Maddrey's Discriminant Function", description: 'アルコール性肝炎の重症度判定。≧32で重症→ステロイド治療適応。PT秒とビリルビンで計算。', category: 'hepatology', tier: 2, keywords: ['Maddrey','アルコール性肝炎','DF','ステロイド','肝炎'], relatedSlugs: ['meld','child-pugh'] },
-  { slug: 'iron-deficit', name: '鉄欠乏量（Ganzoni式）', nameEn: 'Iron Deficit (Ganzoni Formula)', description: '鉄欠乏性貧血の鉄補充必要量を計算。静注鉄剤（フェインジェクト/フェジン）の投与量決定に。', category: 'hematology', tier: 2, keywords: ['鉄','Ganzoni','鉄欠乏','貧血','フェジン','フェインジェクト'], relatedSlugs: ['rpi'] },
-  { slug: 'rpi', name: '網赤血球産生指数 (RPI)', nameEn: 'Reticulocyte Production Index', description: '貧血の原因鑑別。RPI≧2: 溶血/出血（骨髄反応あり）、<2: 産生低下。Hctで補正。', category: 'hematology', tier: 2, keywords: ['RPI','網赤血球','貧血','溶血','reticulocyte'], relatedSlugs: ['iron-deficit'] },
-  { slug: 'nnt', name: 'NNT（治療必要例数）', nameEn: 'Number Needed to Treat', description: '1人のイベントを回避するのに必要な治療人数。ARR/RRRも同時算出。EBM必須ツール。', category: 'general', tier: 3, keywords: ['NNT','NNH','ARR','RRR','EBM','治療必要例数'], relatedSlugs: ['post-test-probability'] },
-  { slug: 'post-test-probability', name: '検査後確率（尤度比）', nameEn: 'Post-test Probability (LR)', description: '検査前確率と尤度比から検査後確率を算出。Fagan nomogram。診断推論の基本。', category: 'general', tier: 3, keywords: ['尤度比','検査後確率','Bayes','Fagan','LR','感度','特異度'], relatedSlugs: ['nnt'] },
-  { slug: 'delta-gap', name: 'デルタギャップ（Delta ratio）', nameEn: 'Delta Gap / Delta-Delta', description: 'AG上昇型代謝性アシドーシスに他の酸塩基異常が合併しているか評価。ΔAG/ΔHCO3比で判定。', category: 'electrolyte', tier: 2, keywords: ['デルタ','delta','AG','アシドーシス','酸塩基','gap-gap'], relatedSlugs: ['anion-gap','winters-formula','aa-gradient'] },
-  { slug: 'oxygen-delivery', name: '酸素運搬量 (CaO2/DO2I)', nameEn: 'Oxygen Delivery (CaO2/DO2I)', description: '動脈血酸素含量CaO2と酸素供給指数DO2Iを計算。ICUでの酸素需給バランス評価に。', category: 'respiratory', tier: 2, keywords: ['CaO2','DO2I','酸素','oxygen delivery','ICU'], relatedSlugs: ['cardiac-index','aa-gradient'] },
+  { slug: 'drip-rate', name: '点滴速度計算', nameEn: 'IV Drip Rate Calculator', description: '輸液量・時間・滴係数から mL/h と 滴/分を計算。一般(20滴/mL)/小児用(60滴/mL)対応。', category: 'general', tier: 2, keywords: ['点滴','滴下','速度','輸液','drip'], relatedSlugs: ['maintenance-fluid','holiday-segar'], updatedAt: '2026-03' },
+  { slug: 'cardiac-index', name: '心係数 (CI)', nameEn: 'Cardiac Index', description: '心拍出量をBSAで補正。2.5-4.2 L/min/m²が正常。ショックの鑑別・循環管理に必須。', category: 'cardiology', tier: 2, keywords: ['CI','心係数','心拍出量','CO','cardiac index'], relatedSlugs: ['bsa','svri','map'], updatedAt: '2026-03' },
+  { slug: 'svri', name: '全身血管抵抗指数 (SVRI)', nameEn: 'Systemic Vascular Resistance Index', description: 'MAP・CVP・COからSVRIを算出。ショックの4分類鑑別（分布異常性↓/心原性↑）に有用。', category: 'cardiology', tier: 2, keywords: ['SVRI','SVR','血管抵抗','ショック','hemodynamic'], relatedSlugs: ['cardiac-index','map'], updatedAt: '2026-03' },
+  { slug: 'maddrey', name: 'Maddrey判別関数', nameEn: "Maddrey's Discriminant Function", description: 'アルコール性肝炎の重症度判定。≧32で重症→ステロイド治療適応。PT秒とビリルビンで計算。', category: 'hepatology', tier: 2, keywords: ['Maddrey','アルコール性肝炎','DF','ステロイド','肝炎'], relatedSlugs: ['meld','child-pugh'], updatedAt: '2026-03' },
+  { slug: 'iron-deficit', name: '鉄欠乏量（Ganzoni式）', nameEn: 'Iron Deficit (Ganzoni Formula)', description: '鉄欠乏性貧血の鉄補充必要量を計算。静注鉄剤（フェインジェクト/フェジン）の投与量決定に。', category: 'hematology', tier: 2, keywords: ['鉄','Ganzoni','鉄欠乏','貧血','フェジン','フェインジェクト'], relatedSlugs: ['rpi'], updatedAt: '2026-03' },
+  { slug: 'rpi', name: '網赤血球産生指数 (RPI)', nameEn: 'Reticulocyte Production Index', description: '貧血の原因鑑別。RPI≧2: 溶血/出血（骨髄反応あり）、<2: 産生低下。Hctで補正。', category: 'hematology', tier: 2, keywords: ['RPI','網赤血球','貧血','溶血','reticulocyte'], relatedSlugs: ['iron-deficit'], updatedAt: '2026-03' },
+  { slug: 'nnt', name: 'NNT（治療必要例数）', nameEn: 'Number Needed to Treat', description: '1人のイベントを回避するのに必要な治療人数。ARR/RRRも同時算出。EBM必須ツール。', category: 'general', tier: 3, keywords: ['NNT','NNH','ARR','RRR','EBM','治療必要例数'], relatedSlugs: ['post-test-probability'], updatedAt: '2026-03' },
+  { slug: 'post-test-probability', name: '検査後確率（尤度比）', nameEn: 'Post-test Probability (LR)', description: '検査前確率と尤度比から検査後確率を算出。Fagan nomogram。診断推論の基本。', category: 'general', tier: 3, keywords: ['尤度比','検査後確率','Bayes','Fagan','LR','感度','特異度'], relatedSlugs: ['nnt'], updatedAt: '2026-03' },
+  { slug: 'delta-gap', name: 'デルタギャップ（Delta ratio）', nameEn: 'Delta Gap / Delta-Delta', description: 'AG上昇型代謝性アシドーシスに他の酸塩基異常が合併しているか評価。ΔAG/ΔHCO3比で判定。', category: 'electrolyte', tier: 2, keywords: ['デルタ','delta','AG','アシドーシス','酸塩基','gap-gap'], relatedSlugs: ['anion-gap','winters-formula','aa-gradient'], updatedAt: '2026-03' },
+  { slug: 'oxygen-delivery', name: '酸素運搬量 (CaO2/DO2I)', nameEn: 'Oxygen Delivery (CaO2/DO2I)', description: '動脈血酸素含量CaO2と酸素供給指数DO2Iを計算。ICUでの酸素需給バランス評価に。', category: 'respiratory', tier: 2, keywords: ['CaO2','DO2I','酸素','oxygen delivery','ICU'], relatedSlugs: ['cardiac-index','aa-gradient'], updatedAt: '2026-03' },
   // ── v6追加ツール ──
-  { slug: 'plasma-osmolality', name: '血漿浸透圧（推算）', nameEn: 'Estimated Plasma Osmolality', description: 'Na・血糖・BUNから血漿浸透圧を推算。低Na/高Na血症・浸透圧ギャップの評価に。275-295 mOsm/kg が正常。', category: 'electrolyte', tier: 2, keywords: ['浸透圧','血漿浸透圧','Posm','高Na','低Na','osmolality'], relatedSlugs: ['osmolality-gap','na-correction-rate','na-deficit','hyponatremia-flow'] },
-  { slug: 'urine-osmolality', name: '尿浸透圧（推算）', nameEn: 'Estimated Urine Osmolality', description: '尿比重から尿浸透圧を推算。低Na血症の鑑別（ADH適切/不適切分泌）や腎濃縮能評価に。', category: 'nephrology', tier: 2, keywords: ['尿浸透圧','尿比重','Uosm','濃縮能','SIADH','希釈尿'], relatedSlugs: ['plasma-osmolality','hyponatremia-flow','siadh','fena'] },
-  { slug: 'tsat', name: 'TSAT（トランスフェリン飽和度）', nameEn: 'Transferrin Saturation', description: '血清鉄とTIBCからTSATを算出。鉄欠乏（<20%）や鉄過剰（>45%）の評価に。貧血の鑑別に必須。', category: 'hematology', tier: 2, keywords: ['TSAT','トランスフェリン飽和度','鉄','TIBC','鉄欠乏','貧血','フェリチン'], relatedSlugs: ['iron-deficit','rpi'] },
-  { slug: 'hba1c-glucose', name: 'HbA1c ↔ 平均血糖値換算', nameEn: 'HbA1c ↔ Estimated Average Glucose', description: 'HbA1cから推定平均血糖値(eAG)、または血糖値からHbA1cを推算。NGSP/ADAG/日本の実臨床データに基づく3方式対応。', category: 'general', tier: 2, keywords: ['HbA1c','eAG','平均血糖','糖尿病','血糖コントロール','NGSP','グリコヘモグロビン'], relatedSlugs: ['homa','bmi'] },
+  { slug: 'plasma-osmolality', name: '血漿浸透圧（推算）', nameEn: 'Estimated Plasma Osmolality', description: 'Na・血糖・BUNから血漿浸透圧を推算。低Na/高Na血症・浸透圧ギャップの評価に。275-295 mOsm/kg が正常。', category: 'electrolyte', tier: 2, keywords: ['浸透圧','血漿浸透圧','Posm','高Na','低Na','osmolality'], relatedSlugs: ['osmolality-gap','na-correction-rate','na-deficit','hyponatremia-flow'], updatedAt: '2026-03' },
+  { slug: 'urine-osmolality', name: '尿浸透圧（推算）', nameEn: 'Estimated Urine Osmolality', description: '尿比重から尿浸透圧を推算。低Na血症の鑑別（ADH適切/不適切分泌）や腎濃縮能評価に。', category: 'nephrology', tier: 2, keywords: ['尿浸透圧','尿比重','Uosm','濃縮能','SIADH','希釈尿'], relatedSlugs: ['plasma-osmolality','hyponatremia-flow','siadh','fena'], updatedAt: '2026-03' },
+  { slug: 'tsat', name: 'TSAT（トランスフェリン飽和度）', nameEn: 'Transferrin Saturation', description: '血清鉄とTIBCからTSATを算出。鉄欠乏（<20%）や鉄過剰（>45%）の評価に。貧血の鑑別に必須。', category: 'hematology', tier: 2, keywords: ['TSAT','トランスフェリン飽和度','鉄','TIBC','鉄欠乏','貧血','フェリチン'], relatedSlugs: ['iron-deficit','rpi'], updatedAt: '2026-03' },
+  { slug: 'hba1c-glucose', name: 'HbA1c ↔ 平均血糖値換算', nameEn: 'HbA1c ↔ Estimated Average Glucose', description: 'HbA1cから推定平均血糖値(eAG)、または血糖値からHbA1cを推算。NGSP/ADAG/日本の実臨床データに基づく3方式対応。', category: 'general', tier: 2, keywords: ['HbA1c','eAG','平均血糖','糖尿病','血糖コントロール','NGSP','グリコヘモグロビン'], relatedSlugs: ['homa','bmi'], updatedAt: '2026-03' },
 ]
 
 // 実装済みツールのslug一覧（新ツール追加時にここに追加）

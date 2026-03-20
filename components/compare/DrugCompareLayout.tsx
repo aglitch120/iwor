@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import ErrorReportButton from '@/components/tools/ErrorReportButton'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 export interface DrugEntry {
   generic: string       // 一般名
@@ -66,6 +67,7 @@ export default function DrugCompareLayout({ data }: { data: CompareData }) {
         <span className="inline-block text-sm bg-acl text-ac px-2.5 py-0.5 rounded-full font-medium mb-2">💊 {data.category}</span>
         <h1 className="text-2xl font-bold text-tx mb-1">{data.title}</h1>
         <p className="text-sm text-muted">{data.description}</p>
+        <UpdatedAt />
       </header>
 
       {/* 比較表 */}

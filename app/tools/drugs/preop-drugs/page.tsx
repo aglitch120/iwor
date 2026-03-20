@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -94,6 +95,7 @@ export default function PreopDrugsPage() {
             <FavoriteButton slug="drugs-preop" title="術前休薬リスト" href="/tools/drugs/preop-drugs" type="drugs" />
           </ProPulseHint>
         </div>
+        <UpdatedAt />
       </header>
 
       {/* カテゴリ別 */}

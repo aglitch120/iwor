@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -179,6 +180,7 @@ export default function SteroidCoverPage() {
             <FavoriteButton slug="drugs-steroid-cover" title="ステロイドカバー & 副作用管理" href="/tools/drugs/steroid-cover" type="drugs" />
           </ProPulseHint>
         </div>
+        <UpdatedAt />
       </header>
 
       {/* ── 周術期ストレスカバー ── */}

@@ -6,6 +6,7 @@ import FavoriteButton from '@/components/tools/FavoriteButton'
 import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 import { trackToolUsage, getTotalToolUsage, useProStatus } from '@/components/pro/useProStatus'
+import { getToolBySlug } from '@/lib/tools-config'
 
 interface CalculatorLayoutProps {
   slug?: string
@@ -139,6 +140,12 @@ export default function CalculatorLayout({
           )}
         </div>
         <p className="text-sm text-muted mt-2">{description}</p>
+        {slug && (() => {
+          const tool = getToolBySlug(slug)
+          return tool?.updatedAt ? (
+            <p className="text-xs text-muted/60 mt-1">最終確認: {tool.updatedAt.replace('-', '年')}月</p>
+          ) : null
+        })()}
       </header>
 
       {/* PLG: 3回目利用バナー */}

@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -117,6 +118,7 @@ export default function TubeAdminPage() {
             <FavoriteButton slug="drugs-tube-admin" title="簡易懸濁可否リスト" href="/tools/drugs/tube-admin" type="drugs" />
           </ProPulseHint>
         </div>
+        <UpdatedAt />
       </header>
 
       {/* 検索 */}

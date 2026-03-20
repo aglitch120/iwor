@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -118,6 +119,7 @@ export default function CancerPainPage() {
             <FavoriteButton slug="drugs-cancer-pain" title="癌性疼痛コントロール" href="/tools/drugs/cancer-pain" type="drugs" />
           </ProPulseHint>
         </div>
+        <UpdatedAt />
       </header>
 
       {/* ── WHO除痛ラダー ── */}

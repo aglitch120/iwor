@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 import Link from 'next/link'
 import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import FavoriteButton from '@/components/tools/FavoriteButton'
@@ -197,6 +198,7 @@ export default function GammaCalcPage(){
         <h1 className="text-2xl font-bold text-tx mb-1">ICU薬剤 γ計算</h1>
         <p className="text-sm text-muted">昇圧剤・強心薬・鎮静剤・麻薬・降圧剤 + その他薬剤のγ⇔mL/h変換。</p>
       </div><ProPulseHint><FavoriteButton slug="icu-gamma-calc" title="γ計算（昇圧薬・鎮静薬）" href="/tools/icu/gamma" type="icu" /></ProPulseHint></div></header>
+      <UpdatedAt />
 
       {/* カテゴリ */}
       <div className="flex gap-1.5 overflow-x-auto pb-1 mb-4">

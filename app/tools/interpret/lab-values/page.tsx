@@ -1,4 +1,5 @@
 'use client'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -184,6 +185,7 @@ export default function LabValuesPage() {
             <FavoriteButton slug="interpret-lab-values" title="基準値早見表" href="/tools/interpret/lab-values" type="calc" />
           </ProPulseHint>
         </div>
+        <UpdatedAt />
       </header>
 
       {/* 入力 */}

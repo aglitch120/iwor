@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import UpdatedAt from '@/components/tools/UpdatedAt'
 
 export const metadata: Metadata = {
   title: '薬剤比較表 | iwor',
@@ -90,6 +91,7 @@ export default function ComparePage() {
         <p className="text-muted text-sm">
           臨床現場で頻用される薬剤を添付文書の公開情報に基づき一覧比較。{liveCount}カテゴリ公開中 / {totalCount}カテゴリ予定。
         </p>
+        <UpdatedAt />
       </header>
 
       <div className="bg-wnl border border-wnb rounded-lg p-3 mb-6 text-sm text-wn">
