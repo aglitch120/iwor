@@ -4,6 +4,7 @@ import { getAllPosts } from '@/lib/mdx'
 import ArticleCard from '@/components/blog/ArticleCard'
 import HomeSearch from '@/components/HomeSearch'
 import HomeAppGrid from '@/components/HomeAppGrid'
+import HeroBackground from '@/components/HeroBackground'
 
 export const metadata: Metadata = {
   title: 'iwor（イウォール）— 医師のためのワークスペース',
@@ -126,15 +127,18 @@ export default function HomePage() {
     <div className="max-w-5xl mx-auto">
 
       {/* ═══ Hero ═══ */}
-      <section className="pt-10 pb-6 md:pt-14 md:pb-8 text-center px-4">
-        <p className="text-sm text-muted mb-2 tracking-wide">iwor（イウォール）</p>
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-tx leading-[1.2] tracking-tight mb-3">
-          医師のためのワークスペース
-        </h1>
-        <p className="text-sm text-muted leading-relaxed max-w-md mx-auto">
-          臨床ツール、キャリア支援、学習、マネー。
-          必要なものが、すべてひとつの場所に。
-        </p>
+      <section className="relative pt-12 pb-10 md:pt-20 md:pb-14 text-center px-4 overflow-hidden">
+        <HeroBackground />
+        <div className="relative z-10">
+          <p className="text-sm text-muted mb-2 tracking-wide">iwor（イウォール）</p>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-tx leading-[1.2] tracking-tight mb-3">
+            医師のためのワークスペース
+          </h1>
+          <p className="text-sm text-muted leading-relaxed max-w-md mx-auto">
+            臨床ツール、キャリア支援、学習、マネー。
+            必要なものが、すべてひとつの場所に。
+          </p>
+        </div>
       </section>
 
       {/* ═══ Search ═══ */}
