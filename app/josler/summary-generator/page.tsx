@@ -3,7 +3,8 @@
 import { useState, useCallback, useMemo, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { DISEASE_TEMPLATES, getTemplateByDisease, convertPrescriptionToGeneric, getPubmedSearchUrl, type DiseaseTemplate } from '@/lib/josler-templates'
+import { getTemplateByDisease, getPubmedSearchUrl, type DiseaseTemplate } from '@/lib/josler-templates'
+import { convertPrescriptionToGeneric } from '@/lib/drug-name-converter'
 import { SPECIALTIES as SP, DISEASE_GROUPS as DG } from '@/lib/josler-data'
 
 const MC = '#1B4F3A'
