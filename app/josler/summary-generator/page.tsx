@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { getTemplateByDisease, getPubmedSearchUrl, type DiseaseTemplate } from '@/lib/josler-templates'
 import { convertPrescriptionToGeneric } from '@/lib/drug-name-converter'
+import { parseKarteText, generateDiscussionTemplate } from '@/lib/karte-parser'
 import { SPECIALTIES as SP, DISEASE_GROUPS as DG } from '@/lib/josler-data'
 
 const MC = '#1B4F3A'
@@ -78,6 +79,8 @@ function SummaryGeneratorInner() {
 
   // カルテ貼り付け
   const [karteInput, setKarteInput] = useState('')
+  const [karteMode, setKarteMode] = useState<'bulk' | 'sections'>('bulk')
+  const [karteSections, setKarteSections] = useState({ cc: '', hpi: '', pmh: '', pe: '', lab: '', rx: '', course: '' })
   const [karteConsent, setKarteConsent] = useState({ anonymized: false, patientConsent: false, hospitalRules: false })
 
   // URLパラメータから初期値
@@ -104,34 +107,58 @@ function SummaryGeneratorInner() {
       init.labFindings = buildLabTemplate()
     }
 
-    // カルテ貼り付け内容の自動振り分け
-    if (karteInput.trim()) {
-      const text = karteInput.trim()
-      // 処方の自動変換
-      const rxMatch = text.match(/(?:処方|Rp|退院時処方|退院処方)[：:\s]*([\s\S]*?)(?=\n\n|\n[^\s]|$)/i)
-      if (rxMatch) init.dischargeMeds = convertPrescriptionToGeneric(rxMatch[1].trim())
+    // カルテ貼り付け内容の自動振り分け（強化パーサー）
+    // 項目別入力モードの場合はkarteSectionsをkarteInputにマージ
+    const effectiveKarteInput = karteMode === 'sections'
+      ? [
+          karteSections.cc ? `主訴: ${karteSections.cc}` : '',
+          karteSections.hpi ? `現病歴: ${karteSections.hpi}` : '',
+          karteSections.pmh ? `既往歴: ${karteSections.pmh}` : '',
+          karteSections.pe ? `身体所見: ${karteSections.pe}` : '',
+          karteSections.lab ? `検査: ${karteSections.lab}` : '',
+          karteSections.course ? `経過: ${karteSections.course}` : '',
+          karteSections.rx ? `処方: ${karteSections.rx}` : '',
+        ].filter(Boolean).join('\n\n')
+      : karteInput
 
-      // 現病歴の抽出
-      const hxMatch = text.match(/(?:現病歴|病歴|HPI)[：:\s]*([\s\S]*?)(?=\n(?:既往|入院時|現症|検査|身体)|$)/i)
-      if (hxMatch) init.presentIllness = hxMatch[1].trim()
+    if (effectiveKarteInput.trim()) {
+      const parsed = parseKarteText(effectiveKarteInput.trim())
+      if (parsed.chiefComplaint) init.chiefComplaint = parsed.chiefComplaint
+      if (parsed.history) init.history = parsed.history
+      if (parsed.presentIllness) init.presentIllness = parsed.presentIllness
+      if (parsed.physicalExam) {
+        // テンプレートの【要確認】にカルテの値をマージ
+        init.physicalExam = parsed.physicalExam + '\n\n--- テンプレート（不足分を補完） ---\n' + init.physicalExam
+      }
+      if (parsed.labFindings) {
+        init.labFindings = parsed.labFindings + '\n\n--- テンプレート（不足分を補完） ---\n' + init.labFindings
+      }
+      if (parsed.diagnosis) init.diagnosis = parsed.diagnosis
+      if (parsed.dischargeMeds) init.dischargeMeds = parsed.dischargeMeds
+      if (parsed.course) {
+        // 経過データがあればcourseAndDiscussionに反映
+        init.courseAndDiscussion = '【経過】\n' + parsed.course
+      }
+    }
 
-      // 既往歴
-      const pmhMatch = text.match(/(?:既往歴|PMH)[：:\s]*([\s\S]*?)(?=\n(?:生活|社会|家族|現病歴|入院時|現症)|$)/i)
-      if (pmhMatch) init.history = pmhMatch[1].trim().slice(0, 100)
-
-      // 主訴
-      const ccMatch = text.match(/(?:主訴|CC)[：:\s]*(.+)/i)
-      if (ccMatch) init.chiefComplaint = ccMatch[1].trim().slice(0, 25)
-
-      // カルテテキスト全体が振り分けされなかった場合、現病歴に入れる
-      if (!hxMatch && !rxMatch && !pmhMatch && !ccMatch) {
-        init.presentIllness = text
+    // 考察テンプレート生成（AI不使用 — テンプレートの穴埋め構造のみ）
+    if (tmpl) {
+      const { courseTemplate, discussionTemplate } = generateDiscussionTemplate(tmpl, init.problemList, init.diagnosis)
+      // カルテの経過データがなければテンプレートを使用
+      if (!init.courseAndDiscussion) {
+        init.courseAndDiscussion = courseTemplate
+      } else {
+        // カルテの経過に考察テンプレートを追加
+        init.courseAndDiscussion += '\n\n' + courseTemplate.split('【考察】')[1] ? '【考察】\n' + courseTemplate.split('【考察】').slice(1).join('【考察】') : ''
+      }
+      if (!init.overallDiscussion) {
+        init.overallDiscussion = discussionTemplate
       }
     }
 
     setValues(init)
     setStep('edit')
-  }, [karteInput])
+  }, [karteInput, karteMode, karteSections])
 
   const updateValue = useCallback((id: string, value: string) => {
     setValues(prev => ({ ...prev, [id]: value }))
@@ -235,10 +262,46 @@ function SummaryGeneratorInner() {
           {/* テキストエリア（全同意時のみ有効） */}
           {karteConsent.anonymized && karteConsent.patientConsent && karteConsent.hospitalRules ? (
             <>
-              <textarea value={karteInput} onChange={e => setKarteInput(e.target.value)}
-                rows={6} placeholder="匿名化済みのカルテ情報（現病歴・入院時現症・検査所見・処方など）をここに貼り付けてください。&#10;&#10;疾患を選択後「作成開始」を押すと、貼り付けた内容が各セクションに自動展開されます。"
-                className="w-full px-3 py-2 bg-bg border border-br rounded-lg text-xs focus:border-ac outline-none resize-y leading-relaxed" />
-              <p className="text-[9px] text-muted mt-1">貼り付けた内容は病歴・現症・検査所見・処方のセクションに自動振り分けされます</p>
+              {/* 入力モード切替 */}
+              <div className="flex gap-1.5 mb-2">
+                <button onClick={() => setKarteMode('bulk')}
+                  className={`px-3 py-1 rounded text-[10px] font-medium border ${karteMode === 'bulk' ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>
+                  まとめて貼り付け
+                </button>
+                <button onClick={() => setKarteMode('sections')}
+                  className={`px-3 py-1 rounded text-[10px] font-medium border ${karteMode === 'sections' ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>
+                  項目別入力
+                </button>
+              </div>
+
+              {karteMode === 'bulk' ? (
+                <>
+                  <textarea value={karteInput} onChange={e => setKarteInput(e.target.value)}
+                    rows={8} placeholder={"匿名化済みのカルテ情報をここに貼り付け。\n\n自動でセクションを検出します:\n・「主訴:」「現病歴:」「既往歴:」「身体所見:」「検査:」「処方:」\n  などのヘッダーがあると精度が上がります。\n・ヘッダーなしでも検査値・バイタル・処方を自動判別します。"}
+                    className="w-full px-3 py-2 bg-bg border border-br rounded-lg text-xs focus:border-ac outline-none resize-y leading-relaxed" />
+                  <p className="text-[9px] text-muted mt-1">正規表現で「主訴:」「現病歴:」「検査:」等のヘッダーを検出 → 各セクションに自動振り分け</p>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  {[
+                    { key: 'cc', label: '主訴', rows: 1, placeholder: '発熱, 咳嗽' },
+                    { key: 'hpi', label: '現病歴', rows: 4, placeholder: '〇月〇日より発熱を自覚し...' },
+                    { key: 'pmh', label: '既往歴・生活歴・家族歴', rows: 2, placeholder: '高血圧, 糖尿病...' },
+                    { key: 'pe', label: '身体所見（バイタル含む）', rows: 3, placeholder: 'BT 38.5, BP 120/80, HR 90, SpO2 96%...' },
+                    { key: 'lab', label: '検査所見', rows: 4, placeholder: 'WBC 12000, CRP 8.5, Cr 1.2...' },
+                    { key: 'course', label: '入院後経過', rows: 4, placeholder: '入院後CTRX開始, Day3解熱...' },
+                    { key: 'rx', label: '退院時処方（商品名OK→自動変換）', rows: 2, placeholder: 'クラビット500mg 1T 分1...' },
+                  ].map(({ key, label, rows, placeholder }) => (
+                    <div key={key}>
+                      <label className="text-[10px] font-bold text-tx">{label}</label>
+                      <textarea value={karteSections[key as keyof typeof karteSections]}
+                        onChange={e => setKarteSections(p => ({ ...p, [key]: e.target.value }))}
+                        rows={rows} placeholder={placeholder}
+                        className="w-full px-2 py-1.5 bg-bg border border-br rounded text-xs focus:border-ac outline-none resize-y" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </>
           ) : (
             <div className="w-full px-3 py-6 bg-s1 border border-br rounded-lg text-center">
