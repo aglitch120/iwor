@@ -1256,6 +1256,66 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
       return json({ ok: true, data: parsed.data, updatedAt: parsed.updatedAt }, 200, request);
     }
 
+    // ══════════════════════════════════════════════════
+    //  病院「気になる」トグル
+    //  PUT /api/hospital/interest
+    //  Authorization: Bearer {sessionToken}
+    //  Body: { hospitalId, action: 'add'|'remove' }
+    // ══════════════════════════════════════════════════
+    if (path === "/api/hospital/interest" && request.method === "PUT") {
+      const authResult = await authenticate(request, env, { checkExpiry: false });
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid JSON" }, 400, request);
+
+      const hospitalId = parseInt(body.hospitalId, 10);
+      const action = body.action;
+      if (isNaN(hospitalId) || (action !== "add" && action !== "remove")) {
+        return json({ error: "Invalid params" }, 400, request);
+      }
+
+      const { email } = authResult;
+      const userKey = `hospital_interest_user:${email}:${hospitalId}`;
+
+      // 集計カウンタ読み込み
+      let counts = {};
+      try {
+        const raw = await env.IWOR_KV.get("hospital_interest_counts");
+        if (raw) counts = JSON.parse(raw);
+      } catch {}
+
+      const key = String(hospitalId);
+      if (action === "add") {
+        await env.IWOR_KV.put(userKey, "1");
+        counts[key] = (counts[key] || 0) + 1;
+      } else {
+        const existed = await env.IWOR_KV.get(userKey);
+        if (existed) {
+          await env.IWOR_KV.delete(userKey);
+          counts[key] = Math.max(0, (counts[key] || 0) - 1);
+        }
+      }
+
+      await env.IWOR_KV.put("hospital_interest_counts", JSON.stringify(counts));
+      return json({ ok: true, count: counts[key] || 0 }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
+    //  病院「気になる」集計取得
+    //  GET /api/hospital/interest-counts
+    //  認証不要（PRO判定はフロントエンド側）
+    // ══════════════════════════════════════════════════
+    if (path === "/api/hospital/interest-counts" && request.method === "GET") {
+      let counts = {};
+      try {
+        const raw = await env.IWOR_KV.get("hospital_interest_counts");
+        if (raw) counts = JSON.parse(raw);
+      } catch {}
+
+      return json({ ok: true, counts }, 200, request);
+    }
+
     // ── 404 ──
     return json({ error: "Not Found" }, 404, request);
   },
