@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
@@ -77,6 +77,11 @@ export default function JournalApp() {
   const [ifMin, setIfMin] = useState(0)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [excludedJournals, setExcludedJournals] = useState<Set<string>>(new Set())
+
+  // Infinite scroll
+  const PAGE_SIZE = 10
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE)
+  const sentinelRef = useRef<HTMLDivElement>(null)
 
   // Bookmarks
   const [bookmarks, setBookmarks] = useState<Set<string>>(() => {
@@ -188,11 +193,32 @@ export default function JournalApp() {
     return list
   }, [articles, activeJournalIds, ifMin, selectedSpecialties])
 
-  // ── Visible articles (FREE/PRO gate) ──
-  const visibleArticles = showBookmarks
+  // ── Visible articles (FREE/PRO gate + infinite scroll) ──
+  const gatedArticles = showBookmarks
     ? filteredArticles.filter(a => bookmarks.has(a.pmid))
     : isPro ? filteredArticles : filteredArticles.slice(0, FREE_LIMIT)
+  const visibleArticles = gatedArticles.slice(0, displayCount)
+  const hasMore = displayCount < gatedArticles.length
   const hiddenCount = showBookmarks ? 0 : isPro ? 0 : Math.max(0, filteredArticles.length - FREE_LIMIT)
+
+  // Reset displayCount when filters/sort/lang change
+  useEffect(() => { setDisplayCount(PAGE_SIZE) }, [lang, sortBy, selectedSpecialties, ifMin, showBookmarks, contentType])
+
+  // IntersectionObserver for infinite scroll
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setDisplayCount(prev => prev + PAGE_SIZE)
+        }
+      },
+      { rootMargin: '200px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasMore])
 
   // ── Export bookmarks to clipboard (for presenter) ──
   const exportBookmarks = useCallback(() => {
@@ -267,7 +293,7 @@ export default function JournalApp() {
 
             {/* 診療科フィルタ */}
             <div className="bg-s0 border border-br rounded-xl p-3">
-              <p className="text-[11px] font-medium text-tx mb-2">診療科フィルタ（Top 4 は常に表示）</p>
+              <p className="text-[11px] font-medium text-tx mb-2">診療科フィルタ（Top 4 は関連論文のみ表示）</p>
               <div className="flex flex-wrap gap-1.5">
                 {SPECIALTIES.map(sp => (
                   <button key={sp} onClick={() => toggleSpecialty(sp)}
@@ -478,8 +504,15 @@ export default function JournalApp() {
               isPro={isPro} displayLang={displayLang} stats={articleStats[a.pmid]} />
           ))}
 
+          {/* Infinite scroll sentinel */}
+          {hasMore && (
+            <div ref={sentinelRef} className="flex justify-center py-4">
+              <div className="w-5 h-5 border-2 border-br border-t-ac rounded-full animate-spin" />
+            </div>
+          )}
+
           {/* PRO gate */}
-          {hiddenCount > 0 && (
+          {hiddenCount > 0 && !hasMore && (
             <div className="bg-s0 border border-dashed rounded-xl p-6 text-center" style={{ borderColor: `${MC}40` }}>
               <p className="text-sm font-bold text-tx mb-1">あと{hiddenCount}件の論文があります</p>
               <p className="text-xs text-muted mb-4">PRO会員で全件閲覧＋ブックマーク＋プレゼン連携</p>
