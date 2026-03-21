@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react'
 import AppHeader from '@/components/AppHeader'
 import ProModal from '@/components/pro/ProModal'
 import { useProStatus } from '@/components/pro/useProStatus'
-import { CONFERENCES_2026, Conference, getSpecialtyCategory, SPECIALTY_COLORS } from '@/lib/conferences-data'
+import { CONFERENCES_2026, Conference, getSpecialtyCategory, SPECIALTY_COLORS, TIER_LABELS } from '@/lib/conferences-data'
 
 type ViewMode = 'list' | 'calendar'
 type ListFilter = 'all' | 'mylist'
@@ -48,6 +48,7 @@ function getDaysUntil(dateStr: string): number {
 export default function ConferencesApp() {
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [filterArea, setFilterArea] = useState<string>('all')
+  const [filterTier, setFilterTier] = useState<string>('basic')
   const [listFilter, setListFilter] = useState<ListFilter>('all')
   const [attending, setAttending] = useState<string[]>([])
   const [proLimitHit, setProLimitHit] = useState(false)
@@ -120,6 +121,9 @@ export default function ConferencesApp() {
   // ソート: 日付順
   const sorted = useMemo(() => {
     let list = [...CONFERENCES_2026]
+    if (filterTier !== 'all') {
+      list = list.filter(c => c.tier === filterTier)
+    }
     if (filterArea !== 'all') {
       list = list.filter(c => c.specialtyArea === filterArea)
     }
@@ -127,7 +131,7 @@ export default function ConferencesApp() {
       list = list.filter(c => attending.includes(c.id))
     }
     return list.sort((a, b) => a.startDate.localeCompare(b.startDate))
-  }, [filterArea, listFilter, attending])
+  }, [filterTier, filterArea, listFilter, attending])
 
   // 月ごとにグループ
   const grouped = useMemo(() => {
@@ -150,7 +154,7 @@ export default function ConferencesApp() {
     <div className="px-4 py-8 max-w-lg mx-auto">
       <AppHeader
         title="学会カレンダー"
-        subtitle="基本領域19学会 2026年度 学術集会日程"
+        subtitle={`基本領域+サブスペシャルティ ${CONFERENCES_2026.length}学会 2026年度`}
         badge="NEW"
         favoriteSlug="app-conferences"
         favoriteHref="/conferences"
@@ -170,6 +174,24 @@ export default function ConferencesApp() {
             }}
           >
             {mode === 'list' ? 'リスト' : '月表示'}
+          </button>
+        ))}
+      </div>
+
+      {/* Tierフィルタ */}
+      <div className="flex gap-1.5 mb-3">
+        {['all', 'basic', 'sub', 'major'].map(t => (
+          <button
+            key={t}
+            onClick={() => setFilterTier(t)}
+            className="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all"
+            style={{
+              background: filterTier === t ? MC : 'transparent',
+              color: filterTier === t ? '#fff' : 'var(--m)',
+              borderColor: filterTier === t ? MC : 'var(--br)',
+            }}
+          >
+            {t === 'all' ? '全て' : TIER_LABELS[t]}
           </button>
         ))}
       </div>
