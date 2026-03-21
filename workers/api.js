@@ -25,6 +25,8 @@
 //    GET  /api/admin/users      — 管理者: ユーザー一覧
 //    POST /api/admin/add-order  — 管理者: 手動で注文追加
 //    DELETE /api/admin/order    — 管理者: 注文削除
+//    GET  /api/competitors/alerts — 競合アラート一覧（管理者認証）
+//    POST /api/competitors/dismiss — 競合アラート非表示（管理者認証）
 // ═══════════════════════════════════════════════════════════════
 
 const ALLOWED_ORIGINS = ["https://iwor.jp", "http://localhost:3000"];
@@ -1333,7 +1335,176 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
       return json({ ok: true, counts }, 200, request);
     }
 
+    // ══════════════════════════════════════════════════
+    //  競合アラート一覧
+    //  GET /api/competitors/alerts?level=critical&competitor=HOKUTO
+    //  管理者認証（X-Admin-Key）
+    // ══════════════════════════════════════════════════
+    if (path === "/api/competitors/alerts" && request.method === "GET") {
+      const key = request.headers.get("X-Admin-Key");
+      if (key !== env.ADMIN_KEY) return json({ error: "Forbidden" }, 403, request);
+
+      const indexRaw = await env.IWOR_KV.get("competitor:alerts:index");
+      const index = indexRaw ? JSON.parse(indexRaw) : [];
+
+      // 最新100件を返す
+      const recentIds = index.slice(-100).reverse();
+      const alerts = [];
+      for (const id of recentIds) {
+        const raw = await env.IWOR_KV.get(`competitor:alert:${id}`);
+        if (raw) alerts.push(JSON.parse(raw));
+      }
+
+      // クエリパラメータでフィルタ
+      const filterLevel = url.searchParams.get("level");
+      const filterCompetitor = url.searchParams.get("competitor");
+      let filtered = alerts;
+      if (filterLevel) filtered = filtered.filter(a => a.threatLevel === filterLevel);
+      if (filterCompetitor) filtered = filtered.filter(a => a.competitor === filterCompetitor);
+
+      return json({ ok: true, alerts: filtered, total: alerts.length }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
+    //  競合アラート非表示
+    //  POST /api/competitors/dismiss
+    //  Body: { id: "alert_..." }
+    // ══════════════════════════════════════════════════
+    if (path === "/api/competitors/dismiss" && request.method === "POST") {
+      const key = request.headers.get("X-Admin-Key");
+      if (key !== env.ADMIN_KEY) return json({ error: "Forbidden" }, 403, request);
+
+      const body = await parseBody(request);
+      if (!body || !body.id) return json({ error: "id required" }, 400, request);
+
+      const raw = await env.IWOR_KV.get(`competitor:alert:${body.id}`);
+      if (!raw) return json({ error: "Not found" }, 404, request);
+
+      const alert = JSON.parse(raw);
+      alert.dismissed = true;
+      await env.IWOR_KV.put(`competitor:alert:${body.id}`, JSON.stringify(alert));
+
+      return json({ ok: true }, 200, request);
+    }
+
     // ── 404 ──
     return json({ error: "Not Found" }, 404, request);
+  },
+
+  // ══════════════════════════════════════════════════
+  //  Cron Trigger: 競合監視（日次）
+  //  PR TIMES RSS（医療カテゴリ）をフェッチしキーワードマッチ
+  // ══════════════════════════════════════════════════
+  async scheduled(event, env, ctx) {
+    const PRTIMES_RSS = "https://prtimes.jp/topics/keyword/%E5%8C%BB%E7%99%82/feed";
+
+    // 監視キーワード定義
+    const TIER1_KEYWORDS = ["MOTiCAN", "HOKUTO", "ホクト"];
+    const TIER2_KEYWORDS = ["ヒポクラ", "Antaa", "アンター", "m3", "エムスリー"];
+    const TIER3_KEYWORDS = ["Ubie", "ユビー"];
+    const GENERIC_KEYWORDS = ["医師向けアプリ", "医師AI", "J-OSLER", "ヘルステック調達", "医療AI", "臨床支援"];
+    const ESCALATION_KEYWORDS = ["資金調達", "新機能", "買収", "提携", "リリース", "億円"];
+
+    // 競合名マッピング
+    const COMPETITOR_MAP = {
+      "MOTiCAN": "MOTiCAN", "HOKUTO": "HOKUTO", "ホクト": "HOKUTO",
+      "ヒポクラ": "ヒポクラ", "Antaa": "Antaa", "アンター": "Antaa",
+      "m3": "m3", "エムスリー": "m3", "Ubie": "Ubie", "ユビー": "Ubie",
+    };
+
+    function classifyThreat(matchedKeywords) {
+      const hasTier1 = matchedKeywords.some(k => TIER1_KEYWORDS.includes(k));
+      const hasTier2 = matchedKeywords.some(k => TIER2_KEYWORDS.includes(k));
+      const hasEscalation = matchedKeywords.some(k => ESCALATION_KEYWORDS.includes(k));
+
+      if (hasTier1 && hasEscalation) return "critical";
+      if (hasTier1 || (hasTier2 && hasEscalation)) return "high";
+      if (hasTier2 || hasEscalation) return "medium";
+      return "low";
+    }
+
+    function identifyCompetitor(matchedKeywords) {
+      for (const k of matchedKeywords) {
+        if (COMPETITOR_MAP[k]) return COMPETITOR_MAP[k];
+      }
+      return "その他";
+    }
+
+    try {
+      const res = await fetch(PRTIMES_RSS, {
+        headers: { "User-Agent": "iwor-competitive-intel/1.0" },
+      });
+      if (!res.ok) {
+        console.error("PR TIMES fetch failed:", res.status);
+        return;
+      }
+
+      const xml = await res.text();
+
+      // 簡易XMLパース（<item>ブロックを抽出）
+      const items = [];
+      const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+      let match;
+      while ((match = itemRegex.exec(xml)) !== null) {
+        const block = match[1];
+        const title = (block.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) || block.match(/<title>(.*?)<\/title>/) || [])[1] || "";
+        const link = (block.match(/<link>(.*?)<\/link>/) || [])[1] || "";
+        const pubDate = (block.match(/<pubDate>(.*?)<\/pubDate>/) || [])[1] || "";
+        const desc = (block.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) || block.match(/<description>(.*?)<\/description>/) || [])[1] || "";
+        items.push({ title, link, pubDate, desc });
+      }
+
+      // 既存アラートインデックス取得
+      const indexRaw = await env.IWOR_KV.get("competitor:alerts:index");
+      const index = indexRaw ? JSON.parse(indexRaw) : [];
+      const existingUrls = new Set();
+      for (const id of index.slice(-200)) {
+        const raw = await env.IWOR_KV.get(`competitor:alert:${id}`);
+        if (raw) {
+          const a = JSON.parse(raw);
+          existingUrls.add(a.url);
+        }
+      }
+
+      const ALL_KEYWORDS = [...TIER1_KEYWORDS, ...TIER2_KEYWORDS, ...TIER3_KEYWORDS, ...GENERIC_KEYWORDS, ...ESCALATION_KEYWORDS];
+      const newAlerts = [];
+
+      for (const item of items) {
+        if (existingUrls.has(item.link)) continue;
+
+        const text = item.title + " " + item.desc;
+        const matched = ALL_KEYWORDS.filter(k => text.includes(k));
+        if (matched.length === 0) continue;
+
+        const id = `alert_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        const alert = {
+          id,
+          title: item.title,
+          url: item.link,
+          source: "prtimes",
+          matchedKeywords: matched,
+          threatLevel: classifyThreat(matched),
+          competitor: identifyCompetitor(matched),
+          publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
+          fetchedAt: new Date().toISOString(),
+          dismissed: false,
+        };
+
+        await env.IWOR_KV.put(`competitor:alert:${id}`, JSON.stringify(alert), { expirationTtl: 7776000 });
+        index.push(id);
+        newAlerts.push(alert);
+      }
+
+      // インデックス更新（最新500件に制限）
+      const trimmedIndex = index.slice(-500);
+      await env.IWOR_KV.put("competitor:alerts:index", JSON.stringify(trimmedIndex));
+
+      if (newAlerts.length > 0) {
+        console.log(`Competitive intel: ${newAlerts.length} new alerts found`);
+        // 将来: Slack/Discord webhook通知をここに追加
+      }
+    } catch (err) {
+      console.error("Competitive intel cron error:", err);
+    }
   },
 };

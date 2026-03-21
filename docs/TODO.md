@@ -271,6 +271,11 @@ Phase F 自律運用（E完了後 or 並行）
 ### F4. 自律実行（← F3完了が前提）
 - [ ] 自律実行: 低リスク全自動 + 高リスク承認ゲート（R-3）
 
+### F5. 競合監視システム
+- [x] docs/COMPETITORS.md 作成: 競合マップ・Battlecard・JTBD分析・Perceptual Map・監視仕様（2026-03-21完了）
+- [x] competitive-intel Worker 実装: PR TIMES RSS日次フェッチ + キーワードマッチ + KV保存 + アラートAPI（2026-03-21完了）
+- [x] /admin/competitors ページ: アラート一覧 + 脅威レベル別フィルタ + 競合別タブ（2026-03-21完了）
+
 ---
 
 ## セキュリティ（並行・中期）

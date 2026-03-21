@@ -173,6 +173,7 @@ export default function AdminPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: 'PROコード管理', href: '/admin/pro-codes' },
+          { label: '競合監視', href: '/admin/competitors' },
           { label: 'SEOヘルスチェック', href: '/admin/seo-health' },
           { label: 'ブログ一覧', href: '/blog' },
           { label: 'サイトマップ', href: '/sitemap.xml' },
