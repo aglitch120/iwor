@@ -5,6 +5,17 @@ import { usePathname } from 'next/navigation'
 
 const navItems = [
   {
+    label: 'ホーム',
+    href: '/',
+    icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} />
+        <path d="M9 21V12h6v9" />
+      </svg>
+    ),
+    match: (p: string) => p === '/',
+  },
+  {
     label: 'Study',
     href: '/study',
     icon: (active: boolean) => (
