@@ -7,6 +7,7 @@ import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 import { trackToolUsage, getTotalToolUsage, useProStatus } from '@/components/pro/useProStatus'
 import { getToolBySlug } from '@/lib/tools-config'
+import { generateToolJsonLd } from '@/lib/tools-metadata'
 
 interface CalculatorLayoutProps {
   slug?: string
@@ -128,8 +129,18 @@ export default function CalculatorLayout({
     if (slug) trackToolUsage(slug)
   }, [slug])
 
+  const jsonLd = slug ? generateToolJsonLd(slug) : null
+
   return (
     <div className="max-w-2xl mx-auto overflow-hidden">
+      {/* 構造化データ（MedicalWebPage） */}
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+
       {/* パンくず */}
       <nav className="text-sm text-muted mb-6 flex flex-wrap items-center gap-y-1">
         <Link href="/" className="hover:text-ac">ホーム</Link>

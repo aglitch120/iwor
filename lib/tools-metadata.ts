@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getToolBySlug } from '@/lib/tools-config'
+import { getToolBySlug, categoryLabels } from '@/lib/tools-config'
 
 export function generateToolMetadata(slug: string): Metadata {
   const tool = getToolBySlug(slug)
@@ -29,5 +29,39 @@ export function generateToolMetadata(slug: string): Metadata {
     alternates: {
       canonical: url,
     },
+  }
+}
+
+export function generateToolJsonLd(slug: string) {
+  const tool = getToolBySlug(slug)
+  if (!tool) return null
+
+  const category = categoryLabels[tool.category]
+  const url = `https://iwor.jp/tools/calc/${slug}`
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    name: `${tool.name}（${tool.nameEn}）`,
+    description: tool.description,
+    url,
+    inLanguage: 'ja',
+    isPartOf: { '@type': 'WebSite', name: 'iwor', url: 'https://iwor.jp' },
+    about: {
+      '@type': 'MedicalCondition',
+      name: category,
+    },
+    audience: {
+      '@type': 'MedicalAudience',
+      audienceType: 'Clinician',
+    },
+    ...(tool.updatedAt ? { dateModified: `${tool.updatedAt}-01` } : {}),
+    ...(tool.sources && tool.sources.length > 0 ? {
+      citation: tool.sources.map(s => ({
+        '@type': 'ScholarlyArticle',
+        name: s.text,
+        ...(s.url ? { url: s.url } : {}),
+      })),
+    } : {}),
   }
 }
