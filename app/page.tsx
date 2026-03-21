@@ -25,7 +25,7 @@ const apps = [
     ),
   },
   {
-    href: '/josler',
+    href: '/record',
     label: '研修記録',
     badge: 'PRO',
     icon: (

@@ -167,53 +167,50 @@ export default function PresenterApp() {
     return (
       <>
         <Header />
-        <div className="space-y-5">
+        <div className="space-y-3">
           {/* 発表タイプ */}
           <Section title="1. 発表タイプ">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="flex gap-2 flex-wrap">
               {TYPES.map(t => (
                 <button key={t.id} onClick={() => updateSetting('type', t.id)}
-                  className={`p-3 rounded-xl border text-left transition-all ${
-                    settings.type === t.id ? 'border-ac bg-acl shadow-sm' : 'border-br bg-s0 hover:border-ac/30'
-                  }`}>
-                  <span className="text-lg block mb-1">{t.icon}</span>
-                  <p className={`text-xs font-bold ${settings.type === t.id ? 'text-ac' : 'text-tx'}`}>{t.label}</p>
-                  <p className="text-[10px] text-muted mt-0.5">{t.desc}</p>
-                </button>
+                  className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${
+                    settings.type === t.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
+                  }`}><span>{t.icon}</span>{t.label}</button>
               ))}
             </div>
           </Section>
 
-          {/* 対象者 */}
-          <Section title="2. 対象者">
-            <div className="flex gap-2 flex-wrap">
-              {AUDIENCES.map(a => (
-                <button key={a.id} onClick={() => updateSetting('audience', a.id)}
-                  className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all ${
-                    settings.audience === a.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
-                  }`}>{a.label}</button>
-              ))}
-            </div>
-          </Section>
+          {/* 対象者 + 発表時間（横並び） */}
+          <div className="grid grid-cols-2 gap-3">
+            <Section title="2. 対象者">
+              <div className="flex gap-1.5 flex-wrap">
+                {AUDIENCES.map(a => (
+                  <button key={a.id} onClick={() => updateSetting('audience', a.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                      settings.audience === a.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
+                    }`}>{a.label}</button>
+                ))}
+              </div>
+            </Section>
 
-          {/* 発表時間 */}
-          <Section title="3. 発表時間">
-            <div className="flex gap-2 flex-wrap">
-              {DURATIONS.map(d => (
-                <button key={d} onClick={() => updateSetting('duration', d)}
-                  className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all ${
-                    settings.duration === d ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
-                  }`}>{d}分</button>
-              ))}
-            </div>
-          </Section>
+            <Section title="3. 発表時間">
+              <div className="flex gap-1.5 flex-wrap">
+                {DURATIONS.map(d => (
+                  <button key={d} onClick={() => updateSetting('duration', d)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                      settings.duration === d ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
+                    }`}>{d}分</button>
+                ))}
+              </div>
+            </Section>
+          </div>
 
           {/* 出力形式 */}
           <Section title="4. 出力形式">
             <div className="flex gap-2 flex-wrap">
               {FORMATS.map(f => (
                 <button key={f.id} onClick={() => updateSetting('format', f.id)}
-                  className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${
                     settings.format === f.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
                   }`}><span>{f.icon}</span>{f.label}</button>
               ))}
@@ -224,18 +221,20 @@ export default function PresenterApp() {
           <Section title="5. トピック（任意）">
             <input type="text" value={settings.topic} onChange={e => updateSetting('topic', e.target.value)}
               placeholder="例: 70歳男性のDKA症例、SGLT2阻害薬の有効性メタ解析"
-              className="w-full px-3 py-2.5 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all" />
+              className="w-full px-3 py-2 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all" />
           </Section>
 
-          {/* 生成ボタン */}
-          <button onClick={handleGenerate}
-            className="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2"
-            style={{ background: MC, boxShadow: `0 4px 14px ${MC}33` }}>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            テンプレートを生成
-          </button>
+          {/* 生成ボタン — sticky */}
+          <div className="sticky bottom-16 md:bottom-0 z-10 pt-2 pb-1" style={{ background: 'linear-gradient(transparent, var(--bg) 8px)' }}>
+            <button onClick={handleGenerate}
+              className="w-full py-3 rounded-xl text-sm font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2"
+              style={{ background: MC, boxShadow: `0 4px 14px ${MC}33` }}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              テンプレートを生成
+            </button>
+          </div>
 
           {/* PRO teaser */}
           <ProTeaser />

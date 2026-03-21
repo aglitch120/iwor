@@ -33,7 +33,7 @@ const navItems = [
         <path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5" />
       </svg>
     ),
-    match: (p: string) => p.startsWith('/matching') || p.startsWith('/josler') || p.startsWith('/credits') || p.startsWith('/conferences'),
+    match: (p: string) => p.startsWith('/matching') || p.startsWith('/record') || p.startsWith('/josler') || p.startsWith('/credits') || p.startsWith('/conferences'),
   },
   {
     label: 'マイページ',
