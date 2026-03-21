@@ -32,28 +32,6 @@ const ST = [
 ]
 
 /* ── Guide sections ── */
-const GUIDE_SECS = [
-  { id: 's', title: '📄 構成と文字数', rows: [
-    ['タイトル', '80文字以内'], ['確定診断名', '略語不可、#1に主病名'], ['主訴', '25文字以内'],
-    ['既往歴・社会歴・家族歴', '合計100文字以内'], ['病歴', '1000文字以内（OPQRST）'],
-    ['主な入院時現症', '350文字以内'], ['主要な検査所見', '1000文字以内'],
-    ['プロブレムリスト', '300文字以内'], ['入院後経過と考察', '1500文字以内'],
-    ['退院時処方', '300文字以内（一般名）'], ['総合考察', '1000文字以内（PubMed引用2〜3件）']] },
-  { id: 'r', title: '✏️ 記載ルール', rows: [
-    ['文体', '常体（〜した・〜だった）'], ['禁止語句', '「認める」「にて」禁止'],
-    ['句読点', '「, .」を使用（半角スペース付き）'], ['英数字', '全て半角、数字と単位の間にスペース'],
-    ['微生物名', '斜体（例: E. coli）'], ['病院・患者名', '実名禁止→「近医」「前医」'],
-    ['薬剤名', '一般名で記載']] },
-  { id: 'o', title: '🩺 病歴のOPQRST', rows: [
-    ['O - Onset', 'いつから？発症機転'], ['P - Palliative/Provoke', '何で良く/悪くなる？'],
-    ['Q - Quality/Quantity', 'どんな症状？強さは？'], ['R - Region', 'どこ？放散は？'],
-    ['S - Symptoms', '随伴症状・陰性所見'], ['T - Time course', '最初→経過→現在']] },
-  { id: 'c', title: '📚 引用の書き方', rows: [
-    ['医学雑誌', '（Abe S. JAMA 1997；278：485）'],
-    ['日本語雑誌', '（工藤翔二. 日内会誌 2006；95：564）'],
-    ['件数', '総合考察で2〜3件']] },
-]
-
 /* ── State builders ── */
 function buildEG() {
   const eg: any = {}
@@ -110,7 +88,6 @@ export default function JoslerApp() {
   const [openSumDg, setOpenSumDg] = useState<Record<number, string | null>>({})
   const [showRules, setShowRules] = useState(false)
   const [showShortage, setShowShortage] = useState(false)
-  const [openGuide, setOpenGuide] = useState<string | null>(null)
 
   // ── Data load on mount ──
   useEffect(() => {
@@ -229,8 +206,8 @@ export default function JoslerApp() {
     { id: 'overview', l: '📋 概要' },
     { id: 'cases', l: '📊 症例' },
     { id: 'summaries', l: '📝 要約' },
+    { id: 'generator', l: '✍️ 要約生成' },
     { id: 'other', l: '📎 その他' },
-    { id: 'guide', l: '📖 病歴生成' },
   ]
 
   if (!loaded) return <div style={{ textAlign: 'center', padding: '80px 20px', color: C.m }}>読み込み中...</div>
@@ -368,7 +345,7 @@ export default function JoslerApp() {
         }} />}
         {tab === 'summaries' && <SummariesTab summaries={summaries} eg={eg} updSum={updSum} openSumId={openSumId} setOpenSumId={setOpenSumId} openSumDg={openSumDg} setOpenSumDg={setOpenSumDg} showRules={showRules} setShowRules={setShowRules} showShortage={showShortage} setShowShortage={setShowShortage} />}
         {tab === 'other' && <OtherTab other={other} updOther={updOther} />}
-        {tab === 'guide' && <GuideTab openGuide={openGuide} setOpenGuide={setOpenGuide} />}
+        {tab === 'generator' && <GeneratorTab summaries={summaries} />}
       </div>
 
       {showProModal && <ProModal feature="full_access" onClose={() => setShowProModal(false)} />}
@@ -690,20 +667,6 @@ function SummariesTab({ summaries, eg, updSum, openSumId, setOpenSumId, openSumD
 
   return (
     <>
-      {/* 病歴要約ジェネレーター導線 */}
-      <a href="/josler/summary-generator" style={{
-        display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-        borderRadius: 12, background: `linear-gradient(135deg, ${C.acl}, #d4e8dc)`,
-        border: `1px solid ${C.ac}30`, textDecoration: 'none', marginBottom: 12,
-      }}>
-        <span style={{ fontSize: 20 }}>📝</span>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: C.ac }}>病歴要約ジェネレーター</div>
-          <div style={{ fontSize: 10, color: C.m }}>J-OSLER手引き準拠 / AI不使用 / ブラウザ完結</div>
-        </div>
-        <span style={{ fontSize: 14, color: C.ac }}>→</span>
-      </a>
-
       {/* Progress */}
       <Card>
         <CardT>病歴要約 進捗</CardT>
@@ -961,45 +924,66 @@ function OtherTab({ other: o, updOther }: any) {
 /* ═══════════════════════════════════
    GUIDE TAB
 ═══════════════════════════════════ */
-function GuideTab({ openGuide, setOpenGuide }: any) {
+function GeneratorTab({ summaries }: { summaries: any[] }) {
   return (
     <>
+      {/* 説明 */}
+      <Card style={{ background: `linear-gradient(135deg, ${C.acl}, #d4e8dc)`, border: `1px solid ${C.ac}30` }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+          <span style={{ fontSize: 22 }}>✍️</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: C.ac }}>病歴要約ジェネレーター</div>
+            <div style={{ fontSize: 10, color: C.m }}>J-OSLER手引き準拠 / AI不使用 / データ非保持 / ブラウザ完結</div>
+          </div>
+        </div>
+        <a href="/josler/summary-generator" style={{
+          display: 'block', width: '100%', padding: '10px 0', borderRadius: 8,
+          background: C.ac, color: '#fff', fontSize: 13, fontWeight: 700, textAlign: 'center', textDecoration: 'none',
+        }}>
+          新規作成（白紙から）
+        </a>
+      </Card>
+
+      {/* 29要約から選んで生成 */}
       <Card>
-        <CardT>📖 病歴生成</CardT>
-        <p style={{ fontSize: 12, color: C.m, lineHeight: 1.6, marginBottom: 12 }}>
-          疾患を選択すると病歴要約の一式例を表示。テキストをコピーしてJ-OSLER提出に活用できます。
+        <CardT>登録済み要約から生成</CardT>
+        <p style={{ fontSize: 11, color: C.m, marginBottom: 10, lineHeight: 1.5 }}>
+          下の要約タブで登録した病歴要約のデータを使って、病歴要約ジェネレーターを開きます。
         </p>
-        {GUIDE_SECS.map(sec => {
-          const isOpen = openGuide === sec.id
-          return (
-            <div key={sec.id} style={{ marginBottom: 8 }}>
-              <button onClick={() => setOpenGuide(isOpen ? null : sec.id)} style={{
-                width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px',
-                border: `1px solid ${isOpen ? C.ac + '44' : C.br}`, borderRadius: isOpen ? '8px 8px 0 0' : 8,
-                background: isOpen ? C.acl : C.s0, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: C.tx, textAlign: 'left',
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {summaries.map((s: any) => {
+            const spObj = SP.find(x => x.id === s.specialty)
+            const dgs = s.specialty ? (DG[s.specialty] || []) : []
+            const dgObj = dgs.find((x: any) => x.id === s.dgId)
+            const hasData = s.specialty && s.dgId
+            const label = hasData
+              ? `#${s.id} ${spObj?.short || ''} — ${dgObj?.name || ''}`
+              : `#${s.id} 未設定`
+            const st = ST.find(x => x.v === s.status)!
+            return (
+              <div key={s.id} style={{
+                display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px',
+                borderRadius: 8, border: `1px solid ${hasData ? (spObj?.color || C.ac) + '30' : C.br}`,
+                background: hasData ? C.s0 : C.s1, opacity: hasData ? 1 : 0.5,
               }}>
-                {sec.title}
-                <span style={{ color: C.m }}>{isOpen ? '▲' : '▼'}</span>
-              </button>
-              {isOpen && (
-                <div style={{ border: `1px solid ${C.ac}44`, borderTop: 'none', borderRadius: '0 0 8px 8px', overflow: 'hidden' }}>
-                  {sec.rows.map(([k, v], i) => (
-                    <div key={i} style={{ display: 'flex', borderBottom: i < sec.rows.length - 1 ? `1px solid ${C.s1}` : 'none', fontSize: 12 }}>
-                      <div style={{ width: 120, flexShrink: 0, padding: '8px 10px', fontWeight: 600, color: C.ac, background: C.acl + '80' }}>{k}</div>
-                      <div style={{ flex: 1, padding: '8px 10px', color: C.tx, lineHeight: 1.5 }}>{v}</div>
-                    </div>
-                  ))}
-                  <button onClick={() => {
-                    const text = sec.rows.map(([k, v]) => `【${k}】\n${v}`).join('\n\n')
-                    navigator.clipboard.writeText(text).then(() => alert('コピーしました'))
-                  }} style={{ width: '100%', padding: '8px 0', border: 'none', borderTop: `1px solid ${C.s1}`, background: C.acl, color: C.ac, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
-                    📋 テキストをコピー
-                  </button>
-                </div>
-              )}
-            </div>
-          )
-        })}
+                <span style={{ fontSize: 10, fontWeight: 700, color: st.c, minWidth: 48, padding: '2px 6px', borderRadius: 4, background: st.c + '15', textAlign: 'center' }}>
+                  {st.l}
+                </span>
+                <span style={{ flex: 1, fontSize: 11, fontWeight: hasData ? 600 : 400, color: hasData ? C.tx : C.m, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {label}
+                </span>
+                {hasData ? (
+                  <a href={`/josler/summary-generator?summary=${s.id}&specialty=${s.specialty}&dg=${s.dgId || ''}&diseases=${(s.diseases || []).join(',')}`}
+                    style={{ padding: '4px 10px', borderRadius: 6, background: C.acl, color: C.ac, fontSize: 10, fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                    生成 →
+                  </a>
+                ) : (
+                  <span style={{ fontSize: 10, color: C.m }}>要約タブで設定</span>
+                )}
+              </div>
+            )
+          })}
+        </div>
       </Card>
     </>
   )
