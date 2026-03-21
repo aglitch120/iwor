@@ -59,6 +59,20 @@ export interface WizardProfile {
   motivation: string
   doctorTrigger: string
   strengths: string             // 旧互換
+  // Step 7: 将来ビジョン
+  doctorType: string[]          // スペシャリスト/ジェネラリスト/研究/教育/管理/地域/グローバル/革新
+  goal5y: string                // 5年後の目標
+  goal10y: string               // 10年後の目標
+  otherFields: string[]         // 医学教育/基礎研究/医療政策/病院経営/医療IT/国際医療/メディア/起業/製薬
+  // Step 8: ライフスタイル
+  workStyle: string[]           // 規則的/フレックス/当直含む/残業少ない/土日休み
+  incomeGoal: string            // 1000万未満/1000-1500/1500-2000/2000以上/働き方重視
+  wlBalance: string             // 8:2/7:3/6:4/5:5/4:6/3:7
+  privateValues: string[]       // 家族/友人/趣味/自己啓発/スポーツ/旅行/社会貢献
+  // Step 9: 理想の職場
+  workplaceAtmosphere: string[] // 活気/落ち着き/フランク/伝統的/協調性/個人裁量
+  idealMentor: string[]         // 技術指導/キャリア支援/距離感/プライベート親身/厳しい/裁量/最新知識
+  workplaceRole: string[]       // リーダーシップ/専門家/チーム貢献/後進育成/新規推進
 }
 
 export const EMPTY_WIZARD_PROFILE: WizardProfile = {
@@ -73,6 +87,9 @@ export const EMPTY_WIZARD_PROFILE: WizardProfile = {
   personalityTraits: [], strengthsList: [], strengthsEpisode: '', weakness: '', weaknessStrategy: '',
   hospitalContribution: '', futureVision: '',
   motivation: '', doctorTrigger: '', strengths: '',
+  doctorType: [], goal5y: '', goal10y: '', otherFields: [],
+  workStyle: [], incomeGoal: '', wlBalance: '', privateValues: [],
+  workplaceAtmosphere: [], idealMentor: [], workplaceRole: [],
 }
 
 // ── 選択肢定数 ──
@@ -90,6 +107,16 @@ const LANGUAGES = ['英語（日常会話）','英語（ビジネス）','英語
 const PERSONALITY_TRAITS = ['論理的思考','共感力','協調性','責任感','忍耐強さ','適応力','実行力','好奇心','リーダーシップ','冷静さ','コミュニケーション力','決断力','柔軟性','細部への注意','創造性']
 const STRENGTHS_OPTIONS = ['チームワーク','リーダーシップ','粘り強さ','計画性','柔軟性','傾聴力','行動力','分析力','共感力','コミュニケーション力','探究心','誠実さ']
 
+const DOCTOR_TYPES = ['スペシャリスト型','ジェネラリスト型','研究者型','教育者型','管理職型','地域医療型','グローバル型','革新者型']
+const OTHER_FIELDS = ['医学教育','基礎研究','医療政策','病院経営','医療IT','国際医療','メディア','起業','製薬']
+const WORK_STYLES = ['規則的な勤務','フレックス制','当直含む','残業少ない','土日休み']
+const INCOME_GOALS = ['1000万未満','1000〜1500万','1500〜2000万','2000万以上','働き方を重視']
+const WL_BALANCE_OPTIONS = ['仕事8:生活2','仕事7:生活3','仕事6:生活4','仕事5:生活5','仕事4:生活6','仕事3:生活7']
+const PRIVATE_VALUES = ['家族との時間','友人関係','趣味・娯楽','自己啓発','スポーツ','旅行','社会貢献']
+const WORKPLACE_ATMOSPHERE = ['活気がある','落ち着いている','フランクな雰囲気','伝統的・格式ある','協調性が高い','個人裁量が大きい']
+const IDEAL_MENTOR = ['技術・手技指導','キャリア支援','適度な距離感','プライベートも親身','厳しく鍛えてくれる','裁量を与えてくれる','最新知識をもつ']
+const WORKPLACE_ROLES = ['リーダーシップを発揮','専門家として深める','チームに貢献','後進を育てる','新規事業・改革推進']
+
 const GPA_OPTIONS = ['上位10%','上位25%','上位50%','下位50%','回答しない']
 const CBT_OPTIONS = ['90%以上','80-89%','70-79%','60-69%','回答しない']
 const CLINICAL_OPTIONS = ['優秀','良好','普通','回答しない']
@@ -103,6 +130,9 @@ const STEPS = [
   { num: 4, title: '課外活動', icon: '🏃', desc: '部活・バイト・ボランティア' },
   { num: 5, title: '資格・研究', icon: '🔬', desc: '資格・語学・研究・留学' },
   { num: 6, title: '自己分析', icon: '💡', desc: '強み・動機・ビジョン' },
+  { num: 7, title: '将来ビジョン', icon: '🔮', desc: '医師像・キャリア目標' },
+  { num: 8, title: 'ライフスタイル', icon: '⚖️', desc: '勤務・収入・WLB' },
+  { num: 9, title: '理想の職場', icon: '🏥', desc: '雰囲気・メンター・役割' },
 ]
 
 // ═══════════════════════════════════════
@@ -115,7 +145,7 @@ export default function ProfileWizard({
   onShowProModal: () => void
   mode: 'matching' | 'career'
 }) {
-  const [step, setStep] = useState(0) // 0 = overview, 1-6 = steps
+  const [step, setStep] = useState(0) // 0 = overview, 1-9 = steps
   const [profile, setProfile] = useState<WizardProfile>(EMPTY_WIZARD_PROFILE)
   const [saved, setSaved] = useState(false)
   const [showResume, setShowResume] = useState(false)
@@ -296,6 +326,9 @@ export default function ProfileWizard({
       {step === 4 && <Step4 profile={profile} updateField={updateField} />}
       {step === 5 && <Step5 profile={profile} updateField={updateField} toggleArrayField={toggleArrayField} />}
       {step === 6 && <Step6 profile={profile} updateField={updateField} toggleArrayField={toggleArrayField} />}
+      {step === 7 && <Step7 profile={profile} updateField={updateField} toggleArrayField={toggleArrayField} />}
+      {step === 8 && <Step8 profile={profile} updateField={updateField} toggleArrayField={toggleArrayField} />}
+      {step === 9 && <Step9 profile={profile} updateField={updateField} toggleArrayField={toggleArrayField} />}
 
       {/* ナビゲーション */}
       <div className="flex gap-3 pt-2">
@@ -305,7 +338,7 @@ export default function ProfileWizard({
             ← 前へ
           </button>
         )}
-        {step < 6 ? (
+        {step < 9 ? (
           <button onClick={() => goStep(step + 1)}
             className="flex-[2] py-3 rounded-xl text-sm font-bold text-white transition-all"
             style={{ background: MC }}>
@@ -553,6 +586,139 @@ function Step6({ profile, updateField, toggleArrayField }: StepProps & { toggleA
           onChange={v => updateField('motivation', v)}
           placeholder="例: 幅広い症例を経験し、地域医療に貢献できる総合力のある医師になりたい" rows={3} />
       </StepCard>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════
+//  Step 7: 将来ビジョン
+// ═══════════════════════════════════════
+function Step7({ profile, updateField, toggleArrayField }: StepProps & { toggleArrayField: ToggleFn }) {
+  return (
+    <div className="space-y-4">
+      <StepCard title="目指す医師像">
+        <ChipSelect label="どんな医師になりたい？（複数可）" options={DOCTOR_TYPES}
+          selected={profile.doctorType} onToggle={v => toggleArrayField('doctorType', v)} multi />
+        <ChipSelect label="医療以外で関心のある領域（複数可）" options={OTHER_FIELDS}
+          selected={profile.otherFields} onToggle={v => toggleArrayField('otherFields', v)} multi />
+      </StepCard>
+      <StepCard title="キャリア目標">
+        <TextAreaField label="5年後の目標" value={profile.goal5y}
+          onChange={v => updateField('goal5y', v)}
+          placeholder="例: 消化器内科専門医を取得し、内視鏡技術を磨きながら地域病院で活躍したい" rows={2} />
+        <TextAreaField label="10年後の目標" value={profile.goal10y}
+          onChange={v => updateField('goal10y', v)}
+          placeholder="例: 消化器病専門医も取得し、指導医として後進を育てながら地域医療に貢献したい" rows={2} />
+      </StepCard>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════
+//  Step 8: ライフスタイル
+// ═══════════════════════════════════════
+function Step8({ profile, updateField, toggleArrayField }: StepProps & { toggleArrayField: ToggleFn }) {
+  return (
+    <div className="space-y-4">
+      <StepCard title="勤務スタイル">
+        <ChipSelect label="希望する働き方（複数可）" options={WORK_STYLES}
+          selected={profile.workStyle} onToggle={v => toggleArrayField('workStyle', v)} multi />
+        <ChipSelect label="収入目標" options={INCOME_GOALS}
+          selected={profile.incomeGoal ? [profile.incomeGoal] : []}
+          onToggle={v => updateField('incomeGoal', v === profile.incomeGoal ? '' : v)} />
+      </StepCard>
+      <StepCard title="ワークライフバランス">
+        <ChipSelect label="仕事と生活のバランス感" options={WL_BALANCE_OPTIONS}
+          selected={profile.wlBalance ? [profile.wlBalance] : []}
+          onToggle={v => updateField('wlBalance', v === profile.wlBalance ? '' : v)} />
+        <ChipSelect label="私生活で大切にしたいこと（複数可）" options={PRIVATE_VALUES}
+          selected={profile.privateValues} onToggle={v => toggleArrayField('privateValues', v)} multi />
+      </StepCard>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════
+//  Step 9: 理想の職場
+// ═══════════════════════════════════════
+function Step9({ profile, updateField, toggleArrayField }: StepProps & { toggleArrayField: ToggleFn }) {
+  const [copied, setCopied] = useState(false)
+
+  const generatePrompt = () => {
+    const lines: string[] = ['以下は私（医学生）のプロフィールです。このデータをもとに、自己分析をさらに深めるための質問・ワークシートを生成してください。']
+    lines.push('')
+    lines.push('【目指す医師像】' + (profile.doctorType.length > 0 ? profile.doctorType.join('、') : '未回答'))
+    lines.push('【5年後の目標】' + (profile.goal5y || '未回答'))
+    lines.push('【10年後の目標】' + (profile.goal10y || '未回答'))
+    lines.push('【関心領域（医療以外）】' + (profile.otherFields.length > 0 ? profile.otherFields.join('、') : '未回答'))
+    lines.push('【希望勤務スタイル】' + (profile.workStyle.length > 0 ? profile.workStyle.join('、') : '未回答'))
+    lines.push('【収入目標】' + (profile.incomeGoal || '未回答'))
+    lines.push('【WLBの希望】' + (profile.wlBalance || '未回答'))
+    lines.push('【私生活の価値観】' + (profile.privateValues.length > 0 ? profile.privateValues.join('、') : '未回答'))
+    lines.push('【理想の職場雰囲気】' + (profile.workplaceAtmosphere.length > 0 ? profile.workplaceAtmosphere.join('、') : '未回答'))
+    lines.push('【理想のメンター像】' + (profile.idealMentor.length > 0 ? profile.idealMentor.join('、') : '未回答'))
+    lines.push('【職場での役割希望】' + (profile.workplaceRole.length > 0 ? profile.workplaceRole.join('、') : '未回答'))
+    if (profile.strengthsList.length > 0) lines.push('【強み】' + profile.strengthsList.join('、'))
+    if (profile.weakness) lines.push('【弱み・課題】' + profile.weakness)
+    if (profile.motivation) lines.push('【志望動機】' + profile.motivation)
+    lines.push('')
+    lines.push('上記を踏まえ、以下を作成してください：')
+    lines.push('1. このプロフィールから見える「価値観の核心」の言語化')
+    lines.push('2. 志望科・研修病院選びに関する深堀り質問（5問）')
+    lines.push('3. 面接で想定される「軸のブレ」の指摘と対策')
+    lines.push('4. さらに自己理解を深めるためのワーク（具体的なアクション）')
+    return lines.join('\n')
+  }
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(generatePrompt())
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <div className="space-y-4">
+      <StepCard title="職場の雰囲気">
+        <ChipSelect label="理想の職場雰囲気（複数可）" options={WORKPLACE_ATMOSPHERE}
+          selected={profile.workplaceAtmosphere} onToggle={v => toggleArrayField('workplaceAtmosphere', v)} multi />
+      </StepCard>
+      <StepCard title="メンター・役割">
+        <ChipSelect label="理想の指導医・メンター像（複数可）" options={IDEAL_MENTOR}
+          selected={profile.idealMentor} onToggle={v => toggleArrayField('idealMentor', v)} multi />
+        <ChipSelect label="職場での希望役割（複数可）" options={WORKPLACE_ROLES}
+          selected={profile.workplaceRole} onToggle={v => toggleArrayField('workplaceRole', v)} multi />
+      </StepCard>
+
+      {/* AI自己分析深化プロンプト生成 */}
+      <div className="bg-s0 border border-br rounded-xl p-4 space-y-3">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E8F0EC' }}>
+            <span className="text-base">🤖</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-tx">AIで自己分析を深める</p>
+            <p className="text-[11px] text-muted mt-0.5">入力内容からChatGPT / Claude / Gemini用のプロンプトを生成。コピーしてAIに貼り付けるだけ。</p>
+          </div>
+        </div>
+        <button
+          onClick={handleCopy}
+          className="w-full py-3 rounded-xl text-sm font-bold text-white transition-all flex items-center justify-center gap-2"
+          style={{ background: copied ? '#2E7D52' : MC, boxShadow: `0 4px 14px ${MC}33` }}
+        >
+          {copied ? (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+              コピーしました！
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              自己分析プロンプトをコピー
+            </>
+          )}
+        </button>
+        <p className="text-[10px] text-muted text-center">プロフィールの入力が多いほど、AIの回答が具体的になります</p>
+      </div>
     </div>
   )
 }
@@ -970,6 +1136,9 @@ function getStepFilled(step: number, p: WizardProfile): boolean {
     case 4: return !!(p.clubs || p.partTimeJob || p.volunteer)
     case 5: return !!(p.qualifications || p.research || p.studyAbroad)
     case 6: return !!(p.strengthsList.length > 0 || p.motivation)
+    case 7: return !!(p.doctorType.length > 0 || p.goal5y)
+    case 8: return !!(p.workStyle.length > 0 || p.incomeGoal || p.wlBalance)
+    case 9: return !!(p.workplaceAtmosphere.length > 0 || p.idealMentor.length > 0 || p.workplaceRole.length > 0)
     default: return false
   }
 }

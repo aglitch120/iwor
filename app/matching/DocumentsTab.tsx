@@ -17,7 +17,7 @@ interface Profile {
   motivation: string
 }
 
-type DocSubTab = 'emails' | 'checklist' | 'questions' | 'resume-guide'
+type DocSubTab = 'emails' | 'checklist' | 'questions' | 'resume-guide' | 'compare'
 
 // ── メールテンプレート ──
 type TemplateId = 'visit-request' | 'visit-thanks' | 'adoption-thanks' | 'cover-letter'
@@ -391,6 +391,7 @@ export default function DocumentsTab({
     ...(mode === 'matching' ? [
       { id: 'checklist' as DocSubTab, label: '見学準備', icon: '✅' },
       { id: 'questions' as DocSubTab, label: '聞くべきこと', icon: '❓' },
+      { id: 'compare' as DocSubTab, label: '病院比較表', icon: '📊' },
     ] : []),
   ]
 
@@ -419,6 +420,7 @@ export default function DocumentsTab({
       {subTab === 'resume-guide' && <ResumeGuide />}
       {subTab === 'checklist' && <VisitChecklist />}
       {subTab === 'questions' && <VisitQuestions />}
+      {subTab === 'compare' && <HospitalCompare />}
     </div>
   )
 }
@@ -691,7 +693,16 @@ function VisitQuestions() {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-muted">見学時に確認すべきポイント。メモ欄に記録を残せます。</p>
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted">見学時に確認すべきポイント。メモ欄に記録を残せます。</p>
+        <button
+          onClick={() => window.print()}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all flex-shrink-0"
+          style={{ background: MC }}
+        >
+          📄 印刷用PDF
+        </button>
+      </div>
       {VISIT_QUESTIONS.map((cat, ci) => (
         <div key={ci} className="bg-s0 border border-br rounded-xl overflow-hidden">
           <button
@@ -807,6 +818,250 @@ const RESUME_SECTIONS: { title: string; icon: string; items: { label: string; im
     ],
   },
 ]
+
+// ═══════════════════════════════════════
+//  病院比較表
+// ═══════════════════════════════════════
+interface CompareCategory {
+  title: string
+  items: string[]
+}
+
+const COMPARE_CATEGORIES: CompareCategory[] = [
+  {
+    title: '診療科の強さ',
+    items: [
+      '内科系の症例数・多様性',
+      '外科系の手術件数',
+      '救急搬送件数・重症度',
+      '専門科の充実度',
+      '希望科の指導医数',
+      '地域連携・転院体制',
+      '学術的な活動（論文・学会）',
+      '稀少疾患・難症例の経験',
+    ],
+  },
+  {
+    title: '良い教育研修環境',
+    items: [
+      'ローテーションの自由度',
+      '指導医の丁寧さ・距離感',
+      '研修医の裁量権',
+      '手技経験の機会',
+      '勉強会・カンファの頻度',
+      'フィードバック体制',
+      '研修医同士の仲・雰囲気',
+      '専攻医への接続サポート',
+      '研究・学会参加機会',
+      'シミュレーション設備',
+    ],
+  },
+  {
+    title: '福利厚生',
+    items: [
+      '給与・ボーナスの水準',
+      '当直手当・残業代',
+      '住宅手当・寮の有無',
+      '休暇取得のしやすさ',
+      '学会参加費補助',
+      '医師賠償責任保険',
+      '健康診断・メンタル支援',
+      '産休・育休の取りやすさ',
+      '交通費支給',
+      '食堂・院内環境',
+    ],
+  },
+  {
+    title: 'その他',
+    items: [
+      'アクセス・立地の利便性',
+      'マッチング倍率・難易度',
+      '病院の規模・ブランド',
+      '見学時の印象・対応',
+      '将来のキャリアとの整合性',
+    ],
+  },
+]
+
+function HospitalCompare() {
+  const MAX_HOSPITALS = 3
+  const [hospitalNames, setHospitalNames] = useState<string[]>(['病院A', '病院B', '病院C'])
+  const [activeHospitals, setActiveHospitals] = useState<number>(2)
+
+  // weights[categoryIndex][itemIndex] = 1-5
+  const [weights, setWeights] = useState<number[][]>(() =>
+    COMPARE_CATEGORIES.map(cat => cat.items.map(() => 3))
+  )
+  // scores[hospitalIndex][categoryIndex][itemIndex] = 1-5
+  const [scores, setScores] = useState<number[][][]>(() =>
+    Array.from({ length: MAX_HOSPITALS }, () =>
+      COMPARE_CATEGORIES.map(cat => cat.items.map(() => 3))
+    )
+  )
+
+  const setWeight = useCallback((ci: number, ii: number, val: number) => {
+    setWeights(prev => {
+      const next = prev.map(row => [...row])
+      next[ci][ii] = val
+      return next
+    })
+  }, [])
+
+  const setScore = useCallback((hi: number, ci: number, ii: number, val: number) => {
+    setScores(prev => {
+      const next = prev.map(catRow => catRow.map(row => [...row]))
+      next[hi][ci][ii] = val
+      return next
+    })
+  }, [])
+
+  // weighted average for each hospital
+  const totals = Array.from({ length: MAX_HOSPITALS }, (_, hi) => {
+    let sumWeightedScore = 0
+    let sumWeight = 0
+    COMPARE_CATEGORIES.forEach((cat, ci) => {
+      cat.items.forEach((_, ii) => {
+        const w = weights[ci][ii]
+        sumWeightedScore += w * scores[hi][ci][ii]
+        sumWeight += w
+      })
+    })
+    return sumWeight > 0 ? Math.round((sumWeightedScore / sumWeight) * 10) / 10 : 0
+  })
+
+  const maxTotal = Math.max(...totals.slice(0, activeHospitals))
+  const winnerIdx = totals.slice(0, activeHospitals).indexOf(maxTotal)
+
+  const hospitalColors = ['#1B4F3A', '#2563EB', '#D97706']
+
+  return (
+    <div className="space-y-4">
+      {/* ヘッダー */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted">最大3病院を比較。重みと点数を設定して総合評価を自動計算します。</p>
+        <button
+          onClick={() => window.print()}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all flex-shrink-0"
+          style={{ background: MC }}
+        >
+          📄 PDF印刷
+        </button>
+      </div>
+
+      {/* 病院数切り替え */}
+      <div className="flex gap-2">
+        {[2, 3].map(n => (
+          <button
+            key={n}
+            onClick={() => setActiveHospitals(n)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+              activeHospitals === n ? 'text-white border-transparent' : 'text-muted border-br hover:text-tx'
+            }`}
+            style={activeHospitals === n ? { background: MC } : undefined}
+          >
+            {n}病院比較
+          </button>
+        ))}
+      </div>
+
+      {/* 病院名入力 */}
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${activeHospitals}, 1fr)` }}>
+        {Array.from({ length: activeHospitals }, (_, hi) => (
+          <div key={hi}>
+            <label className="text-[11px] font-medium text-muted block mb-1">病院{hi + 1}</label>
+            <input
+              type="text"
+              value={hospitalNames[hi]}
+              onChange={e => {
+                const next = [...hospitalNames]
+                next[hi] = e.target.value
+                setHospitalNames(next)
+              }}
+              className="w-full px-2 py-1.5 border border-br rounded-lg bg-bg text-xs text-tx focus:border-ac outline-none transition-all font-medium"
+              style={{ borderColor: hospitalColors[hi] + '66' }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* 総合スコア */}
+      <div className="bg-s0 border border-br rounded-xl p-4">
+        <p className="text-xs font-bold text-tx mb-3">総合評価スコア（加重平均）</p>
+        <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${activeHospitals}, 1fr)` }}>
+          {Array.from({ length: activeHospitals }, (_, hi) => (
+            <div
+              key={hi}
+              className="rounded-xl p-3 text-center transition-all"
+              style={{
+                background: hi === winnerIdx ? hospitalColors[hi] + '15' : '#F8F9FA',
+                border: hi === winnerIdx ? `2px solid ${hospitalColors[hi]}` : '2px solid transparent',
+              }}
+            >
+              {hi === winnerIdx && (
+                <p className="text-[10px] font-bold mb-1" style={{ color: hospitalColors[hi] }}>WINNER</p>
+              )}
+              <p className="text-[11px] font-medium text-muted truncate">{hospitalNames[hi]}</p>
+              <p className="text-2xl font-bold mt-1" style={{ color: hospitalColors[hi] }}>{totals[hi]}</p>
+              <p className="text-[10px] text-muted">/ 5.0</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* カテゴリ別評価 */}
+      {COMPARE_CATEGORIES.map((cat, ci) => (
+        <div key={ci} className="bg-s0 border border-br rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-br">
+            <p className="text-sm font-bold text-tx">{cat.title}</p>
+          </div>
+          <div className="divide-y divide-br/50">
+            {cat.items.map((item, ii) => (
+              <div key={ii} className="px-4 py-3 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-xs font-medium text-tx flex-1">{item}</p>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <span className="text-[10px] text-muted">重み</span>
+                    <input
+                      type="range"
+                      min={1}
+                      max={5}
+                      value={weights[ci][ii]}
+                      onChange={e => setWeight(ci, ii, Number(e.target.value))}
+                      className="w-16 accent-green-700"
+                    />
+                    <span className="text-[11px] font-bold w-3 text-center" style={{ color: MC }}>{weights[ci][ii]}</span>
+                  </div>
+                </div>
+                <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${activeHospitals}, 1fr)` }}>
+                  {Array.from({ length: activeHospitals }, (_, hi) => (
+                    <div key={hi}>
+                      <p className="text-[10px] text-muted mb-1 truncate">{hospitalNames[hi]}</p>
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <button
+                            key={star}
+                            onClick={() => setScore(hi, ci, ii, star)}
+                            className="flex-1 h-5 rounded text-[10px] font-bold transition-all"
+                            style={{
+                              background: star <= scores[hi][ci][ii] ? hospitalColors[hi] : '#E5E7EB',
+                              color: star <= scores[hi][ci][ii] ? 'white' : '#9CA3AF',
+                            }}
+                          >
+                            {star}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 function ResumeGuide() {
   const STORAGE_KEY = 'iwor_resume_checklist'
