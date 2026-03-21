@@ -152,9 +152,40 @@ export default function HomePage() {
         <HomeWidgets />
       </section>
 
-      {/* ═══ App Grid (10 icons: 3cols mobile / 5cols desktop) ═══ */}
-      <section className="px-4 mb-12">
-        <HomeAppGrid apps={apps} />
+      {/* ═══ App Grid — BottomNav 4カテゴリ対応 ═══ */}
+      <section className="px-4 mb-10">
+        {/* Study */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 rounded-full" style={{ background: 'var(--ac)' }} />
+            <h2 className="text-sm font-bold text-tx">学習</h2>
+          </div>
+          <HomeAppGrid apps={apps.filter(a => ['/study'].includes(a.href))} />
+        </div>
+        {/* ツール */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 rounded-full" style={{ background: '#4338CA' }} />
+            <h2 className="text-sm font-bold text-tx">臨床ツール</h2>
+          </div>
+          <HomeAppGrid apps={apps.filter(a => ['/tools'].includes(a.href))} />
+        </div>
+        {/* キャリア */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 rounded-full" style={{ background: '#92400E' }} />
+            <h2 className="text-sm font-bold text-tx">キャリア</h2>
+          </div>
+          <HomeAppGrid apps={apps.filter(a => ['/record', '/credits', '/conferences', '/matching', '/journal', '/presenter'].includes(a.href))} />
+        </div>
+        {/* マイページ / その他 */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 rounded-full" style={{ background: '#6B6760' }} />
+            <h2 className="text-sm font-bold text-tx">生活・その他</h2>
+          </div>
+          <HomeAppGrid apps={apps.filter(a => ['/money', '/shift'].includes(a.href))} />
+        </div>
       </section>
 
       {/* ═══ Blog ═══ */}
