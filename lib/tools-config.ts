@@ -1,6 +1,11 @@
 // 臨床計算ツール設定
 // 各ツールのメタデータ・カテゴリ・SEO情報を一元管理
 
+export interface ToolSource {
+  text: string
+  url?: string
+}
+
 export interface ToolDefinition {
   slug: string
   name: string
@@ -12,6 +17,8 @@ export interface ToolDefinition {
   relatedSlugs: string[]
   /** 最終更新日（YYYY-MM形式） */
   updatedAt?: string
+  /** 参考文献・出典 */
+  sources?: ToolSource[]
 }
 
 export type ToolCategory =
@@ -64,6 +71,10 @@ export const tools: ToolDefinition[] = [
     keywords: ['eGFR', '計算', 'CKD-EPI', '腎機能', 'CKD', 'ステージ', 'クレアチニン'],
     relatedSlugs: ['corrected-ca', 'fib-4'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Inker LA, et al. New Creatinine- and Cystatin C-Based Equations. NEJM 2021;385:1737-1749', url: 'https://doi.org/10.1056/NEJMoa2102953' },
+      { text: '日本腎臓学会 CKD診療ガイドライン 2023' },
+    ],
   },
   {
     slug: 'cha2ds2-vasc',
@@ -75,6 +86,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['CHA2DS2-VASc', '心房細動', '脳卒中', 'リスク', '抗凝固'],
     relatedSlugs: ['chads2', 'has-bled'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Lip GY, et al. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation. Chest 2010;137(2):263-72', url: 'https://doi.org/10.1378/chest.09-1584' },
+    ],
   },
   {
     slug: 'chads2',
@@ -86,6 +100,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['CHADS2', '心房細動', '脳卒中'],
     relatedSlugs: ['cha2ds2-vasc', 'has-bled'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Gage BF, et al. Validation of clinical classification schemes for predicting stroke. JAMA 2001;285(22):2864-70', url: 'https://doi.org/10.1001/jama.285.22.2864' },
+    ],
   },
   {
     slug: 'has-bled',
@@ -97,6 +114,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['HAS-BLED', '出血', '抗凝固', '心房細動'],
     relatedSlugs: ['cha2ds2-vasc', 'chads2'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Pisters R, et al. A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding. Chest 2010;138(5):1093-100', url: 'https://doi.org/10.1378/chest.10-0134' },
+    ],
   },
   {
     slug: 'child-pugh',
@@ -108,6 +128,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['Child-Pugh', '肝硬変', '重症度'],
     relatedSlugs: ['meld', 'fib-4'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Pugh RN, et al. Transection of the oesophagus for bleeding oesophageal varices. Br J Surg 1973;60(8):646-9', url: 'https://doi.org/10.1002/bjs.1800600817' },
+    ],
   },
   {
     slug: 'meld',
@@ -119,6 +142,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['MELD', '肝疾患', '肝移植'],
     relatedSlugs: ['child-pugh', 'fib-4'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology 2001;33(2):464-70', url: 'https://doi.org/10.1053/jhep.2001.22172' },
+    ],
   },
   {
     slug: 'curb-65',
@@ -130,6 +156,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['CURB-65', '肺炎', '重症度', 'CAP'],
     relatedSlugs: ['a-drop', 'qsofa'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital. Thorax 2003;58(5):377-82', url: 'https://doi.org/10.1136/thorax.58.5.377' },
+    ],
   },
   {
     slug: 'a-drop',
@@ -141,6 +170,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['A-DROP', '肺炎', '日本呼吸器学会'],
     relatedSlugs: ['curb-65', 'qsofa'],
     updatedAt: '2026-03',
+    sources: [
+      { text: '日本呼吸器学会 成人肺炎診療ガイドライン 2017' },
+    ],
   },
   {
     slug: 'wells-pe',
@@ -152,6 +184,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['Wells', '肺塞栓', 'PE', 'D-dimer'],
     relatedSlugs: ['wells-dvt'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Wells PS, et al. Derivation of a simple clinical model to categorize patients probability of pulmonary embolism. Thromb Haemost 2000;83(3):416-20' },
+    ],
   },
   {
     slug: 'wells-dvt',
@@ -163,6 +198,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['Wells', 'DVT', '深部静脈血栓症'],
     relatedSlugs: ['wells-pe'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Wells PS, et al. Value of assessment of pretest probability of deep-vein thrombosis in clinical management. Lancet 1997;350(9094):1795-8', url: 'https://doi.org/10.1016/S0140-6736(97)08140-3' },
+    ],
   },
   {
     slug: 'grace',
@@ -174,6 +212,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['GRACE', 'ACS', '急性冠症候群'],
     relatedSlugs: ['cha2ds2-vasc'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Fox KA, et al. Prediction of risk of death and myocardial infarction in the six months after presentation with acute coronary syndrome (GRACE). BMJ 2006;333(7578):1091', url: 'https://doi.org/10.1136/bmj.38985.646481.55' },
+    ],
   },
   {
     slug: 'qsofa',
@@ -185,6 +226,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['qSOFA', '敗血症', 'sepsis'],
     relatedSlugs: ['sofa'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Singer M, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA 2016;315(8):801-10', url: 'https://doi.org/10.1001/jama.2016.0287' },
+    ],
   },
   {
     slug: 'sofa',
@@ -196,6 +240,10 @@ export const tools: ToolDefinition[] = [
     keywords: ['SOFA', '臓器障害', '敗血症', 'Sepsis-3'],
     relatedSlugs: ['qsofa'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Vincent JL, et al. The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. Intensive Care Med 1996;22(7):707-10', url: 'https://doi.org/10.1007/BF01709751' },
+      { text: 'Singer M, et al. Sepsis-3. JAMA 2016;315(8):801-10', url: 'https://doi.org/10.1001/jama.2016.0287' },
+    ],
   },
   {
     slug: 'fib-4',
@@ -207,6 +255,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['FIB-4', '肝線維化', 'NAFLD'],
     relatedSlugs: ['child-pugh', 'meld'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Sterling RK, et al. Development of a simple noninvasive index to predict significant fibrosis in patients with HIV/HCV coinfection. Hepatology 2006;43(6):1317-25', url: 'https://doi.org/10.1002/hep.21178' },
+    ],
   },
   {
     slug: 'corrected-ca',
@@ -218,6 +269,9 @@ export const tools: ToolDefinition[] = [
     keywords: ['補正Ca', 'カルシウム', 'アルブミン', 'Payne'],
     relatedSlugs: ['egfr'],
     updatedAt: '2026-03',
+    sources: [
+      { text: 'Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J 1973;4(5893):643-6', url: 'https://doi.org/10.1136/bmj.4.5893.643' },
+    ],
   },
   {
     slug: 'aa-gradient',

@@ -220,25 +220,32 @@ export default function CalculatorLayout({
         </section>
       )}
 
-      {/* 参考文献 */}
-      {references && references.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3">参考文献</h2>
-          <ol className="list-decimal list-inside text-sm text-muted space-y-2">
-            {references.map((ref, i) => (
-              <li key={i} className="break-words">
-                {ref.url ? (
-                  <a href={ref.url} target="_blank" rel="noopener noreferrer" className="hover:text-ac underline break-words">
-                    {ref.text}
-                  </a>
-                ) : (
-                  ref.text
-                )}
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
+      {/* 参考文献（明示的propsまたはtoolDef.sourcesから自動表示） */}
+      {(() => {
+        const toolSources = slug ? getToolBySlug(slug)?.sources : undefined
+        const refs = references && references.length > 0
+          ? references
+          : toolSources?.map(s => ({ text: s.text, url: s.url }))
+        if (!refs || refs.length === 0) return null
+        return (
+          <section className="mb-8">
+            <h2 className="text-lg font-bold mb-3">参考文献</h2>
+            <ol className="list-decimal list-inside text-sm text-muted space-y-2">
+              {refs.map((ref, i) => (
+                <li key={i} className="break-words">
+                  {ref.url ? (
+                    <a href={ref.url} target="_blank" rel="noopener noreferrer" className="hover:text-ac underline break-words">
+                      {ref.text}
+                    </a>
+                  ) : (
+                    ref.text
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      })()}
 
       {/* PRO CTA */}
       <ProCTA />
