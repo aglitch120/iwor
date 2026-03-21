@@ -75,6 +75,9 @@ function SummaryGeneratorInner() {
   const [rxInput, setRxInput] = useState('')
   const [rxConverted, setRxConverted] = useState('')
 
+  // カルテ貼り付け
+  const [karteInput, setKarteInput] = useState('')
+
   // URLパラメータから初期値
   useEffect(() => {
     const sp = searchParams.get('specialty')
@@ -98,9 +101,35 @@ function SummaryGeneratorInner() {
       init.physicalExam = buildPhysicalExamTemplate()
       init.labFindings = buildLabTemplate()
     }
+
+    // カルテ貼り付け内容の自動振り分け
+    if (karteInput.trim()) {
+      const text = karteInput.trim()
+      // 処方の自動変換
+      const rxMatch = text.match(/(?:処方|Rp|退院時処方|退院処方)[：:\s]*([\s\S]*?)(?=\n\n|\n[^\s]|$)/i)
+      if (rxMatch) init.dischargeMeds = convertPrescriptionToGeneric(rxMatch[1].trim())
+
+      // 現病歴の抽出
+      const hxMatch = text.match(/(?:現病歴|病歴|HPI)[：:\s]*([\s\S]*?)(?=\n(?:既往|入院時|現症|検査|身体)|$)/i)
+      if (hxMatch) init.presentIllness = hxMatch[1].trim()
+
+      // 既往歴
+      const pmhMatch = text.match(/(?:既往歴|PMH)[：:\s]*([\s\S]*?)(?=\n(?:生活|社会|家族|現病歴|入院時|現症)|$)/i)
+      if (pmhMatch) init.history = pmhMatch[1].trim().slice(0, 100)
+
+      // 主訴
+      const ccMatch = text.match(/(?:主訴|CC)[：:\s]*(.+)/i)
+      if (ccMatch) init.chiefComplaint = ccMatch[1].trim().slice(0, 25)
+
+      // カルテテキスト全体が振り分けされなかった場合、現病歴に入れる
+      if (!hxMatch && !rxMatch && !pmhMatch && !ccMatch) {
+        init.presentIllness = text
+      }
+    }
+
     setValues(init)
     setStep('edit')
-  }, [])
+  }, [karteInput])
 
   const updateValue = useCallback((id: string, value: string) => {
     setValues(prev => ({ ...prev, [id]: value }))
@@ -161,6 +190,22 @@ function SummaryGeneratorInner() {
           <p className="font-bold mb-1">プライバシー保護</p>
           <p>入力データはサーバーに送信されません。ブラウザ上で処理され、ページを閉じると消去されます。</p>
           <p className="mt-1">⚠ 患者情報は必ず匿名化してから入力してください。実名・生年月日・病院名は入力禁止です。</p>
+        </div>
+
+        {/* カルテ貼り付け（匿名化済みデータのみ） */}
+        <div className="bg-s0 border border-br rounded-xl p-4 mb-3">
+          <h2 className="text-sm font-bold text-tx mb-1">カルテ情報の貼り付け（任意）</h2>
+          <div className="bg-wnl border border-wnb rounded-lg p-2 mb-2 text-[10px] text-wn">
+            <p className="font-bold">⚠ 匿名化必須</p>
+            <p>・患者氏名・生年月日・住所・連絡先は削除してください</p>
+            <p>・病院名は「近医」「前医」に変更してください</p>
+            <p>・内科学会に提出できるレベルで匿名化された情報のみ入力可能です</p>
+            <p>・入力データはサーバーに送信されず、ページを閉じると消去されます</p>
+          </div>
+          <textarea value={karteInput} onChange={e => setKarteInput(e.target.value)}
+            rows={6} placeholder="匿名化済みのカルテ情報（現病歴・入院時現症・検査所見・処方など）をここに貼り付けてください。&#10;&#10;疾患を選択後「作成開始」を押すと、貼り付けた内容が各セクションに自動展開されます。"
+            className="w-full px-3 py-2 bg-bg border border-br rounded-lg text-xs focus:border-ac outline-none resize-y leading-relaxed" />
+          <p className="text-[9px] text-muted mt-1">貼り付けた内容は病歴・現症・検査所見・処方のセクションに自動振り分けされます</p>
         </div>
 
         {/* Step 1: 領域選択 */}

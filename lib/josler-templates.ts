@@ -305,14 +305,19 @@ export const DISEASE_TEMPLATES: DiseaseTemplate[] = [
   },
 ]
 
+import { GENERATED_TEMPLATES } from './josler-templates-generated'
+
+/** 全テンプレート（手動 + 自動生成） */
+export const ALL_TEMPLATES: DiseaseTemplate[] = [...DISEASE_TEMPLATES, ...GENERATED_TEMPLATES]
+
 /** 疾患名からテンプレートを検索 */
 export function getTemplateByDisease(disease: string): DiseaseTemplate | undefined {
-  return DISEASE_TEMPLATES.find(t => t.disease === disease || disease.includes(t.disease.replace(/（.*）/, '')))
+  return ALL_TEMPLATES.find(t => t.disease === disease || disease.includes(t.disease.replace(/（.*）/, '')))
 }
 
 /** 領域からテンプレート一覧を取得 */
 export function getTemplatesBySpecialty(specialty: string): DiseaseTemplate[] {
-  return DISEASE_TEMPLATES.filter(t => t.specialty === specialty)
+  return ALL_TEMPLATES.filter(t => t.specialty === specialty)
 }
 
 /** PubMed検索URLを生成 */
