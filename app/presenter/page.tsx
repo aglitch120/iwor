@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import PresenterApp from './PresenterApp'
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 export default function PresenterPage() {
   return (
     <div className="max-w-4xl mx-auto">
-      <PresenterApp />
+      <Suspense fallback={null}>
+        <PresenterApp />
+      </Suspense>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import AppHeader from '@/components/AppHeader'
 import { PresenterTutorial } from '@/components/tutorials'
 
@@ -118,11 +119,26 @@ function generateTemplate(s: Settings): { title: string; sections: TemplateSecti
 
 // ═══════════════════════════════════════
 export default function PresenterApp() {
+  const searchParams = useSearchParams()
   const [step, setStep] = useState<'settings' | 'result'>('settings')
   const [settings, setSettings] = useState<Settings>({
     type: 'case-report', audience: 'resident', duration: 7, format: 'slide', topic: '', sections: [],
   })
   const [copied, setCopied] = useState(false)
+
+  // URL params からプリフィル（論文フィードからの遷移）
+  useEffect(() => {
+    const typeParam = searchParams.get('type') as PresentationType | null
+    const topicParam = searchParams.get('topic')
+    if (typeParam && TYPES.some(t => t.id === typeParam)) {
+      setSettings(prev => ({
+        ...prev,
+        type: typeParam,
+        ...(topicParam ? { topic: topicParam } : {}),
+        ...(typeParam === 'journal-club' ? { duration: 10, audience: 'resident' as Audience } : {}),
+      }))
+    }
+  }, [searchParams])
 
   const template = useMemo(() => generateTemplate(settings), [settings])
 

@@ -26,9 +26,9 @@ interface Article {
 // ── Worker API（サーバーサイドキャッシュ経由） ──
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://iwor-api.mightyaddnine.workers.dev'
 
-async function fetchArticlesFromCache(): Promise<Article[]> {
+async function fetchArticlesFromCache(lang: string = 'en'): Promise<Article[]> {
   try {
-    const res = await fetch(`${API_BASE}/api/journal`)
+    const res = await fetch(`${API_BASE}/api/journal?lang=${lang}`)
     const data = await res.json()
     if (data.ok && Array.isArray(data.articles)) return data.articles
     return []
@@ -44,6 +44,7 @@ export default function JournalApp() {
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [lang, setLang] = useState<'en' | 'ja'>('en')
 
   // Filters — unified (Top4 always included + specialty + IF)
   const [selectedSpecialties, setSelectedSpecialties] = useState<Set<string>>(new Set())
@@ -70,16 +71,16 @@ export default function JournalApp() {
     return new Set(jList.map(j => j.id).filter(id => !excludedJournals.has(id)))
   }, [selectedSpecialties, ifMin, excludedJournals])
 
-  // ── Fetch（1回だけ、全記事をWorker APIキャッシュから取得）──
+  // ── Fetch（lang変更時にも再取得）──
   const doFetch = useCallback(async () => {
     setLoading(true); setError('')
     try {
-      const res = await fetchArticlesFromCache()
+      const res = await fetchArticlesFromCache(lang)
       setArticles(res)
       if (res.length === 0) setError('論文の取得に失敗しました。しばらく待ってから再取得してください。')
     } catch { setError('取得に失敗しました。') }
     setLoading(false)
-  }, [])
+  }, [lang])
 
   useEffect(() => { doFetch() }, [doFetch])
 
@@ -145,6 +146,20 @@ export default function JournalApp() {
         favoriteSlug="app-journal"
         favoriteHref="/journal"
       />
+
+      {/* ── Language Toggle ── */}
+      <div className="flex bg-s1 rounded-xl p-1 mb-4">
+        <button onClick={() => setLang('en')}
+          className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${lang === 'en' ? 'bg-s0 shadow-sm' : 'text-muted hover:text-tx'}`}
+          style={lang === 'en' ? { color: MC } : undefined}>
+          🌍 英語ジャーナル
+        </button>
+        <button onClick={() => setLang('ja')}
+          className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${lang === 'ja' ? 'bg-s0 shadow-sm' : 'text-muted hover:text-tx'}`}
+          style={lang === 'ja' ? { color: MC } : undefined}>
+          🇯🇵 日本語ジャーナル
+        </button>
+      </div>
 
       {/* ── Specialty Filter (always visible) ── */}
       <div className="bg-s0 border border-br rounded-xl p-3 mb-4">
@@ -362,6 +377,8 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro }: {
               <a href={`https://doi.org/${a.doi}`} target="_blank" rel="noopener noreferrer"
                 className="text-[10px] text-ac hover:underline">DOI</a>
             )}
+            <Link href={`/presenter?type=journal-club&topic=${encodeURIComponent(a.title)}`}
+              className="text-[10px] text-ac hover:underline">📚 抄読会資料</Link>
             <span className="text-[10px] text-muted">PMID: {a.pmid}</span>
           </div>
         </div>
