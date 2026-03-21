@@ -47,7 +47,7 @@ const apps = [
   {
     href: '/conferences',
     label: '学会カレンダー',
-    badge: '準備中',
+    badge: 'FREE',
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
