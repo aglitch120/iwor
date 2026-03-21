@@ -2,6 +2,7 @@
 import { useState, useCallback, useEffect } from 'react'
 
 import { loadProfile, saveProfile } from '@/lib/matching-profile-storage'
+import ImmersiveWizard from './ImmersiveWizard'
 
 const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
@@ -228,32 +229,33 @@ export default function ProfileWizard({
     return Math.round((checks.filter(Boolean).length / checks.length) * 100)
   })()
 
-  // ── Overview（ステップ選択画面） ──
+  // ── Overview: 没入型ウィザード + 履歴書プレビュー ──
   if (step === 0) {
     return (
       <div className="pb-20">
-        {/* 完成度プログレスバー */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="flex-1 h-2 bg-s1 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${completion}%`, background: MC }} />
-          </div>
-          <p className="text-xs font-bold flex-shrink-0" style={{ color: MC }}>{completion}%</p>
-        </div>
+        {/* 没入型自己分析ウィザード */}
+        <ImmersiveWizard
+          onComplete={() => {}}
+          savedAnswers={(() => {
+            try {
+              const raw = localStorage.getItem('iwor_matching_profile')
+              return raw ? JSON.parse(raw)?._wizardAnswers : undefined
+            } catch { return undefined }
+          })()}
+        />
 
-        {/* ステップカード — 3列コンパクト */}
-        <div className="grid grid-cols-3 gap-2 mb-4">
-          {STEPS.map(s => {
-            const filled = getStepFilled(s.num, profile)
-            return (
+        {/* 詳細編集リンク */}
+        <div className="mt-6 mb-4">
+          <p className="text-[10px] text-muted text-center mb-2">詳細を編集したい場合</p>
+          <div className="grid grid-cols-3 gap-1.5">
+            {STEPS.slice(0, 6).map(s => (
               <button key={s.num} onClick={() => goStep(s.num)}
-                className="p-2 rounded-xl border text-center transition-all hover:border-ac/30"
-                style={{ borderColor: filled ? MC + '40' : 'var(--br)', background: filled ? MCL : 'var(--s0)' }}>
-                <span className="text-lg block">{s.icon}</span>
-                <p className="text-[10px] font-bold mt-1" style={{ color: filled ? MC : 'var(--m)' }}>{s.title}</p>
-                <p className="text-[8px]" style={{ color: filled ? MC : 'var(--m)' }}>{filled ? '✓' : '未入力'}</p>
+                className="p-1.5 rounded-lg border text-center text-[9px] transition-all hover:border-ac/30"
+                style={{ borderColor: 'var(--br)', color: 'var(--m)' }}>
+                {s.icon} {s.title}
               </button>
-            )
-          })}
+            ))}
+          </div>
         </div>
 
         {/* 履歴書プレビュー — 常時表示 */}
