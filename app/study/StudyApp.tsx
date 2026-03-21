@@ -44,7 +44,7 @@ function saveTodayStats(stats: DayStats) {
 
 // ── ストリーク追跡 ──
 const STREAK_KEY = 'iwor_study_streak'
-interface StreakData { lastDate: string; count: number; best: number }
+interface StreakData { lastDate: string; count: number; best: number; freezeUsedDate?: string }
 
 function getStreak(): StreakData {
   try {
@@ -66,13 +66,40 @@ function updateStreak(): StreakData {
   let newCount: number
   if (streak.lastDate === yesterdayStr) {
     newCount = streak.count + 1 // 連続
+  } else if (streak.freezeUsedDate === yesterdayStr && streak.count > 0) {
+    // 昨日フリーズ権を使用 → ストリーク維持
+    newCount = streak.count + 1
   } else {
     newCount = 1 // リセット
   }
   const newBest = Math.max(newCount, streak.best)
-  const updated = { lastDate: today, count: newCount, best: newBest }
+  const updated: StreakData = { lastDate: today, count: newCount, best: newBest, freezeUsedDate: streak.freezeUsedDate }
   localStorage.setItem(STREAK_KEY, JSON.stringify(updated))
   return updated
+}
+
+// ── ストリーク凍結（PRO限定: 1日フリーズ） ──
+const FREEZE_KEY = 'iwor_study_streak_freeze'
+function canUseFreeze(): boolean {
+  try {
+    const lastUsed = localStorage.getItem(FREEZE_KEY)
+    if (!lastUsed) return true
+    // 月に1回使用可能（同じ月に2回は使えない）
+    const lastMonth = lastUsed.slice(0, 7)
+    const thisMonth = new Date().toISOString().slice(0, 7)
+    return lastMonth !== thisMonth
+  } catch { return false }
+}
+
+function useStreakFreeze(): boolean {
+  if (!canUseFreeze()) return false
+  const today = new Date().toISOString().split('T')[0]
+  const streak = getStreak()
+  // フリーズ: 今日を「学習した日」として記録（実際には学習していない）
+  const updated: StreakData = { ...streak, freezeUsedDate: today }
+  localStorage.setItem(STREAK_KEY, JSON.stringify(updated))
+  localStorage.setItem(FREEZE_KEY, today)
+  return true
 }
 
 // ── ストリークサーバー同期（fire-and-forget）──
@@ -677,7 +704,7 @@ export default function StudyApp() {
         </div>
 
         {/* 自分のストリーク */}
-        <div className="bg-s0 border border-br rounded-xl p-4 mb-6">
+        <div className="bg-s0 border border-br rounded-xl p-4 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-xl">🔥</span>
@@ -694,6 +721,49 @@ export default function StudyApp() {
             )}
           </div>
         </div>
+
+        {/* ストリーク凍結権（PRO限定） */}
+        {isPro && streak.count > 0 && (
+          <div className="bg-s0 border border-br rounded-xl p-3 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">🧊</span>
+                <div>
+                  <p className="text-xs font-bold text-tx">ストリーク凍結権</p>
+                  <p className="text-[10px] text-muted">月1回、学習できない日にストリークを維持</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  if (useStreakFreeze()) {
+                    setStreak(getStreak())
+                    alert('ストリーク凍結権を使用しました。明日もストリークが維持されます。')
+                  } else {
+                    alert('今月は既に凍結権を使用済みです。')
+                  }
+                }}
+                disabled={!canUseFreeze()}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  canUseFreeze()
+                    ? 'bg-acl text-ac border border-ac/20 hover:bg-ac hover:text-white'
+                    : 'bg-s1 text-muted border border-br cursor-not-allowed'
+                }`}
+              >
+                {canUseFreeze() ? '使用する' : '使用済み'}
+              </button>
+            </div>
+          </div>
+        )}
+        {!isPro && streak.count > 0 && (
+          <div className="bg-s0 border border-br rounded-xl p-3 mb-6 opacity-60">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">🧊</span>
+                <p className="text-xs text-muted">ストリーク凍結権 — <span className="font-bold text-ac">PRO限定</span></p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ランキングリスト */}
         {rankingLoading ? (
