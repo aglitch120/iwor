@@ -210,125 +210,141 @@ export default function JournalApp() {
         </button>
       </div>
 
-      {/* ── Language Toggle ── */}
-      <div className={`flex bg-s1 rounded-xl p-1 mb-4 ${contentType === 'guidelines' ? 'opacity-40 pointer-events-none' : ''}`}>
-        <button onClick={() => setLang('en')}
-          className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${lang === 'en' ? 'bg-s0 shadow-sm' : 'text-muted hover:text-tx'}`}
-          style={lang === 'en' ? { color: MC } : undefined}>
-          🌍 英語ジャーナル
-        </button>
-        <button onClick={() => setLang('ja')}
-          className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${lang === 'ja' ? 'bg-s0 shadow-sm' : 'text-muted hover:text-tx'}`}
-          style={lang === 'ja' ? { color: MC } : undefined}>
-          🇯🇵 日本語ジャーナル
-        </button>
-      </div>
-
-      {/* ── Specialty Filter (always visible) ── */}
-      <div className="bg-s0 border border-br rounded-xl p-3 mb-4">
-        <p className="text-[11px] font-medium text-tx mb-2">診療科フィルタ（Top 4 は常に表示）</p>
-        <div className="flex flex-wrap gap-1.5">
-          {SPECIALTIES.map(sp => (
-            <button key={sp} onClick={() => toggleSpecialty(sp)}
-              className={`px-3 py-1.5 rounded-lg text-[11px] font-medium border transition-all ${
-                selectedSpecialties.has(sp) ? 'text-white border-transparent' : 'border-br text-muted hover:border-ac/30'
-              }`}
-              style={selectedSpecialties.has(sp) ? { background: MC } : undefined}>
-              {sp}
-            </button>
-          ))}
+      {/* ── Display Language Toggle ── */}
+      <div className={`${contentType === 'guidelines' ? 'opacity-40 pointer-events-none' : ''}`}>
+        <div className="flex bg-s1 rounded-xl p-1 mb-3">
+          <button onClick={() => setDisplayLang('ja')}
+            className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${displayLang === 'ja' ? 'bg-s0 shadow-sm' : 'text-muted'}`}
+            style={displayLang === 'ja' ? { color: MC } : undefined}>
+            🇯🇵 日本語訳
+          </button>
+          <button onClick={() => setDisplayLang('en')}
+            className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${displayLang === 'en' ? 'bg-s0 shadow-sm' : 'text-muted'}`}
+            style={displayLang === 'en' ? { color: MC } : undefined}>
+            🌍 英語原文
+          </button>
         </div>
-        {selectedSpecialties.size === 0 && (
-          <p className="text-[10px] text-muted mt-2">診療科を選ぶと専門誌も表示されます</p>
-        )}
+        <div className="flex gap-1.5 mb-3">
+          <button onClick={() => setLang('en')} className={`px-2 py-1 rounded text-[10px] font-medium border ${lang === 'en' ? 'border-ac text-ac' : 'border-br text-muted'}`}>英語誌</button>
+          <button onClick={() => setLang('ja')} className={`px-2 py-1 rounded text-[10px] font-medium border ${lang === 'ja' ? 'border-ac text-ac' : 'border-br text-muted'}`}>日本語誌</button>
+        </div>
       </div>
 
-      {/* ── Advanced: exclude specific journals ── */}
-      <div className="bg-s0 border border-br rounded-xl p-3 mb-4">
+      {/* ── フィルタ（折りたたみ） ── */}
+      <div className="mb-3">
         <button onClick={() => setShowAdvanced(!showAdvanced)}
-          className="w-full flex items-center justify-between text-xs font-medium text-tx">
-          <span>表示中のジャーナル（{activeJournalIds.size}誌）</span>
+          className="w-full flex items-center justify-between bg-s0 border border-br rounded-xl px-3 py-2 text-xs font-medium text-tx">
+          <span>🔧 詳細フィルタ {selectedSpecialties.size > 0 ? `（${Array.from(selectedSpecialties).join('・')}）` : ''}</span>
           <span className={`text-muted transition-transform ${showAdvanced ? 'rotate-180' : ''}`}>▾</span>
         </button>
         {showAdvanced && (
-          <div className="mt-3 space-y-2 max-h-60 overflow-y-auto">
-            {['top4', 'general', 'specialty'].map(cat => {
-              const jInCat = JOURNALS.filter(j => j.category === cat && (
-                j.category === 'top4' ||
-                (selectedSpecialties.size > 0 && j.specialty && selectedSpecialties.has(j.specialty))
-              ))
-              if (jInCat.length === 0) return null
-              return (
-                <div key={cat}>
-                  <p className="text-[10px] font-bold text-muted uppercase mb-1">
-                    {cat === 'top4' ? 'Top 4' : cat === 'general' ? 'General' : 'Specialty'}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {jInCat.map(j => (
-                      <button key={j.id} onClick={() => toggleExcludeJournal(j.id)}
-                        className={`px-2.5 py-1 rounded text-[10px] font-medium border transition-all ${
-                          excludedJournals.has(j.id) ? 'border-br text-muted line-through opacity-50' : 'text-white border-transparent'
-                        }`}
-                        style={!excludedJournals.has(j.id) ? { background: MC } : undefined}>
-                        {j.shortName} <span className="opacity-60">({j.impactFactor})</span>
-                      </button>
-                    ))}
-                  </div>
+          <div className="mt-2 space-y-3">
+
+            {/* 診療科フィルタ */}
+            <div className="bg-s0 border border-br rounded-xl p-3">
+              <p className="text-[11px] font-medium text-tx mb-2">診療科フィルタ（Top 4 は常に表示）</p>
+              <div className="flex flex-wrap gap-1.5">
+                {SPECIALTIES.map(sp => (
+                  <button key={sp} onClick={() => toggleSpecialty(sp)}
+                    className={`px-3 py-1.5 rounded-lg text-[11px] font-medium border transition-all ${
+                      selectedSpecialties.has(sp) ? 'text-white border-transparent' : 'border-br text-muted hover:border-ac/30'
+                    }`}
+                    style={selectedSpecialties.has(sp) ? { background: MC } : undefined}>
+                    {sp}
+                  </button>
+                ))}
+              </div>
+              {selectedSpecialties.size === 0 && (
+                <p className="text-[10px] text-muted mt-2">診療科を選ぶと専門誌も表示されます</p>
+              )}
+            </div>
+
+            {/* 表示中のジャーナル */}
+            <div className="bg-s0 border border-br rounded-xl p-3">
+              <p className="text-[11px] font-medium text-tx mb-2">表示中のジャーナル（{activeJournalIds.size}誌）</p>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {['top4', 'general', 'specialty'].map(cat => {
+                  const jInCat = JOURNALS.filter(j => j.category === cat && (
+                    j.category === 'top4' ||
+                    (selectedSpecialties.size > 0 && j.specialty && selectedSpecialties.has(j.specialty))
+                  ))
+                  if (jInCat.length === 0) return null
+                  return (
+                    <div key={cat}>
+                      <p className="text-[10px] font-bold text-muted uppercase mb-1">
+                        {cat === 'top4' ? 'Top 4' : cat === 'general' ? 'General' : 'Specialty'}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {jInCat.map(j => (
+                          <button key={j.id} onClick={() => toggleExcludeJournal(j.id)}
+                            className={`px-2.5 py-1 rounded text-[10px] font-medium border transition-all ${
+                              excludedJournals.has(j.id) ? 'border-br text-muted line-through opacity-50' : 'text-white border-transparent'
+                            }`}
+                            style={!excludedJournals.has(j.id) ? { background: MC } : undefined}>
+                            {j.shortName} <span className="opacity-60">({j.impactFactor})</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* 診療科トップジャーナル */}
+            {selectedSpecialties.size > 0 && (
+              <div className="bg-s0 border border-br rounded-xl p-3">
+                <p className="text-[11px] font-medium text-tx mb-2">選択中の診療科トップジャーナル</p>
+                <div className="space-y-2">
+                  {Array.from(selectedSpecialties).map(sp => {
+                    const spJournals = JOURNALS
+                      .filter(j => j.specialty === sp)
+                      .sort((a, b) => b.impactFactor - a.impactFactor)
+                    return (
+                      <div key={sp}>
+                        <p className="text-[10px] font-bold text-muted mb-1">{sp}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {spJournals.map(j => (
+                            <span key={j.id} className={`text-[10px] font-medium px-2 py-1 rounded-lg border transition-all ${
+                              excludedJournals.has(j.id) ? 'border-br text-muted line-through opacity-50' : 'border-transparent text-white'
+                            }`} style={!excludedJournals.has(j.id) ? { background: MC } : undefined}>
+                              {j.shortName} <span className="opacity-70">IF {j.impactFactor}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
-              )
-            })}
+              </div>
+            )}
+
+            {/* IF スライダー */}
+            {contentType === 'articles' && (
+              <div className="bg-s0 border border-br rounded-xl p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-[11px] font-medium text-tx">Impact Factor フィルタ</p>
+                  <span className="text-xs font-bold" style={{ color: MC }}>
+                    {ifMin === 0 ? 'すべて' : `IF ≧ ${ifMin}`}
+                  </span>
+                </div>
+                <input
+                  type="range" min={0} max={80} step={5} value={ifMin}
+                  onChange={e => setIfMin(Number(e.target.value))}
+                  className="w-full h-2 rounded-full appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, ${MC} ${(ifMin / 80) * 100}%, #E8E5DF ${(ifMin / 80) * 100}%)`,
+                  }}
+                />
+                <div className="flex justify-between text-[9px] text-muted mt-1">
+                  <span>0</span><span>20</span><span>40</span><span>60</span><span>80+</span>
+                </div>
+              </div>
+            )}
+
           </div>
         )}
       </div>
-
-      {/* ── Specialty Top Journals (H-3) ── */}
-      {selectedSpecialties.size > 0 && (
-        <div className="bg-s0 border border-br rounded-xl p-3 mb-4">
-          <p className="text-[11px] font-medium text-tx mb-2">選択中の診療科トップジャーナル</p>
-          <div className="space-y-2">
-            {Array.from(selectedSpecialties).map(sp => {
-              const spJournals = JOURNALS
-                .filter(j => j.specialty === sp)
-                .sort((a, b) => b.impactFactor - a.impactFactor)
-              return (
-                <div key={sp}>
-                  <p className="text-[10px] font-bold text-muted mb-1">{sp}</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {spJournals.map(j => (
-                      <span key={j.id} className={`text-[10px] font-medium px-2 py-1 rounded-lg border transition-all ${
-                        excludedJournals.has(j.id) ? 'border-br text-muted line-through opacity-50' : 'border-transparent text-white'
-                      }`} style={!excludedJournals.has(j.id) ? { background: MC } : undefined}>
-                        {j.shortName} <span className="opacity-70">IF {j.impactFactor}</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ── IF Slider (articles only) ── */}
-      {contentType === 'articles' && <div className="bg-s0 border border-br rounded-xl p-3 mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-[11px] font-medium text-tx">Impact Factor フィルタ</p>
-          <span className="text-xs font-bold" style={{ color: MC }}>
-            {ifMin === 0 ? 'すべて' : `IF ≧ ${ifMin}`}
-          </span>
-        </div>
-        <input
-          type="range" min={0} max={80} step={5} value={ifMin}
-          onChange={e => setIfMin(Number(e.target.value))}
-          className="w-full h-2 rounded-full appearance-none cursor-pointer"
-          style={{
-            background: `linear-gradient(to right, ${MC} ${(ifMin / 80) * 100}%, #E8E5DF ${(ifMin / 80) * 100}%)`,
-          }}
-        />
-        <div className="flex justify-between text-[9px] text-muted mt-1">
-          <span>0</span><span>20</span><span>40</span><span>60</span><span>80+</span>
-        </div>
-      </div>}
 
       {/* ── Bookmarks / Feed toggle (articles only) ── */}
       {contentType === 'articles' && <div className="flex items-center justify-between mb-4">
@@ -387,7 +403,7 @@ export default function JournalApp() {
                 <ArticleCard key={a.pmid} article={a}
                   isBookmarked={bookmarks.has(a.pmid)}
                   onToggleBookmark={() => toggleBookmark(a.pmid)}
-                  isPro={isPro} />
+                  isPro={isPro} displayLang={displayLang} />
               ))}
             </div>
           )}
@@ -415,7 +431,7 @@ export default function JournalApp() {
             <ArticleCard key={a.pmid} article={a}
               isBookmarked={bookmarks.has(a.pmid)}
               onToggleBookmark={() => toggleBookmark(a.pmid)}
-              isPro={isPro} />
+              isPro={isPro} displayLang={displayLang} />
           ))}
 
           {/* PRO gate */}
@@ -444,8 +460,8 @@ export default function JournalApp() {
 }
 
 // ── Article Card ──
-function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro }: {
-  article: Article; isBookmarked: boolean; onToggleBookmark: () => void; isPro: boolean
+function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displayLang = 'en' }: {
+  article: Article; isBookmarked: boolean; onToggleBookmark: () => void; isPro: boolean; displayLang?: 'ja' | 'en'
 }) {
   const ifColor = a.impactFactor >= 50 ? '#991B1B' : a.impactFactor >= 20 ? '#B45309' : a.impactFactor >= 10 ? MC : '#6B6760'
 
@@ -467,7 +483,7 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro }: {
           {/* Title */}
           <a href={`https://pubmed.ncbi.nlm.nih.gov/${a.pmid}/`} target="_blank" rel="noopener noreferrer"
             className="text-sm font-bold text-tx hover:text-ac transition-colors leading-snug block mb-1.5">
-            {a.title}
+            {displayLang === 'ja' && a.titleJa ? a.titleJa : a.title}
           </a>
 
           {/* Authors */}

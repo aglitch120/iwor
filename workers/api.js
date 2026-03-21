@@ -953,6 +953,21 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
         { id:"diabetes-care", shortName:"Diabetes Care", issn:"0149-5992", impactFactor:14.8 },
         { id:"blood", shortName:"Blood", issn:"0006-4971", impactFactor:20.3 },
         { id:"ard", shortName:"Ann Rheum Dis", issn:"0003-4967", impactFactor:20.3 },
+        { id:"jcem", shortName:"JCEM", issn:"0021-972X", impactFactor:5.8 },
+        { id:"thyroid", shortName:"Thyroid", issn:"1050-7256", impactFactor:5.2 },
+        { id:"jaad", shortName:"JAAD", issn:"0190-9622", impactFactor:11.5 },
+        { id:"bjd", shortName:"Br J Dermatol", issn:"0007-0963", impactFactor:8.1 },
+        { id:"ajp", shortName:"Am J Psychiatry", issn:"0002-953X", impactFactor:13.4 },
+        { id:"lancet-psych", shortName:"Lancet Psychiatry", issn:"2215-0366", impactFactor:64.3 },
+        { id:"pediatrics", shortName:"Pediatrics", issn:"0031-4005", impactFactor:8.0 },
+        { id:"jpeds", shortName:"J Pediatr", issn:"0022-3476", impactFactor:3.7 },
+        { id:"eur-urol", shortName:"Eur Urol", issn:"0302-2838", impactFactor:25.3 },
+        { id:"radiology", shortName:"Radiology", issn:"0033-8419", impactFactor:12.1 },
+        { id:"anesthesiology", shortName:"Anesthesiology", issn:"0003-3022", impactFactor:8.0 },
+        { id:"ann-emerg", shortName:"Ann Emerg Med", issn:"0196-0644", impactFactor:5.6 },
+        { id:"jags", shortName:"JAGS", issn:"0002-8614", impactFactor:6.3 },
+        { id:"jbjs", shortName:"JBJS", issn:"0021-9355", impactFactor:5.3 },
+        { id:"ophthalmology", shortName:"Ophthalmology", issn:"0161-6420", impactFactor:13.7 },
       ];
 
       const JA_JOURNALS = [
@@ -1549,6 +1564,87 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
         console.error("Self-analysis AI error:", err);
         return json({ ok: true, followUp: null }, 200, request);
       }
+    }
+
+    // ══════════════════════════════════════════════════
+    //  論文コメント・ブックマーク集計
+    //  GET /api/journal/comments?pmid=12345
+    //  POST /api/journal/comments  Body: { pmid, text, displayName }（PRO認証）
+    //  GET /api/journal/stats?pmids=12345,67890（ブックマーク数・コメント数）
+    // ══════════════════════════════════════════════════
+
+    // コメント取得
+    if (path === "/api/journal/comments" && request.method === "GET") {
+      const pmid = url.searchParams.get("pmid");
+      if (!pmid) return json({ error: "pmid required" }, 400, request);
+      const raw = await env.IWOR_KV.get(`journal:comments:${pmid}`);
+      const comments = raw ? JSON.parse(raw) : [];
+      return json({ ok: true, comments }, 200, request);
+    }
+
+    // コメント投稿（PRO認証）
+    if (path === "/api/journal/comments" && request.method === "POST") {
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+
+      const body = await parseBody(request);
+      if (!body || !body.pmid || !body.text) return json({ error: "pmid and text required" }, 400, request);
+
+      const pmid = String(body.pmid);
+      const raw = await env.IWOR_KV.get(`journal:comments:${pmid}`);
+      const comments = raw ? JSON.parse(raw) : [];
+
+      comments.push({
+        id: `c_${Date.now()}`,
+        text: String(body.text).slice(0, 500),
+        displayName: String(body.displayName || '匿名医師').slice(0, 10),
+        email: authResult.email,
+        createdAt: new Date().toISOString(),
+      });
+
+      await env.IWOR_KV.put(`journal:comments:${pmid}`, JSON.stringify(comments), { expirationTtl: 7776000 }); // 90日
+
+      // コメント数インデックス更新
+      const statsRaw = await env.IWOR_KV.get("journal:stats");
+      const stats = statsRaw ? JSON.parse(statsRaw) : {};
+      if (!stats[pmid]) stats[pmid] = { comments: 0, bookmarks: 0 };
+      stats[pmid].comments = comments.length;
+      await env.IWOR_KV.put("journal:stats", JSON.stringify(stats));
+
+      return json({ ok: true, comment: comments[comments.length - 1] }, 200, request);
+    }
+
+    // ブックマーク登録/解除（PRO認証）
+    if (path === "/api/journal/bookmark" && request.method === "PUT") {
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+
+      const body = await parseBody(request);
+      if (!body || !body.pmid) return json({ error: "pmid required" }, 400, request);
+
+      const pmid = String(body.pmid);
+      const action = body.action === 'remove' ? 'remove' : 'add';
+
+      // ブックマーク数更新
+      const statsRaw = await env.IWOR_KV.get("journal:stats");
+      const stats = statsRaw ? JSON.parse(statsRaw) : {};
+      if (!stats[pmid]) stats[pmid] = { comments: 0, bookmarks: 0 };
+      stats[pmid].bookmarks = Math.max(0, stats[pmid].bookmarks + (action === 'add' ? 1 : -1));
+      await env.IWOR_KV.put("journal:stats", JSON.stringify(stats));
+
+      return json({ ok: true, bookmarks: stats[pmid].bookmarks }, 200, request);
+    }
+
+    // 記事統計一括取得
+    if (path === "/api/journal/stats" && request.method === "GET") {
+      const statsRaw = await env.IWOR_KV.get("journal:stats");
+      const stats = statsRaw ? JSON.parse(statsRaw) : {};
+      const pmids = (url.searchParams.get("pmids") || "").split(",").filter(Boolean);
+      const result = {};
+      for (const pmid of pmids) {
+        result[pmid] = stats[pmid] || { comments: 0, bookmarks: 0 };
+      }
+      return json({ ok: true, stats: result }, 200, request);
     }
 
     // ── 404 ──

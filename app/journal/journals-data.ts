@@ -68,6 +68,43 @@ export const JOURNALS: Journal[] = [
   // ── Rheumatology ──
   { id: 'ard', name: 'Annals of the Rheumatic Diseases', shortName: 'Ann Rheum Dis', issn: '0003-4967', impactFactor: 20.3, category: 'specialty', specialty: '膠原病' },
 
+  // ── Endocrinology/Metabolism（追加） ──
+  { id: 'jcem', name: 'Journal of Clinical Endocrinology & Metabolism', shortName: 'JCEM', issn: '0021-972X', impactFactor: 5.8, category: 'specialty', specialty: '内分泌' },
+  { id: 'thyroid', name: 'Thyroid', shortName: 'Thyroid', issn: '1050-7256', impactFactor: 5.2, category: 'specialty', specialty: '内分泌' },
+
+  // ── Dermatology ──
+  { id: 'jaad', name: 'Journal of the American Academy of Dermatology', shortName: 'JAAD', issn: '0190-9622', impactFactor: 11.5, category: 'specialty', specialty: '皮膚科' },
+  { id: 'bjd', name: 'British Journal of Dermatology', shortName: 'Br J Dermatol', issn: '0007-0963', impactFactor: 8.1, category: 'specialty', specialty: '皮膚科' },
+
+  // ── Psychiatry ──
+  { id: 'ajp', name: 'American Journal of Psychiatry', shortName: 'Am J Psychiatry', issn: '0002-953X', impactFactor: 13.4, category: 'specialty', specialty: '精神科' },
+  { id: 'lancet-psych', name: 'Lancet Psychiatry', shortName: 'Lancet Psychiatry', issn: '2215-0366', impactFactor: 64.3, category: 'specialty', specialty: '精神科' },
+
+  // ── Pediatrics ──
+  { id: 'pediatrics', name: 'Pediatrics', shortName: 'Pediatrics', issn: '0031-4005', impactFactor: 8.0, category: 'specialty', specialty: '小児科' },
+  { id: 'jpeds', name: 'Journal of Pediatrics', shortName: 'J Pediatr', issn: '0022-3476', impactFactor: 3.7, category: 'specialty', specialty: '小児科' },
+
+  // ── Urology ──
+  { id: 'eur-urol', name: 'European Urology', shortName: 'Eur Urol', issn: '0302-2838', impactFactor: 25.3, category: 'specialty', specialty: '泌尿器' },
+
+  // ── Radiology ──
+  { id: 'radiology', name: 'Radiology', shortName: 'Radiology', issn: '0033-8419', impactFactor: 12.1, category: 'specialty', specialty: '放射線' },
+
+  // ── Anesthesiology ──
+  { id: 'anesthesiology', name: 'Anesthesiology', shortName: 'Anesthesiology', issn: '0003-3022', impactFactor: 8.0, category: 'specialty', specialty: '麻酔科' },
+
+  // ── Emergency ──
+  { id: 'ann-emerg', name: 'Annals of Emergency Medicine', shortName: 'Ann Emerg Med', issn: '0196-0644', impactFactor: 5.6, category: 'specialty', specialty: '救急' },
+
+  // ── Geriatrics ──
+  { id: 'jags', name: 'Journal of the American Geriatrics Society', shortName: 'JAGS', issn: '0002-8614', impactFactor: 6.3, category: 'specialty', specialty: '老年病' },
+
+  // ── Orthopedics ──
+  { id: 'jbjs', name: 'Journal of Bone and Joint Surgery', shortName: 'JBJS', issn: '0021-9355', impactFactor: 5.3, category: 'specialty', specialty: '整形外科' },
+
+  // ── Ophthalmology ──
+  { id: 'ophthalmology', name: 'Ophthalmology', shortName: 'Ophthalmology', issn: '0161-6420', impactFactor: 13.7, category: 'specialty', specialty: '眼科' },
+
   // ── Japanese Journals（Worker API H-5 対応済み） ──
   { id: 'naika', name: '日本内科学会雑誌', shortName: '日本内科学会雑誌', issn: '0021-5384', impactFactor: 0.3, category: 'japanese', lang: 'ja' },
   { id: 'igaku-zasshi', name: '日本医事新報', shortName: '日本医事新報', issn: '0385-9215', impactFactor: 0.2, category: 'japanese', lang: 'ja' },
