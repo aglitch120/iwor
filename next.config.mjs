@@ -8,7 +8,7 @@ const nextConfig = {
   async redirects() {
     return [
       // 薬剤比較: /compare/* → /tools/drugs/compare/*
-      { source: '/compare', destination: '/tools/drugs', permanent: true },
+      { source: '/compare', destination: '/tools/drugs/compare', permanent: true },
       { source: '/compare/:slug', destination: '/tools/drugs/compare/:slug', permanent: true },
     ]
   },

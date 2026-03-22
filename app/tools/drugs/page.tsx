@@ -1,7 +1,4 @@
-'use client'
 import UpdatedAt from '@/components/tools/UpdatedAt'
-
-import { useState } from 'react'
 import Link from 'next/link'
 
 // ── サブツールカード（抗菌薬系を上に固める） ──
@@ -14,48 +11,7 @@ const subTools = [
   { href: '/tools/drugs/combination', icon: '📋', name: '配合錠リスト', desc: '高血圧・脂質異常症・糖尿病の配合錠一覧。成分と含量を確認' },
 ]
 
-// ── 薬剤比較グループ ──
-const compareGroups = [
-  { group: '循環器', items: [
-    { href: '/tools/drugs/compare/doac', name: 'DOAC' },
-    { href: '/tools/drugs/compare/arb', name: 'ARB' },
-    { href: '/tools/drugs/compare/statin', name: 'スタチン' },
-    { href: '/tools/drugs/compare/ccb', name: 'Ca拮抗薬' },
-    { href: '/tools/drugs/compare/beta-blocker', name: 'β遮断薬' },
-    { href: '/tools/drugs/compare/diuretic', name: '利尿薬' },
-    { href: '/tools/drugs/compare/antiplatelet', name: '抗血小板薬' },
-  ]},
-  { group: '代謝・内分泌', items: [
-    { href: '/tools/drugs/compare/sglt2i', name: 'SGLT2阻害薬' },
-    { href: '/tools/drugs/compare/dpp4i', name: 'DPP-4阻害薬' },
-    { href: '/tools/drugs/compare/glp1ra', name: 'GLP-1受容体作動薬' },
-    { href: '/tools/drugs/compare/urate', name: '尿酸降下薬' },
-  ]},
-  { group: '消化器', items: [
-    { href: '/tools/drugs/compare/ppi', name: 'PPI' },
-    { href: '/tools/drugs/compare/laxative', name: '便秘薬' },
-  ]},
-  { group: '感染症', items: [
-    { href: '/tools/drugs/compare/cephalosporin', name: 'セフェム系' },
-    { href: '/tools/drugs/compare/quinolone', name: 'キノロン系' },
-  ]},
-  { group: '精神・神経', items: [
-    { href: '/tools/drugs/compare/ssri-snri', name: 'SSRI/SNRI' },
-    { href: '/tools/drugs/compare/bzd', name: 'BZD系' },
-    { href: '/tools/drugs/compare/hypnotic', name: '睡眠薬' },
-    { href: '/tools/drugs/compare/aed', name: '抗てんかん薬' },
-  ]},
-  { group: 'その他', items: [
-    { href: '/tools/drugs/compare/nsaids', name: 'NSAIDs' },
-    { href: '/tools/drugs/compare/steroid', name: 'ステロイド' },
-    { href: '/tools/drugs/compare/inhaler', name: '吸入薬' },
-    { href: '/tools/drugs/compare/antihistamine', name: '抗ヒスタミン薬' },
-    { href: '/tools/drugs/compare/iron', name: '鉄剤' },
-  ]},
-]
-
 export default function DrugsHubPage() {
-  const [showCompare, setShowCompare] = useState(false)
   return (
     <div className="max-w-3xl mx-auto">
       <nav className="text-sm text-muted mb-6">
@@ -89,37 +45,19 @@ export default function DrugsHubPage() {
         ))}
       </div>
 
-      {/* 薬剤比較表（カード — クリックで展開） */}
-      <div className="bg-s0 border border-ac/15 rounded-xl overflow-hidden transition-all">
-        <button onClick={() => setShowCompare(!showCompare)}
-          className="w-full p-4 text-left hover:bg-acl transition-all">
+      {/* 薬剤比較表 */}
+      <Link href="/tools/drugs/compare">
+        <div className="bg-s0 border border-ac/15 rounded-xl p-4 hover:border-ac/40 hover:bg-acl transition-all">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 bg-ac/10 border border-ac/20 rounded-xl flex items-center justify-center text-lg shrink-0">⚖️</div>
             <div className="flex-1 min-w-0">
               <h2 className="text-sm font-bold text-tx">薬剤比較表</h2>
               <p className="text-xs text-muted mt-0.5">添付文書の公開情報に基づく薬剤一覧比較。25カテゴリ</p>
             </div>
-            <span className={`text-muted text-sm transition-transform ${showCompare ? 'rotate-90' : ''}`}>&rsaquo;</span>
+            <span className="text-muted text-sm">&rsaquo;</span>
           </div>
-        </button>
-        {showCompare && (
-          <div className="px-4 pb-4 space-y-3 border-t border-br pt-3">
-            {compareGroups.map(g => (
-              <div key={g.group}>
-                <p className="text-[10px] font-bold text-muted mb-1.5">{g.group}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {g.items.map(item => (
-                    <Link key={item.href} href={item.href}
-                      className="px-3 py-1.5 rounded-lg text-xs font-medium bg-bg border border-br hover:border-ac/30 hover:bg-acl transition-all text-tx">
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+        </div>
+      </Link>
 
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mt-8 mb-8 text-sm text-wn">
