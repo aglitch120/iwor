@@ -1092,7 +1092,7 @@ td, th { border: 1px solid #333; padding: 3pt 5pt; vertical-align: top; }
           {!isPro && (
             <div className="absolute inset-0 top-20">
               {/* JIS履歴書風の背景 */}
-              <div className="w-full px-3 py-4" style={{ filter: 'blur(6px)' }}>
+              <div className="w-full px-3 py-4" style={{ filter: 'blur(16px)' }}>
                 <div className="bg-white border border-gray-300 rounded shadow-sm p-4 text-[8px] text-gray-500 leading-relaxed" style={{ fontFamily: 'serif' }}>
                   <div className="text-center text-[10px] font-bold border-b border-gray-300 pb-1 mb-2">履　歴　書</div>
                   <div className="grid grid-cols-3 gap-px mb-2">
