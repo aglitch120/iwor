@@ -332,7 +332,7 @@ function SummaryGeneratorInner() {
                     {dg.diseases.map((d: string) => {
                       const hasTmpl = !!getTemplateByDisease(d)
                       return (
-                        <button key={d} onClick={() => { setSelectedDisease(d); applyTemplate(d) }}
+                        <button key={d} onClick={() => setSelectedDisease(d)}
                           className="px-2 py-1 rounded text-[10px] border transition-all"
                           style={{
                             background: selectedDisease === d ? MCL : 'transparent',
@@ -412,10 +412,22 @@ function SummaryGeneratorInner() {
           {/* プロンプトコピーボタン */}
           <div className="flex gap-2 mb-2">
             <button onClick={() => {
-              const prompt = generateJoslerPrompt(selectedDisease, activeTemplate)
+              // カルテデータが入力済みの場合はプロンプトに追加
+              const basePrompt = generateJoslerPrompt(selectedDisease, activeTemplate)
+              const karteData = Object.entries(values)
+                .filter(([, v]) => v?.trim())
+                .map(([k, v]) => {
+                  const sec = SECTIONS.find(s => s.id === k)
+                  return sec ? `【${sec.title}】\n${v.trim()}` : ''
+                })
+                .filter(Boolean)
+                .join('\n\n')
+              const prompt = karteData
+                ? basePrompt.replace('（ここに匿名化済みのカルテ情報を貼り付けてください）', karteData)
+                : basePrompt
               navigator.clipboard.writeText(prompt).then(() => {
                 setPromptCopied('new')
-                setTimeout(() => setPromptCopied(''), 3000)
+                setTimeout(() => setPromptCopied(''), 5000)
               })
             }} className="flex-1 py-2 rounded-lg text-[10px] font-bold transition-all"
               style={{ background: promptCopied === 'new' ? 'var(--ok)' : MCL, color: promptCopied === 'new' ? '#fff' : MC }}>
@@ -435,32 +447,31 @@ function SummaryGeneratorInner() {
               </button>
             )}
           </div>
-          {/* AIサービスへの直接リンク（プロンプト埋め込み） */}
-          {promptCopied && (() => {
-            const prompt = promptCopied === 'refine'
-              ? generateRefinePrompt(generateText())
-              : generateJoslerPrompt(selectedDisease, activeTemplate)
-            const encoded = encodeURIComponent(prompt.slice(0, 4000)) // URL長制限
-            return (
+          {/* コピー後の誘導メッセージ + AIサービスリンク */}
+          {promptCopied && (
+            <div>
+              <div className="bg-okl border border-okb rounded-lg p-2 mb-2 text-[11px] text-ok font-medium text-center">
+                クリップボードにコピーしました。下記AIサービスを開いて貼り付けてください。
+              </div>
               <div className="flex gap-1.5">
-                <a href={`https://chatgpt.com/?q=${encoded}`} target="_blank" rel="noopener noreferrer"
+                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
                   className="flex-1 py-1.5 rounded-lg text-[10px] font-bold text-center transition-colors"
                   style={{ background: '#10a37f', color: '#fff' }}>
-                  ChatGPT で開く
+                  ChatGPT
                 </a>
                 <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer"
                   className="flex-1 py-1.5 rounded-lg text-[10px] font-bold text-center transition-colors"
                   style={{ background: '#d97706', color: '#fff' }}>
-                  Claude で開く
+                  Claude
                 </a>
-                <a href={`https://gemini.google.com/app?q=${encoded}`} target="_blank" rel="noopener noreferrer"
+                <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer"
                   className="flex-1 py-1.5 rounded-lg text-[10px] font-bold text-center transition-colors"
                   style={{ background: '#4285f4', color: '#fff' }}>
-                  Gemini で開く
+                  Gemini
                 </a>
               </div>
-            )
-          })()}
+            </div>
+          )}
           <p className="text-[8px] text-muted mt-1.5 leading-relaxed">
             ※ iworはプロンプト（書式指示文）を生成するのみです。医療情報の処理は行いません。外部AIサービスでの使用時のデータ匿名化・施設規則遵守はユーザーの責任です。
           </p>

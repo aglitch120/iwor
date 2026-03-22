@@ -52,6 +52,7 @@ export default function ConferencesApp() {
   const [listFilter, setListFilter] = useState<ListFilter>('all')
   const [attending, setAttending] = useState<string[]>([])
   const [proLimitHit, setProLimitHit] = useState(false)
+  const [showAreaFilter, setShowAreaFilter] = useState(false)
   const [counts, setCounts] = useState<Record<string, string | number>>({})
   const [showProModal, setShowProModal] = useState(false)
   const { isPro } = useProStatus()
@@ -151,7 +152,7 @@ export default function ConferencesApp() {
   }, [])
 
   return (
-    <div className="px-4 py-8 max-w-lg mx-auto">
+    <div className="px-4 py-8 max-w-4xl mx-auto">
       <AppHeader
         title="学会カレンダー"
         subtitle={`基本領域+サブスペシャルティ ${CONFERENCES_2026.length}学会 2026年度`}
@@ -196,33 +197,44 @@ export default function ConferencesApp() {
         ))}
       </div>
 
-      {/* 診療科フィルタ */}
-      <div className="flex flex-wrap gap-1.5 mb-6">
+      {/* 診療科フィルタ（折りたたみ） */}
+      <div className="mb-4">
         <button
-          onClick={() => setFilterArea('all')}
-          className="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all"
-          style={{
-            background: filterArea === 'all' ? MCL : 'transparent',
-            color: filterArea === 'all' ? MC : undefined,
-            borderColor: filterArea === 'all' ? `${MC}40` : 'var(--br)',
-          }}
+          onClick={() => setShowAreaFilter(!showAreaFilter)}
+          className="w-full flex items-center justify-between bg-s0 border border-br rounded-xl px-3 py-2 text-xs font-medium text-tx"
         >
-          全て
+          <span>診療科フィルタ {filterArea !== 'all' ? `（${filterArea}）` : ''}</span>
+          <span className={`text-muted transition-transform ${showAreaFilter ? 'rotate-180' : ''}`}>▾</span>
         </button>
-        {areas.map(area => (
-          <button
-            key={area}
-            onClick={() => setFilterArea(area === filterArea ? 'all' : area)}
-            className="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all"
-            style={{
-              background: filterArea === area ? MCL : 'transparent',
-              color: filterArea === area ? MC : undefined,
-              borderColor: filterArea === area ? `${MC}40` : 'var(--br)',
-            }}
-          >
-            {area}
-          </button>
-        ))}
+        {showAreaFilter && (
+          <div className="mt-2 flex flex-wrap gap-1.5 bg-s0 border border-br rounded-xl p-3">
+            <button
+              onClick={() => setFilterArea('all')}
+              className="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all"
+              style={{
+                background: filterArea === 'all' ? MCL : 'transparent',
+                color: filterArea === 'all' ? MC : undefined,
+                borderColor: filterArea === 'all' ? `${MC}40` : 'var(--br)',
+              }}
+            >
+              全て
+            </button>
+            {areas.map(area => (
+              <button
+                key={area}
+                onClick={() => setFilterArea(area === filterArea ? 'all' : area)}
+                className="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all"
+                style={{
+                  background: filterArea === area ? MCL : 'transparent',
+                  color: filterArea === area ? MC : undefined,
+                  borderColor: filterArea === area ? `${MC}40` : 'var(--br)',
+                }}
+              >
+                {area}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* マイリストフィルタ */}

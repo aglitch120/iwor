@@ -261,8 +261,8 @@ export default function ProfileWizard({
         {/* 履歴書プレビュー — 常時表示 */}
         <ResumePreview profile={profile} isPro={isPro} />
 
-        {/* 保存ボタン — sticky */}
-        <div className="fixed bottom-16 left-0 right-0 px-4 z-10">
+        {/* 保存ボタン — インライン */}
+        <div className="mt-6 px-4 pb-4">
           <button onClick={handleSave}
             className="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2"
             style={{ background: MC, boxShadow: `0 4px 14px ${MC}33` }}>

@@ -103,7 +103,7 @@ function getEgfrIndex(egfr: number): number {
 export default function RenalDoseAbxPage() {
   const [egfr, setEgfr] = useState('60')
   const [selectedAbx, setSelectedAbx] = useState('all')
-  const [showCcrCalc, setShowCcrCalc] = useState(false)
+  const [showCcrCalc, setShowCcrCalc] = useState(true)
   const [ccrAge, setCcrAge] = useState('')
   const [ccrWeight, setCcrWeight] = useState('')
   const [ccrCr, setCcrCr] = useState('')
@@ -160,7 +160,7 @@ export default function RenalDoseAbxPage() {
         {/* CCr計算オプション */}
         <div>
           <button onClick={() => setShowCcrCalc(!showCcrCalc)}
-            className="text-xs text-ac font-medium hover:underline">
+            className="text-xs font-bold px-3 py-1.5 rounded-lg border border-ac/30 bg-acl text-ac hover:bg-ac hover:text-white transition-all">
             {showCcrCalc ? '▲ CCr計算を閉じる' : '▼ Cockcroft-Gault式でCCrを計算'}
           </button>
           {showCcrCalc && (

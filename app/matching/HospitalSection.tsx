@@ -232,40 +232,53 @@ export default function HospitalTab({
       {subTab === 'search' && (
         <>
           {/* 穴場テイザー */}
-          <div className="bg-s0 border border-br rounded-xl p-4 relative overflow-hidden">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm">💎</span>
-              <p className="text-sm font-bold text-tx">あなたに最適な病院</p>
-              {!isPro && (
-                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: MCL, color: MC }}>PRO</span>
-              )}
-            </div>
-            <div className="space-y-2">
-              {anabaHospitals.map((h, i) => (
-                <div key={h.id} className="relative">
-                  <div className={`flex items-center justify-between py-2 px-3 rounded-lg bg-s1 ${!isPro && i > 0 ? 'select-none' : ''}`}>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold text-tx truncate">{h.name}</p>
-                      <p className="text-[10px] text-muted">{h.prefecture} · {h.matchRateLabel}</p>
+          <div className="relative overflow-hidden rounded-xl" style={{ background: `linear-gradient(135deg, ${MCL}, #F0F5F2, #E8F0EC)` }}>
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: MC }}>
+                  <span className="text-white text-sm">💎</span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-tx">あなたに最適な病院</p>
+                  <p className="text-[10px] text-muted">プロフィールに基づくAIおすすめ</p>
+                </div>
+                {!isPro && (
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded ml-auto" style={{ background: MC, color: '#fff' }}>PRO</span>
+                )}
+              </div>
+              <div className="space-y-2">
+                {anabaHospitals.map((h, i) => (
+                  <div key={h.id} className="relative">
+                    <div className={`flex items-center justify-between py-2.5 px-3 rounded-lg bg-white/80 border border-white ${!isPro ? 'select-none' : ''}`}>
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <span className="text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{
+                          background: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : 'var(--s1)',
+                          color: i < 3 ? '#fff' : 'var(--m)'
+                        }}>{i + 1}</span>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-tx truncate">{h.name}</p>
+                          <p className="text-[10px] text-muted">{h.prefecture} · {h.matchRateLabel}</p>
+                        </div>
+                      </div>
+                      {isPro && (
+                        <p className="text-[10px] font-medium flex-shrink-0 ml-2 max-w-[45%] text-right" style={{ color: MC }}>{h.anabaReason}</p>
+                      )}
                     </div>
-                    {isPro && (
-                      <p className="text-[10px] font-medium flex-shrink-0 ml-2 max-w-[45%] text-right" style={{ color: MC }}>{h.anabaReason}</p>
+                    {/* FREE: 全てモザイク（1位もバレないように） */}
+                    {!isPro && (
+                      <div className="absolute inset-0 backdrop-blur-lg bg-white/80 rounded-lg flex items-center justify-center" style={{ backdropFilter: 'blur(12px)' }}>
+                        <span className="text-[10px] text-muted">🔒 PRO限定</span>
+                      </div>
                     )}
                   </div>
-                  {/* FREE: 2件目以降モザイク */}
-                  {!isPro && i > 0 && (
-                    <div className="absolute inset-0 backdrop-blur-md bg-s0/95 rounded-lg flex items-center justify-center">
-                      <span className="text-[10px] text-muted">🔒 PRO会員でおすすめ理由を確認</span>
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
+              {!isPro && (
+                <button onClick={onShowProModal} className="w-full mt-3 py-2.5 rounded-xl text-[11px] font-bold text-white shadow-lg transition-transform hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, ${MC}, #2D7A5A)` }}>
+                  PRO会員であなた専用のおすすめを見る
+                </button>
+              )}
             </div>
-            {!isPro && (
-              <button onClick={onShowProModal} className="w-full mt-3 py-2 rounded-lg text-[11px] font-bold text-white" style={{ background: MC }}>
-                PRO会員でおすすめを全て見る
-              </button>
-            )}
           </div>
 
           {/* 検索・フィルタ */}

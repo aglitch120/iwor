@@ -57,7 +57,7 @@ const apps = [
   },
   {
     href: '/matching',
-    label: 'マッチング',
+    label: 'マッチング・転職',
     badge: 'FREE',
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
