@@ -110,8 +110,7 @@ export default function ImmersiveWizard({ onComplete, savedAnswers, editMode }: 
 
     if (stepIdx < STEPS.length - 1) {
       setStepIdx(stepIdx + 1)
-      setSelected([])
-      setFreeText('')
+      // selected/freeTextはuseEffect[stepIdx, answers]で自動復元されるので手動クリア不要
     } else {
       // 全完了
       const finalAnswers = { ...answers, [s.id]: { choices: selected, freeText } }

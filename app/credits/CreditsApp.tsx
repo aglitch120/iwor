@@ -462,7 +462,7 @@ export default function CreditsApp() {
                 </div>
               </div>
               {!isPro && (
-                <div className="absolute inset-0 top-12 flex flex-col items-center justify-center px-6" style={{ background: 'linear-gradient(to bottom, transparent, rgba(27,79,58,0.95) 30%)' }}>
+                <div className="absolute inset-0 top-12 flex flex-col items-center justify-center px-6 min-h-[180px]" style={{ background: 'linear-gradient(to bottom, transparent 0%, rgba(27,79,58,0.97) 20%)' }}>
                   <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-2">
                     <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                   </div>

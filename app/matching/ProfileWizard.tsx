@@ -334,18 +334,6 @@ export default function ProfileWizard({
         {/* 履歴書プレビュー — 常時表示 */}
         <ResumePreview profile={profile} isPro={isPro} />
 
-        {/* 保存ボタン — インライン */}
-        <div className="mt-6 px-4 pb-4">
-          <button onClick={handleSave}
-            className="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2"
-            style={{ background: MC, boxShadow: `0 4px 14px ${MC}33` }}>
-            {saved ? (
-              <><CheckIcon />保存しました</>
-            ) : (
-              <><SaveIcon />{isPro ? 'プロフィールを保存' : 'プロフィールを保存（PRO）'}</>
-            )}
-          </button>
-        </div>
       </div>
     )
   }
