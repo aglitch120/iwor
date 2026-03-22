@@ -84,7 +84,7 @@ export default function OnboardingModal({ onSelect }: Props) {
         </div>
 
         {/* Role options */}
-        <div className="px-5 pb-5 pt-3 space-y-2">
+        <div className="px-5 pb-20 sm:pb-5 pt-3 space-y-2">
           {roles.map((r) => (
             <button
               key={r.key}
