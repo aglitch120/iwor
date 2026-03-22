@@ -117,6 +117,22 @@ export default function MyPage() {
             <span className="text-xs font-bold text-ac px-3 py-1 bg-ac/10 rounded-lg">Active</span>
           )}
         </div>
+        {isPro && (() => {
+          const exp = typeof window !== 'undefined' ? localStorage.getItem('iwor_pro_expires_at') : null
+          const plan = typeof window !== 'undefined' ? localStorage.getItem('iwor_pro_plan') : null
+          const planLabel = plan === 'pro_1y' ? '1年パス' : plan === 'pro_2y' ? '2年パス' : plan === 'pro_3y' ? '3年パス' : plan || ''
+          if (!exp) return null
+          const days = Math.ceil((new Date(exp).getTime() - Date.now()) / (1000*60*60*24))
+          return (
+            <div className="mt-2 flex items-center gap-2 text-[10px] text-muted">
+              <span>{planLabel}</span>
+              <span>·</span>
+              <span>有効期限: {exp.split('T')[0]}</span>
+              <span>·</span>
+              <span className={days <= 30 ? 'text-red-500 font-bold' : ''}>{days > 0 ? `残り${days}日` : '期限切れ'}</span>
+            </div>
+          )
+        })()}
       </div>
 
       {/* Profile form */}

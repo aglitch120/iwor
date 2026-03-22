@@ -268,7 +268,28 @@ export default function ProfileWizard({
             <div className="flex-1 overflow-y-auto px-4 py-6">
               <div className="max-w-lg mx-auto">
                 <ImmersiveWizard
-                  onComplete={() => setShowWizardModal(false)}
+                  onComplete={(answers) => {
+                    // ウィザード回答からプロフィールフィールドを埋める
+                    try {
+                      const raw = localStorage.getItem('iwor_matching_profile')
+                      const stored = raw ? JSON.parse(raw) : {}
+                      const merged: Partial<WizardProfile> = {
+                        name: stored.name || '',
+                        university: stored.university || '',
+                        graduationYear: stored.graduationYear || '',
+                        preferredSpecialty: answers['specialty']?.choices?.[0] || stored.preferredSpecialty || '',
+                        strengthsList: answers['strengths']?.choices || [],
+                        strengthsEpisode: answers['strengths-episode']?.freeText || '',
+                        motivation: answers['doctor-reason']?.freeText || answers['doctor-reason']?.choices?.join('、') || '',
+                        clubs: answers['activity']?.choices?.join('、') || '',
+                        goal5y: answers['future-5y']?.choices?.[0] || '',
+                      }
+                      const next = { ...profile, ...merged }
+                      setProfile(next)
+                      autoSave(next)
+                    } catch {}
+                    setShowWizardModal(false)
+                  }}
                   editMode={!!profile.name}
                   savedAnswers={(() => {
                     try {
@@ -976,7 +997,7 @@ td, th { border: 1px solid #333; padding: 3pt 5pt; vertical-align: top; }
         </span>
       </div>
       {!hasData ? (
-        <div className="p-6 text-center"><p className="text-xs text-muted">STEP 1で氏名と大学を入力すると表示されます</p></div>
+        <div className="p-6 text-center"><p className="text-xs text-muted">プロフィールウィザードで氏名と大学を入力すると表示されます</p></div>
       ) : (
         <div className="p-4 relative">
           {/* PDF出力 + AI生成ボタン (PRO only) */}
