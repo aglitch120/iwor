@@ -187,6 +187,23 @@ export default function CreditsApp() {
       current.push(id)
     }
     save({ ...data, selectedSpecialties: current, selectedSpecialty: current[0] || null })
+    // マイページプロフィールにも第一標榜を同期
+    try {
+      const SPEC_NAMES: Record<string, string> = {
+        internal: '総合内科', cardio: '循環器', gastro: '消化器', pulm: '呼吸器',
+        renal: '腎臓', endo: '内分泌', hematology: '血液', neuro: '神経',
+        rheum: '膠原病', infection: '感染症', pediatrics: '小児科', psychiatry: '精神科',
+        surgery: '外科', orthopedics: '整形外科', obgyn: '産婦人科',
+      }
+      const firstSpec = current[0] ? (SPEC_NAMES[current[0]] || '') : ''
+      if (firstSpec) {
+        const p = JSON.parse(localStorage.getItem('iwor_profile') || '{}')
+        if (!p.specialty || p.specialty !== firstSpec) {
+          p.specialty = firstSpec
+          localStorage.setItem('iwor_profile', JSON.stringify(p))
+        }
+      }
+    } catch {}
     // タブを追加した専門医に切り替え
     if (idx < 0) setActiveSpecIdx(current.length - 1)
     else if (activeSpecIdx >= current.length) setActiveSpecIdx(Math.max(0, current.length - 1))

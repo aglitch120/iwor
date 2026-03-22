@@ -177,12 +177,58 @@ export default function MyPage() {
         <Section title="臨床情報">
           {/* Specialty */}
           <Field label="第一標榜診療科">
-            <select value={profile.specialty} onChange={e => update('specialty', e.target.value)}
+            <select value={profile.specialty} onChange={e => {
+              update('specialty', e.target.value)
+              // 専門医単位appにも同期
+              try {
+                const raw = localStorage.getItem('iwor_credits_data')
+                const credits = raw ? JSON.parse(raw) : {}
+                // 診療科名→専門医IDの簡易マッピング
+                const SPEC_MAP: Record<string, string> = {
+                  '総合内科': 'internal', '循環器': 'cardio', '消化器': 'gastro', '呼吸器': 'pulm',
+                  '腎臓': 'renal', '内分泌': 'endo', '血液': 'hematology', '神経': 'neuro',
+                  '膠原病': 'rheum', '感染症': 'infection', '小児科': 'pediatrics', '精神科': 'psychiatry',
+                  '外科': 'surgery', '整形外科': 'orthopedics', '産婦人科': 'obgyn',
+                  '泌尿器': 'urology', '放射線': 'radiology', '麻酔科': 'anesthesiology', '救急': 'emergency',
+                  '皮膚科': 'dermatology', '眼科': 'ophthalmology', '耳鼻咽喉科': 'otolaryngology',
+                }
+                const specId = SPEC_MAP[e.target.value]
+                if (specId) {
+                  const current = credits.selectedSpecialties || (credits.selectedSpecialty ? [credits.selectedSpecialty] : [])
+                  if (!current.includes(specId)) {
+                    credits.selectedSpecialties = [...current, specId]
+                    credits.selectedSpecialty = credits.selectedSpecialty || specId
+                    localStorage.setItem('iwor_credits_data', JSON.stringify(credits))
+                  }
+                }
+              } catch {}
+            }}
               className="w-full px-3 py-2 bg-bg border border-br rounded-lg text-sm focus:border-ac outline-none">
               <option value="">未選択</option>
               {SPECIALTIES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </Field>
+
+          {/* 専門医単位連携 */}
+          {(() => {
+            try {
+              const raw = typeof window !== 'undefined' ? localStorage.getItem('iwor_credits_data') : null
+              if (!raw) return null
+              const credits = JSON.parse(raw)
+              const ids = credits.selectedSpecialties?.length ? credits.selectedSpecialties : (credits.selectedSpecialty ? [credits.selectedSpecialty] : [])
+              if (ids.length === 0) return null
+              return (
+                <Field label="専門医単位 管理中">
+                  <div className="flex flex-wrap gap-1.5">
+                    {ids.map((id: string) => (
+                      <span key={id} className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-acl text-ac border border-ac/20">{id}</span>
+                    ))}
+                  </div>
+                  <a href="/credits" className="text-[10px] text-ac hover:underline mt-1 inline-block">専門医単位を管理 →</a>
+                </Field>
+              )
+            } catch { return null }
+          })()}
 
           {/* Hospital size */}
           <Field label="勤務施設規模">
