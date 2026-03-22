@@ -13,9 +13,9 @@ export interface DrugEntry {
   halfLife: string      // 半減期
   metabolism: string    // 代謝経路
   renalAdjust: string   // 腎機能別調整
-  features: string      // 特徴・ポイント
+  features?: string     // 特徴（オプション — 添付文書外情報は含めない）
   contraindication: string  // 主な禁忌
-  evidence?: string     // 主要エビデンス
+  evidence?: string     // 主要エビデンス（オプション）
 }
 
 export interface CompareData {
@@ -38,9 +38,7 @@ const columnLabels: Record<keyof DrugEntry, string> = {
   halfLife: '半減期',
   metabolism: '代謝',
   renalAdjust: '腎機能調整',
-  features: '特徴',
   contraindication: '禁忌',
-  evidence: 'エビデンス',
 }
 
 export default function DrugCompareLayout({ data }: { data: CompareData }) {
