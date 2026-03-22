@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
@@ -189,8 +188,8 @@ export default function JoslerApp({ initialMode }: { initialMode?: RecordMode } 
     const o = other; let done = 0
     if (o.jmecc) done++
     if ((o.publications || 0) >= 2) done++
-    if (['y1', 'y2', 'y3'].every(y => (o.ethics?.[y] || 0) >= 2)) done++
-    if (['y1', 'y2', 'y3'].every(y => (o.academicMeetings?.[y] || 0) >= 2)) done++
+    if (['y1', 'y2', 'y3'].every(y => ((o.ethics as any)?.[y] || 0) >= 2)) done++
+    if (['y1', 'y2', 'y3'].every(y => ((o.academicMeetings as any)?.[y] || 0) >= 2)) done++
     return { done, total: 4 }
   })()
   const cPct = totalC / 120 * 100, gPct = totalG / 56 * 100, sPct = totalAcc / 29 * 100, ooPct = oProg.done / 4 * 100
@@ -366,7 +365,7 @@ export default function JoslerApp({ initialMode }: { initialMode?: RecordMode } 
           ))}
         </div>
         <div style={{ padding: '12px 14px' }}>
-          {epocTab === 'overview' && <EpocOverview symDone={symDone} disDone={disDone} proDone={proDone} overallPct={overallPct} />}
+          {epocTab === 'overview' && <EpocOverview symDone={symDone} disDone={disDone} proDone={proDone} overallPct={overallPct} switchMode={switchMode} transferEpocToJosler={transferEpocToJosler} transferResult={transferResult} />}
           {epocTab === 'symptoms' && <EpocChecklist section="symptoms" data={epocData.symptoms} items={EPOC_SYMPTOMS} categories={SYMPTOM_CATEGORIES} toggle={toggleEpocItem} color="#2D6A4F" />}
           {epocTab === 'diseases' && <EpocChecklist section="diseases" data={epocData.diseases} items={EPOC_DISEASES} categories={DISEASE_CATEGORIES} toggle={toggleEpocItem} color="#5B7FA6" />}
           {epocTab === 'procedures' && <EpocChecklist section="procedures" data={epocData.procedures} items={EPOC_PROCEDURES} categories={PROCEDURE_CATEGORIES} toggle={toggleEpocItem} color="#9A3B3B" />}
@@ -1110,7 +1109,12 @@ function GeneratorTab({ summaries }: { summaries: any[] }) {
 /* ═══════════════════════════════════
    EPOC OVERVIEW
 ═══════════════════════════════════ */
-function EpocOverview({ symDone, disDone, proDone, overallPct }: { symDone: number; disDone: number; proDone: number; overallPct: number }) {
+function EpocOverview({ symDone, disDone, proDone, overallPct, switchMode, transferEpocToJosler, transferResult }: {
+  symDone: number; disDone: number; proDone: number; overallPct: number
+  switchMode: (mode: RecordMode) => void
+  transferEpocToJosler: () => void
+  transferResult: { count: number; details: string[] } | null
+}) {
   return (
     <>
       <Card>
