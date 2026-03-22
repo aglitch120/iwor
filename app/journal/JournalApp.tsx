@@ -586,9 +586,17 @@ export default function JournalApp() {
               isPro={isPro} displayLang={displayLang} stats={articleStats[a.pmid]} />
           ))}
 
-          {/* Infinite scroll sentinel */}
-          <div ref={sentinelRef} className="flex justify-center py-4">
-            {hasMore && <IworLoader size="sm" />}
+          {/* Infinite scroll sentinel + manual load button */}
+          <div ref={sentinelRef} className="flex flex-col items-center gap-2 py-4">
+            {hasMore && (
+              <>
+                <IworLoader size="sm" />
+                <button onClick={() => setDisplayCount(prev => prev + PAGE_SIZE)}
+                  className="text-[11px] font-medium text-ac hover:underline px-3 py-1.5 bg-acl rounded-lg">
+                  もっと読み込む（残り{gatedArticles.length - displayCount}件）
+                </button>
+              </>
+            )}
           </div>
 
           {/* PRO gate */}
@@ -728,19 +736,21 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
             <p className="text-[10px] text-muted truncate mb-1.5">{a.authors}</p>
 
             {/* Actions row */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <a href={`https://pubmed.ncbi.nlm.nih.gov/${a.pmid}/`} target="_blank" rel="noopener noreferrer"
-                className="text-[9px] text-ac hover:underline">PubMed</a>
+                className="text-[11px] font-medium text-ac hover:underline px-2 py-1 bg-acl rounded-md">PubMed</a>
               {a.doi && <a href={`https://doi.org/${a.doi}`} target="_blank" rel="noopener noreferrer"
-                className="text-[9px] text-ac hover:underline">DOI</a>}
+                className="text-[11px] font-medium text-ac hover:underline px-2 py-1 bg-acl rounded-md">DOI</a>}
               <Link href={`/presenter?type=journal-club&topic=${encodeURIComponent(a.title)}`}
-                className="text-[9px] text-ac hover:underline">抄読会</Link>
+                className="text-[11px] font-medium text-ac hover:underline px-2 py-1 bg-acl rounded-md">抄読会</Link>
 
               <button onClick={handleExpand}
-                className="text-[9px] text-muted hover:text-ac flex items-center gap-0.5">
-                💬 {commentCount > 0 ? commentCount : ''}{expanded ? '' : ' Abstract'}
+                className="text-[11px] text-muted hover:text-ac flex items-center gap-1 px-2 py-1 bg-s1 rounded-md">
+                💬 {commentCount > 0 ? <span className="font-bold">{commentCount}</span> : ''}{expanded ? '' : ' Abstract'}
               </button>
-              <span className="text-[9px] text-muted flex items-center gap-0.5">★ {bookmarkCount}</span>
+              {bookmarkCount > 0 && (
+                <span className="text-[11px] text-amber-600 flex items-center gap-0.5 px-2 py-1 bg-amber-50 rounded-md font-medium">★ {bookmarkCount}</span>
+              )}
             </div>
           </div>
 
