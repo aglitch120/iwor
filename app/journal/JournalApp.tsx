@@ -255,12 +255,14 @@ export default function JournalApp() {
   }, [selectedSpecialties, ifMin, excludedJournals, lang, sortBy, contentType])
 
   // IntersectionObserver for infinite scroll
+  const hasMoreRef = useRef(hasMore)
+  hasMoreRef.current = hasMore
   useEffect(() => {
     const el = sentinelRef.current
     if (!el) return
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
+        if (entries[0].isIntersecting && hasMoreRef.current) {
           setDisplayCount(prev => prev + PAGE_SIZE)
         }
       },
@@ -268,7 +270,7 @@ export default function JournalApp() {
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [hasMore])
+  }, []) // mount once
 
   // ── Export bookmarks to clipboard (for presenter) ──
   const exportBookmarks = useCallback(() => {
@@ -577,11 +579,9 @@ export default function JournalApp() {
           ))}
 
           {/* Infinite scroll sentinel */}
-          {hasMore && (
-            <div ref={sentinelRef} className="flex justify-center py-4">
-              <div className="w-5 h-5 border-2 border-br border-t-ac rounded-full animate-spin" />
-            </div>
-          )}
+          <div ref={sentinelRef} className="flex justify-center py-4">
+            {hasMore && <div className="w-5 h-5 border-2 border-br border-t-ac rounded-full animate-spin" />}
+          </div>
 
           {/* PRO gate */}
           {hiddenCount > 0 && !hasMore && (
