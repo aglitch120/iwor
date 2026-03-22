@@ -62,7 +62,14 @@ export default function MatchingApp() {
   useEffect(() => {
     try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) { const p = JSON.parse(raw); setBasicProfile(prev => ({ ...prev, ...p })) } } catch {}
     const m = localStorage.getItem(MODE_STORAGE_KEY)
-    if (m === 'career' || m === 'matching') setMode(m)
+    if (m === 'career' || m === 'matching') {
+      setMode(m)
+    } else {
+      // 属性に応じてデフォルトモードを設定
+      const role = localStorage.getItem('iwor_user_role')
+      if (role === 'student') setMode('matching')
+      else if (role && role !== 'student') setMode('career')
+    }
     if (!localStorage.getItem('iwor_matching_tutorial_done')) setShowTutorial(true)
     else setTutorialDone(true)
     if (localStorage.getItem('iwor_matching_help_dismissed')) setHelpDismissed(true)
