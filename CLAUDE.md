@@ -35,6 +35,7 @@ Each piece of info lives in exactly ONE file. Check docs/README.md for ownership
 | BACKLOG.md | Tasks, priorities (🔴🟠🟡🟢), feature requests, progress | Strategy reasoning |
 | IMPLEMENTATION.md | Tech stack, coding rules, SEO implementation | Product specs |
 | DESIGN_SYSTEM.md | Colors, fonts, spacing, component styles | Code logic |
+| MARKETING.md | Acquisition channels, segments, seasonal calendar, KPIs, tactics | Price, competitors |
 
 When adding info: find the owner in docs/README.md → write there ONLY.
 When referencing: don't copy, write "→ STRATEGY.md 参照".
