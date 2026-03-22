@@ -216,54 +216,108 @@ export default function HomeWidgets() {
 }
 
 /* ═══════════════════════════════════
-   コミットメント階段
-   ユーザー行動に基づいて次のステップを提案
+   コミットメント階段 + 未触アプリレコメンド
+   ペルソナ×使用履歴に基づいて次のステップを提案
 ═══════════════════════════════════ */
+
+// ペルソナ別おすすめアプリ（優先順）
+const PERSONA_APPS: Record<string, { href: string; text: string; cta: string }[]> = {
+  student: [
+    { href: '/study', text: '毎日5分で医学知識を定着', cta: 'Studyを始める' },
+    { href: '/matching', text: 'マッチング対策を始めよう', cta: '病院を探す' },
+    { href: '/tools', text: '臨床計算ツールを使ってみよう', cta: 'ツール一覧' },
+  ],
+  resident: [
+    { href: '/tools', text: '当直で使える臨床ツール', cta: 'ツール一覧' },
+    { href: '/study', text: '毎日5分で知識をアップデート', cta: 'Studyを始める' },
+    { href: '/epoc', text: 'EPOC到達目標を管理', cta: 'EPOCを開く' },
+    { href: '/shift', text: '当直シフトを自動作成', cta: 'シフトを作る' },
+  ],
+  fellow: [
+    { href: '/josler', text: 'J-OSLER症例登録を効率化', cta: 'JOSLERを開く' },
+    { href: '/josler/summary-generator', text: '病歴要約をAIで下書き', cta: 'AI生成を試す' },
+    { href: '/study', text: '専門医試験対策をStudyで', cta: 'Studyを始める' },
+    { href: '/journal', text: '論文フィードで最新論文をチェック', cta: '論文を読む' },
+  ],
+  attending: [
+    { href: '/journal', text: '専門分野の最新論文を配信', cta: '論文フィード' },
+    { href: '/tools', text: '臨床計算ツール', cta: 'ツール一覧' },
+    { href: '/study', text: '生涯学習をStudyで効率化', cta: 'Studyを始める' },
+    { href: '/money', text: 'ふるさと納税・NISA・手取り計算', cta: 'マネーツール' },
+  ],
+}
+
 function CommitmentBanner() {
-  const [stage, setStage] = useState<'hidden' | 'try-tool' | 'add-favorite' | 'create-account' | 'try-study' | 'go-pro'>('hidden')
+  const [rec, setRec] = useState<{ text: string; cta: string; href: string; color: string } | null>(null)
   const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    if (localStorage.getItem('iwor_commitment_dismissed')) { setDismissed(true); return }
+    // 直近で閉じたなら24時間は非表示
+    const lastDismissed = localStorage.getItem('iwor_recommend_dismissed_at')
+    if (lastDismissed && Date.now() - Number(lastDismissed) < 86400000) return
 
+    const role = localStorage.getItem('iwor_user_role') || ''
+    const isPro = localStorage.getItem('iwor_pro_user') === 'true'
+    const isLoggedIn = !!localStorage.getItem('iwor_session_token')
     let toolUses = 0
     try { const u = JSON.parse(localStorage.getItem('iwor_tool_usage') || '{}'); toolUses = u._total || 0 } catch {}
     const hasFavorites = (localStorage.getItem('iwor_favorites') || '').length > 5
-    const isLoggedIn = !!localStorage.getItem('iwor_session_token')
-    const isPro = localStorage.getItem('iwor_pro_user') === 'true'
     const hasStudied = !!localStorage.getItem('iwor_study_fsrs')
 
-    if (isPro) setStage('hidden')
-    else if (isLoggedIn && hasStudied) setStage('go-pro')
-    else if (isLoggedIn && !hasStudied) setStage('try-study')
-    else if (hasFavorites && !isLoggedIn) setStage('create-account')
-    else if (toolUses >= 3 && !hasFavorites) setStage('add-favorite')
-    else if (toolUses < 3) setStage('try-tool')
-    else setStage('hidden')
+    // コミットメント階段（ペルソナ未選択 or 初期段階）
+    if (toolUses < 3) {
+      setRec({ text: '臨床ツールを使ってみましょう', cta: 'ツール一覧', href: '/tools', color: '#6B6760' })
+      return
+    }
+    if (!hasFavorites) {
+      setRec({ text: 'よく使うツールをお気に入りに追加', cta: 'お気に入り', href: '/tools', color: '#1B4F3A' })
+      return
+    }
+    if (!isLoggedIn) {
+      setRec({ text: 'アカウントを作成してデータを保存', cta: 'アカウント作成', href: '/pro/activate', color: '#1B4F3A' })
+      return
+    }
+    if (isLoggedIn && !hasStudied) {
+      setRec({ text: 'iwor Studyで医学知識を定着', cta: 'Studyを始める', href: '/study', color: '#1B4F3A' })
+      return
+    }
+    if (!isPro && isLoggedIn && hasStudied) {
+      setRec({ text: 'PRO会員で全機能を解放', cta: 'PRO詳細', href: '/pro', color: '#1B4F3A' })
+      return
+    }
+
+    // ペルソナ連動: まだ触れていないアプリをレコメンド
+    if (role && PERSONA_APPS[role]) {
+      const visitedPages = new Set<string>()
+      try {
+        const usage = JSON.parse(localStorage.getItem('iwor_tool_usage') || '{}')
+        Object.keys(usage).forEach(k => { if (k !== '_total') visitedPages.add(k) })
+      } catch {}
+      // 訪問済みページの簡易判定（localStorageにデータがあるかで判定）
+      if (localStorage.getItem('iwor_study_fsrs')) visitedPages.add('/study')
+      if (localStorage.getItem('iwor_josler_data')) visitedPages.add('/josler')
+      if (localStorage.getItem('iwor_epoc_data')) visitedPages.add('/epoc')
+
+      const unreached = PERSONA_APPS[role].find(app => !visitedPages.has(app.href))
+      if (unreached) {
+        setRec({ ...unreached, color: '#1B4F3A' })
+      }
+    }
   }, [])
 
-  if (dismissed || stage === 'hidden') return null
+  if (dismissed || !rec) return null
 
   const dismiss = () => {
     setDismissed(true)
-    localStorage.setItem('iwor_commitment_dismissed', '1')
+    localStorage.setItem('iwor_recommend_dismissed_at', String(Date.now()))
   }
-
-  const STAGES = {
-    'try-tool': { text: '臨床ツールを使ってみましょう', cta: 'ツール一覧', href: '/tools', color: '#6B6760' },
-    'add-favorite': { text: 'よく使うツールをお気に入りに追加', cta: 'お気に入り追加', href: '/tools', color: '#1B4F3A' },
-    'create-account': { text: 'アカウントを作成してデータを保存', cta: 'アカウント作成', href: '/pro', color: '#1B4F3A' },
-    'try-study': { text: 'iwor Studyで医学知識を定着', cta: 'Studyを始める', href: '/study', color: '#1B4F3A' },
-    'go-pro': { text: 'PRO会員で全機能を解放', cta: 'PRO詳細', href: '/pro', color: '#1B4F3A' },
-  }
-  const s = STAGES[stage]
 
   return (
     <div className="mt-3 relative">
-      <Link href={s.href} className="block bg-s0 border border-br rounded-xl p-3 hover:border-ac/30 transition-all">
+      <Link href={rec.href} className="block bg-s0 border border-br rounded-xl p-3 hover:border-ac/30 transition-all">
         <div className="flex items-center justify-between">
-          <p className="text-xs text-muted">{s.text}</p>
-          <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg text-white" style={{ background: s.color }}>{s.cta}</span>
+          <p className="text-xs text-muted">{rec.text}</p>
+          <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg text-white" style={{ background: rec.color }}>{rec.cta}</span>
         </div>
       </Link>
       <button onClick={dismiss} className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-s2 text-muted text-[10px] flex items-center justify-center hover:bg-s1" aria-label="閉じる">&times;</button>

@@ -6,6 +6,7 @@ import FavoriteButton from '@/components/tools/FavoriteButton'
 import ErrorReportButton from '@/components/tools/ErrorReportButton'
 import ProPulseHint from '@/components/pro/ProPulseHint'
 import { trackToolUsage, getTotalToolUsage, useProStatus } from '@/components/pro/useProStatus'
+import PersonaCTA from '@/components/PersonaCTA'
 import { getToolBySlug } from '@/lib/tools-config'
 import { generateToolJsonLd } from '@/lib/tools-metadata'
 
@@ -193,6 +194,9 @@ export default function CalculatorLayout({
           {result}
         </section>
       )}
+
+      {/* ペルソナCTA */}
+      <PersonaCTA context="calc" />
 
       {/* 免責表示 */}
       <div className="bg-wnl border border-wnb rounded-lg p-4 mb-8 text-sm text-wn">
