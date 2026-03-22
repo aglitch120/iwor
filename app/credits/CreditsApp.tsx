@@ -416,47 +416,60 @@ export default function CreditsApp() {
             </div>
 
             {/* ── 単位取得に使える学会（PRO） ── */}
-            <div className="rounded-xl p-4 mb-4 relative" style={{ background: C.s0, border: `1px solid ${C.br}` }}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-bold" style={{ color: C.tx }}>単位取得に使える学会</h3>
-                {!isPro && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: '#E8F0EC', color: C.ac }}>PRO</span>}
-              </div>
-              <div className="space-y-2">
-                {specialty.regionalMeetings && specialty.regionalMeetings.length > 0 ? (
-                  <>
-                    <div>
-                      <p className="text-[10px] font-bold text-muted mb-1">地方会（{specialty.regionalMeetings.length}支部）</p>
-                      <div className="flex flex-wrap gap-1">
-                        {specialty.regionalMeetings.map(r => (
-                          <span key={r} className="text-[10px] px-2 py-0.5 rounded" style={{ background: '#E8F0EC', color: C.ac }}>{r}</span>
-                        ))}
+            <div className="rounded-xl mb-4 relative overflow-hidden" style={{
+              background: isPro ? 'linear-gradient(135deg, #1B4F3A 0%, #2D7A5A 100%)' : 'linear-gradient(135deg, #1B4F3A 0%, #2D7A5A 50%, #1B4F3A 100%)',
+              border: 'none',
+            }}>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🏛️</span>
+                    <h3 className="text-sm font-bold text-white">単位取得に使える学会</h3>
+                  </div>
+                  {!isPro && <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-white">PRO</span>}
+                </div>
+                <div className="space-y-2.5">
+                  {specialty.regionalMeetings && specialty.regionalMeetings.length > 0 ? (
+                    <>
+                      <div>
+                        <p className="text-[10px] font-bold text-white/70 mb-1.5">地方会（{specialty.regionalMeetings.length}支部）</p>
+                        <div className="flex flex-wrap gap-1">
+                          {specialty.regionalMeetings.map(r => (
+                            <span key={r} className="text-[10px] px-2 py-0.5 rounded-md bg-white/15 text-white font-medium">{r}</span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                    <a href="/conferences" className="block text-[11px] font-medium py-2 text-center rounded-lg transition-all hover:opacity-90" style={{ background: C.ac, color: '#fff' }}>
-                      学会カレンダーで日程を確認
+                      <a href="/conferences" className="block text-[11px] font-bold py-2.5 text-center rounded-lg transition-all hover:opacity-90 bg-white text-ac">
+                        学会カレンダーで日程を確認 →
+                      </a>
+                    </>
+                  ) : (
+                    <p className="text-[10px] text-white/60">地方会情報は準備中です</p>
+                  )}
+                  {specialty.hasElearning && (
+                    <p className="text-[10px] text-white/80 flex items-center gap-1">
+                      <span>✓</span> e-learning対応あり
+                    </p>
+                  )}
+                  {specialty.officialUrl && (
+                    <a href={specialty.officialUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] text-white/70 hover:text-white underline block">
+                      {specialty.society} 公式更新基準 →
                     </a>
-                  </>
-                ) : (
-                  <p className="text-[10px] text-muted">地方会情報は準備中です</p>
-                )}
-                {specialty.hasElearning && (
-                  <p className="text-[10px] text-muted flex items-center gap-1">
-                    <span style={{ color: C.ok }}>&#10003;</span> e-learning対応あり
-                  </p>
-                )}
-                {specialty.officialUrl && (
-                  <a href={specialty.officialUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] text-ac hover:underline block">
-                    {specialty.society} 公式更新基準
-                  </a>
-                )}
-                {specialty.notes && (
-                  <p className="text-[9px] text-muted leading-relaxed">{specialty.notes}</p>
-                )}
+                  )}
+                  {specialty.notes && (
+                    <p className="text-[9px] text-white/50 leading-relaxed">{specialty.notes}</p>
+                  )}
+                </div>
               </div>
               {!isPro && (
-                <div className="absolute inset-0 top-10 backdrop-blur-md bg-s0/90 rounded-b-xl flex items-center justify-center">
-                  <button onClick={() => setShowProModal(true)} className="text-xs font-bold px-4 py-2 rounded-lg text-white" style={{ background: C.ac }}>
-                    PRO会員で学会連携を表示
+                <div className="absolute inset-0 top-12 flex flex-col items-center justify-center px-6" style={{ background: 'linear-gradient(to bottom, transparent, rgba(27,79,58,0.95) 30%)' }}>
+                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-2">
+                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  </div>
+                  <p className="text-sm font-bold text-white mb-1">学会連携を解放</p>
+                  <p className="text-[10px] text-white/60 mb-3">地方会・e-learning・公式基準を表示</p>
+                  <button onClick={() => setShowProModal(true)} className="px-5 py-2 rounded-lg text-xs font-bold bg-white text-ac shadow-lg hover:shadow-xl transition-all">
+                    PRO会員になる
                   </button>
                 </div>
               )}
@@ -608,7 +621,7 @@ export default function CreditsApp() {
 
       {/* ── Sticky bottom banner (モーダル表示中は非表示) ── */}
       {specialty && !showAddModal && !showProModal && (
-        <div className="fixed left-0 right-0 px-4 z-40 bottom-20 md:bottom-4">
+        <div className="fixed left-0 right-0 px-4 z-40 md:bottom-4" style={{ bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
           <div className="max-w-2xl mx-auto">
             <button
               onClick={() => setShowAddModal(true)}
