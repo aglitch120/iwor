@@ -5,6 +5,13 @@ import rehypeSlug from 'rehype-slug'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  async redirects() {
+    return [
+      // 薬剤比較: /compare/* → /tools/drugs/compare/*
+      { source: '/compare', destination: '/tools/drugs', permanent: true },
+      { source: '/compare/:slug', destination: '/tools/drugs/compare/:slug', permanent: true },
+    ]
+  },
   async rewrites() {
     return {
       beforeFiles: [
@@ -68,3 +75,5 @@ const withMDX = createMDX({
 })
 
 export default withMDX(nextConfig)
+
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());

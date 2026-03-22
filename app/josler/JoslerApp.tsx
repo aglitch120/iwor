@@ -65,9 +65,9 @@ function recalc(eg: any) {
 /* ════════════════════════════════════
    MAIN APP
 ════════════════════════════════════ */
-export default function JoslerApp() {
+export default function JoslerApp({ initialMode }: { initialMode?: RecordMode } = {}) {
   const { isPro } = useProStatus()
-  const [mode, setMode] = useState<RecordMode>('josler')
+  const [mode, setMode] = useState<RecordMode>(initialMode || 'josler')
   const [tab, setTab] = useState('overview')
   const [eg, setEg] = useState(() => buildEG())
   const [summaries, setSummaries] = useState(() => makeSums())
@@ -91,7 +91,7 @@ export default function JoslerApp() {
 
   // ── Data load on mount ──
   useEffect(() => {
-    setMode(loadRecordMode())
+    if (!initialMode) setMode(loadRecordMode())
     ;(async () => {
       const [joslerResult, epocResult] = await Promise.all([
         loadJoslerData(),

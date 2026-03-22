@@ -203,9 +203,8 @@ export default function HospitalTab({
       {/* ── サブタブ ── */}
       <div className="flex gap-1 bg-s1 rounded-xl p-1">
         {([
-          { id: 'search' as SubTab, label: '病院検索', count: HOSPITALS.length },
+          { id: 'search' as SubTab, label: '検索', count: HOSPITALS.length },
           { id: 'ranking' as SubTab, label: '人気', count: 0 },
-          { id: 'interested' as SubTab, label: '気になる', count: interestedIds.length },
           { id: 'wishlist' as SubTab, label: '志望リスト', count: wishlistIds.length },
         ]).map(t => (
           <button
