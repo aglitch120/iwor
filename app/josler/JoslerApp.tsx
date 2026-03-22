@@ -254,7 +254,7 @@ export default function JoslerApp({ initialMode }: { initialMode?: RecordMode } 
             transition: 'all .18s',
           }}>
             <span style={{ fontSize: 12, fontWeight: 700, color: active ? C.s0 : C.m, letterSpacing: '0.01em' }}>{m.label}</span>
-            <span style={{ fontSize: 10, color: active ? 'rgba(255,255,255,0.7)' : C.br2, lineHeight: 1 }}>{m.sub}</span>
+            <span style={{ fontSize: 10, color: active ? 'rgba(255,255,255,0.7)' : C.m, lineHeight: 1 }}>{m.sub}</span>
           </button>
         )
       })}
@@ -499,18 +499,18 @@ function OverviewTab({ totalC, totalG, totalAcc, totalWip, summaries, overallPct
                     </td>
                     <td style={{ textAlign: 'center', padding: '5px 4px' }}>
                       <span style={{ color: cOk ? C.ok : C.wn, fontWeight: 600 }}>{c}</span>
-                      <span style={{ color: C.br2 }}>/{sp.minC || '-'}</span>
+                      <span style={{ color: C.m }}>/{sp.minC || '-'}</span>
                     </td>
                     <td style={{ textAlign: 'center', padding: '5px 4px' }}>
                       <span style={{ color: gOk ? C.ok : C.wn, fontWeight: 600 }}>{g}</span>
-                      <span style={{ color: C.br2 }}>/{sp.minG || '-'}</span>
+                      <span style={{ color: C.m }}>/{sp.minG || '-'}</span>
                     </td>
                     <td style={{ textAlign: 'center', padding: '5px 4px' }}>
                       <span style={{ color: sOk ? C.ok : C.wn, fontWeight: 600 }}>{a}</span>
-                      <span style={{ color: C.br2 }}>/{sp.minS || '-'}</span>
+                      <span style={{ color: C.m }}>/{sp.minS || '-'}</span>
                     </td>
                     <td style={{ textAlign: 'center', padding: '5px 4px' }}>
-                      {w > 0 ? <span style={{ color: C.wn }}>{w}</span> : <span style={{ color: C.br2 }}>-</span>}
+                      {w > 0 ? <span style={{ color: C.wn }}>{w}</span> : <span style={{ color: C.m }}>-</span>}
                     </td>
                   </tr>
                 )
@@ -654,7 +654,7 @@ function DGPanel({ spId, spColor, eg, dgs, openDgId, setOpenDg, toggleGroup, tog
           <div key={dg.id} style={{ border: `1px solid ${on ? spColor + '88' : C.br}`, borderRadius: 7, background: on ? spColor + '14' : C.bg, overflow: 'hidden' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 10px' }}>
               <div onClick={() => isSumPanel ? onSumDgToggle(dg.id, on) : toggleGroup(spId, dg.id)} style={{
-                width: 18, height: 18, borderRadius: 4, border: `2px solid ${on ? spColor : C.br2}`,
+                width: 18, height: 18, borderRadius: 4, border: `2px solid ${on ? spColor : C.m}`,
                 background: on ? spColor : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 color: '#fff', fontSize: 10, fontWeight: 900, cursor: 'pointer', flexShrink: 0,
               }}>
@@ -924,7 +924,7 @@ function OtherTab({ other: o, updOther }: any) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '11px 14px', background: C.s1, borderRadius: 8, border: `1px solid ${C.br}`, marginBottom: 8 }}>
         <span style={{ fontSize: 13, fontWeight: 500 }}>JMECC 受講</span>
         <div onClick={() => updOther({ jmecc: !o.jmecc })} style={{
-          width: 22, height: 22, borderRadius: 5, border: `2px solid ${o.jmecc ? C.ac : C.br2}`,
+          width: 22, height: 22, borderRadius: 5, border: `2px solid ${o.jmecc ? C.ac : C.m}`,
           background: o.jmecc ? C.ac : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
         }}>
           {o.jmecc && <span style={{ color: '#fff', fontSize: 13, fontWeight: 800 }}>✓</span>}
@@ -1100,7 +1100,7 @@ function EpocOverview({ symDone, disDone, proDone, overallPct }: { symDone: numb
         <div style={{ fontSize: 12, color: C.m, lineHeight: 1.7 }}>
           <p style={{ fontWeight: 600, color: C.tx, marginBottom: 4 }}>EPOC（初期臨床研修評価）とは</p>
           <p>2年間の初期臨床研修で経験すべき症候29項目・疾病26項目・手技14項目をチェックリスト形式で管理できます。</p>
-          <p style={{ fontSize: 11, color: C.br2, marginTop: 8 }}>出典: 厚生労働省 医師臨床研修指導ガイドライン / PG-EPOC (UMIN)</p>
+          <p style={{ fontSize: 11, color: C.m, marginTop: 8 }}>出典: 厚生労働省 医師臨床研修指導ガイドライン / PG-EPOC (UMIN)</p>
         </div>
       </Card>
     </>
@@ -1162,7 +1162,7 @@ function EpocChecklist({ section, data, items, categories, toggle, color }: {
                   >
                     <div style={{
                       width: 20, height: 20, borderRadius: 5, flexShrink: 0,
-                      border: `2px solid ${checked ? color : C.br2}`,
+                      border: `2px solid ${checked ? color : C.m}`,
                       background: checked ? color : 'transparent',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
