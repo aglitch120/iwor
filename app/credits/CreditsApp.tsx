@@ -436,7 +436,7 @@ export default function CreditsApp() {
 
       {/* ── Sticky bottom banner ── */}
       {specialty && (
-        <div className="fixed left-0 right-0 px-4 z-40" style={{ bottom: '56px' }}>
+        <div className="fixed left-0 right-0 px-4 z-40" style={{ bottom: 'calc(56px + env(safe-area-inset-bottom, 0px) + 8px)' }}>
           <div className="max-w-2xl mx-auto">
             <button
               onClick={() => setShowAddModal(true)}
