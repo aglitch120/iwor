@@ -164,13 +164,22 @@ async function buildJournalDb(env) {
           if (DEEPL_KEY) {
             const dlRes = await fetch("https://api-free.deepl.com/v2/translate", {
               method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: `auth_key=${DEEPL_KEY}&text=${encodeURIComponent(article.title)}&source_lang=EN&target_lang=JA`,
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `DeepL-Auth-Key ${DEEPL_KEY}`,
+              },
+              body: JSON.stringify({
+                text: [article.title],
+                source_lang: "EN",
+                target_lang: "JA",
+              }),
             });
-            const dlData = await dlRes.json();
-            if (dlData?.translations?.[0]?.text) {
-              article.titleJa = dlData.translations[0].text;
-              continue;
+            if (dlRes.ok) {
+              const dlData = await dlRes.json();
+              if (dlData?.translations?.[0]?.text) {
+                article.titleJa = dlData.translations[0].text;
+                continue;
+              }
             }
           }
           // フォールバック: Workers AI
@@ -191,6 +200,40 @@ async function buildJournalDb(env) {
 
     // DBマージ
     for (const a of newArticles) existingDb[a.pmid] = a;
+
+    // 未翻訳の既存記事にも翻訳を適用（バッチ上限50件/回）
+    if (langKey === "en") {
+      const DEEPL_KEY = env.DEEPL_API_KEY || "";
+      const untranslated = Object.values(existingDb).filter(a => !a.titleJa).slice(0, 50);
+      for (const article of untranslated) {
+        try {
+          if (DEEPL_KEY) {
+            const dlRes = await fetch("https://api-free.deepl.com/v2/translate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": `DeepL-Auth-Key ${DEEPL_KEY}` },
+              body: JSON.stringify({ text: [article.title], source_lang: "EN", target_lang: "JA" }),
+            });
+            if (dlRes.ok) {
+              const dlData = await dlRes.json();
+              if (dlData?.translations?.[0]?.text) { article.titleJa = dlData.translations[0].text; continue; }
+            }
+          }
+          const trResult = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+            messages: [
+              { role: "system", content: "あなたは医学論文の翻訳者です。以下の英語の医学論文タイトルを自然で正確な日本語に翻訳してください。翻訳のみを出力してください。" },
+              { role: "user", content: article.title },
+            ],
+            max_tokens: 200,
+          });
+          if (trResult?.response) {
+            const cleaned = trResult.response.trim().replace(/^["「]|["」]$/g, '').replace(/^翻訳[：:]\s*/i, '');
+            if (cleaned.length > 3) article.titleJa = cleaned;
+          }
+        } catch {}
+      }
+      console.log(`Translated ${untranslated.length} previously untranslated articles`);
+    }
+
     const allArticles = Object.values(existingDb)
       .sort((a, b) => (b.impactFactor || 0) - (a.impactFactor || 0) || (b.date || "").localeCompare(a.date || ""));
 

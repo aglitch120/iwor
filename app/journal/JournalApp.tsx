@@ -71,7 +71,7 @@ export default function JournalApp() {
   // 記事統計（コメント数・ブックマーク数）
   const [articleStats, setArticleStats] = useState<Record<string, { comments: number; bookmarks: number }>>({})
   // 並び替え
-  const [sortBy, setSortBy] = useState<'date' | 'bm-today' | 'bm-week' | 'bm-month' | 'bm-year'>('date')
+  const [sortBy, setSortBy] = useState<'date' | 'bm-today' | 'bm-week' | 'bm-month' | 'bm-year' | 'comments'>('date')
 
   // Content type toggle
   const [contentType, setContentType] = useState<'articles' | 'guidelines'>('articles')
@@ -276,7 +276,7 @@ export default function JournalApp() {
         </button>
         <button onClick={() => { setShowSortPanel(!showSortPanel); setShowAdvanced(false) }}
           className={`flex-1 flex items-center justify-between bg-s0 border rounded-xl px-3 py-2 text-xs font-medium transition-all ${showSortPanel ? 'border-ac/30 text-ac' : 'border-br text-tx'}`}>
-          <span>並び替え（{sortBy === 'date' ? '新着順' : sortBy === 'bm-today' ? '今日' : sortBy === 'bm-week' ? '今週' : sortBy === 'bm-month' ? '今月' : '今年'}）</span>
+          <span>並び替え（{sortBy === 'date' ? '新着順' : sortBy === 'bm-today' ? '今日' : sortBy === 'bm-week' ? '今週' : sortBy === 'bm-month' ? '今月' : sortBy === 'bm-year' ? '今年' : 'コメント数'}）</span>
           <span className={`text-muted transition-transform ${showSortPanel ? 'rotate-180' : ''}`}>▾</span>
         </button>
       </div>
@@ -291,6 +291,7 @@ export default function JournalApp() {
               { id: 'bm-week' as const, icon: '\uD83D\uDD25', label: '今週', desc: '今週ブックマークが多い論文' },
               { id: 'bm-month' as const, icon: '\uD83D\uDD25', label: '今月', desc: '今月ブックマークが多い論文' },
               { id: 'bm-year' as const, icon: '\uD83D\uDD25', label: '今年', desc: '今年ブックマークが多い論文' },
+              { id: 'comments' as const, icon: '\uD83D\uDCAC', label: 'コメント数', desc: 'コメントが多い論文' },
             ].map(s => (
               <button key={s.id} onClick={() => { setSortBy(s.id); setShowSortPanel(false) }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all ${
@@ -567,7 +568,9 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
   article: Article; isBookmarked: boolean; onToggleBookmark: () => void; isPro: boolean; displayLang?: 'ja' | 'en'
   stats?: { comments: number; bookmarks: number }
 }) {
-  const [showComments, setShowComments] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const [abstract, setAbstract] = useState<string | null>(null)
+  const [abstractLoading, setAbstractLoading] = useState(false)
   const [comments, setComments] = useState<{ id: string; text: string; displayName: string; createdAt: string }[]>([])
   const [commentText, setCommentText] = useState('')
   const [loadingComments, setLoadingComments] = useState(false)
@@ -575,6 +578,24 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
   const ifColor = a.impactFactor >= 50 ? '#991B1B' : a.impactFactor >= 20 ? '#B45309' : a.impactFactor >= 10 ? MC : '#6B6760'
   const commentCount = stats?.comments || 0
   const bookmarkCount = stats?.bookmarks || 0
+
+  const loadAbstract = useCallback(async () => {
+    setAbstractLoading(true)
+    try {
+      const res = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${a.pmid}&rettype=abstract&retmode=xml`)
+      const xml = await res.text()
+      const match = xml.match(/<AbstractText[^>]*>([\s\S]*?)<\/AbstractText>/g)
+      if (match) {
+        const text = match.map(m => m.replace(/<[^>]+>/g, '').trim()).join('\n\n')
+        setAbstract(text || 'No abstract available.')
+      } else {
+        setAbstract('No abstract available.')
+      }
+    } catch {
+      setAbstract('Failed to load abstract.')
+    }
+    setAbstractLoading(false)
+  }, [a.pmid])
 
   const loadComments = useCallback(async () => {
     setLoadingComments(true)
@@ -604,8 +625,17 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
     } catch {}
   }, [a.pmid, commentText])
 
+  const handleExpand = () => {
+    const next = !expanded
+    setExpanded(next)
+    if (next) {
+      if (abstract === null) loadAbstract()
+      if (comments.length === 0) loadComments()
+    }
+  }
+
   return (
-    <div className="bg-s0 border border-br rounded-xl overflow-hidden hover:border-ac/30 transition-all">
+    <div className={`bg-s0 border rounded-xl overflow-hidden transition-all ${expanded ? 'border-ac/40 shadow-sm' : 'border-br hover:border-ac/30'}`}>
       <div className="p-3">
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0">
@@ -616,11 +646,11 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
               <span className="text-[9px] text-muted">{a.date}</span>
             </div>
 
-            {/* Title */}
-            <a href={`https://pubmed.ncbi.nlm.nih.gov/${a.pmid}/`} target="_blank" rel="noopener noreferrer"
-              className="text-xs font-bold text-tx hover:text-ac transition-colors leading-snug block mb-1">
+            {/* Title — click to expand */}
+            <button onClick={handleExpand}
+              className="text-xs font-bold text-tx hover:text-ac transition-colors leading-snug text-left block mb-1 w-full">
               {displayLang === 'ja' && a.titleJa ? a.titleJa : a.title}
-            </a>
+            </button>
             {displayLang === 'ja' && a.titleJa && (
               <p className="text-[9px] text-muted mb-1 line-clamp-1">{a.title}</p>
             )}
@@ -635,12 +665,11 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
               {a.doi && <a href={`https://doi.org/${a.doi}`} target="_blank" rel="noopener noreferrer"
                 className="text-[9px] text-ac hover:underline">DOI</a>}
               <Link href={`/presenter?type=journal-club&topic=${encodeURIComponent(a.title)}`}
-                className="text-[9px] text-ac hover:underline">📚 抄読会</Link>
+                className="text-[9px] text-ac hover:underline">抄読会</Link>
 
-              {/* コメント・ブックマーク数 */}
-              <button onClick={() => { setShowComments(!showComments); if (!showComments && comments.length === 0) loadComments() }}
+              <button onClick={handleExpand}
                 className="text-[9px] text-muted hover:text-ac flex items-center gap-0.5">
-                💬 {commentCount > 0 ? commentCount : ''}
+                💬 {commentCount > 0 ? commentCount : ''}{expanded ? '' : ' Abstract'}
               </button>
               <span className="text-[9px] text-muted flex items-center gap-0.5">★ {bookmarkCount}</span>
             </div>
@@ -656,36 +685,50 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
         </div>
       </div>
 
-      {/* コメントセクション */}
-      {showComments && (
-        <div className="border-t border-br px-3 py-2 bg-s1/50">
-          {loadingComments ? (
-            <p className="text-[10px] text-muted text-center py-2">読み込み中...</p>
-          ) : comments.length === 0 ? (
-            <p className="text-[10px] text-muted text-center py-2">まだコメントはありません</p>
-          ) : (
-            <div className="space-y-1.5 mb-2 max-h-40 overflow-y-auto">
-              {comments.map(c => (
-                <div key={c.id} className="text-[10px]">
-                  <span className="font-bold text-tx">{c.displayName}</span>
-                  <span className="text-muted ml-1">{new Date(c.createdAt).toLocaleDateString('ja-JP')}</span>
-                  <p className="text-tx mt-0.5">{c.text}</p>
-                </div>
-              ))}
-            </div>
-          )}
-          {isPro ? (
-            <div className="flex gap-1.5">
-              <input value={commentText} onChange={e => setCommentText(e.target.value)}
-                placeholder="コメントを追加..."
-                className="flex-1 px-2 py-1 bg-bg border border-br rounded text-[10px] outline-none focus:border-ac"
-                onKeyDown={e => e.key === 'Enter' && postComment()} />
-              <button onClick={postComment} disabled={!commentText.trim()}
-                className="px-2 py-1 rounded text-[9px] font-bold text-white disabled:opacity-30" style={{ background: MC }}>送信</button>
-            </div>
-          ) : (
-            <p className="text-[9px] text-center" style={{ color: MC }}>コメントにはPROが必要です</p>
-          )}
+      {/* Expanded: Abstract + Comments */}
+      {expanded && (
+        <div className="border-t border-br">
+          {/* Abstract */}
+          <div className="px-3 py-3 bg-bg/50">
+            <p className="text-[10px] font-bold text-tx mb-1.5">Abstract</p>
+            {abstractLoading ? (
+              <p className="text-[10px] text-muted">Loading...</p>
+            ) : (
+              <p className="text-[10px] text-tx leading-relaxed whitespace-pre-line">{abstract}</p>
+            )}
+          </div>
+
+          {/* Comments */}
+          <div className="border-t border-br px-3 py-2 bg-s1/50">
+            <p className="text-[10px] font-bold text-tx mb-1.5">Comments {commentCount > 0 && `(${commentCount})`}</p>
+            {loadingComments ? (
+              <p className="text-[10px] text-muted text-center py-2">読み込み中...</p>
+            ) : comments.length === 0 ? (
+              <p className="text-[10px] text-muted text-center py-2">まだコメントはありません</p>
+            ) : (
+              <div className="space-y-1.5 mb-2 max-h-48 overflow-y-auto">
+                {comments.map(c => (
+                  <div key={c.id} className="text-[10px]">
+                    <span className="font-bold text-tx">{c.displayName}</span>
+                    <span className="text-muted ml-1">{new Date(c.createdAt).toLocaleDateString('ja-JP')}</span>
+                    <p className="text-tx mt-0.5">{c.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {isPro ? (
+              <div className="flex gap-1.5">
+                <input value={commentText} onChange={e => setCommentText(e.target.value)}
+                  placeholder="コメントを追加..."
+                  className="flex-1 px-2 py-1 bg-bg border border-br rounded text-[10px] outline-none focus:border-ac"
+                  onKeyDown={e => e.key === 'Enter' && postComment()} />
+                <button onClick={postComment} disabled={!commentText.trim()}
+                  className="px-2 py-1 rounded text-[9px] font-bold text-white disabled:opacity-30" style={{ background: MC }}>送信</button>
+              </div>
+            ) : (
+              <p className="text-[9px] text-center" style={{ color: MC }}>コメントにはPROが必要です</p>
+            )}
+          </div>
         </div>
       )}
     </div>
