@@ -356,6 +356,62 @@ export default function CreditsApp() {
                     + 更新期限を設定
                   </button>
                 )}
+                {/* リマインダー（期限設定済みの場合） */}
+                {data.targetDate && daysUntilTarget !== null && !showTargetInput && (
+                  <div className="mt-2">
+                    {isPro ? (
+                      <button onClick={() => {
+                        const td = data.targetDate!
+                        const d = new Date(td + 'T09:00:00')
+                        const remind90 = new Date(d.getTime() - 90 * 86400000)
+                        const remind30 = new Date(d.getTime() - 30 * 86400000)
+                        const title = `${specialty?.name || '専門医'} 更新期限`
+                        const icsLines = [
+                          'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//iwor//credits//JA',
+                          'BEGIN:VEVENT',
+                          `DTSTART:${td.replace(/-/g, '')}T000000`,
+                          `DTEND:${td.replace(/-/g, '')}T235959`,
+                          `SUMMARY:${title}`,
+                          `DESCRIPTION:必要単位: ${specialty?.requiredCredits || ''}単位\\n現在: ${totalCredits}単位`,
+                          'END:VEVENT',
+                          'BEGIN:VEVENT',
+                          `DTSTART:${remind90.toISOString().split('T')[0].replace(/-/g, '')}T090000`,
+                          `DTEND:${remind90.toISOString().split('T')[0].replace(/-/g, '')}T093000`,
+                          `SUMMARY:[90日前] ${title}`,
+                          `DESCRIPTION:更新期限まで90日。残り${specialty ? specialty.requiredCredits - totalCredits : '?'}単位`,
+                          'BEGIN:VALARM', 'TRIGGER:-PT0M', 'ACTION:DISPLAY', `DESCRIPTION:${title} 90日前`, 'END:VALARM',
+                          'END:VEVENT',
+                          'BEGIN:VEVENT',
+                          `DTSTART:${remind30.toISOString().split('T')[0].replace(/-/g, '')}T090000`,
+                          `DTEND:${remind30.toISOString().split('T')[0].replace(/-/g, '')}T093000`,
+                          `SUMMARY:[30日前] ${title}`,
+                          `DESCRIPTION:更新期限まで30日！`,
+                          'BEGIN:VALARM', 'TRIGGER:-PT0M', 'ACTION:DISPLAY', `DESCRIPTION:${title} 30日前`, 'END:VALARM',
+                          'END:VEVENT',
+                          'END:VCALENDAR',
+                        ].join('\r\n')
+                        const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' })
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        a.href = url; a.download = `iwor-${specialty?.id || 'credits'}-reminder.ics`
+                        a.click(); URL.revokeObjectURL(url)
+                      }}
+                        className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg text-[11px] font-medium border transition-all"
+                        style={{ borderColor: `${C.ac}30`, color: C.ac, background: C.acl }}>
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        カレンダーにリマインダーを追加（90日前・30日前）
+                      </button>
+                    ) : (
+                      <button onClick={() => setShowProModal(true)}
+                        className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg text-[11px] font-medium border transition-all"
+                        style={{ borderColor: C.br, color: C.m, background: C.s1 }}>
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        リマインダーを追加
+                        <span className="text-[9px] font-bold px-1 py-0.5 rounded" style={{ background: C.acl, color: C.ac }}>PRO</span>
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
