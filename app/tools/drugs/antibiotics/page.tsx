@@ -19,10 +19,10 @@ const DRUGS: Drug[] = [
   { id:'abpc-sbt', name:'ABPC/SBT', nameEn:'アンピシリン/スルバクタム', category:'ペニシリン系', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'none', anaerobe:'good', atypical:'none', note:'嫌気性菌◎。腹腔内感染・誤嚥性肺炎に' },
   { id:'pipc-taz', name:'TAZ/PIPC', nameEn:'ピペラシリン/タゾバクタム', category:'ペニシリン系', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'good', atypical:'none', note:'広域。緑膿菌◎。院内感染のエンピリック' },
   // セフェム系
-  { id:'cez', name:'CEZ', nameEn:'セファゾリン', category:'セフェム第1世代', gpc:'good', gpcMrsa:'none', gnr:'some', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'MSSA第一選択。術前予防抗菌薬の標準' },
-  { id:'ctr', name:'CTRX', nameEn:'セフトリアキソン', category:'セフェム第3世代', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'1日1回投与可。市中感染の第一選択。髄液移行◎' },
+  { id:'cez', name:'CEZ', nameEn:'セファゾリン', category:'セフェム第1世代', gpc:'good', gpcMrsa:'none', gnr:'some', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'MSSA。術前予防抗菌薬の標準' },
+  { id:'ctr', name:'CTRX', nameEn:'セフトリアキソン', category:'セフェム第3世代', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'1日1回投与可。市中感染の。髄液移行◎' },
   { id:'caz', name:'CAZ', nameEn:'セフタジジム', category:'セフェム第3世代', gpc:'some', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'none', atypical:'none', note:'緑膿菌◎だがGPC弱い。発熱性好中球減少症' },
-  { id:'cfpm', name:'CFPM', nameEn:'セフェピム', category:'セフェム第4世代', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'none', atypical:'none', note:'GPC+緑膿菌。FN第一選択の一つ' },
+  { id:'cfpm', name:'CFPM', nameEn:'セフェピム', category:'セフェム第4世代', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'none', atypical:'none', note:'GPC+緑膿菌。FN。' },
   // カルバペネム
   { id:'mepm', name:'MEPM', nameEn:'メロペネム', category:'カルバペネム', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'good', atypical:'none', note:'最広域。重症感染のエスカレーション。ESBL産生菌にも有効' },
   { id:'ipm-cs', name:'IPM/CS', nameEn:'イミペネム/シラスタチン', category:'カルバペネム', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'good', atypical:'none', note:'痙攣リスクあり（中枢神経感染には避ける）' },
@@ -32,16 +32,16 @@ const DRUGS: Drug[] = [
   { id:'lvfx', name:'LVFX', nameEn:'レボフロキサシン', category:'キノロン', gpc:'good', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'some', anaerobe:'none', atypical:'good', note:'呼吸器キノロン。肺炎球菌+非定型。結核マスクに注意' },
   { id:'cpfx', name:'CPFX', nameEn:'シプロフロキサシン', category:'キノロン', gpc:'some', gpcMrsa:'none', gnr:'good', gnrPseudomonas:'good', anaerobe:'none', atypical:'some', note:'緑膿菌◎。GPC弱い。尿路感染に' },
   // マクロライド
-  { id:'azm', name:'AZM', nameEn:'アジスロマイシン', category:'マクロライド', gpc:'some', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'good', note:'非定型肺炎（マイコプラズマ・クラミジア・レジオネラ）の第一選択' },
+  { id:'azm', name:'AZM', nameEn:'アジスロマイシン', category:'マクロライド', gpc:'some', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'good', note:'非定型肺炎（マイコプラズマ・クラミジア・レジオネラ）の。' },
   { id:'cam', name:'CAM', nameEn:'クラリスロマイシン', category:'マクロライド', gpc:'some', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'good', note:'非定型+MAC。H. pylori除菌' },
   // グリコペプチド
-  { id:'vcm', name:'VCM', nameEn:'バンコマイシン', category:'グリコペプチド', gpc:'good', gpcMrsa:'good', gnr:'none', gnrPseudomonas:'none', anaerobe:'some', atypical:'none', note:'MRSA第一選択。TDM必須（AUC/MIC 400-600目標）。CDI内服にも' },
+  { id:'vcm', name:'VCM', nameEn:'バンコマイシン', category:'グリコペプチド', gpc:'good', gpcMrsa:'good', gnr:'none', gnrPseudomonas:'none', anaerobe:'some', atypical:'none', note:'MRSA。TDM必須（AUC/MIC 400-600目標）。CDI内服にも' },
   // リネゾリド
   { id:'lzd', name:'LZD', nameEn:'リネゾリド', category:'オキサゾリジノン', gpc:'good', gpcMrsa:'good', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'MRSA肺炎に有効（肺移行◎）。骨髄抑制・MAO阻害注意。14日以上は血球モニタリング' },
   // メトロニダゾール
   { id:'mnz', name:'MNZ', nameEn:'メトロニダゾール', category:'ニトロイミダゾール', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'good', atypical:'none', note:'嫌気性菌◎。脳膿瘍（BBB通過◎）。飲酒禁忌（ジスルフィラム様反応）' },
   // 抗真菌
-  { id:'mcfg', name:'MCFG', nameEn:'ミカファンギン', category:'キャンディン系', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'Candida第一選択。Aspergillus△。ムコール×' },
+  { id:'mcfg', name:'MCFG', nameEn:'ミカファンギン', category:'キャンディン系', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'Candida。Aspergillus△。ムコール×' },
 ]
 
 const ORGANISMS = [

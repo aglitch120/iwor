@@ -118,7 +118,7 @@ export default function WellsPEPage() {
                 name: 'D-dimerが陰性ならPEは否定できますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Wells PEスコアが低〜中リスク（またはPE unlikely）かつD-dimer陰性の場合、PEの除外が可能です（陰性的中率 >99%）。ただし高リスク群ではD-dimer陰性でもPEを完全に除外できないため、CTPAを施行すべきです。',
+                  text: 'D-dimerの解釈はWellsスコアのリスク群と合わせて評価されます。詳細はESCガイドライン等の原典を参照してください。',
                 },
               },
             ],

@@ -120,7 +120,7 @@ export default function WellsDVTPage() {
                 name: 'D-dimer陰性ならDVTは否定できますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Wells DVTスコアが低〜中リスク（またはDVT unlikely）でD-dimer陰性の場合、DVTの除外が可能です（陰性的中率 >99%）。高リスク群ではD-dimer陰性でもエコー検査が示されます。',
+                  text: 'D-dimerの解釈はWellsスコアのリスク群と合わせて評価されます。詳細はガイドライン原典を参照してください。',
                 },
               },
             ],
