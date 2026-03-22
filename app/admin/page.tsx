@@ -12,6 +12,8 @@ const API_URL = 'https://iwor-api.mightyaddnine.workers.dev'
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: 'O' },
+  { id: 'funnel', label: 'Funnel', icon: 'F' },
+  { id: 'health', label: 'Health', icon: 'H' },
   { id: 'competitors', label: 'Competitors', icon: 'C' },
   { id: 'seo', label: 'SEO', icon: 'S' },
   { id: 'content', label: 'Content', icon: 'B' },
@@ -1004,6 +1006,350 @@ function UsersTab({ adminKey }: { adminKey: string }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  Funnel Tab — Conversion Funnel Analysis
+// ═══════════════════════════════════════════════════════════════
+
+interface FunnelStep {
+  name: string
+  description: string
+  gaEvent: string
+  count: number | null
+  conversionRate: number | null
+}
+
+function FunnelTab() {
+  // GA4 event names corresponding to each funnel step
+  // These would be populated from GA4 API in production
+  const funnelSteps: FunnelStep[] = [
+    { name: 'Visit', description: 'Site visit (any page)', gaEvent: 'page_view', count: null, conversionRate: null },
+    { name: 'Tool Use', description: 'Calculator or tool used', gaEvent: 'tool_usage', count: null, conversionRate: null },
+    { name: 'Favorite', description: 'Added tool to favorites', gaEvent: 'favorite_add', count: null, conversionRate: null },
+    { name: 'Account', description: 'Created account', gaEvent: 'sign_up', count: null, conversionRate: null },
+    { name: 'Study Start', description: 'Started first Study session', gaEvent: 'study_session_start', count: null, conversionRate: null },
+    { name: 'Study 7-day', description: '7-day streak achieved', gaEvent: 'streak_7', count: null, conversionRate: null },
+    { name: 'PRO View', description: 'Viewed PRO page', gaEvent: 'pro_page_view', count: null, conversionRate: null },
+    { name: 'PRO Purchase', description: 'Purchased PRO', gaEvent: 'purchase', count: null, conversionRate: null },
+  ]
+
+  const commitmentLadder = [
+    { stage: 'Try Tool', trigger: 'Google search → landing page → first calculation', psychology: 'Zero friction (no signup)', status: 'active' as const },
+    { stage: 'Add Favorite', trigger: 'Pulse hint after 3rd tool use', psychology: 'Small commitment (IKEA effect)', status: 'active' as const },
+    { stage: 'Create Account', trigger: 'Study progress save prompt', psychology: 'Loss aversion (data loss fear)', status: 'active' as const },
+    { stage: 'Daily Study', trigger: 'Streak notification + ranking', psychology: 'Habit formation (Duolingo model)', status: 'active' as const },
+    { stage: 'Go PRO', trigger: 'Social proof gate + first taste expiry', psychology: 'FOMO + sunk cost', status: 'active' as const },
+  ]
+
+  const channelFunnels = [
+    { channel: 'Google Search (SEO)', entry: 'Blog/Calculator', path: 'Article → Tool → Study → PRO', status: 'primary' as const },
+    { channel: 'X (Twitter)', entry: 'Tool tip / streak screenshot', path: 'Tweet → Landing → Tool → Study', status: 'planned' as const },
+    { channel: 'Word of Mouth', entry: 'Senpai recommendation', path: 'Direct link → Tool → Favorite → Account', status: 'planned' as const },
+    { channel: 'Shift Share', entry: 'Shift schedule link', path: 'Shared link → iwor CTA → Tool → Study', status: 'active' as const },
+  ]
+
+  return (
+    <div className="space-y-6">
+      {/* Visual funnel */}
+      <Card>
+        <SectionTitle badge={<span className="text-[10px] text-muted">GA4 events (connect for live data)</span>}>
+          Conversion Funnel
+        </SectionTitle>
+        <div className="space-y-1">
+          {funnelSteps.map((step, i) => {
+            const widthPercent = 100 - (i * (60 / funnelSteps.length))
+            return (
+              <div key={step.name} className="flex items-center gap-3">
+                <span className="text-[10px] text-muted w-20 text-right flex-shrink-0">{step.name}</span>
+                <div className="flex-1 relative">
+                  <div className="h-8 rounded-md flex items-center px-3 transition-all"
+                    style={{ width: `${widthPercent}%`, background: `rgba(27, 79, 58, ${0.1 + (i * 0.05)})`, border: '1px solid rgba(27, 79, 58, 0.2)' }}>
+                    <span className="text-[10px] text-tx">{step.description}</span>
+                    <span className="text-[10px] text-muted ml-auto font-mono">{step.count !== null ? step.count.toLocaleString() : '—'}</span>
+                  </div>
+                </div>
+                <span className="text-[10px] text-muted w-12 text-right flex-shrink-0 font-mono">
+                  {step.conversionRate !== null ? `${step.conversionRate}%` : '—'}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+        <div className="mt-4 p-3 bg-wnl border border-wnb rounded-lg">
+          <p className="text-[10px] text-wn font-medium">Setup Required</p>
+          <p className="text-[10px] text-wn mt-1">
+            GA4 events need to be tracked for live funnel data. Required events:
+            <code className="bg-white/50 px-1 rounded mx-0.5">tool_usage</code>
+            <code className="bg-white/50 px-1 rounded mx-0.5">favorite_add</code>
+            <code className="bg-white/50 px-1 rounded mx-0.5">study_session_start</code>
+            <code className="bg-white/50 px-1 rounded mx-0.5">streak_7</code>
+            <code className="bg-white/50 px-1 rounded mx-0.5">pro_page_view</code>
+            <code className="bg-white/50 px-1 rounded mx-0.5">purchase</code>
+          </p>
+        </div>
+      </Card>
+
+      {/* Commitment ladder */}
+      <Card>
+        <SectionTitle>Commitment Ladder (Psychology)</SectionTitle>
+        <div className="space-y-2">
+          {commitmentLadder.map((s, i) => (
+            <div key={s.stage} className="flex items-start gap-3 py-2 border-b border-br last:border-0">
+              <div className="w-6 h-6 rounded-full bg-acl border border-ac/30 flex items-center justify-center flex-shrink-0">
+                <span className="text-[10px] font-bold text-ac">{i + 1}</span>
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-medium text-tx">{s.stage}</p>
+                <p className="text-[10px] text-muted">{s.trigger}</p>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <Badge text={s.psychology} variant="accent" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Channel funnels */}
+      <Card>
+        <SectionTitle>Acquisition Channels</SectionTitle>
+        <div className="space-y-2">
+          {channelFunnels.map(c => (
+            <div key={c.channel} className="flex items-center gap-3 py-2 border-b border-br last:border-0">
+              <StatusDot status={c.status === 'primary' ? 'ok' : c.status === 'active' ? 'ok' : 'warn'} />
+              <div className="flex-1">
+                <p className="text-xs font-medium text-tx">{c.channel}</p>
+                <p className="text-[10px] text-muted">{c.path}</p>
+              </div>
+              <Badge text={c.status === 'primary' ? 'Primary' : c.status === 'active' ? 'Active' : 'Planned'}
+                variant={c.status === 'primary' ? 'ok' : c.status === 'active' ? 'accent' : 'default'} />
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Key conversion levers */}
+      <Card>
+        <SectionTitle>Optimization Checklist</SectionTitle>
+        <div className="grid md:grid-cols-2 gap-2">
+          {[
+            { item: 'Onboarding modal (segment selection)', done: true },
+            { item: 'Favorite pulse hint (3rd tool use)', done: true },
+            { item: 'Commitment banner (HomeWidgets)', done: true },
+            { item: 'First taste model (PRO preview)', done: true },
+            { item: 'Loss aversion counter (ProModal)', done: true },
+            { item: 'Streak ranking (social proof)', done: true },
+            { item: 'GA4 funnel event tracking', done: false },
+            { item: 'Referral program (invite link)', done: false },
+            { item: 'Email onboarding sequence', done: false },
+            { item: 'Push notifications (PWA)', done: false },
+          ].map(c => (
+            <div key={c.item} className="flex items-center gap-2 py-1">
+              <StatusDot status={c.done ? 'ok' : 'warn'} />
+              <span className={`text-[11px] ${c.done ? 'text-muted' : 'text-tx'}`}>{c.item}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Health Tab — Uptime & Service Health
+// ═══════════════════════════════════════════════════════════════
+
+interface HealthCheck {
+  name: string
+  url: string
+  status: 'ok' | 'error' | 'checking' | 'unknown'
+  responseTime: number | null
+  lastChecked: string | null
+}
+
+function HealthTab({ adminKey }: { adminKey: string }) {
+  const [checks, setChecks] = useState<HealthCheck[]>([
+    { name: 'Frontend (iwor.jp)', url: 'https://iwor.jp', status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'Worker API', url: `${API_URL}/api/journal?specialty=general`, status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'Admin API', url: `${API_URL}/api/admin/users`, status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'Blog', url: 'https://iwor.jp/blog', status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'PRO Page', url: 'https://iwor.jp/pro', status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'Study', url: 'https://iwor.jp/study', status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'Tools', url: 'https://iwor.jp/tools', status: 'unknown', responseTime: null, lastChecked: null },
+    { name: 'Sitemap', url: 'https://iwor.jp/sitemap.xml', status: 'unknown', responseTime: null, lastChecked: null },
+  ])
+  const [isRunning, setIsRunning] = useState(false)
+  const [allOk, setAllOk] = useState<boolean | null>(null)
+
+  const runCheck = async (index: number) => {
+    setChecks(prev => prev.map((c, i) => i === index ? { ...c, status: 'checking' } : c))
+    const check = checks[index]
+    const start = performance.now()
+    try {
+      const headers: Record<string, string> = {}
+      if (check.url.includes('/api/admin/')) headers['X-Admin-Key'] = adminKey
+      const res = await fetch(check.url, { headers, mode: 'no-cors' })
+      const elapsed = Math.round(performance.now() - start)
+      setChecks(prev => prev.map((c, i) => i === index ? {
+        ...c,
+        status: 'ok',
+        responseTime: elapsed,
+        lastChecked: new Date().toLocaleTimeString('ja-JP'),
+      } : c))
+    } catch {
+      const elapsed = Math.round(performance.now() - start)
+      setChecks(prev => prev.map((c, i) => i === index ? {
+        ...c,
+        status: 'error',
+        responseTime: elapsed,
+        lastChecked: new Date().toLocaleTimeString('ja-JP'),
+      } : c))
+    }
+  }
+
+  const runAllChecks = async () => {
+    setIsRunning(true)
+    const promises = checks.map((_, i) => runCheck(i))
+    await Promise.allSettled(promises)
+    setIsRunning(false)
+    // Note: allOk is computed in the effect below
+  }
+
+  useEffect(() => {
+    const statuses = checks.map(c => c.status)
+    if (statuses.every(s => s === 'unknown')) return
+    if (statuses.some(s => s === 'checking')) return
+    setAllOk(statuses.every(s => s === 'ok'))
+  }, [checks])
+
+  // Overall health score
+  const checkedCount = checks.filter(c => c.status !== 'unknown' && c.status !== 'checking').length
+  const okCount = checks.filter(c => c.status === 'ok').length
+  const avgResponseTime = checks.filter(c => c.responseTime !== null).reduce((s, c) => s + (c.responseTime || 0), 0) / (checkedCount || 1)
+
+  const deployments = [
+    { date: '2026-03-22', desc: 'CEO Dashboard (8-tab)', status: 'ok' as const },
+    { date: '2026-03-22', desc: 'PubMed batch split + journal expansion', status: 'ok' as const },
+    { date: '2026-03-22', desc: 'Summary generator rewrite', status: 'ok' as const },
+    { date: '2026-03-22', desc: 'Drug compare migration', status: 'ok' as const },
+    { date: '2026-03-21', desc: 'Streak ranking + ProGate extensions', status: 'ok' as const },
+  ]
+
+  const kvNamespaces = [
+    { name: 'IWOR_KV', purpose: 'User data, sessions, PRO status', estimated: '< 1 MB' },
+    { name: 'Journal cache', purpose: 'PubMed article cache (cron)', estimated: '~5 MB' },
+    { name: 'Competitor alerts', purpose: 'PR TIMES scrape results', estimated: '< 1 MB' },
+    { name: 'Leaderboard', purpose: 'Streak ranking data', estimated: '< 1 MB' },
+  ]
+
+  return (
+    <div className="space-y-6">
+      {/* Overall status */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Metric label="Overall Status"
+          value={allOk === null ? 'Unknown' : allOk ? 'All OK' : 'Issues'}
+          color={allOk === null ? 'var(--m)' : allOk ? 'var(--ok)' : 'var(--dn)'}
+        />
+        <Metric label="Services Checked" value={`${okCount}/${checks.length}`}
+          color={okCount === checks.length ? 'var(--ok)' : 'var(--wn)'} />
+        <Metric label="Avg Response" value={checkedCount > 0 ? `${Math.round(avgResponseTime)}ms` : '—'}
+          color={avgResponseTime < 500 ? 'var(--ok)' : avgResponseTime < 2000 ? 'var(--wn)' : 'var(--dn)'} />
+        <div className="bg-s0 border border-br rounded-xl p-4 flex items-center justify-center">
+          <button onClick={runAllChecks} disabled={isRunning}
+            className="px-4 py-2 bg-ac text-white rounded-lg text-xs font-medium hover:bg-ac2 transition-colors disabled:opacity-50">
+            {isRunning ? 'Checking...' : 'Run All Checks'}
+          </button>
+        </div>
+      </div>
+
+      {/* Service health table */}
+      <Card>
+        <SectionTitle badge={
+          checks.some(c => c.lastChecked) ? <span className="text-[10px] text-muted">Last: {checks.find(c => c.lastChecked)?.lastChecked}</span> : undefined
+        }>
+          Service Health
+        </SectionTitle>
+        <div className="space-y-1.5">
+          {checks.map((check, i) => (
+            <div key={check.name} className="flex items-center gap-3 py-2 border-b border-br last:border-0">
+              <StatusDot status={check.status === 'ok' ? 'ok' : check.status === 'error' ? 'danger' : 'unknown'} />
+              <span className="text-xs font-medium text-tx w-40 flex-shrink-0">{check.name}</span>
+              <span className="text-[10px] text-muted font-mono flex-1 truncate">{check.url.replace('https://', '')}</span>
+              <span className={`text-[10px] font-mono w-16 text-right ${
+                check.responseTime === null ? 'text-muted' :
+                check.responseTime < 500 ? 'text-ok' :
+                check.responseTime < 2000 ? 'text-wn' : 'text-dn'
+              }`}>
+                {check.responseTime !== null ? `${check.responseTime}ms` : '—'}
+              </span>
+              <button onClick={() => runCheck(i)}
+                className="text-[10px] text-ac hover:text-ac2 w-8 text-right flex-shrink-0">
+                {check.status === 'checking' ? '...' : 'Test'}
+              </button>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Recent deployments */}
+      <Card>
+        <SectionTitle>Recent Deployments</SectionTitle>
+        <div className="space-y-1.5">
+          {deployments.map((d, i) => (
+            <div key={i} className="flex items-center gap-3 py-1.5 border-b border-br last:border-0">
+              <StatusDot status={d.status} />
+              <span className="text-[10px] text-muted w-20">{d.date}</span>
+              <span className="text-xs text-tx flex-1">{d.desc}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-[10px] text-muted mt-3">Auto-deploy via Cloudflare Pages on git push to main</p>
+      </Card>
+
+      {/* KV storage */}
+      <Card>
+        <SectionTitle>Cloudflare KV Storage</SectionTitle>
+        <div className="space-y-1.5">
+          {kvNamespaces.map(kv => (
+            <div key={kv.name} className="flex items-center gap-3 py-1.5 border-b border-br last:border-0">
+              <span className="text-xs font-mono text-ac w-32 flex-shrink-0">{kv.name}</span>
+              <span className="text-[11px] text-tx flex-1">{kv.purpose}</span>
+              <span className="text-[10px] text-muted">{kv.estimated}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Quick actions */}
+      <Card>
+        <SectionTitle>Quick Actions</SectionTitle>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          {[
+            { label: 'Rebuild Journal DB', action: `${API_URL}/api/admin/rebuild-journal`, method: 'POST' },
+            { label: 'Clear KV Cache', action: '#', method: 'manual' },
+            { label: 'Seed Leaderboard', action: `${API_URL}/api/admin/seed-leaderboard`, method: 'POST' },
+            { label: 'CF Pages Dashboard', action: 'https://dash.cloudflare.com', method: 'link' },
+          ].map(a => (
+            <button key={a.label} onClick={async () => {
+              if (a.method === 'link') { window.open(a.action, '_blank'); return }
+              if (a.method === 'manual') { alert('Use wrangler CLI: npx wrangler kv:key delete ...'); return }
+              try {
+                const res = await fetch(a.action, {
+                  method: 'POST',
+                  headers: { 'X-Admin-Key': adminKey, 'Content-Type': 'application/json' },
+                })
+                alert(res.ok ? 'Success' : `Error: ${res.status}`)
+              } catch (e) { alert('Failed') }
+            }}
+              className="p-3 border border-br rounded-lg text-[11px] text-muted hover:text-ac hover:border-ac/30 text-center transition-colors">
+              {a.label}
+            </button>
+          ))}
+        </div>
+      </Card>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  Analysis Data Type
 // ═══════════════════════════════════════════════════════════════
 
@@ -1123,6 +1469,8 @@ export default function AdminDashboard() {
 
       {/* Tab content */}
       {activeTab === 'overview' && <OverviewTab adminKey={adminKey} analysis={analysis} />}
+      {activeTab === 'funnel' && <FunnelTab />}
+      {activeTab === 'health' && <HealthTab adminKey={adminKey} />}
       {activeTab === 'competitors' && <CompetitorsTab adminKey={adminKey} />}
       {activeTab === 'seo' && <SEOTab analysis={analysis} />}
       {activeTab === 'content' && <ContentTab analysis={analysis} />}
