@@ -25,6 +25,9 @@ interface Doctor {
   name: string
   ngDays: number[]
   maxShifts?: number
+  weight: number       // 勤務量ウェイト 0.5(少なめ)〜1.0(標準)〜1.5(多め)
+  minInterval: number  // 最小間隔（日）デフォルト2
+  categoryIds: string[] // 担当可能カテゴリ（空=全て）
 }
 
 // assignment key = "day-dutyType-categoryId"
@@ -161,22 +164,32 @@ function autoAssign(data: ShiftData): Record<string, string[]> {
     for (let n = 0; n < needed; n++) {
       const eligible = doctors.filter(d => {
         if (ngSets.get(d.id)?.has(slot.day)) return false
-        if (assigned.includes(d.id)) return false // 同じスロットに2回入らない
+        if (assigned.includes(d.id)) return false
+        // カテゴリ制限チェック
+        if (d.categoryIds.length > 0 && !d.categoryIds.includes(slot.categoryId)) return false
+        // 最小間隔チェック
+        const gap = slot.day - (lastDay.get(d.id) || -100)
+        if (gap < (d.minInterval || 2)) return false
         return true
       })
 
       const week = getWeek(slot.day)
-      const sorted = (eligible.length > 0 ? eligible : doctors.filter(d => !assigned.includes(d.id))).sort((a, b) => {
-        // 同一週2回回避（最優先）
+      // eligible が0なら間隔制約を緩和してフォールバック
+      const pool = eligible.length > 0 ? eligible : doctors.filter(d => !ngSets.get(d.id)?.has(slot.day) && !assigned.includes(d.id) && (d.categoryIds.length === 0 || d.categoryIds.includes(slot.categoryId)))
+      const finalPool = pool.length > 0 ? pool : doctors.filter(d => !assigned.includes(d.id))
+
+      const sorted = finalPool.sort((a, b) => {
+        // 同一週2回回避
         const wA = getWeekCount(a.id, week), wB = getWeekCount(b.id, week)
         if (wA !== wB) return wA - wB
-        // 総数均等
-        const diff = (counts.get(a.id) || 0) - (counts.get(b.id) || 0)
-        if (diff !== 0) return diff
-        // 連日回避
-        const gapA = slot.day - (lastDay.get(a.id) || -10)
-        const gapB = slot.day - (lastDay.get(b.id) || -10)
-        return gapB - gapA // 間隔が大きい方を優先
+        // ウェイト考慮の均等分配: count / weight が小さい方を優先
+        const wCountA = (counts.get(a.id) || 0) / (a.weight || 1)
+        const wCountB = (counts.get(b.id) || 0) / (b.weight || 1)
+        if (Math.abs(wCountA - wCountB) > 0.1) return wCountA - wCountB
+        // 間隔が大きい方を優先
+        const gapA = slot.day - (lastDay.get(a.id) || -100)
+        const gapB = slot.day - (lastDay.get(b.id) || -100)
+        return gapB - gapA
       })
 
       if (sorted.length > 0) {
@@ -201,6 +214,7 @@ function compressData(data: ShiftData): string {
     y: data.year,
     m: data.month,
     d: data.doctors.map(d => ({ i: d.id, n: d.name, ng: d.ngDays })),
+    c: data.categories,
     a: data.assignments,
   }
   try {
@@ -218,11 +232,10 @@ function decompressData(encoded: string): ShiftData | null {
       year: slim.y,
       month: slim.m,
       doctors: slim.d.map((d: { i: string; n: string; ng: number[] }) => ({
-        id: d.i,
-        name: d.n,
-        ngDays: d.ng,
+        id: d.i, name: d.n, ngDays: d.ng, weight: 1.0, minInterval: 2, categoryIds: [],
       })),
-      assignments: slim.a,
+      categories: slim.c || DEFAULT_CATEGORIES,
+      assignments: slim.a || {},
       slotsPerDay: 1,
     }
   } catch {
@@ -276,6 +289,7 @@ export default function ShiftPage() {
         setYear(data.year)
         setMonth(data.month)
         setDoctors(data.doctors)
+        if (data.categories) setCategories(data.categories)
         setAssignments(data.assignments)
         setStep('result')
         setIsViewMode(true)
@@ -295,8 +309,8 @@ export default function ShiftPage() {
   const shiftCounts = useMemo(() => {
     const counts = new Map<string, number>()
     doctors.forEach(d => counts.set(d.id, 0))
-    Object.values(assignments).forEach(id => {
-      counts.set(id, (counts.get(id) || 0) + 1)
+    Object.values(assignments).forEach(ids => {
+      if (Array.isArray(ids)) ids.forEach(id => counts.set(id, (counts.get(id) || 0) + 1))
     })
     return counts
   }, [assignments, doctors])
@@ -305,7 +319,7 @@ export default function ShiftPage() {
   const addDoctor = () => {
     const name = newDoctorName.trim()
     if (!name) return
-    setDoctors(prev => [...prev, { id: generateId(), name, ngDays: [] }])
+    setDoctors(prev => [...prev, { id: generateId(), name, ngDays: [], weight: 1.0, minInterval: 2, categoryIds: [] }])
     setNewDoctorName('')
   }
 
@@ -322,19 +336,19 @@ export default function ShiftPage() {
   }
 
   const handleGenerate = () => {
-    const data: ShiftData = { groupName, year, month, doctors, assignments: {}, slotsPerDay: 1 }
+    const data: ShiftData = { groupName, year, month, doctors, categories, assignments: {}, slotsPerDay: 1 }
     const result = autoAssign(data)
     setAssignments(result)
     setStep('result')
   }
 
   const handleRegenerate = () => {
-    const data: ShiftData = { groupName, year, month, doctors, assignments: {}, slotsPerDay: 1 }
+    const data: ShiftData = { groupName, year, month, doctors, categories, assignments: {}, slotsPerDay: 1 }
     setAssignments(autoAssign(data))
   }
 
   const handleShare = () => {
-    const data: ShiftData = { groupName, year, month, doctors, assignments, slotsPerDay: 1 }
+    const data: ShiftData = { groupName, year, month, doctors, categories, assignments, slotsPerDay: 1 }
     const compressed = compressData(data)
     const url = `${window.location.origin}/shift#${compressed}`
     setShareUrl(url)
@@ -415,10 +429,12 @@ export default function ShiftPage() {
             )
           }
 
-          // Result mode
-          const assignedId = assignments[day]
-          const assignedDoc = doctors.find(d => d.id === assignedId)
-          const colorClass = assignedId ? doctorColorMap.get(assignedId) || '' : ''
+          // Result mode — 全スロットの割り当てを表示
+          const daySlotKeys = Object.keys(assignments).filter(k => k.startsWith(`${day}-`))
+          const dayAssigned = daySlotKeys.flatMap(k => (assignments[k] || []).map(id => ({ key: k, id })))
+          const firstAssigned = dayAssigned[0]
+          const firstDoc = firstAssigned ? doctors.find(d => d.id === firstAssigned.id) : null
+          const colorClass = firstAssigned ? doctorColorMap.get(firstAssigned.id) || '' : ''
 
           return (
             <div
@@ -429,9 +445,9 @@ export default function ShiftPage() {
               onClick={() => !isViewMode && setEditingDay(editingDay === day ? null : day)}
             >
               <span className={`text-[10px] ${dow === 0 ? 'text-red-500' : dow === 6 ? 'text-blue-500' : 'text-muted'}`}>{day}</span>
-              {assignedDoc && (
+              {firstDoc && (
                 <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${colorClass}`}>
-                  {assignedDoc.name.slice(0, 3)}
+                  {firstDoc.name.slice(0, 3)}
                 </span>
               )}
               {/* Edit dropdown */}
@@ -679,6 +695,87 @@ export default function ShiftPage() {
         <p className="text-xs text-muted mb-3">カレンダーをタップしてNG日を指定してください。</p>
 
         {renderCalendar('ng', currentDocId)}
+
+        {/* ── ルール設定 ── */}
+        <div className="mt-6 bg-s0 border border-br rounded-xl p-4 space-y-4">
+          <h3 className="text-xs font-bold text-tx">ルール設定</h3>
+
+          {/* 勤務量バランス */}
+          <div>
+            <label className="text-[10px] font-bold text-muted block mb-1">
+              勤務量バランス: {(() => {
+                const doc = doctors.find(d => d.id === currentDocId)
+                const w = doc?.weight || 1.0
+                return w <= 0.6 ? '少なめ' : w <= 0.8 ? 'やや少なめ' : w <= 1.2 ? '標準' : w <= 1.4 ? 'やや多め' : '多め'
+              })()} ({(doctors.find(d => d.id === currentDocId)?.weight || 1.0).toFixed(1)}x)
+            </label>
+            <input type="range" min="0.5" max="1.5" step="0.1"
+              value={doctors.find(d => d.id === currentDocId)?.weight || 1.0}
+              onChange={e => setDoctors(prev => prev.map(d => d.id === currentDocId ? { ...d, weight: parseFloat(e.target.value) } : d))}
+              className="w-full h-2 rounded-full appearance-none cursor-pointer"
+              style={{ background: `linear-gradient(to right, #E8F0EC 0%, #1B4F3A 100%)` }} />
+            <div className="flex justify-between text-[9px] text-muted mt-0.5">
+              <span>少なめ</span><span>標準</span><span>多め</span>
+            </div>
+          </div>
+
+          {/* 最小間隔 */}
+          <div>
+            <label className="text-[10px] font-bold text-muted block mb-1">最小間隔: {doctors.find(d => d.id === currentDocId)?.minInterval || 2}日</label>
+            <div className="flex gap-1.5">
+              {[1, 2, 3, 4, 5].map(n => {
+                const current = doctors.find(d => d.id === currentDocId)?.minInterval || 2
+                return (
+                  <button key={n} onClick={() => setDoctors(prev => prev.map(d => d.id === currentDocId ? { ...d, minInterval: n } : d))}
+                    className={`flex-1 py-1.5 rounded-lg text-[11px] font-medium border transition-all ${current === n ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>
+                    {n}日
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* 担当カテゴリ */}
+          <div>
+            <label className="text-[10px] font-bold text-muted block mb-1">担当カテゴリ（未選択=全て）</label>
+            <div className="flex gap-1.5">
+              {categories.map(cat => {
+                const doc = doctors.find(d => d.id === currentDocId)
+                const selected = doc?.categoryIds.includes(cat.id)
+                return (
+                  <button key={cat.id} onClick={() => setDoctors(prev => prev.map(d => {
+                    if (d.id !== currentDocId) return d
+                    const ids = d.categoryIds.includes(cat.id) ? d.categoryIds.filter(c => c !== cat.id) : [...d.categoryIds, cat.id]
+                    return { ...d, categoryIds: ids }
+                  }))}
+                    className={`flex-1 py-1.5 rounded-lg text-[11px] font-medium border transition-all ${selected ? 'bg-acl border-ac/30 text-ac' : 'border-br text-muted'}`}>
+                    {cat.name}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ── 当直カテゴリ管理 ── */}
+        <details className="mt-4">
+          <summary className="text-[11px] text-muted cursor-pointer hover:text-ac">当直カテゴリを編集</summary>
+          <div className="mt-2 space-y-2">
+            {categories.map(cat => (
+              <div key={cat.id} className="flex items-center gap-2 bg-s0 border border-br rounded-lg px-3 py-2">
+                <span className={`w-3 h-3 rounded-full ${cat.color.split(' ')[0]}`} />
+                <span className="text-xs text-tx flex-1">{cat.name}</span>
+                {categories.length > 1 && (
+                  <button onClick={() => setCategories(prev => prev.filter(c => c.id !== cat.id))} className="text-[10px] text-muted hover:text-red-500">削除</button>
+                )}
+              </div>
+            ))}
+            <button onClick={() => {
+              const name = prompt('カテゴリ名（例: ICU当直）')
+              if (name) setCategories(prev => [...prev, { id: generateId(), name, color: 'bg-teal-100 text-teal-700 border-teal-200' }])
+            }} className="text-[11px] text-ac hover:underline">+ カテゴリを追加</button>
+          </div>
+        </details>
 
         <div className="flex gap-2 mt-6">
           <button onClick={() => setStep('doctors')} className="flex-1 border border-br text-muted py-3 rounded-xl font-bold text-sm hover:bg-s1 transition-colors">
