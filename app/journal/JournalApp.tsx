@@ -742,12 +742,15 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
               {a.doi && <a href={`https://doi.org/${a.doi}`} target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-medium text-ac hover:underline px-2 py-1 bg-acl rounded-md">DOI</a>}
               <Link href={`/presenter?type=journal-club&topic=${encodeURIComponent(a.title)}`}
-                className="text-[11px] font-medium text-ac hover:underline px-2 py-1 bg-acl rounded-md">抄読会</Link>
+                className="text-[11px] font-medium text-ac hover:underline px-2 py-1 bg-acl rounded-md">🎤 プレゼン作成</Link>
 
               <button onClick={handleExpand}
                 className="text-[11px] text-muted hover:text-ac flex items-center gap-1 px-2 py-1 bg-s1 rounded-md">
-                💬 {commentCount > 0 ? <span className="font-bold">{commentCount}</span> : ''}{expanded ? '' : ' Abstract'}
+                {expanded ? '▲ 閉じる' : '▼ 詳細'}
               </button>
+              {commentCount > 0 && (
+                <span className="text-[11px] text-muted flex items-center gap-0.5 px-2 py-1 bg-s1 rounded-md">💬 {commentCount}</span>
+              )}
               {bookmarkCount > 0 && (
                 <span className="text-[11px] text-amber-600 flex items-center gap-0.5 px-2 py-1 bg-amber-50 rounded-md font-medium">★ {bookmarkCount}</span>
               )}
