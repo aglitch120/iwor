@@ -1175,6 +1175,9 @@ export const tools: ToolDefinition[] = [
   { slug: 'das28', name: 'DAS28（疾患活動性スコア）', nameEn: 'Disease Activity Score 28', description: '関節リウマチの疾患活動性を28関節の圧痛・腫脹+ESR/CRP+VASで評価。', category: 'general', tier: 1, keywords: ['DAS28','関節リウマチ','RA','疾患活動性','ESR','CRP','圧痛','腫脹'], relatedSlugs: ['ra-criteria'], updatedAt: '2026-03', sources: [{ text: 'Prevoo ML, et al. Arthritis Rheum 1995;38:44-8', url: 'https://pubmed.ncbi.nlm.nih.gov/7818570/' }] },
   { slug: 'framingham', name: 'フラミンガムリスクスコア', nameEn: 'Framingham Risk Score', description: '10年間の冠動脈疾患リスクを年齢・性別・TC・HDL・血圧・喫煙から推算。', category: 'cardiology', tier: 1, keywords: ['フラミンガム','Framingham','冠動脈','CHD','リスク','コレステロール','心血管'], relatedSlugs: ['ascvd','cha2ds2-vasc'], updatedAt: '2026-03', sources: [{ text: 'Wilson PW, et al. Circulation 1998;97:1837-47', url: 'https://pubmed.ncbi.nlm.nih.gov/9603539/' }] },
   { slug: 'ra-criteria', name: '関節リウマチ分類基準 2010', nameEn: '2010 ACR/EULAR RA Classification Criteria', description: 'ACR/EULAR 2010分類基準。関節病変・血清学・急性期反応物質・罹病期間の4ドメイン。6点以上でRA。', category: 'general', tier: 1, keywords: ['関節リウマチ','RA','ACR','EULAR','分類基準','RF','ACPA','2010'], relatedSlugs: ['das28'], updatedAt: '2026-03', sources: [{ text: 'Aletaha D, et al. Arthritis Rheum 2010;62:2569-81', url: 'https://pubmed.ncbi.nlm.nih.gov/20872595/' }] },
+  { slug: 'suita-score', name: '吹田スコア', nameEn: 'Suita Score', description: '日本人向け冠動脈疾患10年リスク評価。吹田研究に基づく。', category: 'cardiology', tier: 1, keywords: ['吹田','Suita','冠動脈','日本人','リスク','動脈硬化'], relatedSlugs: ['ascvd','framingham'], updatedAt: '2026-03', sources: [{ text: 'Nishimura K, et al. J Atheroscler Thromb 2014;21:784-98', url: 'https://pubmed.ncbi.nlm.nih.gov/24671110/' }] },
+  { slug: 'steroid-topical', name: 'ステロイド外用薬力価一覧', nameEn: 'Topical Corticosteroid Potency', description: '日本皮膚科学会5段階分類（I最強〜V弱）による外用ステロイド力価ランク。', category: 'general', tier: 1, keywords: ['ステロイド','外用','力価','ランク','デルモベート','リンデロン','アトピー','皮膚科'], relatedSlugs: ['steroid-converter'], updatedAt: '2026-03', sources: [{ text: '日本皮膚科学会 アトピー性皮膚炎診療ガイドライン 2021' }] },
+  { slug: 'sarcopenia-awgs', name: 'サルコペニア診断基準 (AWGS 2019)', nameEn: 'AWGS 2019 Sarcopenia Criteria', description: 'AWGS 2019基準。握力+歩行速度+SMIで診断。', category: 'general', tier: 1, keywords: ['サルコペニア','AWGS','握力','歩行速度','SMI','骨格筋','高齢者','フレイル'], relatedSlugs: ['sarc-f','barthel-index'], updatedAt: '2026-03', sources: [{ text: 'Chen LK, et al. J Am Med Dir Assoc 2020;21:300-7', url: 'https://pubmed.ncbi.nlm.nih.gov/32033882/' }] },
 ]
 
 // 実装済みツールのslug一覧（新ツール追加時にここに追加）
@@ -1197,6 +1200,7 @@ export const implementedTools = new Set(['gamma', 'egfr', 'cha2ds2-vasc', 'chads
   'pf-ratio', 'due-date', 'heat-stroke',
   'ascvd', 'ckd-stage', 'nafld-fibrosis',
   'das28', 'framingham', 'ra-criteria',
+  'suita-score', 'steroid-topical', 'sarcopenia-awgs',
 ])
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {

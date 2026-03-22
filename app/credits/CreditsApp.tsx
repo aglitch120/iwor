@@ -295,6 +295,53 @@ export default function CreditsApp() {
               </div>
             </div>
 
+            {/* ── 単位取得に使える学会（PRO） ── */}
+            <div className="rounded-xl p-4 mb-4 relative" style={{ background: C.s0, border: `1px solid ${C.br}` }}>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-bold" style={{ color: C.tx }}>単位取得に使える学会</h3>
+                {!isPro && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: '#E8F0EC', color: C.ac }}>PRO</span>}
+              </div>
+              <div className="space-y-2">
+                {specialty.regionalMeetings && specialty.regionalMeetings.length > 0 ? (
+                  <>
+                    <div>
+                      <p className="text-[10px] font-bold text-muted mb-1">地方会（{specialty.regionalMeetings.length}支部）</p>
+                      <div className="flex flex-wrap gap-1">
+                        {specialty.regionalMeetings.map(r => (
+                          <span key={r} className="text-[10px] px-2 py-0.5 rounded" style={{ background: '#E8F0EC', color: C.ac }}>{r}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <a href="/conferences" className="block text-[11px] font-medium py-2 text-center rounded-lg transition-all hover:opacity-90" style={{ background: C.ac, color: '#fff' }}>
+                      学会カレンダーで日程を確認
+                    </a>
+                  </>
+                ) : (
+                  <p className="text-[10px] text-muted">地方会情報は準備中です</p>
+                )}
+                {specialty.hasElearning && (
+                  <p className="text-[10px] text-muted flex items-center gap-1">
+                    <span style={{ color: C.ok }}>&#10003;</span> e-learning対応あり
+                  </p>
+                )}
+                {specialty.officialUrl && (
+                  <a href={specialty.officialUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] text-ac hover:underline block">
+                    {specialty.society} 公式更新基準
+                  </a>
+                )}
+                {specialty.notes && (
+                  <p className="text-[9px] text-muted leading-relaxed">{specialty.notes}</p>
+                )}
+              </div>
+              {!isPro && (
+                <div className="absolute inset-0 top-10 backdrop-blur-md bg-s0/90 rounded-b-xl flex items-center justify-center">
+                  <button onClick={() => setShowProModal(true)} className="text-xs font-bold px-4 py-2 rounded-lg text-white" style={{ background: C.ac }}>
+                    PRO会員で学会連携を表示
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* ── カテゴリ別進捗 ── */}
             <div className="rounded-xl p-4 mb-4" style={{ background: C.s0, border: `1px solid ${C.br}` }}>
               <h3 className="text-sm font-bold mb-3" style={{ color: C.tx }}>カテゴリ別</h3>
