@@ -3,8 +3,13 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { HOSPITALS } from '@/app/matching/hospitals-data'
 
+// Dynamic rendering (1470病院のSSGはビルドサイズ超過のため)
+export const dynamic = 'force-static'
+export const dynamicParams = true
+
 export function generateStaticParams() {
-  return HOSPITALS.map(h => ({ id: String(h.id) }))
+  // 上位50病院のみ事前生成、残りはオンデマンド
+  return HOSPITALS.slice(0, 50).map(h => ({ id: String(h.id) }))
 }
 
 export function generateMetadata({ params }: { params: { id: string } }): Metadata {
