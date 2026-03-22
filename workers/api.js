@@ -1167,8 +1167,13 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
       if (!adminKey || adminKey !== env.ADMIN_KEY) {
         return json({ error: "Unauthorized" }, 401, request);
       }
-      ctx.waitUntil(buildJournalDb(env));
-      return json({ ok: true, message: "Journal DB build started in background" }, 200, request);
+      // Run build synchronously (fetch handler doesn't have ctx)
+      try {
+        await buildJournalDb(env);
+        return json({ ok: true, message: "Journal DB build completed" }, 200, request);
+      } catch (err) {
+        return json({ ok: false, error: String(err) }, 500, request);
+      }
     }
 
     // ═══════════════════════════════════════════════════════════════
