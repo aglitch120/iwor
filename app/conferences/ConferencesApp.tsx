@@ -335,9 +335,9 @@ export default function ConferencesApp() {
 
       {/* リスト表示 */}
       {viewMode === 'list' && (() => {
-        const twoWeeksLater = new Date()
-        twoWeeksLater.setDate(twoWeeksLater.getDate() + 14)
-        const cutoff = twoWeeksLater.toISOString().split('T')[0]
+        const twoMonthsLater = new Date()
+        twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2)
+        const cutoff = twoMonthsLater.toISOString().split('T')[0]
         let proGateShown = false
 
         return (
@@ -354,7 +354,7 @@ export default function ConferencesApp() {
                       proGateShown = true
                       return (
                         <div key="pro-gate-2w" className="rounded-xl p-5 text-center border-2 border-dashed" style={{ borderColor: `${MC}40`, background: '#E8F0EC' }}>
-                          <p className="text-sm font-bold text-tx mb-1">2週間以降の学会スケジュール</p>
+                          <p className="text-sm font-bold text-tx mb-1">2ヶ月以降の学会スケジュール</p>
                           <p className="text-xs text-muted mb-3">PRO会員で全日程を確認できます</p>
                           <button onClick={() => setShowProModal(true)} className="px-5 py-2.5 rounded-xl text-xs font-bold text-white" style={{ background: MC }}>
                             PRO会員で全日程を見る
