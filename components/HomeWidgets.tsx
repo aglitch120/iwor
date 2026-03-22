@@ -162,6 +162,7 @@ export default function HomeWidgets() {
   if (!showStudy && !showJosler) return null
 
   return (
+    <>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" aria-label="アクティビティウィジェット">
 
       {/* ── Study Widget (Zeigarnik + Streak) ── */}
@@ -209,9 +210,11 @@ export default function HomeWidgets() {
         </Link>
       )}
 
-      {/* ── コミットメント階段バナー ── */}
-      <CommitmentBanner />
     </div>
+
+    {/* ── コミットメント階段バナー（グリッド外: 全幅） ── */}
+    <CommitmentBanner />
+    </>
   )
 }
 
