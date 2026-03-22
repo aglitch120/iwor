@@ -1172,6 +1172,9 @@ export const tools: ToolDefinition[] = [
   { slug: 'ascvd', name: '10年ASCVDリスク', nameEn: '10-Year ASCVD Risk (Pooled Cohort Equations)', description: 'Pooled Cohort Equations (2013 ACC/AHA) による10年間の動脈硬化性心血管疾患リスク推算。', category: 'cardiology', tier: 1, keywords: ['ASCVD','動脈硬化','心血管リスク','Pooled Cohort','ACC/AHA','スタチン','予防'], relatedSlugs: ['cha2ds2-vasc','has-bled','grace'], updatedAt: '2026-03', sources: [{ text: 'Goff DC Jr, et al. Circulation 2014;129:S49-S73', url: 'https://pubmed.ncbi.nlm.nih.gov/24222018/' }] },
   { slug: 'ckd-stage', name: 'CKDステージ分類（CGA分類）', nameEn: 'CKD Stage Classification (CGA)', description: 'eGFRとアルブミン尿からCKD重症度をG1-G5/A1-A3で分類。KDIGO 2012準拠。', category: 'nephrology', tier: 1, keywords: ['CKD','慢性腎臓病','ステージ','CGA','GFR','アルブミン尿','KDIGO'], relatedSlugs: ['egfr','cockcroft-gault','fena'], updatedAt: '2026-03', sources: [{ text: 'KDIGO 2012 CKD Guideline. Kidney Int Suppl 2013;3:1-150', url: 'https://pubmed.ncbi.nlm.nih.gov/25018975/' }] },
   { slug: 'nafld-fibrosis', name: 'NAFLD線維化スコア (NFS)', nameEn: 'NAFLD Fibrosis Score', description: '非アルコール性脂肪肝の線維化進行度を非侵襲的に評価。', category: 'hepatology', tier: 1, keywords: ['NAFLD','NASH','線維化','NFS','脂肪肝','FIB-4','肝生検'], relatedSlugs: ['fib-4','child-pugh','meld'], updatedAt: '2026-03', sources: [{ text: 'Angulo P, et al. Hepatology 2007;45:846-54', url: 'https://pubmed.ncbi.nlm.nih.gov/17393509/' }] },
+  { slug: 'das28', name: 'DAS28（疾患活動性スコア）', nameEn: 'Disease Activity Score 28', description: '関節リウマチの疾患活動性を28関節の圧痛・腫脹+ESR/CRP+VASで評価。', category: 'general', tier: 1, keywords: ['DAS28','関節リウマチ','RA','疾患活動性','ESR','CRP','圧痛','腫脹'], relatedSlugs: ['ra-criteria'], updatedAt: '2026-03', sources: [{ text: 'Prevoo ML, et al. Arthritis Rheum 1995;38:44-8', url: 'https://pubmed.ncbi.nlm.nih.gov/7818570/' }] },
+  { slug: 'framingham', name: 'フラミンガムリスクスコア', nameEn: 'Framingham Risk Score', description: '10年間の冠動脈疾患リスクを年齢・性別・TC・HDL・血圧・喫煙から推算。', category: 'cardiology', tier: 1, keywords: ['フラミンガム','Framingham','冠動脈','CHD','リスク','コレステロール','心血管'], relatedSlugs: ['ascvd','cha2ds2-vasc'], updatedAt: '2026-03', sources: [{ text: 'Wilson PW, et al. Circulation 1998;97:1837-47', url: 'https://pubmed.ncbi.nlm.nih.gov/9603539/' }] },
+  { slug: 'ra-criteria', name: '関節リウマチ分類基準 2010', nameEn: '2010 ACR/EULAR RA Classification Criteria', description: 'ACR/EULAR 2010分類基準。関節病変・血清学・急性期反応物質・罹病期間の4ドメイン。6点以上でRA。', category: 'general', tier: 1, keywords: ['関節リウマチ','RA','ACR','EULAR','分類基準','RF','ACPA','2010'], relatedSlugs: ['das28'], updatedAt: '2026-03', sources: [{ text: 'Aletaha D, et al. Arthritis Rheum 2010;62:2569-81', url: 'https://pubmed.ncbi.nlm.nih.gov/20872595/' }] },
 ]
 
 // 実装済みツールのslug一覧（新ツール追加時にここに追加）
@@ -1193,6 +1196,7 @@ export const implementedTools = new Set(['gamma', 'egfr', 'cha2ds2-vasc', 'chads
   // 2026-03-22追加
   'pf-ratio', 'due-date', 'heat-stroke',
   'ascvd', 'ckd-stage', 'nafld-fibrosis',
+  'das28', 'framingham', 'ra-criteria',
 ])
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
