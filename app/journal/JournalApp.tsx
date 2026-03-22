@@ -83,6 +83,7 @@ export default function JournalApp() {
   const [selectedSpecialties, setSelectedSpecialties] = useState<Set<string>>(new Set())
   const [ifMin, setIfMin] = useState(0)
   const [showAdvanced, setShowAdvanced] = useState(false)
+  const [showSortPanel, setShowSortPanel] = useState(false)
   const [excludedJournals, setExcludedJournals] = useState<Set<string>>(new Set())
 
   // Infinite scroll
@@ -266,13 +267,49 @@ export default function JournalApp() {
         </button>
       </div>
 
-      {/* ── フィルタ（折りたたみ） ── */}
-      <div className="mb-3">
-        <button onClick={() => setShowAdvanced(!showAdvanced)}
-          className="w-full flex items-center justify-between bg-s0 border border-br rounded-xl px-3 py-2 text-xs font-medium text-tx">
-          <span>詳細フィルタ {selectedSpecialties.size > 0 ? `（${Array.from(selectedSpecialties).join('・')}）` : ''}{contentType === 'guidelines' ? ' / ガイドライン' : ''}{lang === 'ja' ? ' / 日本語誌' : ''}</span>
+      {/* ── フィルタ + 並び替え（2つの折りたたみ） ── */}
+      <div className="mb-3 flex gap-2">
+        <button onClick={() => { setShowAdvanced(!showAdvanced); setShowSortPanel(false) }}
+          className={`flex-1 flex items-center justify-between bg-s0 border rounded-xl px-3 py-2 text-xs font-medium transition-all ${showAdvanced ? 'border-ac/30 text-ac' : 'border-br text-tx'}`}>
+          <span>フィルタ{selectedSpecialties.size > 0 ? `（${selectedSpecialties.size}）` : ''}</span>
           <span className={`text-muted transition-transform ${showAdvanced ? 'rotate-180' : ''}`}>▾</span>
         </button>
+        <button onClick={() => { setShowSortPanel(!showSortPanel); setShowAdvanced(false) }}
+          className={`flex-1 flex items-center justify-between bg-s0 border rounded-xl px-3 py-2 text-xs font-medium transition-all ${showSortPanel ? 'border-ac/30 text-ac' : 'border-br text-tx'}`}>
+          <span>並び替え（{sortBy === 'date' ? '新着順' : sortBy === 'bm-today' ? '今日' : sortBy === 'bm-week' ? '今週' : sortBy === 'bm-month' ? '今月' : '今年'}）</span>
+          <span className={`text-muted transition-transform ${showSortPanel ? 'rotate-180' : ''}`}>▾</span>
+        </button>
+      </div>
+
+      {/* ── 並び替えパネル ── */}
+      {showSortPanel && (
+        <div className="mb-3 bg-s0 border border-br rounded-xl p-3">
+          <div className="space-y-1">
+            {[
+              { id: 'date' as const, icon: '\uD83D\uDCC5', label: '新着順', desc: '発行日の新しい順' },
+              { id: 'bm-today' as const, icon: '\uD83D\uDD25', label: '今日', desc: '今日ブックマークが多い論文' },
+              { id: 'bm-week' as const, icon: '\uD83D\uDD25', label: '今週', desc: '今週ブックマークが多い論文' },
+              { id: 'bm-month' as const, icon: '\uD83D\uDD25', label: '今月', desc: '今月ブックマークが多い論文' },
+              { id: 'bm-year' as const, icon: '\uD83D\uDD25', label: '今年', desc: '今年ブックマークが多い論文' },
+            ].map(s => (
+              <button key={s.id} onClick={() => { setSortBy(s.id); setShowSortPanel(false) }}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all ${
+                  sortBy === s.id ? 'text-white' : 'text-tx hover:bg-s1'
+                }`}
+                style={sortBy === s.id ? { background: MC } : undefined}>
+                <span className="text-sm">{s.icon}</span>
+                <div>
+                  <p className="text-xs font-medium">{s.label}</p>
+                  <p className={`text-[10px] ${sortBy === s.id ? 'text-white/70' : 'text-muted'}`}>{s.desc}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── フィルタパネル ── */}
+      <div className={showAdvanced ? 'mb-3' : ''}>
         {showAdvanced && (
           <div className="mt-2 space-y-3">
 
@@ -398,25 +435,8 @@ export default function JournalApp() {
         )}
       </div>
 
-      {/* ── Sort + Feed/Bookmark toggle ── */}
+      {/* ── Feed/Bookmark toggle ── */}
       {contentType === 'articles' && <>
-      <div className="flex items-center gap-1.5 mb-2 overflow-x-auto">
-        {[
-          { id: 'date' as const, label: '新着順' },
-          { id: 'bm-today' as const, label: '今日' },
-          { id: 'bm-week' as const, label: '今週' },
-          { id: 'bm-month' as const, label: '今月' },
-          { id: 'bm-year' as const, label: '今年' },
-        ].map(s => (
-          <button key={s.id} onClick={() => setSortBy(s.id)}
-            className={`px-2 py-1 rounded text-[9px] font-medium whitespace-nowrap border transition-all ${
-              sortBy === s.id ? 'text-white border-transparent' : 'border-br text-muted'
-            }`}
-            style={sortBy === s.id ? { background: MC } : undefined}>
-            {s.id === 'date' ? '📅' : '🔥'} {s.label}
-          </button>
-        ))}
-      </div>
       <div className="flex items-center justify-between mb-3">
         <div className="flex gap-1.5">
           <button onClick={() => setShowBookmarks(false)}
