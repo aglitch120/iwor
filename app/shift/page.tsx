@@ -35,6 +35,7 @@ function isWeekend(year: number, month: number, day: number) {
 }
 
 const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土']
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://iwor-api.mightyaddnine.workers.dev'
 
 function generateId() {
   return Math.random().toString(36).slice(2, 8)
@@ -152,6 +153,10 @@ export default function ShiftPage() {
   const [shareUrl, setShareUrl] = useState('')
   const [copied, setCopied] = useState(false)
   const [selectedDocId, setSelectedDocId] = useState('')
+  const [surveyPassword, setSurveyPassword] = useState('')
+  const [surveyUrl, setSurveyUrl] = useState('')
+  const [surveyId, setSurveyId] = useState('')
+  const [surveyCopied, setSurveyCopied] = useState(false)
 
   // Check URL for shared data on mount
   useEffect(() => {
@@ -435,16 +440,92 @@ export default function ShiftPage() {
           </div>
         )}
 
+        {/* NG日入力方法選択 */}
+        {doctors.length >= 2 && (
+          <div className="bg-s0 border border-br rounded-xl p-4 space-y-3">
+            <p className="text-xs font-bold text-tx">NG日の入力方法</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button onClick={() => setStep('preferences')}
+                className="p-3 rounded-xl border border-ac/30 bg-acl text-left hover:shadow-sm transition-all">
+                <span className="text-lg block mb-1">✏️</span>
+                <p className="text-xs font-bold text-ac">自分で全員分入力</p>
+                <p className="text-[10px] text-muted">管理者がNG日を代理入力</p>
+              </button>
+              <button onClick={async () => {
+                const deadline = new Date()
+                deadline.setDate(deadline.getDate() + 7)
+                const pw = surveyPassword || undefined
+                try {
+                  const res = await fetch(`${API}/api/shift/survey`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      groupName, year, month,
+                      doctors: doctors.map(d => ({ id: d.id, name: d.name })),
+                      deadline: deadline.toISOString().split('T')[0],
+                      password: pw,
+                    }),
+                  })
+                  const data = await res.json()
+                  if (data.ok) {
+                    setSurveyUrl(data.url)
+                    setSurveyId(data.surveyId)
+                  }
+                } catch {}
+              }}
+                className="p-3 rounded-xl border border-br bg-white text-left hover:border-ac/20 hover:shadow-sm transition-all">
+                <span className="text-lg block mb-1">📩</span>
+                <p className="text-xs font-bold text-tx">各自に入力してもらう</p>
+                <p className="text-[10px] text-muted">アンケートURLを共有</p>
+              </button>
+            </div>
+            {/* パスワード設定（任意） */}
+            <div>
+              <label className="text-[10px] text-muted block mb-1">パスワード（任意）</label>
+              <input type="text" value={surveyPassword} onChange={e => setSurveyPassword(e.target.value)}
+                placeholder="設定しない場合は空欄"
+                className="w-full px-3 py-2 border border-br rounded-lg text-xs bg-bg outline-none focus:border-ac" />
+            </div>
+            {/* アンケートURL表示 */}
+            {surveyUrl && (
+              <div className="bg-acl border border-ac/20 rounded-xl p-3">
+                <p className="text-[10px] font-bold text-ac mb-1">アンケートURL生成完了</p>
+                <div className="flex gap-2 items-center">
+                  <input readOnly value={surveyUrl} className="flex-1 text-[10px] bg-white border border-br rounded px-2 py-1.5 truncate" />
+                  <button onClick={() => { navigator.clipboard.writeText(surveyUrl); setSurveyCopied(true); setTimeout(() => setSurveyCopied(false), 2000) }}
+                    className="text-[10px] font-bold text-white px-3 py-1.5 rounded-lg shrink-0" style={{ background: '#1B4F3A' }}>
+                    {surveyCopied ? '✓' : 'コピー'}
+                  </button>
+                </div>
+                <p className="text-[9px] text-muted mt-1.5">LINE・メール・Slackで共有してください。回答期限: 7日後</p>
+                <button onClick={async () => {
+                  try {
+                    const res = await fetch(`${API}/api/shift/survey/results`, {
+                      method: 'POST', headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ surveyId, password: surveyPassword || undefined }),
+                    })
+                    const data = await res.json()
+                    if (data.ok && data.survey.responses) {
+                      const updated = doctors.map(d => {
+                        const resp = data.survey.responses[d.id]
+                        return resp ? { ...d, ngDays: resp.ngDays } : d
+                      })
+                      setDoctors(updated)
+                      setStep('preferences')
+                    }
+                  } catch {}
+                }}
+                  className="w-full mt-2 py-2 rounded-lg text-[11px] font-bold border border-ac/30 text-ac hover:bg-acl transition-all">
+                  回答を取得してNG日に反映 →
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="flex gap-2">
           <button onClick={() => setStep('setup')} className="flex-1 border border-br text-muted py-3 rounded-xl font-bold text-sm hover:bg-s1 transition-colors">
             ← 戻る
-          </button>
-          <button
-            onClick={() => setStep('preferences')}
-            disabled={doctors.length < 2}
-            className="flex-1 bg-ac text-white py-3 rounded-xl font-bold text-sm hover:bg-ac2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            次へ →
           </button>
         </div>
         {doctors.length < 2 && doctors.length > 0 && (

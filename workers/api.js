@@ -1943,6 +1943,90 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
     }
 
     // ══════════════════════════════════════════════════
+    //  当直シフト NG日アンケート
+    //  POST /api/shift/survey — アンケート作成（admin）
+    //  GET  /api/shift/survey?id=xxx — アンケート取得
+    //  POST /api/shift/survey/respond — 回答送信
+    // ══════════════════════════════════════════════════
+
+    // アンケート作成
+    if (path === "/api/shift/survey" && request.method === "POST") {
+      const body = await parseBody(request);
+      if (!body || !body.groupName || !body.year || !body.month || !body.doctors) {
+        return json({ error: "groupName, year, month, doctors required" }, 400, request);
+      }
+      const surveyId = crypto.randomUUID().slice(0, 8);
+      const survey = {
+        id: surveyId,
+        groupName: body.groupName,
+        year: body.year,
+        month: body.month,
+        doctors: body.doctors, // [{id, name}]
+        deadline: body.deadline || null,
+        password: body.password || null,
+        createdAt: new Date().toISOString(),
+        responses: {}, // {doctorId: {name, ngDays: [1,3,5]}}
+      };
+      await env.IWOR_KV.put(`shift:survey:${surveyId}`, JSON.stringify(survey), { expirationTtl: 60 * 60 * 24 * 90 }); // 90日保持
+      return json({ ok: true, surveyId, url: `https://iwor.jp/shift/survey?id=${surveyId}` }, 200, request);
+    }
+
+    // アンケート取得
+    if (path === "/api/shift/survey" && request.method === "GET") {
+      const surveyId = url.searchParams.get("id");
+      if (!surveyId) return json({ error: "id required" }, 400, request);
+      const raw = await env.IWOR_KV.get(`shift:survey:${surveyId}`);
+      if (!raw) return json({ error: "not found" }, 404, request);
+      const survey = JSON.parse(raw);
+      // パスワード保護: パスワードフィールドはクライアントに返さない
+      const safe = { ...survey, password: undefined, hasPassword: !!survey.password };
+      return json({ ok: true, survey: safe }, 200, request);
+    }
+
+    // 回答送信
+    if (path === "/api/shift/survey/respond" && request.method === "POST") {
+      const body = await parseBody(request);
+      if (!body || !body.surveyId || !body.doctorId || !body.ngDays) {
+        return json({ error: "surveyId, doctorId, ngDays required" }, 400, request);
+      }
+      const raw = await env.IWOR_KV.get(`shift:survey:${body.surveyId}`);
+      if (!raw) return json({ error: "survey not found" }, 404, request);
+      const survey = JSON.parse(raw);
+
+      // パスワードチェック
+      if (survey.password && body.password !== survey.password) {
+        return json({ error: "invalid password" }, 403, request);
+      }
+
+      // 締切チェック
+      if (survey.deadline && new Date() > new Date(survey.deadline + "T23:59:59")) {
+        return json({ error: "deadline passed" }, 400, request);
+      }
+
+      // 回答保存
+      survey.responses[body.doctorId] = {
+        name: body.name || survey.doctors.find(d => d.id === body.doctorId)?.name || "",
+        ngDays: body.ngDays,
+        respondedAt: new Date().toISOString(),
+      };
+      await env.IWOR_KV.put(`shift:survey:${body.surveyId}`, JSON.stringify(survey), { expirationTtl: 60 * 60 * 24 * 90 });
+      return json({ ok: true }, 200, request);
+    }
+
+    // Admin: 回答取得（全回答+パスワード検証）
+    if (path === "/api/shift/survey/results" && request.method === "POST") {
+      const body = await parseBody(request);
+      if (!body || !body.surveyId) return json({ error: "surveyId required" }, 400, request);
+      const raw = await env.IWOR_KV.get(`shift:survey:${body.surveyId}`);
+      if (!raw) return json({ error: "not found" }, 404, request);
+      const survey = JSON.parse(raw);
+      if (survey.password && body.password !== survey.password) {
+        return json({ error: "invalid password" }, 403, request);
+      }
+      return json({ ok: true, survey }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
     //  自己分析フォローアップ質問生成
     //  POST /api/generate-pr — AI自己PR/志望動機生成（文字数調整付き）
     //  Body: { type: 'pr'|'motivation', profile: {...}, maxChars: 400 }
