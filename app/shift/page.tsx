@@ -4,20 +4,38 @@ import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 
 // ─── Types ───
+
+// 当直カテゴリ（admin が自由に追加可能）
+interface DutyCategory {
+  id: string
+  name: string        // 例: "救急当直", "病棟当直"
+  color: string       // Tailwind color class
+}
+
+// 各日のスロット定義
+interface SlotDef {
+  day: number
+  dutyType: string    // "weekday_night" | "holiday_day" | "holiday_night"
+  categoryId: string  // DutyCategoryのid
+  required: number    // 必要人数
+}
+
 interface Doctor {
   id: string
   name: string
-  ngDays: number[]  // day-of-month array
+  ngDays: number[]
   maxShifts?: number
 }
 
+// assignment key = "day-dutyType-categoryId"
 interface ShiftData {
   groupName: string
   year: number
-  month: number  // 1-12
+  month: number
   doctors: Doctor[]
-  assignments: Record<number, string>  // day -> doctor id
-  slotsPerDay: number  // 1 for now
+  categories: DutyCategory[]
+  assignments: Record<string, string[]>  // key -> [doctorId, ...] (複数人対応)
+  slotsPerDay: number
 }
 
 // ─── Helpers ───
@@ -35,6 +53,67 @@ function isWeekend(year: number, month: number, day: number) {
 }
 
 const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土']
+
+// 日本の祝日（簡易版 2025-2027）
+const HOLIDAYS: Record<string, string> = {
+  '2026-01-01': '元日', '2026-01-12': '成人の日', '2026-02-11': '建国記念の日', '2026-02-23': '天皇誕生日',
+  '2026-03-20': '春分の日', '2026-04-29': '昭和の日', '2026-05-03': '憲法記念日', '2026-05-04': 'みどりの日',
+  '2026-05-05': 'こどもの日', '2026-05-06': '振替休日', '2026-07-20': '海の日', '2026-08-11': '山の日',
+  '2026-09-21': '敬老の日', '2026-09-23': '秋分の日', '2026-10-12': 'スポーツの日', '2026-11-03': '文化の日',
+  '2026-11-23': '勤労感謝の日', '2027-01-01': '元日', '2027-01-11': '成人の日', '2027-02-11': '建国記念の日',
+  '2027-02-23': '天皇誕生日', '2027-03-21': '春分の日', '2027-04-29': '昭和の日', '2027-05-03': '憲法記念日',
+  '2027-05-04': 'みどりの日', '2027-05-05': 'こどもの日', '2027-07-19': '海の日', '2027-08-11': '山の日',
+  '2027-09-20': '敬老の日', '2027-09-23': '秋分の日', '2027-10-11': 'スポーツの日', '2027-11-03': '文化の日',
+  '2027-11-23': '勤労感謝の日',
+}
+
+function isHoliday(year: number, month: number, day: number): string | null {
+  const key = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+  return HOLIDAYS[key] || null
+}
+
+function isHolidayOrWeekend(year: number, month: number, day: number): boolean {
+  return isWeekend(year, month, day) || !!isHoliday(year, month, day)
+}
+
+// 月のスロット定義を生成（カテゴリ×日付×dutyType）
+function generateSlots(year: number, month: number, categories: DutyCategory[], requiredPerSlot: number = 1): SlotDef[] {
+  const totalDays = getDaysInMonth(year, month)
+  const slots: SlotDef[] = []
+  for (let day = 1; day <= totalDays; day++) {
+    const holiday = isHolidayOrWeekend(year, month, day)
+    for (const cat of categories) {
+      if (holiday) {
+        slots.push({ day, dutyType: 'holiday_day', categoryId: cat.id, required: requiredPerSlot })
+        slots.push({ day, dutyType: 'holiday_night', categoryId: cat.id, required: requiredPerSlot })
+      } else {
+        slots.push({ day, dutyType: 'weekday_night', categoryId: cat.id, required: requiredPerSlot })
+      }
+    }
+  }
+  return slots
+}
+
+function slotKey(day: number, dutyType: string, categoryId: string): string {
+  return `${day}-${dutyType}-${categoryId}`
+}
+
+const DEFAULT_CATEGORIES: DutyCategory[] = [
+  { id: 'er', name: '救急当直', color: 'bg-red-100 text-red-700 border-red-200' },
+  { id: 'ward', name: '病棟当直', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+]
+
+const DUTY_TYPE_LABELS: Record<string, string> = {
+  weekday_night: '平日当直',
+  holiday_day: '休日日直',
+  holiday_night: '休日当直',
+}
+
+const DUTY_TYPE_COLORS: Record<string, string> = {
+  weekday_night: 'bg-indigo-100 text-indigo-700',
+  holiday_day: 'bg-amber-100 text-amber-700',
+  holiday_night: 'bg-purple-100 text-purple-700',
+}
 const API = process.env.NEXT_PUBLIC_API_URL || 'https://iwor-api.mightyaddnine.workers.dev'
 
 function generateId() {
@@ -42,46 +121,74 @@ function generateId() {
 }
 
 // ─── Auto-assign algorithm ───
-function autoAssign(data: ShiftData): Record<number, string> {
-  const { year, month, doctors } = data
-  const totalDays = getDaysInMonth(year, month)
-  const assignments: Record<number, string> = {}
+// 制約: NG日回避, 連日回避, 同一週2回回避, 均等分配
+function autoAssign(data: ShiftData): Record<string, string[]> {
+  const { year, month, doctors, categories } = data
+  const slots = generateSlots(year, month, categories)
+  const assignments: Record<string, string[]> = {}
 
   if (doctors.length === 0) return assignments
 
-  // Build NG set per doctor
   const ngSets = new Map<string, Set<number>>()
   doctors.forEach(d => ngSets.set(d.id, new Set(d.ngDays)))
 
-  // Track assignment counts
+  // Track: total count, last assigned day, weekly counts
   const counts = new Map<string, number>()
-  doctors.forEach(d => counts.set(d.id, 0))
+  const lastDay = new Map<string, number>()
+  const weekCounts = new Map<string, Map<number, number>>() // doctorId -> weekNum -> count
+  doctors.forEach(d => {
+    counts.set(d.id, 0)
+    lastDay.set(d.id, -10)
+    weekCounts.set(d.id, new Map())
+  })
 
-  // Assign day by day
-  for (let day = 1; day <= totalDays; day++) {
-    // Get eligible doctors (not NG for this day)
-    const eligible = doctors.filter(d => !ngSets.get(d.id)?.has(day))
+  function getWeek(day: number): number {
+    return Math.ceil(day / 7)
+  }
 
-    if (eligible.length === 0) {
-      // No one available - assign least-loaded doctor anyway
-      const sorted = [...doctors].sort((a, b) => (counts.get(a.id) || 0) - (counts.get(b.id) || 0))
-      assignments[day] = sorted[0].id
-      counts.set(sorted[0].id, (counts.get(sorted[0].id) || 0) + 1)
-    } else {
-      // Assign least-loaded eligible doctor
-      // Tie-break: prefer someone who didn't work yesterday
-      const yesterday = assignments[day - 1]
-      const sorted = eligible.sort((a, b) => {
+  function getWeekCount(docId: string, week: number): number {
+    return weekCounts.get(docId)?.get(week) || 0
+  }
+
+  // Sort slots by day
+  const sortedSlots = [...slots].sort((a, b) => a.day - b.day || a.dutyType.localeCompare(b.dutyType))
+
+  for (const slot of sortedSlots) {
+    const key = slotKey(slot.day, slot.dutyType, slot.categoryId)
+    const needed = slot.required
+    const assigned: string[] = []
+
+    for (let n = 0; n < needed; n++) {
+      const eligible = doctors.filter(d => {
+        if (ngSets.get(d.id)?.has(slot.day)) return false
+        if (assigned.includes(d.id)) return false // 同じスロットに2回入らない
+        return true
+      })
+
+      const week = getWeek(slot.day)
+      const sorted = (eligible.length > 0 ? eligible : doctors.filter(d => !assigned.includes(d.id))).sort((a, b) => {
+        // 同一週2回回避（最優先）
+        const wA = getWeekCount(a.id, week), wB = getWeekCount(b.id, week)
+        if (wA !== wB) return wA - wB
+        // 総数均等
         const diff = (counts.get(a.id) || 0) - (counts.get(b.id) || 0)
         if (diff !== 0) return diff
-        // Avoid consecutive days
-        if (a.id === yesterday) return 1
-        if (b.id === yesterday) return -1
-        return 0
+        // 連日回避
+        const gapA = slot.day - (lastDay.get(a.id) || -10)
+        const gapB = slot.day - (lastDay.get(b.id) || -10)
+        return gapB - gapA // 間隔が大きい方を優先
       })
-      assignments[day] = sorted[0].id
-      counts.set(sorted[0].id, (counts.get(sorted[0].id) || 0) + 1)
+
+      if (sorted.length > 0) {
+        const doc = sorted[0]
+        assigned.push(doc.id)
+        counts.set(doc.id, (counts.get(doc.id) || 0) + 1)
+        lastDay.set(doc.id, slot.day)
+        const wm = weekCounts.get(doc.id)!
+        wm.set(week, (wm.get(week) || 0) + 1)
+      }
     }
+    assignments[key] = assigned
   }
 
   return assignments
@@ -146,8 +253,9 @@ export default function ShiftPage() {
   const [year, setYear] = useState(new Date().getFullYear())
   const [month, setMonth] = useState(new Date().getMonth() + 2 > 12 ? 1 : new Date().getMonth() + 2) // default: next month
   const [doctors, setDoctors] = useState<Doctor[]>([])
+  const [categories, setCategories] = useState<DutyCategory[]>(DEFAULT_CATEGORIES)
   const [newDoctorName, setNewDoctorName] = useState('')
-  const [assignments, setAssignments] = useState<Record<number, string>>({})
+  const [assignments, setAssignments] = useState<Record<string, string[]>>({})
   const [editingDay, setEditingDay] = useState<number | null>(null)
   const [isViewMode, setIsViewMode] = useState(false)
   const [shareUrl, setShareUrl] = useState('')
