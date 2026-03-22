@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect, Suspense } from 'react'
+import IworLoader from '@/components/IworLoader'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { getTemplateByDisease, type DiseaseTemplate } from '@/lib/josler-templates'
@@ -11,7 +12,7 @@ const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
 
 export default function SummaryGeneratorPage() {
-  return <Suspense fallback={<div className="text-center py-20 text-muted text-sm">読み込み中...</div>}><SummaryGeneratorInner /></Suspense>
+  return <Suspense fallback={<div className="text-center py-20"><IworLoader size="lg" text="読み込み中..." /></div>}><SummaryGeneratorInner /></Suspense>
 }
 
 function SummaryGeneratorInner() {

@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import AppHeader from '@/components/AppHeader'
+import IworLoader from '@/components/IworLoader'
 import { FlashCard } from './cbt-cards'
 import {
   Rating, CardData,
@@ -770,7 +771,7 @@ export default function StudyApp() {
         {/* ランキングリスト */}
         {rankingLoading ? (
           <div className="text-center py-8">
-            <p className="text-sm text-muted">読み込み中...</p>
+            <IworLoader size="md" text="読み込み中..." />
           </div>
         ) : rankingData ? (
           <div className="space-y-2">

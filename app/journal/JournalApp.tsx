@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
+import IworLoader from '@/components/IworLoader'
 import AppHeader from '@/components/AppHeader'
 import { JOURNALS, Journal, TOP4_IDS, SPECIALTIES, SPECIALTY_KEYWORDS, GUIDELINE_SOURCES, GuidelineSource } from './journals-data'
 
@@ -525,7 +526,7 @@ export default function JournalApp() {
         <>
           {guidelinesLoading && (
             <div className="bg-s0 border border-br rounded-xl p-8 text-center mb-4">
-              <div className="w-8 h-8 border-2 border-br border-t-ac rounded-full animate-spin mx-auto mb-3" />
+              <IworLoader size="md" />
               <p className="text-xs text-muted">ガイドラインを取得中...</p>
             </div>
           )}
@@ -564,7 +565,7 @@ export default function JournalApp() {
       {/* ── Loading / Error (articles mode) ── */}
       {contentType === 'articles' && loading && (
         <div className="bg-s0 border border-br rounded-xl p-8 text-center mb-4">
-          <div className="w-8 h-8 border-2 border-br border-t-ac rounded-full animate-spin mx-auto mb-3" />
+          <IworLoader size="md" />
           <p className="text-xs text-muted">論文を取得中...</p>
         </div>
       )}
@@ -587,7 +588,7 @@ export default function JournalApp() {
 
           {/* Infinite scroll sentinel */}
           <div ref={sentinelRef} className="flex justify-center py-4">
-            {hasMore && <div className="w-5 h-5 border-2 border-br border-t-ac rounded-full animate-spin" />}
+            {hasMore && <IworLoader size="sm" />}
           </div>
 
           {/* PRO gate */}

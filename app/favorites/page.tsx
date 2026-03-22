@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useProStatus } from '@/components/pro/useProStatus'
 import { loadFavorites, type FavoriteItem } from '@/components/tools/FavoriteButton'
+import IworLoader from '@/components/IworLoader'
 
 const STORAGE_KEY = 'iwor_favorites'
 
@@ -62,7 +63,7 @@ export default function FavoritesPage() {
   }
 
   if (proLoading || !isLoaded) {
-    return <main className="max-w-2xl mx-auto px-4 py-12 text-center"><p className="text-muted text-sm">読み込み中...</p></main>
+    return <main className="max-w-2xl mx-auto px-4 py-12 text-center"><IworLoader size="lg" text="読み込み中..." /></main>
   }
 
   if (!isPro) {

@@ -6,6 +6,7 @@ import { SPECIALTIES as SP, DISEASE_GROUPS as DG } from '@/lib/josler-data'
 import { useProStatus } from '@/components/pro/useProStatus'
 import ProModal from '@/components/pro/ProModal'
 import FavoriteButton from '@/components/tools/FavoriteButton'
+import IworLoader from '@/components/IworLoader'
 import {
   loadJoslerData, saveJoslerData, saveToLocal,
   startAutoSave, stopAutoSave, setStatusCallback,
@@ -232,7 +233,7 @@ export default function JoslerApp({ initialMode }: { initialMode?: RecordMode } 
     { id: 'other', l: '📎 その他' },
   ]
 
-  if (!loaded) return <div style={{ textAlign: 'center', padding: '80px 20px', color: C.m }}>読み込み中...</div>
+  if (!loaded) return <div style={{ textAlign: 'center', padding: '80px 20px' }}><IworLoader size="lg" text="読み込み中..." /></div>
 
   // ── モード切り替えUI ──
   const ModeSwitch = () => (
