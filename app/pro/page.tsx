@@ -149,6 +149,11 @@ export default function ProPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [autoCycle, setAutoCycle] = useState(true)
 
+  // GA4: PRO page view
+  useEffect(() => {
+    try { const { trackProPageView } = require('@/lib/gtag'); trackProPageView() } catch {}
+  }, [])
+
   // ── タブ自動切り替え ──
   useEffect(() => {
     if (!autoCycle) return

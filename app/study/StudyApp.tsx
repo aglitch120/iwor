@@ -292,7 +292,9 @@ export default function StudyApp() {
     setSessionCorrect(0)
     setSessionTotal(0)
     setScreen('study')
-  }, [cardDataMap, filteredIds])
+    // GA4 funnel event
+    try { const { trackStudyStart } = require('@/lib/gtag'); trackStudyStart(activeDeckId || undefined) } catch {}
+  }, [cardDataMap, filteredIds, activeDeckId])
 
   // ── Answer with FSRS ──
   const answer = useCallback((rating: Rating) => {
@@ -1612,6 +1614,81 @@ export default function StudyApp() {
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
                   <span className="text-xs">コピー</span>
+                </button>
+                {/* シェアカード画像生成 */}
+                <button
+                  onClick={() => {
+                    const canvas = document.createElement('canvas')
+                    canvas.width = 600; canvas.height = 315
+                    const ctx = canvas.getContext('2d')
+                    if (!ctx) return
+
+                    // Background
+                    ctx.fillStyle = '#F5F4F0'
+                    ctx.fillRect(0, 0, 600, 315)
+
+                    // Accent bar
+                    ctx.fillStyle = '#1B4F3A'
+                    ctx.fillRect(0, 0, 600, 6)
+
+                    // Streak fire
+                    ctx.font = '48px serif'
+                    ctx.fillText('🔥', 30, 80)
+
+                    // Streak count
+                    ctx.fillStyle = '#1B4F3A'
+                    ctx.font = 'bold 52px -apple-system, sans-serif'
+                    ctx.fillText(`${streak.count}`, 95, 82)
+                    ctx.font = '20px -apple-system, sans-serif'
+                    ctx.fillStyle = '#6B6760'
+                    ctx.fillText('日連続', 95 + ctx.measureText(`${streak.count}`).width + 6, 82)
+
+                    // Stats
+                    ctx.font = 'bold 28px -apple-system, sans-serif'
+                    ctx.fillStyle = '#1A1917'
+                    const y2 = 140
+                    ctx.fillText(`${sessionTotal}枚`, 40, y2)
+                    ctx.fillStyle = '#6B6760'
+                    ctx.font = '16px -apple-system, sans-serif'
+                    ctx.fillText('復習', 40, y2 + 24)
+
+                    ctx.font = 'bold 28px -apple-system, sans-serif'
+                    ctx.fillStyle = '#1A1917'
+                    ctx.fillText(`${accuracy}%`, 200, y2)
+                    ctx.fillStyle = '#6B6760'
+                    ctx.font = '16px -apple-system, sans-serif'
+                    ctx.fillText('正答率', 200, y2 + 24)
+
+                    ctx.font = 'bold 28px -apple-system, sans-serif'
+                    ctx.fillStyle = '#1A1917'
+                    ctx.fillText(`${sessionCorrect}`, 380, y2)
+                    ctx.fillStyle = '#6B6760'
+                    ctx.font = '16px -apple-system, sans-serif'
+                    ctx.fillText('正解', 380, y2 + 24)
+
+                    // Message
+                    ctx.fillStyle = '#1B4F3A'
+                    ctx.font = '18px -apple-system, sans-serif'
+                    ctx.fillText(getMessage(), 40, 220)
+
+                    // Branding
+                    ctx.fillStyle = '#1B4F3A'
+                    ctx.font = 'bold 14px -apple-system, sans-serif'
+                    ctx.fillText('iwor Study', 40, 280)
+                    ctx.fillStyle = '#6B6760'
+                    ctx.font = '12px -apple-system, sans-serif'
+                    ctx.fillText('iwor.jp/study', 40, 298)
+
+                    // Download
+                    const link = document.createElement('a')
+                    link.download = `iwor-study-streak-${streak.count}.png`
+                    link.href = canvas.toDataURL('image/png')
+                    link.click()
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-br text-muted hover:bg-s1 transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span className="text-xs">画像保存</span>
                 </button>
               </div>
             </div>

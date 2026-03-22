@@ -209,55 +209,6 @@ export default function HomeWidgets() {
         </Link>
       )}
 
-      {/* ── J-OSLER Widget (Goal Gradient) — PC only ── */}
-      {showJosler && (
-        <Link href="/josler" className="hidden sm:block" aria-label={`J-OSLER — ${120 - data.joslerCases > 0 ? `あと${120 - data.joslerCases}症例` : '症例数クリア'}`}>
-          <div
-            className="rounded-xl p-4 transition-all hover:shadow-md"
-            style={{ background: 'var(--s0)', border: '1px solid var(--br)' }}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium" style={{ color: 'var(--m)' }}>J-OSLER</span>
-              <span className="text-xs font-bold" style={{ color: '#5B7FA6' }}>
-                {Math.round(((data.joslerCases / 120) + (data.joslerGroups / 56) + (data.joslerSummaries / 29)) / 3 * 100)}%
-              </span>
-            </div>
-
-            {/* Zeigarnik: show what's incomplete */}
-            <p className="text-sm font-bold mb-2" style={{ color: 'var(--tx)' }}>
-              {120 - data.joslerCases > 0
-                ? `あと${120 - data.joslerCases}症例`
-                : '症例数クリア ✓'}
-            </p>
-
-            {/* Goal Gradient: 3 mini progress bars */}
-            <div className="space-y-1.5">
-              <div>
-                <div className="flex justify-between text-[10px] mb-0.5" style={{ color: 'var(--m)' }}>
-                  <span>症例</span>
-                  <span>{data.joslerCases}/120</span>
-                </div>
-                <MiniProgress value={data.joslerCases} max={120} color="#5B7FA6" />
-              </div>
-              <div>
-                <div className="flex justify-between text-[10px] mb-0.5" style={{ color: 'var(--m)' }}>
-                  <span>疾患群</span>
-                  <span>{data.joslerGroups}/56</span>
-                </div>
-                <MiniProgress value={data.joslerGroups} max={56} color="#2D6A4F" />
-              </div>
-              <div>
-                <div className="flex justify-between text-[10px] mb-0.5" style={{ color: 'var(--m)' }}>
-                  <span>病歴要約</span>
-                  <span>{data.joslerSummaries}/29</span>
-                </div>
-                <MiniProgress value={data.joslerSummaries} max={29} color="#7F5539" />
-              </div>
-            </div>
-          </div>
-        </Link>
-      )}
-
       {/* ── コミットメント階段バナー ── */}
       <CommitmentBanner />
     </div>

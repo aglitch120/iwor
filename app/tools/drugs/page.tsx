@@ -87,40 +87,19 @@ export default function DrugsHubPage() {
         ))}
       </div>
 
-      {/* 薬剤比較表（カード化） */}
-      <Link href="#compare-section">
-        <div className="bg-s0 border border-ac/15 rounded-xl p-4 hover:border-ac/40 hover:bg-acl transition-all mb-8">
+      {/* 薬剤比較表（カード — クリックで比較一覧へ） */}
+      <Link href="/compare">
+        <div className="bg-s0 border border-ac/15 rounded-xl p-4 hover:border-ac/40 hover:bg-acl transition-all">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 bg-ac/10 border border-ac/20 rounded-xl flex items-center justify-center text-lg shrink-0">⚖️</div>
             <div className="flex-1 min-w-0">
               <h2 className="text-sm font-bold text-tx">薬剤比較表</h2>
               <p className="text-xs text-muted mt-0.5">添付文書の公開情報に基づく薬剤一覧比較。25カテゴリ</p>
             </div>
-            <span className="text-muted text-sm">&darr;</span>
+            <span className="text-muted text-sm">&rsaquo;</span>
           </div>
         </div>
       </Link>
-
-      {/* 薬剤比較 詳細セクション */}
-      <div id="compare-section" className="scroll-mt-20">
-        <h2 className="text-lg font-bold text-tx mb-1">薬剤比較表</h2>
-        <p className="text-xs text-muted mb-4">添付文書の公開情報に基づく薬剤一覧比較。25カテゴリ。</p>
-        <div className="space-y-4">
-          {compareGroups.map(g => (
-            <div key={g.group}>
-              <p className="text-xs font-bold text-muted mb-1.5">{g.group}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {g.items.map(item => (
-                  <Link key={item.href} href={item.href}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-s0 border border-br hover:border-ac/30 hover:bg-acl transition-all text-tx">
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mt-8 mb-8 text-sm text-wn">
