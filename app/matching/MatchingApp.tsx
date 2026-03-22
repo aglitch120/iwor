@@ -133,7 +133,7 @@ export default function MatchingApp() {
       {tab === 'profile' && (
         <ProfileWizard isPro={isPro} onShowProModal={() => setShowProModal(true)} mode={mode} />
       )}
-      {tab === 'documents' && <DocumentsTab profile={basicProfile} mode={mode} />}
+      {tab === 'documents' && <DocumentsTab profile={basicProfile} mode={mode} isPro={isPro} onShowProModal={() => setShowProModal(true)} />}
       {tab === 'hospitals' && (
         <HospitalTab profile={basicProfile} isPro={isPro} onShowProModal={() => setShowProModal(true)} initialSubTab="search" />
       )}

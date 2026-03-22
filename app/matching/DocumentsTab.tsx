@@ -378,10 +378,12 @@ const VISIT_QUESTIONS: QuestionCategory[] = [
 //  メインコンポーネント
 // ═══════════════════════════════════════
 export default function DocumentsTab({
-  profile, mode,
+  profile, mode, isPro, onShowProModal,
 }: {
   profile: Profile
   mode: 'matching' | 'career'
+  isPro?: boolean
+  onShowProModal?: () => void
 }) {
   const [subTab, setSubTab] = useState<DocSubTab>('emails')
 
@@ -397,6 +399,16 @@ export default function DocumentsTab({
 
   return (
     <div className="space-y-4">
+      {/* 印刷用スタイル */}
+      <style>{`
+        @media print {
+          body * { visibility: hidden; }
+          .print-area, .print-area * { visibility: visible; }
+          .print-area { position: absolute; left: 0; top: 0; width: 100%; }
+          nav, header, footer, .no-print { display: none !important; }
+          @page { size: A4; margin: 10mm; }
+        }
+      `}</style>
       {/* サブタブ */}
       {SUB_TABS.length > 1 && (
         <div className="flex gap-1 bg-s1 rounded-xl p-1">
@@ -694,11 +706,11 @@ function VisitQuestions() {
       <div className="flex items-center justify-between">
         <p className="text-xs text-muted">見学時に確認すべきポイント。メモ欄に記録を残せます。</p>
         <button
-          onClick={() => window.print()}
+          onClick={() => isPro ? window.print() : onShowProModal?.()}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all flex-shrink-0"
           style={{ background: MC }}
         >
-          📄 印刷用PDF
+          📄 PDF {!isPro && '🔒'}
         </button>
       </div>
       {VISIT_QUESTIONS.map((cat, ci) => (
@@ -938,11 +950,11 @@ function HospitalCompare() {
       <div className="flex items-center justify-between">
         <p className="text-xs text-muted">最大3病院を比較。重みと点数を設定して総合評価を自動計算します。</p>
         <button
-          onClick={() => window.print()}
+          onClick={() => isPro ? window.print() : onShowProModal?.()}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all flex-shrink-0"
           style={{ background: MC }}
         >
-          📄 PDF印刷
+          📄 PDF {!isPro && '🔒'}
         </button>
       </div>
 
