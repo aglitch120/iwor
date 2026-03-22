@@ -211,17 +211,34 @@ export default function MyPage() {
 
           {/* 専門医単位連携 */}
           {(() => {
+            const SPEC_ID_TO_NAME: Record<string, string> = {
+              internal: '内科', cardio: '循環器', gastro: '消化器', pulm: '呼吸器',
+              renal: '腎臓', endo: '内分泌', hematology: '血液', neuro: '神経',
+              rheum: '膠原病', infection: '感染症', pediatrics: '小児科', psychiatry: '精神科',
+              surgery: '外科', orthopedics: '整形外科', obgyn: '産婦人科',
+              urology: '泌尿器科', radiology: '放射線科', anesthesiology: '麻酔科', emergency: '救急科',
+              dermatology: '皮膚科', ophthalmology: '眼科', otolaryngology: '耳鼻咽喉科',
+              pathology: '病理', rehab: 'リハビリテーション科',
+              // サブスペシャリティ
+              cardio_sub: '循環器（サブスペ）', gastro_sub: '消化器（サブスペ）',
+              pulm_sub: '呼吸器（サブスペ）', hematology_sub: '血液（サブスペ）',
+              endo_sub: '内分泌（サブスペ）', neuro_sub: '神経（サブスペ）',
+              rheum_sub: '膠原病（サブスペ）', infection_sub: '感染症（サブスペ）',
+              renal_sub: '腎臓（サブスペ）',
+            }
             try {
               const raw = typeof window !== 'undefined' ? localStorage.getItem('iwor_credits_data') : null
               if (!raw) return null
               const credits = JSON.parse(raw)
-              const ids = credits.selectedSpecialties?.length ? credits.selectedSpecialties : (credits.selectedSpecialty ? [credits.selectedSpecialty] : [])
+              const ids: string[] = credits.selectedSpecialties?.length ? credits.selectedSpecialties : (credits.selectedSpecialty ? [credits.selectedSpecialty] : [])
               if (ids.length === 0) return null
               return (
                 <Field label="専門医単位 管理中">
                   <div className="flex flex-wrap gap-1.5">
                     {ids.map((id: string) => (
-                      <span key={id} className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-acl text-ac border border-ac/20">{id}</span>
+                      <span key={id} className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-acl text-ac border border-ac/20">
+                        {SPEC_ID_TO_NAME[id] || id}専門医
+                      </span>
                     ))}
                   </div>
                   <a href="/credits" className="text-[10px] text-ac hover:underline mt-1 inline-block">専門医単位を管理 →</a>
