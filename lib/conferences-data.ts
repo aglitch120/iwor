@@ -411,4 +411,104 @@ export const CONFERENCES_2026: Conference[] = [
   // ── 糖尿病合併症学会 ──
   { id: 'tounyou-gappeishou-2026', society: '日本糖尿病合併症学会', societyShort: '糖尿病合併症', specialtyArea: '糖尿病', tier: 'major', meetingType: 'annual',
     meetingName: '第41回日本糖尿病合併症学会', president: '西尾善彦', startDate: '2026-11-20', endDate: '2026-11-21', venue: '鹿児島', city: '鹿児島', year: 2026 },
+
+  // ═══════════════════════════════════════
+  //  地方会（追加分 2026-03-23）
+  // ═══════════════════════════════════════
+
+  // ── 泌尿器科学会 地方会 ──
+  { id: 'hinyokika-tokyo-2026', society: '日本泌尿器科学会', societyShort: '泌尿器科', specialtyArea: '泌尿器科', tier: 'basic', meetingType: 'regional',
+    meetingName: '東京地方会', startDate: '2026-02-12', endDate: '2026-02-12', venue: '御茶ノ水ソラシティ', city: '東京', year: 2026 },
+  { id: 'hinyokika-hokkaido-2026', society: '日本泌尿器科学会', societyShort: '泌尿器科', specialtyArea: '泌尿器科', tier: 'basic', meetingType: 'regional',
+    meetingName: '北海道地方会', startDate: '2026-01-24', endDate: '2026-01-24', venue: '札幌医科大学', city: '札幌', year: 2026 },
+  { id: 'hinyokika-kinki-2026', society: '日本泌尿器科学会', societyShort: '泌尿器科', specialtyArea: '泌尿器科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方会', startDate: '2026-07-11', endDate: '2026-07-11', venue: '大阪', city: '大阪', year: 2026 },
+  { id: 'hinyokika-kyushu-2026', society: '日本泌尿器科学会', societyShort: '泌尿器科', specialtyArea: '泌尿器科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '九州地方会', startDate: '2026-09-26', endDate: '2026-09-26', venue: '福岡', city: '福岡', year: 2026 },
+
+  // ── 救急医学会 地方会 ──
+  { id: 'kyukyu-kanto-2026', society: '日本救急医学会', societyShort: '救急科', specialtyArea: '救急科', tier: 'basic', meetingType: 'regional',
+    meetingName: '第76回関東地方会', president: '中川儀英', startDate: '2026-02-07', endDate: '2026-02-07', venue: '小田原三の丸ホール', city: '小田原', year: 2026 },
+  { id: 'kyukyu-chubu-2026', society: '日本救急医学会', societyShort: '救急科', specialtyArea: '救急科', tier: 'basic', meetingType: 'regional',
+    meetingName: '第29回中部地方会', president: '渡邉栄三', startDate: '2026-12-04', endDate: '2026-12-05', venue: '名古屋', city: '名古屋', year: 2026 },
+  { id: 'kyukyu-kinki-2026', society: '日本救急医学会', societyShort: '救急科', specialtyArea: '救急科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方会', startDate: '2026-06-20', endDate: '2026-06-20', venue: '大阪', city: '大阪', year: 2026 },
+
+  // ── 消化器内視鏡学会 地方会 ──
+  { id: 'naishikyo-fukuoka-2026', society: '日本消化器内視鏡学会', societyShort: '消化器内視鏡', specialtyArea: '消化器', tier: 'sub', meetingType: 'regional',
+    meetingName: '福岡地方会', president: '久部高司', startDate: '2026-06-12', endDate: '2026-06-13', venue: '電気ビル共創館', city: '福岡', year: 2026 },
+  { id: 'naishikyo-chugoku-2026', society: '日本消化器内視鏡学会', societyShort: '消化器内視鏡', specialtyArea: '消化器', tier: 'sub', meetingType: 'regional',
+    meetingName: '中国地方会', president: '小原英幹', startDate: '2026-11-21', endDate: '2026-11-22', venue: 'かがわ国際会議場', city: '高松', year: 2026 },
+  { id: 'naishikyo-tokyo-2026', society: '日本消化器内視鏡学会', societyShort: '消化器内視鏡', specialtyArea: '消化器', tier: 'sub', meetingType: 'regional',
+    meetingName: '東京地方会', president: '松田尚久', startDate: '2026-12-12', endDate: '2026-12-13', venue: 'シェーンバッハ・サボー', city: '東京', year: 2026 },
+  { id: 'naishikyo-chubu-2026', society: '日本消化器内視鏡学会', societyShort: '消化器内視鏡', specialtyArea: '消化器', tier: 'sub', meetingType: 'regional',
+    meetingName: '中部地方会', president: '杉本健', startDate: '2026-12-12', endDate: '2026-12-12', venue: 'アクトシティ浜松', city: '浜松', year: 2026 },
+  { id: 'naishikyo-kyoto-2026', society: '日本消化器内視鏡学会', societyShort: '消化器内視鏡', specialtyArea: '消化器', tier: 'sub', meetingType: 'regional',
+    meetingName: '京都地方会', president: '宇野耕治', startDate: '2026-12-12', endDate: '2026-12-12', venue: '京都テルサ', city: '京都', year: 2026 },
+
+  // ── 眼科学会 関連 ──
+  { id: 'rinsho-ganka-2026', society: '日本臨床眼科学会', societyShort: '臨床眼科', specialtyArea: '眼科', tier: 'major', meetingType: 'annual',
+    meetingName: '第80回日本臨床眼科学会', startDate: '2026-10-29', endDate: '2026-11-01', venue: '国立京都国際会館', city: '京都', year: 2026 },
+
+  // ── 脳神経外科 関連 ──
+  { id: 'noshinkei-kyukyu-2026', society: '日本脳神経外科救急学会', societyShort: '脳外救急', specialtyArea: '脳神経外科', tier: 'major', meetingType: 'annual',
+    meetingName: '第31回日本脳神経外科救急学会', startDate: '2026-02-27', endDate: '2026-02-28', venue: '広島', city: '広島', year: 2026 },
+
+  // ── 麻酔科学会 地方会 ──
+  { id: 'masui-kanto-2026', society: '日本麻酔科学会', societyShort: '麻酔科', specialtyArea: '麻酔科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東甲信越支部学術集会', startDate: '2026-09-12', endDate: '2026-09-12', venue: '東京', city: '東京', year: 2026 },
+  { id: 'masui-kinki-2026', society: '日本麻酔科学会', societyShort: '麻酔科', specialtyArea: '麻酔科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿支部学術集会', startDate: '2026-09-19', endDate: '2026-09-19', venue: '大阪', city: '大阪', year: 2026 },
+  { id: 'masui-kyushu-2026', society: '日本麻酔科学会', societyShort: '麻酔科', specialtyArea: '麻酔科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '九州支部学術集会', startDate: '2026-09-26', endDate: '2026-09-26', venue: '福岡', city: '福岡', year: 2026 },
+
+  // ── 精神神経学会 地方会 ──
+  { id: 'seishin-kanto-2026', society: '日本精神神経学会', societyShort: '精神科', specialtyArea: '精神科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東地方会', startDate: '2026-09-05', endDate: '2026-09-05', venue: '東京', city: '東京', year: 2026 },
+  { id: 'seishin-kinki-2026', society: '日本精神神経学会', societyShort: '精神科', specialtyArea: '精神科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方会', startDate: '2026-11-07', endDate: '2026-11-07', venue: '大阪', city: '大阪', year: 2026 },
+
+  // ── 小児科学会 地方会 ──
+  { id: 'shonika-kanto-2026', society: '日本小児科学会', societyShort: '小児科', specialtyArea: '小児科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東地方会', startDate: '2026-09-12', endDate: '2026-09-12', venue: '東京', city: '東京', year: 2026 },
+  { id: 'shonika-kinki-2026', society: '日本小児科学会', societyShort: '小児科', specialtyArea: '小児科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方会', startDate: '2026-06-20', endDate: '2026-06-20', venue: '大阪', city: '大阪', year: 2026 },
+  { id: 'shonika-kyushu-2026', society: '日本小児科学会', societyShort: '小児科', specialtyArea: '小児科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '九州地方会', startDate: '2026-11-14', endDate: '2026-11-14', venue: '福岡', city: '福岡', year: 2026 },
+
+  // ── 産婦人科学会 地方会 ──
+  { id: 'sanfujinka-kanto-2026', society: '日本産科婦人科学会', societyShort: '産婦人科', specialtyArea: '産婦人科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東連合地方部会', startDate: '2026-10-17', endDate: '2026-10-18', venue: '東京', city: '東京', year: 2026 },
+  { id: 'sanfujinka-kinki-2026', society: '日本産科婦人科学会', societyShort: '産婦人科', specialtyArea: '産婦人科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方部会', startDate: '2026-06-13', endDate: '2026-06-13', venue: '大阪', city: '大阪', year: 2026 },
+
+  // ── 脳神経外科学会 地方会 ──
+  { id: 'noshinkei-kanto-2026', society: '日本脳神経外科学会', societyShort: '脳神経外科', specialtyArea: '脳神経外科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東支部学術集会', startDate: '2026-09-19', endDate: '2026-09-19', venue: '東京', city: '東京', year: 2026 },
+  { id: 'noshinkei-kinki-2026', society: '日本脳神経外科学会', societyShort: '脳神経外科', specialtyArea: '脳神経外科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿支部学術集会', startDate: '2026-11-21', endDate: '2026-11-21', venue: '大阪', city: '大阪', year: 2026 },
+
+  // ── 耳鼻咽喉科学会 地方会 ──
+  { id: 'jibika-kanto-2026', society: '日本耳鼻咽喉科頭頸部外科学会', societyShort: '耳鼻咽喉科', specialtyArea: '耳鼻咽喉科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東地方部会', startDate: '2026-06-06', endDate: '2026-06-06', venue: '東京', city: '東京', year: 2026 },
+  { id: 'jibika-kinki-2026', society: '日本耳鼻咽喉科頭頸部外科学会', societyShort: '耳鼻咽喉科', specialtyArea: '耳鼻咽喉科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方部会', startDate: '2026-12-05', endDate: '2026-12-05', venue: '大阪', city: '大阪', year: 2026 },
+
+  // ── 放射線科学会 地方会 ──
+  { id: 'hoshasen-kanto-2026', society: '日本医学放射線学会', societyShort: '放射線科', specialtyArea: '放射線科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東地方会', startDate: '2026-06-13', endDate: '2026-06-13', venue: '東京', city: '東京', year: 2026 },
+
+  // ── 形成外科学会 地方会 ──
+  { id: 'keisei-kanto-2026', society: '日本形成外科学会', societyShort: '形成外科', specialtyArea: '形成外科', tier: 'basic', meetingType: 'regional', estimated: true,
+    meetingName: '関東支部学術集会', startDate: '2026-11-28', endDate: '2026-11-28', venue: '東京', city: '東京', year: 2026 },
+
+  // ── 老年医学会 地方会 ──
+  { id: 'roujin-kanto-2026', society: '日本老年医学会', societyShort: '老年病', specialtyArea: '老年病', tier: 'sub', meetingType: 'regional', estimated: true,
+    meetingName: '関東甲信越地方会', startDate: '2026-09-05', endDate: '2026-09-05', venue: '東京', city: '東京', year: 2026 },
+
+  // ── 肝臓学会 地方会 ──
+  { id: 'kanzou-kanto-2026', society: '日本肝臓学会', societyShort: '肝臓', specialtyArea: '肝臓', tier: 'sub', meetingType: 'regional', estimated: true,
+    meetingName: '関東地方会', startDate: '2026-07-04', endDate: '2026-07-04', venue: '東京', city: '東京', year: 2026 },
+  { id: 'kanzou-kinki-2026', society: '日本肝臓学会', societyShort: '肝臓', specialtyArea: '肝臓', tier: 'sub', meetingType: 'regional', estimated: true,
+    meetingName: '近畿地方会', startDate: '2026-11-28', endDate: '2026-11-28', venue: '大阪', city: '大阪', year: 2026 },
 ]
