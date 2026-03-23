@@ -127,6 +127,11 @@ export default function ActivatePage() {
           if (p.role) localStorage.setItem('iwor_user_role', p.role)
         }
       } catch {}
+      // お気に入りをクラウドから同期
+      try {
+        const { syncFavoritesFromCloud } = await import('@/components/tools/FavoriteButton')
+        await syncFavoritesFromCloud()
+      } catch {}
     } else {
       setError(res.error || 'ログインに失敗しました。')
     }

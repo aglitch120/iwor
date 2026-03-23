@@ -77,6 +77,44 @@ export function loadFavorites(): FavoriteItem[] {
 function saveFavorites(items: FavoriteItem[]) {
   if (typeof window === 'undefined') return
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+  // PRO会員ならクラウドにも同期（非同期、エラーは無視）
+  try {
+    const token = localStorage.getItem('iwor_session_token')
+    if (token && localStorage.getItem('iwor_pro_user') === 'true') {
+      const API = 'https://iwor-api.mightyaddnine.workers.dev'
+      fetch(`${API}/api/favorites`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ favorites: items }),
+      }).catch(() => {})
+    }
+  } catch {}
+}
+
+// クラウドからお気に入りを読み込み（PRO会員用、初回のみ）
+export async function syncFavoritesFromCloud(): Promise<boolean> {
+  try {
+    const token = localStorage.getItem('iwor_session_token')
+    if (!token || localStorage.getItem('iwor_pro_user') !== 'true') return false
+    const API = 'https://iwor-api.mightyaddnine.workers.dev'
+    const res = await fetch(`${API}/api/favorites`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+    const data = await res.json()
+    if (data.ok && data.favorites && data.favorites.length > 0) {
+      const local = loadFavorites()
+      // クラウドの方が新しければマージ
+      const localIds = new Set(local.map(f => f.id))
+      const merged = [...local]
+      for (const cf of data.favorites) {
+        if (!localIds.has(cf.id)) merged.push(cf)
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged))
+      window.dispatchEvent(new CustomEvent('favorites-changed'))
+      return true
+    }
+  } catch {}
+  return false
 }
 
 // ── お気に入りボタン ──

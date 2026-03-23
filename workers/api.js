@@ -1197,6 +1197,32 @@ export default {
     }
 
     // ══════════════════════════════════════════════════
+    //  お気に入り同期（PRO認証必須）
+    //  PUT /api/favorites — 保存
+    //  GET /api/favorites — 読み込み
+    // ══════════════════════════════════════════════════
+    if (path === "/api/favorites" && request.method === "PUT") {
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+      const body = await parseBody(request);
+      if (!body || !body.favorites) return json({ error: "favorites required" }, 400, request);
+      await env.IWOR_KV.put(`favorites:${authResult.email}`, JSON.stringify({
+        favorites: body.favorites,
+        updatedAt: new Date().toISOString(),
+      }));
+      return json({ ok: true }, 200, request);
+    }
+
+    if (path === "/api/favorites" && request.method === "GET") {
+      const authResult = await authenticate(request, env);
+      if (authResult.error) return json({ error: authResult.error }, authResult.status, request);
+      const raw = await env.IWOR_KV.get(`favorites:${authResult.email}`);
+      if (!raw) return json({ ok: true, favorites: null }, 200, request);
+      const parsed = JSON.parse(raw);
+      return json({ ok: true, favorites: parsed.favorites, updatedAt: parsed.updatedAt }, 200, request);
+    }
+
+    // ══════════════════════════════════════════════════
     //  AI面接フィードバック
     //  POST /api/interview-feedback
     //  認証: Bearer {sessionToken} — PRO無制限
