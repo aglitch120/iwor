@@ -25,6 +25,7 @@ import { jibi_cards } from './data/jibi-cards'
 import { hoshasen_cards } from './data/hoshasen-cards'
 import { masui_cards } from './data/masui-cards'
 import { geka_cards } from './data/geka-cards'
+import { koshueisei_cards } from './data/koshueisei-cards'
 
 const TAISHA_TAGS = Array.from(new Set(TAISHA_CARDS.map(c => c.tag)))
 const SHINKEI_TAGS = Array.from(new Set(shinkei_cards.map(c => c.tag)))
@@ -46,6 +47,7 @@ const JIBI_TAGS = Array.from(new Set(jibi_cards.map(c => c.tag)))
 const HOSHASEN_TAGS = Array.from(new Set(hoshasen_cards.map(c => c.tag)))
 const MASUI_TAGS = Array.from(new Set(masui_cards.map(c => c.tag)))
 const GEKA_TAGS = Array.from(new Set(geka_cards.map(c => c.tag)))
+const KOSHUEISEI_TAGS = Array.from(new Set(koshueisei_cards.map(c => c.tag)))
 
 // ── 型定義 ──
 
@@ -322,6 +324,17 @@ const DEFAULT_DECKS: Deck[] = [
     description: '外科・周術期管理 15問（国試逆算設計）',
     cards: geka_cards,
     tags: GEKA_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-koshueisei',
+    name: '公衆衛生',
+    emoji: '📊',
+    description: '公衆衛生 35問（国試逆算設計）',
+    cards: koshueisei_cards,
+    tags: KOSHUEISEI_TAGS,
     isDefault: true,
     createdAt: '2026-03-23T00:00:00Z',
     updatedAt: '2026-03-23T00:00:00Z',
