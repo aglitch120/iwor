@@ -17,7 +17,8 @@ import {
 import { parseApkgFile, ApkgImportResult } from './apkg-import'
 import ProModal from '@/components/pro/ProModal'
 import { useProStatus } from '@/components/pro/useProStatus'
-import CardFan from '@/components/study/CardFan'
+import DeckGrid from '@/components/study/DeckGrid'
+import type { DeckItem } from '@/components/study/DeckGrid'
 import { getOrderedCategories, getCategoryForDeck } from '@/lib/study-categories'
 
 const MC = '#1B4F3A'
@@ -238,6 +239,11 @@ export default function StudyApp() {
     setStreakPromoShown(localStorage.getItem('streak_promo_shown') === 'true')
     setUserRole(localStorage.getItem('iwor_user_role') || 'student')
   }, [])
+
+  // ── 画面遷移時にスクロール位置をトップに ──
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [screen])
 
   // ── Active deck ──
   const activeDeck = useMemo(() => {
@@ -514,6 +520,7 @@ export default function StudyApp() {
   // ══════════════════════════════════════════
   if (screen === 'home') {
     return (
+      <>
       <div className="px-4 py-8 max-w-lg mx-auto">
         <AppHeader
           title="iwor Study"
@@ -619,50 +626,40 @@ export default function StudyApp() {
           </div>
         </button>
 
-        {/* デッキ一覧（カテゴリ別カードファン） */}
+        {/* デッキ一覧（カテゴリ別グリッド） */}
         {(() => {
           const categories = getOrderedCategories(userRole)
           const defaultDecks = decks.filter(d => d.isDefault)
           const customDecks = decks.filter(d => !d.isDefault)
 
+          const toDeckItem = (d: Deck): DeckItem => {
+            const info = getDeckDueInfo(d)
+            return {
+              id: d.id, label: d.name, emoji: d.emoji, subtitle: d.description,
+              cardCount: info.total, dueCount: info.dueCount, newCount: info.newCount,
+              color: DECK_COLORS[d.id],
+            }
+          }
+
           return (
             <>
-              {/* 公式デッキ — カテゴリ別 */}
               {categories.map(cat => {
                 const catDecks = cat.deckIds
                   .map(id => defaultDecks.find(d => d.id === id))
                   .filter((d): d is Deck => d != null)
                 if (catDecks.length === 0 && cat.deckIds.length === 0) {
-                  // カテゴリ自体が空（準備中）
                   return (
-                    <CardFan
-                      key={cat.id}
-                      title={cat.title}
-                      subtitle={cat.subtitle}
-                      items={[]}
-                      onSelect={() => {}}
-                    />
+                    <DeckGrid key={cat.id} title={cat.title} subtitle={cat.subtitle} items={[]} onSelect={() => {}} />
                   )
                 }
                 if (catDecks.length === 0) return null
                 return (
-                  <CardFan
+                  <DeckGrid
                     key={cat.id}
                     title={cat.title}
                     subtitle={cat.subtitle}
-                    items={catDecks.map(d => {
-                      const info = getDeckDueInfo(d)
-                      return {
-                        id: d.id,
-                        label: d.name,
-                        emoji: d.emoji,
-                        subtitle: d.description,
-                        cardCount: info.total,
-                        dueCount: info.dueCount,
-                        newCount: info.newCount,
-                        color: DECK_COLORS[d.id],
-                      }
-                    })}
+                    items={catDecks.map(toDeckItem)}
+                    folders={cat.folders}
                     onSelect={(id) => openDeck(id)}
                   />
                 )
@@ -670,22 +667,10 @@ export default function StudyApp() {
 
               {/* 自作デッキ */}
               {customDecks.length > 0 ? (
-                <CardFan
+                <DeckGrid
                   title="自作デッキ"
                   subtitle="あなたの定期試験・卒試対策"
-                  items={customDecks.map(d => {
-                    const info = getDeckDueInfo(d)
-                    return {
-                      id: d.id,
-                      label: d.name,
-                      emoji: d.emoji,
-                      subtitle: d.description,
-                      cardCount: info.total,
-                      dueCount: info.dueCount,
-                      newCount: info.newCount,
-                      color: '#4C1D95',
-                    }
-                  })}
+                  items={customDecks.map(toDeckItem)}
                   onSelect={(id) => openDeck(id)}
                   showAddBtn
                   onAdd={() => { setFormName(''); setFormEmoji('📚'); setFormDesc(''); setScreen('create-deck') }}
@@ -743,40 +728,38 @@ export default function StudyApp() {
           </div>
         )}
 
-        {/* 下部余白（固定ボタン分） */}
-        <div className="h-36" />
-
-        {/* 固定: 復習を始めるボタン */}
-        {totalDueAll > 0 && (
-          <div
-            className="fixed left-1/2 -translate-x-1/2 w-full max-w-lg px-5"
-            style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 68px)', zIndex: 200 }}
-          >
-            <button
-              onClick={() => {
-                // due があるデッキを見つけて開始
-                const dueDecks = decks.filter(d => {
-                  const info = getDeckDueInfo(d)
-                  return info.dueCount > 0 || info.newCount > 0
-                })
-                if (dueDecks.length > 0) {
-                  openDeck(dueDecks[0].id)
-                }
-              }}
-              className="w-full py-3.5 rounded-xl text-[15px] font-bold text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
-              style={{
-                background: MC,
-                boxShadow: `0 4px 20px rgba(27,79,58,0.4), 0 -4px 12px ${MCL}`,
-              }}
-            >
-              ▶ 復習を始める
-              <span className="bg-white/20 px-2 py-0.5 rounded-md text-xs font-semibold">
-                {totalDueAll}枚
-              </span>
-            </button>
-          </div>
-        )}
+        {/* 下部余白（固定ボタン + BottomNav分） */}
+        <div className="h-40" />
       </div>
+
+      {/* 固定: 復習を始めるボタン — BottomNav(z-50)の下、コンテンツの上 */}
+      {screen === 'home' && totalDueAll > 0 && (
+        <div
+          className="fixed left-1/2 -translate-x-1/2 w-full max-w-lg px-5 z-40"
+          style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 72px)' }}
+        >
+          <button
+            onClick={() => {
+              const dueDecks = decks.filter(d => {
+                const info = getDeckDueInfo(d)
+                return info.dueCount > 0 || info.newCount > 0
+              })
+              if (dueDecks.length > 0) openDeck(dueDecks[0].id)
+            }}
+            className="w-full py-3.5 rounded-xl text-[15px] font-bold text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+            style={{
+              background: MC,
+              boxShadow: `0 4px 20px rgba(27,79,58,0.4), 0 -4px 12px ${MCL}`,
+            }}
+          >
+            ▶ 復習を始める
+            <span className="bg-white/20 px-2 py-0.5 rounded-md text-xs font-semibold">
+              {totalDueAll}枚
+            </span>
+          </button>
+        </div>
+      )}
+      </>
     )
   }
 

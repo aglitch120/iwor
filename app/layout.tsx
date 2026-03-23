@@ -11,6 +11,7 @@ import DisclaimerPopup from '@/components/DisclaimerPopup'
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister'
 import PWAInstallPrompt from '@/components/PWAInstallPrompt'
 import OfflineIndicator from '@/components/OfflineIndicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -127,6 +128,7 @@ export default function RootLayout({
           </>
         )}
         <Header />
+        <ScrollToTop />
         <main className="max-w-5xl mx-auto px-6 sm:px-8 py-8 pb-24 md:pb-8 overflow-x-hidden">
           {children}
         </main>
