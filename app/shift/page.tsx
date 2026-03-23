@@ -345,6 +345,7 @@ export default function ShiftPage() {
   const [surveyUrls, setSurveyUrls] = useState<{ doctorId: string; name: string; url: string }[]>([])
   const [surveyId, setSurveyId] = useState('')
   const [surveyCopied, setSurveyCopied] = useState('')
+  const [surveyLoading, setSurveyLoading] = useState(false)
 
   // Check URL for shared data on mount
   useEffect(() => {
@@ -822,6 +823,7 @@ export default function ShiftPage() {
                 const deadline = new Date()
                 deadline.setDate(deadline.getDate() + 7)
                 const pw = surveyPassword || undefined
+                setSurveyLoading(true)
                 try {
                   const res = await fetch(`${API}/api/shift/survey`, {
                     method: 'POST',
@@ -836,17 +838,17 @@ export default function ShiftPage() {
                   const data = await res.json()
                   if (data.ok) {
                     setSurveyId(data.surveyId)
-                    // 個別トークン方式: urlsは医師ごとのURL配列
                     if (data.urls) {
                       setSurveyUrls(data.urls)
                     }
                   }
                 } catch {}
+                setSurveyLoading(false)
               }}
                 className="p-3 rounded-xl border border-br bg-white text-left hover:border-ac/20 hover:shadow-sm transition-all">
-                <span className="text-lg block mb-1">📩</span>
-                <p className="text-xs font-bold text-tx">各自に入力してもらう</p>
-                <p className="text-[10px] text-muted">アンケートURLを共有</p>
+                <span className="text-lg block mb-1">{surveyLoading ? '⏳' : '📩'}</span>
+                <p className="text-xs font-bold text-tx">{surveyLoading ? 'URL生成中...' : '各自に入力してもらう'}</p>
+                <p className="text-[10px] text-muted">{surveyLoading ? '' : 'アンケートURLを共有'}</p>
               </button>
             </div>
             {/* パスワード設定（任意） */}
@@ -882,24 +884,34 @@ export default function ShiftPage() {
                   {surveyCopied === 'all' ? '✓ コピー済み' : '全員分をまとめてコピー'}
                 </button>
                 <button onClick={async () => {
+                  setSurveyLoading(true)
                   try {
                     const res = await fetch(`${API}/api/shift/survey/results`, {
                       method: 'POST', headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ surveyId, password: surveyPassword || undefined }),
                     })
                     const data = await res.json()
-                    if (data.ok && data.survey.responses) {
+                    if (data.ok && data.survey) {
+                      const responses = data.survey.responses || {}
+                      const respondedIds = Object.keys(responses)
+                      const notResponded = doctors.filter(d => !respondedIds.includes(d.id))
+                      if (notResponded.length > 0) {
+                        alert(`未回答者がいます: ${notResponded.map(d => d.name).join('、')}\n\n全員の回答を待ってから反映してください。`)
+                        setSurveyLoading(false)
+                        return
+                      }
                       const updated = doctors.map(d => {
-                        const resp = data.survey.responses[d.id]
+                        const resp = responses[d.id]
                         return resp ? { ...d, ngDays: resp.ngDays } : d
                       })
                       setDoctors(updated)
                       setStep('preferences')
                     }
                   } catch {}
+                  setSurveyLoading(false)
                 }}
-                  className="w-full mt-2 py-2 rounded-lg text-[11px] font-bold border border-ac/30 text-ac hover:bg-acl transition-all">
-                  回答を取得してNG日に反映 →
+                  className="w-full mt-2 py-2.5 rounded-lg text-[11px] font-bold text-white transition-all" style={{ background: '#1B4F3A' }}>
+                  {surveyLoading ? '確認中...' : '回答を取得してNG日に反映 →'}
                 </button>
               </div>
             )}
@@ -954,87 +966,6 @@ export default function ShiftPage() {
         <p className="text-xs text-muted mb-3">カレンダーをタップしてNG日を指定してください。</p>
 
         {renderCalendar('ng', currentDocId)}
-
-        {/* ── ルール設定 ── */}
-        <div className="mt-6 bg-s0 border border-br rounded-xl p-4 space-y-4">
-          <h3 className="text-xs font-bold text-tx">ルール設定</h3>
-
-          {/* 勤務量バランス */}
-          <div>
-            <label className="text-[10px] font-bold text-muted block mb-1">
-              勤務量バランス: {(() => {
-                const doc = doctors.find(d => d.id === currentDocId)
-                const w = doc?.weight || 1.0
-                return w <= 0.6 ? '少なめ' : w <= 0.8 ? 'やや少なめ' : w <= 1.2 ? '標準' : w <= 1.4 ? 'やや多め' : '多め'
-              })()} ({(doctors.find(d => d.id === currentDocId)?.weight || 1.0).toFixed(1)}x)
-            </label>
-            <input type="range" min="0.5" max="1.5" step="0.1"
-              value={doctors.find(d => d.id === currentDocId)?.weight || 1.0}
-              onChange={e => setDoctors(prev => prev.map(d => d.id === currentDocId ? { ...d, weight: parseFloat(e.target.value) } : d))}
-              className="w-full h-2 rounded-full appearance-none cursor-pointer"
-              style={{ background: `linear-gradient(to right, #E8F0EC 0%, #1B4F3A 100%)` }} />
-            <div className="flex justify-between text-[9px] text-muted mt-0.5">
-              <span>少なめ</span><span>標準</span><span>多め</span>
-            </div>
-          </div>
-
-          {/* 最小間隔 */}
-          <div>
-            <label className="text-[10px] font-bold text-muted block mb-1">最小間隔: {doctors.find(d => d.id === currentDocId)?.minInterval || 2}日</label>
-            <div className="flex gap-1.5">
-              {[1, 2, 3, 4, 5].map(n => {
-                const current = doctors.find(d => d.id === currentDocId)?.minInterval || 2
-                return (
-                  <button key={n} onClick={() => setDoctors(prev => prev.map(d => d.id === currentDocId ? { ...d, minInterval: n } : d))}
-                    className={`flex-1 py-1.5 rounded-lg text-[11px] font-medium border transition-all ${current === n ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>
-                    {n}日
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* 担当カテゴリ */}
-          <div>
-            <label className="text-[10px] font-bold text-muted block mb-1">担当カテゴリ（未選択=全て）</label>
-            <div className="flex gap-1.5">
-              {categories.map(cat => {
-                const doc = doctors.find(d => d.id === currentDocId)
-                const selected = doc?.categoryIds.includes(cat.id)
-                return (
-                  <button key={cat.id} onClick={() => setDoctors(prev => prev.map(d => {
-                    if (d.id !== currentDocId) return d
-                    const ids = d.categoryIds.includes(cat.id) ? d.categoryIds.filter(c => c !== cat.id) : [...d.categoryIds, cat.id]
-                    return { ...d, categoryIds: ids }
-                  }))}
-                    className={`flex-1 py-1.5 rounded-lg text-[11px] font-medium border transition-all ${selected ? 'bg-acl border-ac/30 text-ac' : 'border-br text-muted'}`}>
-                    {cat.name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* ── 当直カテゴリ管理 ── */}
-        <details className="mt-4">
-          <summary className="text-[11px] text-muted cursor-pointer hover:text-ac">当直カテゴリを編集</summary>
-          <div className="mt-2 space-y-2">
-            {categories.map(cat => (
-              <div key={cat.id} className="flex items-center gap-2 bg-s0 border border-br rounded-lg px-3 py-2">
-                <span className={`w-3 h-3 rounded-full ${cat.color.split(' ')[0]}`} />
-                <span className="text-xs text-tx flex-1">{cat.name}</span>
-                {categories.length > 1 && (
-                  <button onClick={() => setCategories(prev => prev.filter(c => c.id !== cat.id))} className="text-[10px] text-muted hover:text-red-500">削除</button>
-                )}
-              </div>
-            ))}
-            <button onClick={() => {
-              const name = prompt('カテゴリ名（例: ICU当直）')
-              if (name) setCategories(prev => [...prev, { id: generateId(), name, color: 'bg-teal-100 text-teal-700 border-teal-200' }])
-            }} className="text-[11px] text-ac hover:underline">+ カテゴリを追加</button>
-          </div>
-        </details>
 
         <div className="flex gap-2 mt-6">
           <button onClick={() => setStep('doctors')} className="flex-1 border border-br text-muted py-3 rounded-xl font-bold text-sm hover:bg-s1 transition-colors">
