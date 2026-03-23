@@ -320,7 +320,9 @@ async function buildJournalDb(env) {
     // 未翻訳の既存記事にも翻訳を適用（バッチ上限50件/回）
     if (langKey === "en") {
       const DEEPL_KEY = env.DEEPL_API_KEY || "";
-      const untranslated = Object.values(existingDb).filter(a => !a.titleJa).slice(0, 50);
+      // titleJaがない OR titleJaが英語のまま（翻訳失敗）のものを再翻訳
+      const isEnglishOnly = (s) => s && /^[A-Za-z0-9\s\-\(\)\[\]:,\.;\/&'"]+$/.test(s);
+      const untranslated = Object.values(existingDb).filter(a => !a.titleJa || isEnglishOnly(a.titleJa)).slice(0, 50);
       for (const article of untranslated) {
         try {
           if (DEEPL_KEY) {
