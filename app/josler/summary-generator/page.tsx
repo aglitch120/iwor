@@ -90,10 +90,6 @@ function SummaryGeneratorInner() {
         <span>病歴要約ジェネレーター</span>
       </nav>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 mb-4 text-[11px] text-amber-800">
-        ⚠️ <strong>患者の氏名・ID等の個人情報を入力しないでください。</strong>カルテ情報は匿名化してから貼り付けてください。
-      </div>
-
       <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="text-xl font-bold text-tx mb-1">病歴要約ジェネレーター</h1>
@@ -129,7 +125,7 @@ function SummaryGeneratorInner() {
           <input type="checkbox" checked={karteConsent}
             onChange={e => setKarteConsent(e.target.checked)}
             className="mt-0.5 rounded flex-shrink-0" />
-          <span>入力する情報は<strong>匿名化済み</strong>で、患者同意を取得済みかつ施設規則に合致していることを確認しました。</span>
+          <span>入力する情報は<strong>内科学会の指定する匿名化処理</strong>を施行済みであることを確認しました。</span>
         </label>
 
         {karteConsent ? (
