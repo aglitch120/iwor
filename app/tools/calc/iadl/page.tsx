@@ -22,7 +22,7 @@ export default function IadlPage() {
       const match = opts[scores[i]]
       return match?.includes('(1)') ? 1 : 0
     })
-    const total = vals.reduce((a,b)=>a+b,0)
+    const total = vals.reduce((a: number,b)=>a+b,0)
     let severity: 'ok'|'wn'|'dn' = 'ok'
     if (total <= 3) severity = 'dn'
     else if (total <= 5) severity = 'wn'
