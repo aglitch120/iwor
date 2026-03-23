@@ -443,10 +443,31 @@ export default function CreditsApp() {
                       {/* 今後の日程（conferences-data.tsから） */}
                       {(() => {
                         const now = new Date().toISOString().split('T')[0]
-                        const matched = CONFERENCES_2026.filter(c =>
-                          c.societyShort === specialty.name.replace('専門医','').replace('科','') ||
-                          c.society.includes(specialty.society.replace('日本','').replace('学会',''))
-                        ).filter(c => c.startDate >= now).slice(0, 3)
+                        // 専門医ID→学会shortNameのマッピング
+                        const SPEC_TO_CONF: Record<string, string[]> = {
+                          internal: ['内科'], surgery: ['外科','臨床外科','外科系連合'],
+                          pediatrics: ['小児科'], obgyn: ['産婦人科'], psychiatry: ['精神科'],
+                          dermatology: ['皮膚科'], ophthalmology: ['眼科','臨床眼科'], otolaryngology: ['耳鼻咽喉科'],
+                          urology: ['泌尿器科'], orthopedics: ['整形外科'], neurosurgery: ['脳神経外科','脳外救急'],
+                          plastic_surgery: ['形成外科'], radiology: ['放射線科'], anesthesiology: ['麻酔科'],
+                          pathology: ['病理'], clinical_lab: ['臨床検査'], emergency: ['救急科','救急'],
+                          rehabilitation: ['リハビリ'], general_practice: ['総合診療'],
+                          cardiology: ['循環器'], gastroenterology: ['消化器','JDDW','消化器内視鏡'],
+                          pulmonology: ['呼吸器'], endocrinology: ['内分泌'],
+                          nephrology: ['腎臓','WCN'], hematology: ['血液'],
+                          rheumatology: ['リウマチ'], gastro_surgery: ['消化器外科'],
+                          thoracic_surgery: ['呼吸器外科'], cardiovascular_surgery: ['心臓血管外科','胸部外科'],
+                          breast_surgery: ['乳腺外科'], infectious_disease: ['感染症'],
+                          allergy: ['アレルギー'], geriatrics: ['老年病'],
+                          neurology: ['神経内科'], diabetes: ['糖尿病'],
+                          hepatology: ['肝臓'], oncology: ['腫瘍内科'],
+                          icu: ['集中治療'],
+                        }
+                        const keywords = SPEC_TO_CONF[activeSpecId || ''] || []
+                        const matched = keywords.length > 0
+                          ? CONFERENCES_2026.filter(c => keywords.some(k => c.societyShort.includes(k) || c.society.includes(k)))
+                              .filter(c => c.startDate >= now).slice(0, 4)
+                          : []
                         if (matched.length === 0) return null
                         return (
                           <div>

@@ -93,6 +93,8 @@ const BASIC_SPECIALTIES: SpecialtyRequirement[] = [
       { id: 'academic', name: '学術業績（学会参加・発表・論文）' },
     ],
     type: 'basic',
+    hasElearning: true,
+    regionalMeetings: ['北海道','東北','関東甲信越','東海','北陸','近畿','中国','四国','九州'],
   },
   {
     id: 'pediatrics',
@@ -399,6 +401,8 @@ const SUBSPECIALTIES: SpecialtyRequirement[] = [
       { id: 'academic', name: '学術業績' },
     ],
     type: 'subspecialty',
+    hasElearning: true,
+    regionalMeetings: ['関東甲信越','近畿'],
     notes: '4回以上更新者は25単位に軽減',
   },
   {
@@ -410,6 +414,7 @@ const SUBSPECIALTIES: SpecialtyRequirement[] = [
     officialUrl: 'https://jsn.or.jp/',
     categories: JMSB_STANDARD_CATEGORIES,
     type: 'subspecialty',
+    hasElearning: true,
   },
   {
     id: 'hematology',
@@ -420,6 +425,8 @@ const SUBSPECIALTIES: SpecialtyRequirement[] = [
     officialUrl: 'https://www.jshem.or.jp/',
     categories: JMSB_STANDARD_CATEGORIES,
     type: 'subspecialty',
+    hasElearning: true,
+    regionalMeetings: ['東海','関東','近畿'],
   },
   {
     id: 'rheumatology',
@@ -430,6 +437,8 @@ const SUBSPECIALTIES: SpecialtyRequirement[] = [
     officialUrl: 'https://www.ryumachi-jp.com/',
     categories: JMSB_STANDARD_CATEGORIES,
     type: 'subspecialty',
+    hasElearning: true,
+    regionalMeetings: ['関東'],
     notes: '必須研修項目+症例報告書提出あり',
   },
   {
