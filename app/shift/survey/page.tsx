@@ -77,11 +77,73 @@ export default function SurveyPage() {
   const isExpired = survey.deadline && new Date() > new Date(survey.deadline + 'T23:59:59')
 
   if (submitted) {
+    // 当直回数から月間拘束時間を推算（モチベーション: 当直のストレスに共感）
+    const totalDays = survey ? getDaysInMonth(survey.year, survey.month) : 30
+    const freeDays = ngDays.length
+    const estimatedShifts = Math.max(2, Math.round((totalDays - freeDays) / 5))
+    const estimatedHours = estimatedShifts * 16 // 当直≒16時間
+
     return (
-      <div className="max-w-md mx-auto px-4 py-12 text-center">
-        <div className="text-4xl mb-3">✅</div>
-        <h1 className="text-lg font-bold text-tx mb-2">回答を送信しました</h1>
-        <p className="text-xs text-muted">NG日: {ngDays.length > 0 ? ngDays.sort((a, b) => a - b).join(', ') + '日' : 'なし'}</p>
+      <div className="max-w-md mx-auto px-4 py-10">
+        <div className="text-center mb-8">
+          <div className="text-4xl mb-3">✅</div>
+          <h1 className="text-lg font-bold text-tx mb-2">回答を送信しました</h1>
+          <p className="text-xs text-muted">NG日: {ngDays.length > 0 ? ngDays.sort((a, b) => a - b).join(', ') + '日' : 'なし（制限なし）'}</p>
+        </div>
+
+        {/* 価値提供: 当直の負担を可視化 → iworの他ツールへの自然な誘導 */}
+        <div className="bg-s0 border border-br rounded-xl p-4 mb-4">
+          <p className="text-xs font-bold text-tx mb-2">今月の当直、おつかれさまです</p>
+          <div className="flex gap-3 mb-3">
+            <div className="flex-1 bg-s1 rounded-lg p-2.5 text-center">
+              <p className="text-lg font-bold text-tx">{estimatedShifts}</p>
+              <p className="text-[9px] text-muted">回（推定）</p>
+            </div>
+            <div className="flex-1 bg-s1 rounded-lg p-2.5 text-center">
+              <p className="text-lg font-bold text-tx">~{estimatedHours}h</p>
+              <p className="text-[9px] text-muted">拘束時間</p>
+            </div>
+            <div className="flex-1 bg-s1 rounded-lg p-2.5 text-center">
+              <p className="text-lg font-bold text-tx">{freeDays}</p>
+              <p className="text-[9px] text-muted">NG日</p>
+            </div>
+          </div>
+          <p className="text-[10px] text-muted leading-relaxed">
+            当直中にサッと使える臨床ツール、知っていますか？
+          </p>
+        </div>
+
+        {/* iworの他機能への誘導（うざくない、価値ベース） */}
+        <div className="space-y-2">
+          <a href="/tools/calc" className="flex items-center gap-3 bg-s0 border border-br rounded-xl p-3 hover:border-ac/20 transition-all">
+            <span className="text-xl">🧮</span>
+            <div className="flex-1">
+              <p className="text-xs font-bold text-tx">臨床計算ツール 178種</p>
+              <p className="text-[10px] text-muted">eGFR・SOFA・A-DROP — 当直中にすぐ使える</p>
+            </div>
+            <span className="text-[10px] text-ac font-bold">無料 →</span>
+          </a>
+          <a href="/tools/drugs/antibiotics" className="flex items-center gap-3 bg-s0 border border-br rounded-xl p-3 hover:border-ac/20 transition-all">
+            <span className="text-xl">💊</span>
+            <div className="flex-1">
+              <p className="text-xs font-bold text-tx">抗菌薬スペクトラム</p>
+              <p className="text-[10px] text-muted">エンピリック選択に迷ったら</p>
+            </div>
+            <span className="text-[10px] text-ac font-bold">無料 →</span>
+          </a>
+          <a href="/tools/calc/gamma" className="flex items-center gap-3 bg-s0 border border-br rounded-xl p-3 hover:border-ac/20 transition-all">
+            <span className="text-xl">💉</span>
+            <div className="flex-1">
+              <p className="text-xs font-bold text-tx">γ計算</p>
+              <p className="text-[10px] text-muted">DOA・NAd・ニカルジピンの流速計算</p>
+            </div>
+            <span className="text-[10px] text-ac font-bold">無料 →</span>
+          </a>
+        </div>
+
+        <p className="text-[9px] text-muted text-center mt-6">
+          <a href="https://iwor.jp" className="text-ac hover:underline">iwor.jp</a> — 医師のためのワークスペース。登録不要・完全無料。
+        </p>
       </div>
     )
   }
