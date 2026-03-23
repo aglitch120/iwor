@@ -26,6 +26,10 @@ import { hoshasen_cards } from './data/hoshasen-cards'
 import { masui_cards } from './data/masui-cards'
 import { geka_cards } from './data/geka-cards'
 import { koshueisei_cards } from './data/koshueisei-cards'
+import { junkanki_cards } from './data/junkanki-cards'
+import { shokaki_cards } from './data/shokaki-cards'
+import { kokyuki_cards } from './data/kokyuki-cards'
+import { kantansui_cards } from './data/kantansui-cards'
 
 const TAISHA_TAGS = Array.from(new Set(TAISHA_CARDS.map(c => c.tag)))
 const SHINKEI_TAGS = Array.from(new Set(shinkei_cards.map(c => c.tag)))
@@ -48,6 +52,10 @@ const HOSHASEN_TAGS = Array.from(new Set(hoshasen_cards.map(c => c.tag)))
 const MASUI_TAGS = Array.from(new Set(masui_cards.map(c => c.tag)))
 const GEKA_TAGS = Array.from(new Set(geka_cards.map(c => c.tag)))
 const KOSHUEISEI_TAGS = Array.from(new Set(koshueisei_cards.map(c => c.tag)))
+const JUNKANKI_TAGS = Array.from(new Set(junkanki_cards.map(c => c.tag)))
+const SHOKAKI_TAGS = Array.from(new Set(shokaki_cards.map(c => c.tag)))
+const KOKYUKI_TAGS = Array.from(new Set(kokyuki_cards.map(c => c.tag)))
+const KANTANSUI_TAGS = Array.from(new Set(kantansui_cards.map(c => c.tag)))
 
 // ── 型定義 ──
 
@@ -335,6 +343,50 @@ const DEFAULT_DECKS: Deck[] = [
     description: '公衆衛生 35問（国試逆算設計）',
     cards: koshueisei_cards,
     tags: KOSHUEISEI_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-junkanki',
+    name: '循環器',
+    emoji: '❤️',
+    description: '循環器 63問（国試逆算設計v2）',
+    cards: junkanki_cards as any as FlashCard[],
+    tags: JUNKANKI_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-kokyuki',
+    name: '呼吸器',
+    emoji: '🫁',
+    description: '呼吸器 63問（国試逆算設計）',
+    cards: kokyuki_cards as any as FlashCard[],
+    tags: KOKYUKI_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-shokaki',
+    name: '消化器',
+    emoji: '🫄',
+    description: '消化器 64問（国試逆算設計）',
+    cards: shokaki_cards as any as FlashCard[],
+    tags: SHOKAKI_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-kantansui',
+    name: '肝胆膵',
+    emoji: '🟤',
+    description: '肝胆膵 55問（国試逆算設計）',
+    cards: kantansui_cards as any as FlashCard[],
+    tags: KANTANSUI_TAGS,
     isDefault: true,
     createdAt: '2026-03-23T00:00:00Z',
     updatedAt: '2026-03-23T00:00:00Z',
