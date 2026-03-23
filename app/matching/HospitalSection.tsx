@@ -246,7 +246,27 @@ export default function HospitalTab({
                 )}
               </div>
               <div className="space-y-2">
-                {HOSPITALS.filter(h => h.vacancy > 0).sort((a, b) => b.vacancy - a.vacancy).slice(0, 3).map((h, i) => (
+                {(() => {
+                  // プロフィールベースのスコアリング
+                  const scored = HOSPITALS.map(h => {
+                    let score = 0
+                    // 地域マッチ（最重要）
+                    const region = PREF_TO_REGION[h.prefecture]
+                    if (profile.preferredRegions?.length > 0 && region && profile.preferredRegions.includes(region)) score += 40
+                    // 穴場度（空席+低倍率）
+                    if (h.vacancy > 0) score += 15
+                    if (h.popularity < 2.0) score += 10
+                    else if (h.popularity < 3.0) score += 5
+                    // マッチ率
+                    if (h.matchRate >= 90) score += 10
+                    else if (h.matchRate >= 70) score += 5
+                    // 大学病院 vs 市中（キャリアタイプによる）
+                    if (h.isUniversity && profile.preferredSpecialty && ['研究','基礎研究'].some(k => (profile.research || '').includes(k))) score += 10
+                    if (!h.isUniversity) score += 3 // 市中は一般的にマッチしやすい
+                    return { hospital: h, score }
+                  }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3)
+                  return scored
+                })().map(({ hospital: h, score }, i) => (
                   <div key={h.id} className="relative">
                     <div className={`flex items-center justify-between py-2.5 px-3 rounded-lg bg-white/80 border border-white ${!isPro ? 'select-none' : ''}`}>
                       <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -888,6 +908,12 @@ function MatchProbabilityCard({
               {result.recommendation}
             </p>
           </div>
+
+          {/* 但し書き */}
+          <p className="text-[9px] text-muted leading-relaxed mt-2">
+            ※ この確率は過去のマッチングデータ（倍率・空席率）に基づく統計的な推定値であり、個人の能力・面接力・筆記試験の結果等は考慮されていません。
+            実際のマッチング結果を保証するものではありません。iwor独自の算出です。
+          </p>
         </div>
       )}
     </div>

@@ -75,7 +75,7 @@ export function calculateMatchProbability(
     (acc, h) => acc * (1 - h.probability / 100),
     1
   )
-  const totalProbability = Math.round((1 - allFailProb) * 1000) / 10
+  const totalProbability = Math.min(Math.round((1 - allFailProb) * 1000) / 10, 95)
 
   // 安全度判定
   let safetyLevel: MatchProbabilityResult['safetyLevel']

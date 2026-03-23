@@ -278,11 +278,18 @@ export default function ProfileWizard({
                         university: stored.university || '',
                         graduationYear: stored.graduationYear || '',
                         preferredSpecialty: answers['specialty']?.choices?.[0] || stored.preferredSpecialty || '',
+                        preferredRegions: answers['regions']?.choices || stored.preferredRegions || [],
+                        medicalInterests: answers['medical-interests']?.choices || [],
+                        careerTypes: answers['career-type']?.choices || [],
                         strengthsList: answers['strengths']?.choices || [],
-                        strengthsEpisode: answers['strengths-episode']?.freeText || '',
+                        strengthsEpisode: answers['strengths']?.freeText || '',
                         motivation: answers['doctor-reason']?.freeText || answers['doctor-reason']?.choices?.join('、') || '',
+                        doctorTrigger: answers['doctor-reason']?.choices?.join('、') || '',
                         clubs: answers['activity']?.choices?.join('、') || '',
-                        goal5y: answers['future-5y']?.choices?.[0] || '',
+                        qualifications: answers['qualifications']?.freeText || '',
+                        goal5y: answers['future-5y']?.freeText || '',
+                        workStyle: answers['work-style']?.choices || [],
+                        workplaceAtmosphere: answers['workplace']?.choices || [],
                       }
 
                       // AI自己PR生成（バックグラウンド）

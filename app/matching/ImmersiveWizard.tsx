@@ -8,24 +8,44 @@ interface Answer { choices: string[]; freeText: string }
 
 // ── 全質問定義 ──
 const STEPS = [
+  // ── 基本情報 ──
   { id: 'basic', icon: '👤', question: '基本情報を教えてください', sub: '履歴書に必要な情報です', type: 'basic' as const },
+  // ── 志望 ──
   { id: 'specialty', icon: '🏥', question: '志望する診療科は？', sub: '複数選択可（まだ決まっていなくてもOK）',
     choices: ['内科','外科','小児科','産婦人科','整形外科','脳神経外科','皮膚科','眼科','耳鼻咽喉科','泌尿器科','精神科','放射線科','麻酔科','救急科','総合診療科','未定'],
     maxChoices: 3, freeLabel: '志望理由を一言で', type: 'choice' as const },
+  { id: 'regions', icon: '📍', question: '希望する研修地域は？', sub: '複数選択可',
+    choices: ['北海道','東北','関東','中部','近畿','中国','四国','九州・沖縄'],
+    maxChoices: 4, freeLabel: '', type: 'choice' as const },
+  { id: 'medical-interests', icon: '🔬', question: '興味のある医療分野は？', sub: '病院選びの参考になります',
+    choices: ['急性期','慢性期','予防医学','緩和医療','集中治療','手術・処置中心','診断中心'],
+    maxChoices: 3, freeLabel: '', type: 'choice' as const },
+  // ── 自己分析 ──
   { id: 'doctor-reason', icon: '💡', question: '医師を目指したきっかけは？', sub: '面接で最も聞かれる質問です',
     choices: ['家族や身近な人の病気がきっかけ', '医師の姿に感動した', '科学・人体への純粋な興味', '人の苦しみに寄り添いたい', '社会的に意義のある仕事がしたい', '家族が医療従事者だった', 'なんとなく・周囲の影響'],
     maxChoices: 2, freeLabel: 'もう少し具体的に（面接ではここを掘られます）', type: 'choice' as const },
   { id: 'strengths', icon: '💪', question: '自分の一番の武器は？', sub: '自己PRの核になります',
     choices: ['粘り強さ・諦めない', '共感力・傾聴力', 'リーダーシップ', '冷静な判断力', 'コミュニケーション力', '好奇心・学習意欲', '協調性・チームワーク', '行動力・実行力'],
     maxChoices: 2, freeLabel: 'その強みを発揮したエピソード', type: 'choice' as const },
-  { id: 'strengths-episode', icon: '📖', question: 'その強みが試された場面は？', sub: '面接で掘り下げられるポイントです',
-    freeLabel: '部活・実習・アルバイトなど、具体的なエピソードを記入', type: 'freeonly' as const },
   { id: 'activity', icon: '🏃', question: '大学時代に力を入れたことは？', sub: '面接で必ず聞かれます',
     choices: ['運動部', '文化部', '研究室・ラボ', 'アルバイト', 'ボランティア', '学生団体', '留学・海外経験', '資格取得'],
-    maxChoices: 3, freeLabel: '具体的な内容・学んだこと', type: 'choice' as const },
+    maxChoices: 3, freeLabel: '具体的な内容・役割・学んだこと', type: 'choice' as const },
+  { id: 'qualifications', icon: '📜', question: '資格・語学・研究経験は？', sub: '任意。あれば記入',
+    freeLabel: '例: TOEIC 800 / 基礎研究（免疫学）/ 普通自動車免許', type: 'freeonly' as const },
+  // ── キャリアビジョン ──
+  { id: 'career-type', icon: '🧭', question: '目指す医師像は？', sub: '将来のキャリアの方向性',
+    choices: ['スペシャリスト型','ジェネラリスト型','研究・臨床両立型','教育・指導医型','地域医療型','グローバル型','医療×IT型'],
+    maxChoices: 2, freeLabel: '', type: 'choice' as const },
   { id: 'future-5y', icon: '🔮', question: '5年後、どんな医師でいたい？', sub: '志望科・研修先選びの軸になります',
-    choices: ['専門性を極めるスペシャリスト', '何でも診れるジェネラリスト', '研究と臨床を両立', '教育・後輩指導に力を入れる', '地域の患者に寄り添う', '最先端医療・イノベーション', '国際的に活躍', 'まだ明確ではない'],
-    maxChoices: 2, freeLabel: '具体的なイメージがあれば', type: 'choice' as const },
+    freeLabel: '例: 循環器の専門医を取得し、カテーテル治療ができる医師になりたい', type: 'freeonly' as const },
+  // ── ライフスタイル ──
+  { id: 'work-style', icon: '⚖️', question: '希望する働き方は？', sub: '病院マッチングの参考に',
+    choices: ['規則的な勤務','フレックス制','当直含む','残業少ない','土日休み'],
+    maxChoices: 3, freeLabel: '', type: 'choice' as const },
+  { id: 'workplace', icon: '🏛️', question: '理想の研修環境は？', sub: '雰囲気・指導体制',
+    choices: ['活気がある','落ち着いている','フランクな雰囲気','協調性が高い','個人裁量が大きい','手厚い指導'],
+    maxChoices: 3, freeLabel: '', type: 'choice' as const },
+  // ── まとめ ──
   { id: 'catchphrase', icon: '🎯', question: 'あなたを一言で表すと？', sub: '面接の自己紹介で使える「キャッチフレーズ」です',
     freeLabel: '例: 「患者の人生に寄り添う医師」「最後まで粘る医師」', type: 'freeonly' as const },
 ]
