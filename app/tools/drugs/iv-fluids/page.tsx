@@ -107,6 +107,21 @@ const fluidGroups: FluidGroup[] = [
       '※4 クエン酸 14mEq/L、P 10mmol/L、Zn 5μmol/L',
     ],
   },
+  {
+    id: 'glucose',
+    title: '糖質輸液（4号液含む）',
+    description: '電解質を含まない自由水補充。高Na血症の補正、禁食時のカロリー投与、低血糖補正に使用。',
+    color: 'bg-purple-50',
+    fluids: [
+      { name: '大塚糖液5%', generic: '5%ブドウ糖液', brand: '大塚製薬', volume: '100/250/500', na: '-', k: '-', ca: '-', mg: '-', cl: '-', lactate: '-', acetate: '-', phosphate: '-', glucose: 5, note: '自由水補充の基本製剤' },
+      { name: 'ブドウ糖注射液5%「テルモ」', generic: '5%ブドウ糖液', brand: 'テルモ', volume: '100/250/500', na: '-', k: '-', ca: '-', mg: '-', cl: '-', lactate: '-', acetate: '-', phosphate: '-', glucose: 5 },
+      { name: '大塚糖液10%', generic: '10%ブドウ糖液', brand: '大塚製薬', volume: '20/200/500', na: '-', k: '-', ca: '-', mg: '-', cl: '-', lactate: '-', acetate: '-', phosphate: '-', glucose: 10 },
+      { name: '大塚糖液20%', generic: '20%ブドウ糖液', brand: '大塚製薬', volume: '20/500', na: '-', k: '-', ca: '-', mg: '-', cl: '-', lactate: '-', acetate: '-', phosphate: '-', glucose: 20 },
+      { name: '大塚糖液50%', generic: '50%ブドウ糖液', brand: '大塚製薬', volume: '20', na: '-', k: '-', ca: '-', mg: '-', cl: '-', lactate: '-', acetate: '-', phosphate: '-', glucose: 50, note: '低血糖時 40mL静注' },
+      { name: 'ソリタ-T4号輸液', generic: '4号液(術後回復液)', brand: 'AY/陽進堂', volume: '500', na: 30, k: '-', ca: '-', mg: '-', cl: 20, lactate: 10, acetate: '-', phosphate: '-', glucose: 4.3 },
+      { name: 'KN4号輸液', generic: '4号液(術後回復液)', brand: '大塚製薬', volume: '500', na: 26, k: '-', ca: '-', mg: '-', cl: 26, lactate: '-', acetate: '-', phosphate: '-', glucose: 5 },
+    ],
+  },
 ]
 
 // ── コンポーネント ──
@@ -189,7 +204,7 @@ export default function IVFluidsPage() {
           <h1 className="text-2xl font-bold text-tx mb-1 flex-1">輸液製剤 一覧</h1>
           <FavoriteButton slug="iv-fluids" title="輸液製剤 一覧" href="/tools/drugs/iv-fluids" type="drugs" />
         </div>
-        <p className="text-sm text-muted">細胞外液補充液・1号液（開始液）・2号液（脱水補給液）・3号液（維持液）の電解質組成と糖質濃度。電解質はmEq/L表記。</p>
+        <p className="text-sm text-muted">細胞外液補充液・1号液（開始液）・2号液（脱水補給液）・3号液（維持液）・糖質輸液（4号液含む）の電解質組成と糖質濃度。電解質はmEq/L表記。</p>
         <UpdatedAt />
       </header>
 
@@ -218,6 +233,7 @@ export default function IVFluidsPage() {
           <li><strong className="text-tx">1号液（開始液）:</strong> K非含有。腎機能不明時の初期輸液。</li>
           <li><strong className="text-tx">2号液（脱水補給液）:</strong> K含有。脱水の補正。腎機能確認後。</li>
           <li><strong className="text-tx">3号液（維持液）:</strong> 1日の水分・電解質維持。最も汎用。</li>
+          <li><strong className="text-tx">糖質輸液:</strong> 5%ブドウ糖液は自由水補充（高Na血症）。50%は低血糖緊急補正。4号液は術後回復期。</li>
         </ul>
       </div>
 
@@ -235,6 +251,8 @@ export default function IVFluidsPage() {
             { href: '/tools/calc/drip-rate', name: '点滴速度計算' },
             { href: '/tools/calc/na-deficit', name: 'Na欠乏量' },
             { href: '/tools/calc/free-water-deficit', name: '自由水欠乏量' },
+            { href: '/tools/calc/corrected-na-glucose', name: '補正Na（高血糖）' },
+            { href: '/tools/calc/gir', name: 'GIR（糖注入速度）' },
             { href: '/tools/calc/parkland', name: 'Parkland式' },
             { href: '/tools/calc/holiday-segar', name: 'Holiday-Segar式' },
           ].map(t => (
