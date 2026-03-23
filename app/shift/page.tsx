@@ -324,14 +324,27 @@ const DOCTOR_COLORS = [
 // ─── Steps ───
 type Step = 'setup' | 'config' | 'doctors' | 'preferences' | 'result'
 
+const DRAFT_KEY = 'iwor_shift_draft'
+
+function saveDraft(data: any) {
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)) } catch {}
+}
+function loadDraft(): any {
+  try { const raw = localStorage.getItem(DRAFT_KEY); return raw ? JSON.parse(raw) : null } catch { return null }
+}
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY) } catch {}
+}
+
 export default function ShiftPage() {
   const [step, setStep] = useState<Step>('setup')
   const [groupName, setGroupName] = useState('')
   const [year, setYear] = useState(new Date().getFullYear())
-  const [month, setMonth] = useState(new Date().getMonth() + 2 > 12 ? 1 : new Date().getMonth() + 2) // default: next month
+  const [month, setMonth] = useState(new Date().getMonth() + 2 > 12 ? 1 : new Date().getMonth() + 2)
   const [doctors, setDoctors] = useState<Doctor[]>([])
   const [categories, setCategories] = useState<DutyCategory[]>(DEFAULT_CATEGORIES)
   const [slotConfigs, setSlotConfigs] = useState<SlotConfig[]>(buildDefaultSlotConfigs(DEFAULT_CATEGORIES))
+  const [hasDraft, setHasDraft] = useState(false)
   const [newDoctorName, setNewDoctorName] = useState('')
   const [assignments, setAssignments] = useState<Record<string, string[]>>({})
   const [editingDay, setEditingDay] = useState<number | null>(null)
@@ -347,8 +360,14 @@ export default function ShiftPage() {
   const [surveyCopied, setSurveyCopied] = useState('')
   const [surveyLoading, setSurveyLoading] = useState(false)
 
-  // Check URL for shared data on mount
+  // Check URL for shared data or draft on mount
   useEffect(() => {
+    // ドラフト復元チェック
+    const draft = loadDraft()
+    if (draft && !window.location.hash.slice(1)) {
+      setHasDraft(true)
+    }
+
     const hash = window.location.hash.slice(1)
     if (hash) {
       const data = decompressData(hash)
@@ -408,6 +427,7 @@ export default function ShiftPage() {
     const result = autoAssign(data)
     setAssignments(result)
     setStep('result')
+    clearDraft() // 生成完了→ドラフト削除
   }
 
   const handleRegenerate = () => {
@@ -550,6 +570,42 @@ export default function ShiftPage() {
         <p>🔒 データはお使いの端末にのみ保存され、サーバーには送信されません。</p>
         <p>💡 病院名・医師名が気になる場合はイニシャルや略称でもOKです。</p>
       </div>
+
+      {/* ドラフト復元バナー */}
+      {hasDraft && (
+        <div className="bg-acl border border-ac/20 rounded-xl p-4 mb-4">
+          <p className="text-xs font-bold text-ac mb-1">作成中のシフトがあります</p>
+          <p className="text-[10px] text-muted mb-2">アンケート回答待ちの状態から再開できます</p>
+          <div className="flex gap-2">
+            <button onClick={() => {
+              const draft = loadDraft()
+              if (draft) {
+                setGroupName(draft.groupName || '')
+                setYear(draft.year || year)
+                setMonth(draft.month || month)
+                setDoctors((draft.doctors || []).map((d: any) => ({ ...d, ngDays: d.ngDays || [] })))
+                if (draft.categories) setCategories(draft.categories)
+                if (draft.slotConfigs) setSlotConfigs(draft.slotConfigs)
+                if (draft.saturdayMode) setSaturdayMode(draft.saturdayMode)
+                if (draft.defaultMinInterval) setDefaultMinInterval(draft.defaultMinInterval)
+                if (draft.surveyId) setSurveyId(draft.surveyId)
+                if (draft.surveyUrls) setSurveyUrls(draft.surveyUrls)
+                if (draft.surveyPassword) setSurveyPassword(draft.surveyPassword)
+                setStep('doctors')
+                setHasDraft(false)
+              }
+            }}
+              className="flex-1 py-2 rounded-lg text-xs font-bold text-white" style={{ background: '#1B4F3A' }}>
+              再開する
+            </button>
+            <button onClick={() => { clearDraft(); setHasDraft(false) }}
+              className="px-4 py-2 rounded-lg text-xs font-medium border border-br text-muted">
+              破棄
+            </button>
+          </div>
+        </div>
+      )}
+
       {renderStepIndicator()}
 
       <div className="space-y-4">
@@ -840,6 +896,13 @@ export default function ShiftPage() {
                     setSurveyId(data.surveyId)
                     if (data.urls) {
                       setSurveyUrls(data.urls)
+                      // ドラフト保存（後日復帰用）
+                      saveDraft({
+                        step: 'doctors', groupName, year, month,
+                        doctors: doctors.map(d => ({ id: d.id, name: d.name, weight: d.weight, minInterval: d.minInterval, categoryIds: d.categoryIds, ngDays: d.ngDays })),
+                        categories, slotConfigs, saturdayMode, defaultMinInterval,
+                        surveyId: data.surveyId, surveyUrls: data.urls, surveyPassword,
+                      })
                     }
                   }
                 } catch {}
@@ -906,6 +969,7 @@ export default function ShiftPage() {
                       })
                       setDoctors(updated)
                       setStep('preferences')
+                      clearDraft()
                     }
                   } catch {}
                   setSurveyLoading(false)
