@@ -360,8 +360,41 @@ export default function ShiftPage() {
   const [surveyCopied, setSurveyCopied] = useState('')
   const [surveyLoading, setSurveyLoading] = useState(false)
 
-  // Check URL for shared data or draft on mount
+  // Check URL for shared data, admin recovery, or draft on mount
   useEffect(() => {
+    // URLパラメータからadmin surveyId復元（キャッシュクリア対策）
+    const params = new URLSearchParams(window.location.search)
+    const adminSurveyId = params.get('admin')
+    if (adminSurveyId) {
+      // KVからsurvey情報を取得して復元
+      fetch(`${API}/api/shift/survey/results`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ surveyId: adminSurveyId }),
+      }).then(r => r.json()).then(data => {
+        if (data.ok && data.survey) {
+          const s = data.survey
+          setGroupName(s.groupName || '')
+          setYear(s.year || year)
+          setMonth(s.month || month)
+          setSurveyId(adminSurveyId)
+          const docs = (s.doctors || []).map((d: any) => ({
+            id: d.id, name: d.name, ngDays: s.responses?.[d.id]?.ngDays || [],
+            weight: 1.0, minInterval: 2, categoryIds: [],
+          }))
+          setDoctors(docs)
+          // URLリスト復元
+          const urls = (s.doctors || []).map((d: any) => ({
+            doctorId: d.id, name: d.name,
+            url: `${window.location.origin}/shift/survey?id=${adminSurveyId}&token=${d.token || ''}`,
+          }))
+          setSurveyUrls(urls)
+          setStep('doctors')
+        }
+      }).catch(() => {})
+      return
+    }
+
     // ドラフト復元チェック
     const draft = loadDraft()
     if (draft && !window.location.hash.slice(1)) {
@@ -897,12 +930,16 @@ export default function ShiftPage() {
                     if (data.urls) {
                       setSurveyUrls(data.urls)
                       // ドラフト保存（後日復帰用）
-                      saveDraft({
+                      const draftData = {
                         step: 'doctors', groupName, year, month,
                         doctors: doctors.map(d => ({ id: d.id, name: d.name, weight: d.weight, minInterval: d.minInterval, categoryIds: d.categoryIds, ngDays: d.ngDays })),
                         categories, slotConfigs, saturdayMode, defaultMinInterval,
                         surveyId: data.surveyId, surveyUrls: data.urls, surveyPassword,
-                      })
+                      }
+                      saveDraft(draftData)
+                      // URLにsurveyIdを含める（キャッシュクリア対策）
+                      const adminUrl = `${window.location.origin}/shift?admin=${data.surveyId}`
+                      history.replaceState(null, '', `?admin=${data.surveyId}`)
                     }
                   }
                 } catch {}
@@ -946,6 +983,20 @@ export default function ShiftPage() {
                   className="w-full py-2 rounded-lg text-[11px] font-bold border border-ac/30 text-ac hover:bg-white transition-all">
                   {surveyCopied === 'all' ? '✓ コピー済み' : '全員分をまとめてコピー'}
                 </button>
+                <div className="bg-white/50 rounded-lg p-2 mt-1">
+                  <p className="text-[9px] text-muted mb-1">管理者用復帰URL（ブックマーク推奨）:</p>
+                  <div className="flex gap-1 items-center">
+                    <input readOnly value={`${typeof window !== 'undefined' ? window.location.origin : ''}/shift?admin=${surveyId}`}
+                      className="flex-1 text-[8px] bg-white border border-br rounded px-1.5 py-1 truncate" />
+                    <button onClick={() => {
+                      navigator.clipboard.writeText(`${window.location.origin}/shift?admin=${surveyId}`)
+                      setSurveyCopied('admin'); setTimeout(() => setSurveyCopied(''), 2000)
+                    }} className="text-[8px] font-bold px-2 py-1 rounded shrink-0" style={{ background: surveyCopied === 'admin' ? '#166534' : '#1B4F3A', color: '#fff' }}>
+                      {surveyCopied === 'admin' ? '✓' : 'コピー'}
+                    </button>
+                  </div>
+                  <p className="text-[8px] text-muted mt-0.5">⚠️ このURLをブックマークしておけば、ブラウザキャッシュクリアしても復帰できます</p>
+                </div>
                 <button onClick={async () => {
                   setSurveyLoading(true)
                   try {
