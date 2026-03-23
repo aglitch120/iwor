@@ -478,7 +478,11 @@ export default function ShiftPage() {
     <main className="max-w-lg mx-auto px-4 py-8">
       <Breadcrumb />
       <h1 className="text-2xl font-bold text-tx mb-1">当直シフト作成</h1>
-      <p className="text-sm text-muted mb-6">ブラウザ完結・登録不要・完全無料</p>
+      <p className="text-sm text-muted mb-2">ブラウザ完結・登録不要・完全無料</p>
+      <div className="bg-s1 rounded-lg p-2.5 mb-6 text-[10px] text-muted leading-relaxed space-y-0.5">
+        <p>🔒 データはお使いの端末にのみ保存され、サーバーには送信されません。</p>
+        <p>💡 病院名・医師名が気になる場合はイニシャルや略称でもOKです。</p>
+      </div>
       {renderStepIndicator()}
 
       <div className="space-y-4">
