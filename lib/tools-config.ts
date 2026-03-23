@@ -1275,6 +1275,13 @@ export const implementedTools = new Set(['gamma', 'egfr', 'cha2ds2-vasc', 'chads
   'prescription-days', 'tidal-volume', 'insensible-loss',
   '4t-score', 'sdai', 'aldrete', 'mmse',
   'legionella-score', 'bsfs', 'oakland',
+  // 2026-03-23 追加 (第2弾)
+  'anemia-criteria', 'ctcae', 'sjs-ten-dihs', 'ddw-j-dili', 'recam-j',
+  'extravasation', 'restrictive-transfusion', 'dic-comprehensive',
+  'tokyo-cholangitis', 'tokyo-cholecystitis', 'pancreatitis-prognostic', 'pancreatitis-ct',
+  'mayo-uc', 'hisayama', 'failure-mnemonic', 'itp-criteria',
+  'migraine-criteria', 'mrc-scale', 'iadl', 'obesity-class',
+  'low-back-red-flags', 'pneumothorax-class', 'kyoto-classification', 'gastric-risk',
 ])
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
