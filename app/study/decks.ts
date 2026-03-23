@@ -22,6 +22,8 @@ import { seishin_cards } from './data/seishin-cards'
 import { hifu_cards } from './data/hifu-cards'
 import { ganka_cards } from './data/ganka-cards'
 import { jibi_cards } from './data/jibi-cards'
+import { hoshasen_cards } from './data/hoshasen-cards'
+import { masui_cards } from './data/masui-cards'
 
 const TAISHA_TAGS = Array.from(new Set(TAISHA_CARDS.map(c => c.tag)))
 const SHINKEI_TAGS = Array.from(new Set(shinkei_cards.map(c => c.tag)))
@@ -40,6 +42,8 @@ const SEISHIN_TAGS = Array.from(new Set(seishin_cards.map(c => c.tag)))
 const HIFU_TAGS = Array.from(new Set(hifu_cards.map(c => c.tag)))
 const GANKA_TAGS = Array.from(new Set(ganka_cards.map(c => c.tag)))
 const JIBI_TAGS = Array.from(new Set(jibi_cards.map(c => c.tag)))
+const HOSHASEN_TAGS = Array.from(new Set(hoshasen_cards.map(c => c.tag)))
+const MASUI_TAGS = Array.from(new Set(masui_cards.map(c => c.tag)))
 
 // ── 型定義 ──
 
@@ -283,6 +287,28 @@ const DEFAULT_DECKS: Deck[] = [
     description: '耳鼻咽喉科 18問（国試逆算設計）',
     cards: jibi_cards,
     tags: JIBI_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-hoshasen',
+    name: '放射線科',
+    emoji: '☢️',
+    description: '放射線科 12問（国試逆算設計）',
+    cards: hoshasen_cards,
+    tags: HOSHASEN_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-masui',
+    name: '麻酔科',
+    emoji: '💉',
+    description: '麻酔科 8問（国試逆算設計）',
+    cards: masui_cards,
+    tags: MASUI_TAGS,
     isDefault: true,
     createdAt: '2026-03-23T00:00:00Z',
     updatedAt: '2026-03-23T00:00:00Z',
