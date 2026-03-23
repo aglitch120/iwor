@@ -276,9 +276,9 @@ export default function ShiftPage() {
   const [selectedDocId, setSelectedDocId] = useState('')
   const [defaultMinInterval, setDefaultMinInterval] = useState(2)
   const [surveyPassword, setSurveyPassword] = useState('')
-  const [surveyUrl, setSurveyUrl] = useState('')
+  const [surveyUrls, setSurveyUrls] = useState<{ doctorId: string; name: string; url: string }[]>([])
   const [surveyId, setSurveyId] = useState('')
-  const [surveyCopied, setSurveyCopied] = useState(false)
+  const [surveyCopied, setSurveyCopied] = useState('')
 
   // Check URL for shared data on mount
   useEffect(() => {
@@ -711,8 +711,11 @@ export default function ShiftPage() {
                   })
                   const data = await res.json()
                   if (data.ok) {
-                    setSurveyUrl(data.url)
                     setSurveyId(data.surveyId)
+                    // 個別トークン方式: urlsは医師ごとのURL配列
+                    if (data.urls) {
+                      setSurveyUrls(data.urls)
+                    }
                   }
                 } catch {}
               }}
@@ -729,18 +732,31 @@ export default function ShiftPage() {
                 placeholder="設定しない場合は空欄"
                 className="w-full px-3 py-2 border border-br rounded-lg text-xs bg-bg outline-none focus:border-ac" />
             </div>
-            {/* アンケートURL表示 */}
-            {surveyUrl && (
-              <div className="bg-acl border border-ac/20 rounded-xl p-3">
-                <p className="text-[10px] font-bold text-ac mb-1">アンケートURL生成完了</p>
-                <div className="flex gap-2 items-center">
-                  <input readOnly value={surveyUrl} className="flex-1 text-[10px] bg-white border border-br rounded px-2 py-1.5 truncate" />
-                  <button onClick={() => { navigator.clipboard.writeText(surveyUrl); setSurveyCopied(true); setTimeout(() => setSurveyCopied(false), 2000) }}
-                    className="text-[10px] font-bold text-white px-3 py-1.5 rounded-lg shrink-0" style={{ background: '#1B4F3A' }}>
-                    {surveyCopied ? '✓' : 'コピー'}
-                  </button>
+            {/* 個別アンケートURL表示 */}
+            {surveyUrls.length > 0 && (
+              <div className="bg-acl border border-ac/20 rounded-xl p-3 space-y-2">
+                <p className="text-[10px] font-bold text-ac">個別URLを各医師に送信してください</p>
+                <p className="text-[9px] text-muted">各URLは本人専用です。回答は1回限り。期限: 7日後</p>
+                <div className="space-y-1.5">
+                  {surveyUrls.map(u => (
+                    <div key={u.doctorId} className="flex items-center gap-2 bg-white rounded-lg px-2 py-1.5 border border-br">
+                      <span className="text-[10px] font-bold text-tx w-16 truncate">{u.name}</span>
+                      <input readOnly value={u.url} className="flex-1 text-[9px] bg-transparent truncate outline-none text-muted" />
+                      <button onClick={() => { navigator.clipboard.writeText(u.url); setSurveyCopied(u.doctorId); setTimeout(() => setSurveyCopied(''), 2000) }}
+                        className="text-[9px] font-bold px-2 py-1 rounded shrink-0" style={{ background: surveyCopied === u.doctorId ? '#166534' : '#1B4F3A', color: '#fff' }}>
+                        {surveyCopied === u.doctorId ? '✓' : 'コピー'}
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <p className="text-[9px] text-muted mt-1.5">LINE・メール・Slackで共有してください。回答期限: 7日後</p>
+                <button onClick={() => {
+                  const text = surveyUrls.map(u => `${u.name}さん: ${u.url}`).join('\n')
+                  navigator.clipboard.writeText(text)
+                  setSurveyCopied('all'); setTimeout(() => setSurveyCopied(''), 2000)
+                }}
+                  className="w-full py-2 rounded-lg text-[11px] font-bold border border-ac/30 text-ac hover:bg-white transition-all">
+                  {surveyCopied === 'all' ? '✓ コピー済み' : '全員分をまとめてコピー'}
+                </button>
                 <button onClick={async () => {
                   try {
                     const res = await fetch(`${API}/api/shift/survey/results`, {
