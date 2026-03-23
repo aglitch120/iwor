@@ -10,12 +10,14 @@ import { shinkei_cards } from './data/shinkei-cards'
 import { jinzo_cards } from './data/jinzo-cards'
 import { ketsueki_cards } from './data/ketsueki-cards'
 import { kansensho_cards } from './data/kansensho-cards'
+import { meneki_cards } from './data/meneki-cards'
 
 const TAISHA_TAGS = Array.from(new Set(TAISHA_CARDS.map(c => c.tag)))
 const SHINKEI_TAGS = Array.from(new Set(shinkei_cards.map(c => c.tag)))
 const JINZO_TAGS = Array.from(new Set(jinzo_cards.map(c => c.tag)))
 const KETSUEKI_TAGS = Array.from(new Set(ketsueki_cards.map(c => c.tag)))
 const KANSENSHO_TAGS = Array.from(new Set(kansensho_cards.map(c => c.tag)))
+const MENEKI_TAGS = Array.from(new Set(meneki_cards.map(c => c.tag)))
 
 // ── 型定義 ──
 
@@ -127,6 +129,17 @@ const DEFAULT_DECKS: Deck[] = [
     description: '内科専門医試験 感染症領域 50問（国試逆算設計）',
     cards: kansensho_cards,
     tags: KANSENSHO_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-meneki',
+    name: '自己免疫',
+    emoji: '🛡️',
+    description: '内科専門医試験 自己免疫疾患 25問（国試逆算設計）',
+    cards: meneki_cards,
+    tags: MENEKI_TAGS,
     isDefault: true,
     createdAt: '2026-03-23T00:00:00Z',
     updatedAt: '2026-03-23T00:00:00Z',
