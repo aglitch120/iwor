@@ -113,37 +113,70 @@ export default function SurveyPage() {
           </p>
         </div>
 
-        {/* iworの他機能への誘導（うざくない、価値ベース） */}
-        <div className="space-y-2">
-          <a href="/tools/calc" className="flex items-center gap-3 bg-s0 border border-br rounded-xl p-3 hover:border-ac/20 transition-all">
-            <span className="text-xl">🧮</span>
-            <div className="flex-1">
-              <p className="text-xs font-bold text-tx">臨床計算ツール 178種</p>
-              <p className="text-[10px] text-muted">eGFR・SOFA・A-DROP — 当直中にすぐ使える</p>
-            </div>
-            <span className="text-[10px] text-ac font-bold">無料 →</span>
-          </a>
-          <a href="/tools/drugs/antibiotics" className="flex items-center gap-3 bg-s0 border border-br rounded-xl p-3 hover:border-ac/20 transition-all">
-            <span className="text-xl">💊</span>
-            <div className="flex-1">
-              <p className="text-xs font-bold text-tx">抗菌薬スペクトラム</p>
-              <p className="text-[10px] text-muted">エンピリック選択に迷ったら</p>
-            </div>
-            <span className="text-[10px] text-ac font-bold">無料 →</span>
-          </a>
-          <a href="/tools/calc/gamma" className="flex items-center gap-3 bg-s0 border border-br rounded-xl p-3 hover:border-ac/20 transition-all">
-            <span className="text-xl">💉</span>
-            <div className="flex-1">
-              <p className="text-xs font-bold text-tx">γ計算</p>
-              <p className="text-[10px] text-muted">DOA・NAd・ニカルジピンの流速計算</p>
-            </div>
-            <span className="text-[10px] text-ac font-bold">無料 →</span>
-          </a>
+        {/* iworの全機能への誘導 */}
+        <div className="mb-4">
+          <p className="text-[10px] font-bold text-tx mb-0.5">当直をもっとラクに</p>
+          <p className="text-[9px] text-muted mb-2">医師が当直中・日常で使えるツールが全部無料</p>
         </div>
 
-        <p className="text-[9px] text-muted text-center mt-6">
-          <a href="https://iwor.jp" className="text-ac hover:underline">iwor.jp</a> — 医師のためのワークスペース。登録不要・完全無料。
-        </p>
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          {[
+            { href: '/tools/calc', icon: '🧮', name: '臨床計算 178種', sub: 'eGFR・SOFA・A-DROP' },
+            { href: '/tools/drugs', icon: '💊', name: '薬剤ガイド', sub: '抗菌薬・ステロイド換算' },
+            { href: '/tools/calc/gamma', icon: '💉', name: 'γ計算', sub: 'DOA・NAd流速計算' },
+            { href: '/journal', icon: '📰', name: '論文フィード', sub: '211誌を日本語で毎日配信' },
+            { href: '/conferences', icon: '📅', name: '学会カレンダー', sub: '143学会の日程一覧' },
+            { href: '/credits', icon: '🏅', name: '専門医単位', sub: '更新単位をカウント&管理' },
+            { href: '/study', icon: '📖', name: 'Study', sub: '医学フラッシュカード' },
+            { href: '/presenter', icon: '🎤', name: 'プレゼン資料', sub: '抄読会スライドを即作成' },
+          ].map(app => (
+            <a key={app.href} href={app.href}
+              className="flex items-center gap-2 bg-s0 border border-br rounded-xl p-2.5 hover:border-ac/20 transition-all">
+              <span className="text-lg flex-shrink-0">{app.icon}</span>
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold text-tx truncate">{app.name}</p>
+                <p className="text-[9px] text-muted truncate">{app.sub}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          {[
+            { href: '/shift', icon: '⏰', name: '当直シフト', sub: 'あなたが回答したツール' },
+            { href: '/matching', icon: '🏥', name: '転職対策', sub: '1,470病院DB・履歴書AI' },
+            { href: '/money', icon: '💰', name: 'マネー', sub: 'ふるさと納税・手取り概算' },
+            { href: '/josler', icon: '📊', name: 'J-OSLER', sub: '症例・病歴要約を管理' },
+          ].map(app => (
+            <a key={app.href} href={app.href}
+              className="flex items-center gap-2 bg-s0 border border-br rounded-xl p-2.5 hover:border-ac/20 transition-all">
+              <span className="text-lg flex-shrink-0">{app.icon}</span>
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold text-tx truncate">{app.name}</p>
+                <p className="text-[9px] text-muted truncate">{app.sub}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <details className="mb-4">
+          <summary className="text-[10px] text-muted cursor-pointer hover:text-ac">研修医・専攻医向け ▼</summary>
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            <a href="/epoc" className="flex items-center gap-2 bg-s0 border border-br rounded-xl p-2.5 hover:border-ac/20 transition-all">
+              <span className="text-lg">📋</span>
+              <div><p className="text-[11px] font-bold text-tx">EPOC</p><p className="text-[9px] text-muted">初期研修の経験記録</p></div>
+            </a>
+            <a href="/josler/summary-generator" className="flex items-center gap-2 bg-s0 border border-br rounded-xl p-2.5 hover:border-ac/20 transition-all">
+              <span className="text-lg">🤖</span>
+              <div><p className="text-[11px] font-bold text-tx">病歴要約AI</p><p className="text-[9px] text-muted">カルテから自動生成</p></div>
+            </a>
+          </div>
+        </details>
+
+        <a href="https://iwor.jp" className="block bg-ac text-white rounded-xl p-3 text-center hover:bg-ac2 transition-colors">
+          <p className="text-sm font-bold">iwor.jp</p>
+          <p className="text-[10px] opacity-80">医師のためのワークスペース — 登録不要・完全無料</p>
+        </a>
       </div>
     )
   }
