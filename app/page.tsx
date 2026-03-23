@@ -281,7 +281,6 @@ export default function HomePage() {
       {/* ═══ 免責 ═══ */}
       <section className="mb-4 px-4">
         <div className="bg-s1 rounded-xl p-4 text-[11px] text-muted leading-relaxed space-y-1">
-          <p>⚠️ 本サービスは医療従事者向けです。<strong className="text-tx">患者の氏名・ID等の個人情報を入力しないでください。</strong></p>
           <p>掲載情報は公式文献の転記であり、正確性は保証しません。必ず原典をご確認ください。</p>
           <p>マネーツールの計算結果は概算・目安であり、正確な金額は税理士・所轄税務署にご確認ください。</p>
         </div>

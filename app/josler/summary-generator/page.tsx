@@ -90,6 +90,10 @@ function SummaryGeneratorInner() {
         <span>病歴要約ジェネレーター</span>
       </nav>
 
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 mb-4 text-[11px] text-amber-800">
+        ⚠️ <strong>患者の氏名・ID等の個人情報を入力しないでください。</strong>カルテ情報は匿名化してから貼り付けてください。
+      </div>
+
       <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="text-xl font-bold text-tx mb-1">病歴要約ジェネレーター</h1>
