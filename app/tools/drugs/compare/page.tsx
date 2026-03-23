@@ -39,6 +39,7 @@ const compareGroups = [
   ]},
   { group: 'その他', items: [
     { href: '/tools/drugs/compare/nsaids', name: 'NSAIDs' },
+    { href: '/tools/drugs/compare/patch', name: '湿布薬' },
     { href: '/tools/drugs/compare/steroid', name: 'ステロイド' },
     { href: '/tools/drugs/compare/inhaler', name: '吸入薬' },
     { href: '/tools/drugs/compare/antihistamine', name: '抗ヒスタミン薬' },
