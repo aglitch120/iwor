@@ -6,9 +6,10 @@ import UpdatedAt from '@/components/tools/UpdatedAt'
 
 // ── 型定義 ──
 interface Fluid {
-  name: string
-  sub?: string        // 後発品名等
-  volume: string      // 容量 (mL)
+  name: string         // 商品名
+  generic?: string     // 一般名
+  brand?: string       // メーカー・別名
+  volume: string       // 容量 (mL)
   na: number | string
   k: number | string
   ca: number | string
@@ -38,15 +39,15 @@ const fluidGroups: FluidGroup[] = [
     description: '血漿に近い電解質組成。出血・脱水・ショックの初期輸液に使用。',
     color: 'bg-blue-50',
     fluids: [
-      { name: '生理食塩液', volume: '-', na: 154, k: '-', ca: '-', mg: '-', cl: 154, lactate: '-', acetate: '-', phosphate: '-', glucose: '-' },
-      { name: 'リンゲル液', volume: '-', na: 147, k: 4, ca: 4.5, mg: '-', cl: 155.5, lactate: '-', acetate: '-', phosphate: '-', glucose: '-' },
-      { name: 'ソルラクト', sub: '乳酸リンゲル液', volume: '250/500/1000', na: 131, k: 4, ca: 3, mg: '-', cl: 110, lactate: 28, acetate: '-', phosphate: '-', glucose: '-' },
-      { name: 'ラクテックD', sub: '乳酸リンゲル液', volume: '500', na: 130, k: 4, ca: 3, mg: '-', cl: 109, lactate: 28, acetate: '-', phosphate: '-', glucose: 5 },
-      { name: 'ソルラクトS', sub: '乳酸リンゲル液', volume: '250/500', na: 131, k: 4, ca: 3, mg: '-', cl: 110, lactate: 28, acetate: '-', phosphate: '-', glucose: 5 },
-      { name: 'ソルアセトF', sub: '酢酸リンゲル液', volume: '500/1000', na: 131, k: 4, ca: 3, mg: '-', cl: 109, lactate: '-', acetate: 28, phosphate: '-', glucose: '-' },
-      { name: 'フィジオ140', sub: '酢酸リンゲル液', volume: '250/500', na: 140, k: 4, ca: 3, mg: 2, cl: 115, lactate: '-', acetate: '25※1', phosphate: '-', glucose: 1 },
-      { name: 'ヴィーンD', sub: '酢酸リンゲル液', volume: '200/500', na: 130, k: 4, ca: 3, mg: '-', cl: 109, lactate: '-', acetate: 28, phosphate: '-', glucose: 5 },
-      { name: 'ビカネイト', sub: '重炭酸リンゲル液', volume: '500/1000', na: 130, k: 4, ca: 3, mg: 2, cl: 109, lactate: '-', acetate: '-※2', phosphate: '-', glucose: '-' },
+      { name: '大塚生食注', generic: '生理食塩液', brand: '大塚製薬', volume: '20-500', na: 154, k: '-', ca: '-', mg: '-', cl: 154, lactate: '-', acetate: '-', phosphate: '-', glucose: '-' },
+      { name: 'オーツカリンゲル注', generic: 'リンゲル液', brand: '大塚製薬', volume: '500', na: 147, k: 4, ca: 4.5, mg: '-', cl: 155.5, lactate: '-', acetate: '-', phosphate: '-', glucose: '-' },
+      { name: 'ソルラクト輸液', generic: '乳酸リンゲル液', brand: 'テルモ', volume: '250/500/1000', na: 131, k: 4, ca: 3, mg: '-', cl: 110, lactate: 28, acetate: '-', phosphate: '-', glucose: '-' },
+      { name: 'ラクテックD輸液', generic: '乳酸リンゲル液(ブドウ糖)', brand: '大塚製薬', volume: '500', na: 130, k: 4, ca: 3, mg: '-', cl: 109, lactate: 28, acetate: '-', phosphate: '-', glucose: 5 },
+      { name: 'ソルラクトS輸液', generic: '乳酸リンゲル液(ブドウ糖)', brand: 'テルモ', volume: '250/500', na: 131, k: 4, ca: 3, mg: '-', cl: 110, lactate: 28, acetate: '-', phosphate: '-', glucose: 5 },
+      { name: 'ソルアセトF輸液', generic: '酢酸リンゲル液', brand: 'テルモ', volume: '500/1000', na: 131, k: 4, ca: 3, mg: '-', cl: 109, lactate: '-', acetate: 28, phosphate: '-', glucose: '-' },
+      { name: 'フィジオ140輸液', generic: '酢酸リンゲル液', brand: '大塚製薬', volume: '250/500', na: 140, k: 4, ca: 3, mg: 2, cl: 115, lactate: '-', acetate: '25※1', phosphate: '-', glucose: 1 },
+      { name: 'ヴィーンD輸液', generic: '酢酸リンゲル液(ブドウ糖)', brand: '興和', volume: '200/500', na: 130, k: 4, ca: 3, mg: '-', cl: 109, lactate: '-', acetate: 28, phosphate: '-', glucose: 5 },
+      { name: 'ビカネイト輸液', generic: '重炭酸リンゲル液', brand: '大塚製薬', volume: '500/1000', na: 130, k: 4, ca: 3, mg: 2, cl: 109, lactate: '-', acetate: '-※2', phosphate: '-', glucose: '-' },
     ],
     footnotes: [
       '※1 グルコン酸 3mEq/L、クエン酸 6mEq/L、添加物に塩酸を含有',
@@ -59,10 +60,10 @@ const fluidGroups: FluidGroup[] = [
     description: 'K非含有。腎機能不明の初期輸液。細胞外液と維持液の中間組成。',
     color: 'bg-green-50',
     fluids: [
-      { name: 'ソリタ-T1号', volume: '200/500', na: 90, k: '-', ca: '-', mg: '-', cl: 70, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.6 },
-      { name: 'ソルデム1', volume: '200/500', na: 90, k: '-', ca: '-', mg: '-', cl: 70, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.6 },
-      { name: 'リプラス1号', volume: '200/500', na: 90.8, k: '-', ca: '-', mg: '-', cl: 70.8, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.6 },
-      { name: 'KN1号', volume: '200/500', na: 77, k: '-', ca: '-', mg: '-', cl: 77, lactate: '-', acetate: '-', phosphate: '-', glucose: 2.5 },
+      { name: 'ソリタ-T1号輸液', generic: '開始液', brand: 'AY/陽進堂', volume: '200/500', na: 90, k: '-', ca: '-', mg: '-', cl: 70, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.6 },
+      { name: 'ソルデム1輸液', generic: '開始液', brand: 'テルモ', volume: '200/500', na: 90, k: '-', ca: '-', mg: '-', cl: 70, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.6 },
+      { name: 'リプラス1号輸液', generic: '開始液', brand: '扶桑薬品', volume: '200/500', na: 90.8, k: '-', ca: '-', mg: '-', cl: 70.8, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.6 },
+      { name: 'KN1号輸液', generic: '開始液', brand: '大塚製薬', volume: '200/500', na: 77, k: '-', ca: '-', mg: '-', cl: 77, lactate: '-', acetate: '-', phosphate: '-', glucose: 2.5 },
     ],
   },
   {
@@ -71,9 +72,9 @@ const fluidGroups: FluidGroup[] = [
     description: 'K含有。脱水補正に使用。腎機能を確認してから投与。',
     color: 'bg-yellow-50',
     fluids: [
-      { name: 'ソリタ-T2号', volume: '200/500', na: 84, k: 20, ca: '-', mg: '-', cl: 66, lactate: '20※1', acetate: '-', phosphate: '※2', glucose: 3.2 },
-      { name: 'ソルデム2', volume: '200/500', na: 77.5, k: 30, ca: '-', mg: '-', cl: 59, lactate: 48.5, acetate: '-', phosphate: '-', glucose: 1.45 },
-      { name: 'KN2号', volume: '500', na: 60, k: 25, ca: '-', mg: 2, cl: 49, lactate: 25, acetate: '-※3', phosphate: '-', glucose: 2.35 },
+      { name: 'ソリタ-T2号輸液', generic: '脱水補給液', brand: 'AY/陽進堂', volume: '200/500', na: 84, k: 20, ca: '-', mg: '-', cl: 66, lactate: '20※1', acetate: '-', phosphate: '※2', glucose: 3.2 },
+      { name: 'ソルデム2輸液', generic: '脱水補給液', brand: 'テルモ', volume: '200/500', na: 77.5, k: 30, ca: '-', mg: '-', cl: 59, lactate: 48.5, acetate: '-', phosphate: '-', glucose: 1.45 },
+      { name: 'KN2号輸液', generic: '脱水補給液', brand: '大塚製薬', volume: '500', na: 60, k: 25, ca: '-', mg: 2, cl: 49, lactate: 25, acetate: '-※3', phosphate: '-', glucose: 2.35 },
     ],
     footnotes: [
       '※1 添加物にL-乳酸 8mEq/Lを含むので乳酸濃度は28mEq/L',
@@ -87,16 +88,16 @@ const fluidGroups: FluidGroup[] = [
     description: '1日の水分・電解質維持に使用。Na少量+K含有+糖質。最も汎用される維持輸液。',
     color: 'bg-orange-50',
     fluids: [
-      { name: 'ソリタ-T3号', sub: '後発:ヒシナルク3号', volume: '200/500', na: 35, k: 20, ca: '-', mg: '-', cl: 35, lactate: 20, acetate: '-', phosphate: '-', glucose: 4.3 },
-      { name: 'KN3号', volume: '200/500', na: 50, k: 20, ca: '-', mg: '-', cl: 50, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.7 },
-      { name: 'EL-3号', volume: '500', na: 40, k: 35, ca: '-', mg: '-', cl: 40, lactate: 20, acetate: '-※1', phosphate: '-', glucose: 5 },
-      { name: 'ヴィーン3G', volume: '200/500', na: 45, k: 17, ca: '-', mg: 5, cl: 37, lactate: '-', acetate: 20, phosphate: 10, glucose: 5 },
-      { name: 'リプラス3号', volume: '200/500', na: 40, k: 20, ca: '-', mg: '-', cl: 40, lactate: 20, acetate: '-', phosphate: '-', glucose: 5 },
-      { name: 'フィジオゾール3号', volume: '500', na: 35, k: 20, ca: '-', mg: 3, cl: 38, lactate: '20※2', acetate: '-', phosphate: '-', glucose: 10 },
-      { name: 'ソリタ-T3号G', volume: '200/500', na: 35, k: 20, ca: '-', mg: '-', cl: 35, lactate: 20, acetate: '-', phosphate: '-', glucose: 7.5 },
-      { name: 'KNMG3号', volume: '500', na: 50, k: 20, ca: '-', mg: '-', cl: 50, lactate: 20, acetate: '-', phosphate: '-', glucose: 10 },
-      { name: 'フィジオ35', sub: 'GE:グルアセト35', volume: '250/500', na: 35, k: 20, ca: 5, mg: 3, cl: 28, lactate: '-', acetate: '20※3', phosphate: '-', glucose: 10 },
-      { name: 'トリフリード', volume: '500/1000', na: 35, k: 20, ca: 5, mg: 5, cl: 35, lactate: '-', acetate: '6※4', phosphate: '-', glucose: 10.5 },
+      { name: 'ソリタ-T3号輸液', generic: '維持液', brand: 'AY/陽進堂', volume: '200/500', na: 35, k: 20, ca: '-', mg: '-', cl: 35, lactate: 20, acetate: '-', phosphate: '-', glucose: 4.3, note: '後発: ヒシナルク3号' },
+      { name: 'KN3号輸液', generic: '維持液', brand: '大塚製薬', volume: '200/500', na: 50, k: 20, ca: '-', mg: '-', cl: 50, lactate: 20, acetate: '-', phosphate: '-', glucose: 2.7 },
+      { name: 'EL-3号輸液', generic: '維持液', brand: 'AY', volume: '500', na: 40, k: 35, ca: '-', mg: '-', cl: 40, lactate: 20, acetate: '-※1', phosphate: '-', glucose: 5 },
+      { name: 'ヴィーン3G輸液', generic: '維持液(酢酸)', brand: '興和', volume: '200/500', na: 45, k: 17, ca: '-', mg: 5, cl: 37, lactate: '-', acetate: 20, phosphate: 10, glucose: 5 },
+      { name: 'リプラス3号輸液', generic: '維持液', brand: '扶桑薬品', volume: '200/500', na: 40, k: 20, ca: '-', mg: '-', cl: 40, lactate: 20, acetate: '-', phosphate: '-', glucose: 5 },
+      { name: 'フィジオゾール3号輸液', generic: '維持液', brand: '大塚製薬', volume: '500', na: 35, k: 20, ca: '-', mg: 3, cl: 38, lactate: '20※2', acetate: '-', phosphate: '-', glucose: 10 },
+      { name: 'ソリタ-T3号G輸液', generic: '維持液(高糖)', brand: 'AY/陽進堂', volume: '200/500', na: 35, k: 20, ca: '-', mg: '-', cl: 35, lactate: 20, acetate: '-', phosphate: '-', glucose: 7.5 },
+      { name: 'KNMG3号輸液', generic: '維持液(高糖)', brand: '大塚製薬', volume: '500', na: 50, k: 20, ca: '-', mg: '-', cl: 50, lactate: 20, acetate: '-', phosphate: '-', glucose: 10 },
+      { name: 'フィジオ35輸液', generic: '維持液(酢酸)', brand: '大塚製薬', volume: '250/500', na: 35, k: 20, ca: 5, mg: 3, cl: 28, lactate: '-', acetate: '20※3', phosphate: '-', glucose: 10, note: 'GE: グルアセト35' },
+      { name: 'トリフリード輸液', generic: '維持液(微量元素)', brand: '大塚製薬', volume: '500/1000', na: 35, k: 20, ca: 5, mg: 5, cl: 35, lactate: '-', acetate: '6※4', phosphate: '-', glucose: 10.5 },
     ],
     footnotes: [
       '※1 P 8mmol/L',
@@ -122,7 +123,7 @@ function FluidTable({ group }: { group: FluidGroup }) {
         <table className="w-full text-xs border-collapse min-w-[700px]">
           <thead>
             <tr className={group.color}>
-              <th className="p-2 font-bold text-tx border-b border-br text-left min-w-[100px]">製品名</th>
+              <th className="p-2 font-bold text-tx border-b border-br text-left min-w-[130px]">製品名</th>
               <th className="p-1.5 font-bold text-tx border-b border-br text-center w-14">容量<br/><span className="font-normal text-muted">(mL)</span></th>
               {cols.map(h => (
                 <th key={h} className="p-1.5 font-bold text-tx border-b border-br text-center w-10">
@@ -136,7 +137,9 @@ function FluidTable({ group }: { group: FluidGroup }) {
               <tr key={i} className={i % 2 === 0 ? 'bg-s0' : 'bg-bg'}>
                 <td className="p-2 border-b border-br">
                   <span className="font-bold text-tx text-xs">{f.name}</span>
-                  {f.sub && <span className="block text-[10px] text-muted">{f.sub}</span>}
+                  {f.generic && <span className="block text-[10px] text-muted">{f.generic}</span>}
+                  {f.brand && <span className="block text-[10px] text-muted/70">{f.brand}</span>}
+                  {f.note && <span className="block text-[10px] text-ac/80">{f.note}</span>}
                 </td>
                 <td className="p-1.5 text-center border-b border-br text-muted">{f.volume}</td>
                 {[f.na, f.k, f.ca, f.mg, f.cl, f.lactate, f.acetate, f.phosphate, f.glucose].map((v, j) => (
