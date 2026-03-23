@@ -6,8 +6,10 @@ import { CBT_CARDS, TAGS as CBT_TAGS } from './cbt-cards'
 import { KOKUSHI_CARDS, KOKUSHI_TAGS } from './kokushi-cards'
 import { NAIKA_CARDS, NAIKA_TAGS } from './naika-cards'
 import { TAISHA_CARDS } from './data/taisha-cards'
+import { shinkei_cards } from './data/shinkei-cards'
 
 const TAISHA_TAGS = Array.from(new Set(TAISHA_CARDS.map(c => c.tag)))
+const SHINKEI_TAGS = Array.from(new Set(shinkei_cards.map(c => c.tag)))
 
 // ── 型定義 ──
 
@@ -75,6 +77,17 @@ const DEFAULT_DECKS: Deck[] = [
     description: '内科専門医試験 代謝・内分泌領域 55問',
     cards: TAISHA_CARDS,
     tags: TAISHA_TAGS,
+    isDefault: true,
+    createdAt: '2026-03-23T00:00:00Z',
+    updatedAt: '2026-03-23T00:00:00Z',
+  },
+  {
+    id: 'default-shinkei',
+    name: '脳・神経',
+    emoji: '🧠',
+    description: '内科専門医試験 脳・神経領域 60問（国試逆算設計）',
+    cards: shinkei_cards,
+    tags: SHINKEI_TAGS,
     isDefault: true,
     createdAt: '2026-03-23T00:00:00Z',
     updatedAt: '2026-03-23T00:00:00Z',

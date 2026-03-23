@@ -6,6 +6,9 @@ export interface FlashCard {
   front: string
   back: string
   tag: string
+  explanation?: string
+  source?: string
+  difficulty?: 'basic' | 'intermediate' | 'advanced'
 }
 
 export const CBT_CARDS: FlashCard[] = [
