@@ -2077,23 +2077,28 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
 
 以下のルールを厳守:
 - ${maxChars}文字以内（厳守）
-- 常体（ですます調OK、面接用なので）
+- ですます調で統一
 - 具体的なエピソードを含める
 - 最後に「このような経験を活かし、貴院で〜」で締める
-- 出力は生成テキストのみ（説明不要）`,
+- 出力は本文のみ。「以下の文章を生成します」「志望動機として」等のメタ説明は絶対に含めない
+- 英語を混ぜない。すべて日本語で書く
+- 「participation」等の英単語を使わない`,
 
-        motivation: `以下の医学生のプロフィールから、マッチング用の志望動機を${maxChars}文字以内で生成してください。
+        motivation: `以下の医学生のプロフィールから、マッチング用の志望動機を${maxChars}文字以内で書いてください。
 志望科: ${p.preferredSpecialty || '未設定'}
 希望地域: ${p.preferredRegions?.join('・') || '未設定'}
 医師を目指した理由: ${p.doctorTrigger || p.motivation || '未設定'}
 将来像: ${p.goal5y || p.futureVision || '未設定'}
 キャリアタイプ: ${p.careerTypes?.join('・') || p.doctorType?.join('・') || '未設定'}
+強み: ${p.strengths || p.strengthsList?.join('、') || '未設定'}
 
 以下のルールを厳守:
 - ${maxChars}文字以内（厳守）
+- ですます調で統一
 - 具体的な理由と将来ビジョンを含める
 - 「貴院の〇〇に惹かれ」のような病院特化部分は【病院名・特徴を記入】とプレースホルダにする
-- 出力は生成テキストのみ（説明不要）`,
+- 出力は本文のみ。「以下の文章を生成します」「志望動機として」等のメタ説明は絶対に含めない
+- 英語を混ぜない。すべて日本語で書く`,
       };
 
       const prompt = prompts[type] || prompts.pr;
@@ -2101,12 +2106,14 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
       try {
         const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
           messages: [
-            { role: "system", content: "あなたは医師臨床研修マッチングの専門コンサルタントです。指定された文字数以内で面接用の文章を生成します。" },
+            { role: "system", content: "あなたは医師臨床研修マッチングの専門コンサルタントです。依頼された文章をそのまま出力してください。「以下に生成します」「志望動機として」等の前置き・説明は一切不要です。本文のみを出力。すべて日本語で書いてください。" },
             { role: "user", content: prompt },
           ],
           max_tokens: 600,
         });
-        const text = (result.response || "").trim();
+        let text = (result.response || "").trim();
+        // メタ説明の除去（「以下の〜生成します。」等の前置きを削除）
+        text = text.replace(/^.*?(生成します|以下に|以下の文章|志望動機として)[。．.、,]?\s*/s, '');
         // 文字数オーバーなら切り詰め
         const trimmed = text.length > maxChars ? text.slice(0, maxChars - 3) + "..." : text;
         return json({ ok: true, text: trimmed, chars: trimmed.length }, 200, request);
