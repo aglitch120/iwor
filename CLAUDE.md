@@ -99,6 +99,7 @@ See BACKLOG.md for current priorities.
 6. **Blog MDX format errors**: Check content/blog/ for existing examples before creating new articles. Frontmatter must match lib/blog-config.ts categories
 7. **Breaks search index**: After adding/removing tools, regenerate with `node scripts/generate-search-index.mjs`
 8. **Context drift in long sessions**: At 50% context usage, run /compact. For new tasks, prefer /clear and restart
+9. **Uses text-based loading instead of IworLoader**: ALL loading states MUST use `<IworLoader size="sm|md|lg" />` from `@/components/IworLoader`. Never use text like "Loading...", "読み込み中...", or emoji spinners ⏳
 
 ## What NOT to do
 

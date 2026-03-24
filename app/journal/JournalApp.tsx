@@ -770,7 +770,7 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
           <div className="px-3 py-3 bg-bg/50">
             <p className="text-[10px] font-bold text-tx mb-1.5">Abstract</p>
             {abstractLoading ? (
-              <p className="text-[10px] text-muted">Loading...</p>
+              <div className="py-2"><IworLoader size="sm" /></div>
             ) : (
               <p className="text-[10px] text-tx leading-relaxed whitespace-pre-line">{abstract}</p>
             )}
@@ -780,7 +780,7 @@ function ArticleCard({ article: a, isBookmarked, onToggleBookmark, isPro, displa
           <div className="border-t border-br px-3 py-2 bg-s1/50">
             <p className="text-[10px] font-bold text-tx mb-1.5">Comments {commentCount > 0 && `(${commentCount})`}</p>
             {loadingComments ? (
-              <p className="text-[10px] text-muted text-center py-2">読み込み中...</p>
+              <div className="py-2"><IworLoader size="sm" /></div>
             ) : comments.length === 0 ? (
               <p className="text-[10px] text-muted text-center py-2">まだコメントはありません</p>
             ) : (

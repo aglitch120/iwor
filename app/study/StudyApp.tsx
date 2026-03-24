@@ -692,7 +692,7 @@ export default function StudyApp() {
                     </button>
                     <label className="flex-1 border-2 border-dashed border-br rounded-xl p-4 text-center hover:border-ac/40 transition-colors cursor-pointer">
                       <input type="file" accept=".apkg" onChange={handleImportApkg} className="hidden" disabled={importLoading} />
-                      <span className="text-lg">{importLoading ? '⏳' : '📥'}</span>
+                      {importLoading ? <IworLoader size="sm" /> : <span className="text-lg">📥</span>}
                       <p className="text-xs font-medium text-muted mt-1">{importLoading ? '読み込み中...' : '.apkgインポート'}</p>
                     </label>
                   </div>
