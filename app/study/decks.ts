@@ -467,14 +467,32 @@ export async function loadCbtDecks(): Promise<Deck[]> {
       const res = await fetch(`/data/decks/${meta.file}`)
       if (!res.ok) continue
       const rawCards = await res.json()
-      const cards: FlashCard[] = (Array.isArray(rawCards) ? rawCards : []).map((c: any) => ({
-        id: c.id,
-        front: c.front,
-        back: c.back,
-        tag: (c.tags && c.tags[0]) || c.deck || '',
-        explanation: c.explanation || '',
-        source: c.source_code || '',
-      }))
+      const cards: FlashCard[] = (Array.isArray(rawCards) ? rawCards : []).map((c: any) => {
+        // ステップカード（4連問）をFlashCard形式に変換
+        if (c.type === 'step_card' && c.steps) {
+          const steps = c.steps as { step: number; question: string; answer: string; hint?: string }[]
+          const front = `[4連問] ${c.scenario}\n\nStep 1: ${steps[0]?.question || ''}`
+          const back = steps.map((s: any) =>
+            `Step ${s.step}: ${s.question}\n→ ${s.answer}`
+          ).join('\n\n')
+          return {
+            id: c.id,
+            front,
+            back,
+            tag: (c.tags && c.tags[0]) || '臨床推論',
+            explanation: `対象疾患: ${c.target_disease || ''}（${c.disease_class || ''}群）`,
+            source: c.source_code || '',
+          }
+        }
+        return {
+          id: c.id,
+          front: c.front || '',
+          back: c.back || '',
+          tag: (c.tags && c.tags[0]) || c.deck || '',
+          explanation: c.explanation || '',
+          source: c.source_code || '',
+        }
+      })
       decks.push({
         id: meta.id,
         name: meta.name,
