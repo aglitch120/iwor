@@ -31,6 +31,7 @@ interface InterviewSettings {
   hospitalType: 'community' | 'university'
   prefecture: string
   pressure: 'gentle' | 'normal' | 'pressure'
+  useProfile: boolean
 }
 
 interface InterviewReport {
@@ -57,6 +58,7 @@ function SettingsScreen({ onStart }: { onStart: (s: InterviewSettings) => void }
   const [hospitalType, setHospitalType] = useState<'community' | 'university'>('community')
   const [prefecture, setPrefecture] = useState('東京都')
   const [pressure, setPressure] = useState<'gentle' | 'normal' | 'pressure'>('normal')
+  const [useProfile, setUseProfile] = useState(true)
 
   const BtnStyle = (active: boolean) => active
     ? { background: MC, color: '#fff', border: `1.5px solid ${MC}` } as const
@@ -139,13 +141,32 @@ function SettingsScreen({ onStart }: { onStart: (s: InterviewSettings) => void }
         </div>
       </div>
 
+      {/* プロフィール使用トグル */}
+      <div className="rounded-xl p-3" style={{ background: '#FEFEFC', border: '1px solid #E8E5DF' }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold" style={{ color: '#1A1917' }}>プロフィール情報を使用</p>
+            <p className="text-[10px]" style={{ color: '#6B6760' }}>ONにすると志望科等を面接官が参考にします</p>
+          </div>
+          <button onClick={() => setUseProfile(!useProfile)}
+            className="w-11 h-6 rounded-full transition-all relative flex-shrink-0"
+            style={{ background: useProfile ? MC : '#DDD9D2' }}>
+            <div className="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all shadow-sm"
+              style={{ left: useProfile ? 22 : 2 }} />
+          </button>
+        </div>
+        <p className="text-[9px] mt-1.5" style={{ color: '#C8C4BC' }}>
+          データはサーバーに保存されません。面接終了後に全て破棄されます。
+        </p>
+      </div>
+
       {/* 免責（1行） */}
       <p className="text-center text-[10px]" style={{ color: '#C8C4BC' }}>
         AIによる面接練習ツールです。合否を保証しません。患者個人情報は入力しないでください。
       </p>
 
       {/* 開始ボタン */}
-      <button onClick={() => onStart({ duration, hospitalType, prefecture, pressure })}
+      <button onClick={() => onStart({ duration, hospitalType, prefecture, pressure, useProfile })}
         className="w-full py-3.5 rounded-xl text-sm font-bold transition-all hover:opacity-90"
         style={{ background: MC, color: '#fff' }}>
         面接を始める
@@ -665,7 +686,7 @@ ${hospitalCharacter}
 - 敬語で話す（ただし市中病院のやさしいモードでは多少砕けてOK）
 - 面接官として自然に振る舞い、AIっぽさを出さない
 
-${profileCtx ? `\n■ 受験者のプロフィール（手元の書類として把握しているが、面接官からこの情報を言及しない。受験者が自分で話すのを待つ）:\n${profileCtx}` : ''}`
+${s.useProfile && profileCtx ? `\n■ 受験者のプロフィール（手元の書類として把握しているが、面接官からこの情報を言及しない。受験者が自分で話すのを待つ）:\n${profileCtx}` : ''}`
   }, [profile])
 
   // ── タイマー ──
