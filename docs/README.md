@@ -16,6 +16,7 @@
 | **OPERATIONS.md** | 運用の全て | アカウント一覧, インフラ構成, 依存サービス, コスト記録, 定常作業, 事業譲渡チェックリスト | 戦略, プロダクト仕様 |
 | **COMPETITORS.md** | 競合分析+DB統合 | 競合マップ, Battlecard, JTBD分析, ツール数, 法務リスク分類, 自動監視仕様 | 戦略判断(→STRATEGY) |
 | **MARKETING.md** | マーケティング戦略の全て | 獲得チャネル, セグメント別施策, 季節カレンダー, コンテンツ戦略, 価格心理学, 信頼構築, KPI, 実行TODO | 価格(→STRATEGY), 競合分析(→COMPETITORS), PLG仕様(→PRODUCT) |
+| **SEO_STRATEGY.md** | SEO戦略の全て | ベストプラクティス, KWリスト(→keywords/), トピッククラスター11テーマ, 競合SEO分析, 実行計画 | 価格(→STRATEGY), マーケ施策(→MARKETING) |
 | **REF_BLOG.md** | 記事の書き方 | SEOルール, 記事品質基準, 執筆マニュアル | ツール仕様, デザイン |
 | **REF_MATCHING.md** | マッチング対策コンテンツ素材 | テンプレート, チェックリスト, 質問項目 | UI仕様, コードロジック |
 | **REF_JOSLER.md** | J-OSLER医学リファレンス | 病歴要約の書き方, J-OSLER固有の医学的ルール | ツールのUI仕様, 価格 |
