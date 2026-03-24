@@ -905,3 +905,28 @@ theme,keyword,funnel,priority,search_vol_est,difficulty,target_persona,existing_
 37-misc,勤務医 マイクロ法人,MOFU,1,200-300,低,全医師,,未着手,,
 37-misc,医師 プライベートカンパニー,MOFU,1,200-300,低,全医師,,未着手,,
 37-misc,医師 退院サマリ ChatGPT,BOFU,3,200-300,低,研修医/医師,,未着手,病歴要約AI,民間医局コネクト人気記事。iwor直結
+32-new-competitor,adpkd.jp 大塚製薬eGFR,META,0,0,0,全対象,,競合分析,,eGFR計算上位。製薬企業(ドメインパワー大)
+32-new-competitor,boehringer-ingelheim.com/jp ベーリンガー,META,0,0,0,全対象,,競合分析,,eGFR計算上位。ジャディアンスLP内ツール
+32-new-competitor,kyowakirin.co.jp 協和キリン,META,0,0,0,全対象,,競合分析,,eGFR計算上位。CKD啓発サイト
+32-new-competitor,lab-tky.umin.jp 東大病院,META,0,0,0,全対象,,競合分析,,eGFR計算上位。大学(権威性最高)
+32-new-competitor,medical.nikkeibp.co.jp 日経メディカル,META,0,0,0,全対象,,競合分析,,カデット(研修医向け)コンテンツ。参考書特集
+32-new-competitor,mk-med.hatenablog.com Med-Hobbyist,META,0,0,0,全対象,,競合分析,,はてなブログ。医学の趣味人。初期研修医向け記事
+32-new-competitor,free-doc.hatenablog.com フリドク,META,0,0,0,全対象,,競合分析,,はてなブログ。フリーランス医師。転職/バイト/退局
+32-new-competitor,intmed.exblog.jp 内科開業医,META,0,0,0,全対象,,競合分析,,内科開業医の勉強日記。長期運営ブログ
+32-new-competitor,fuseda.xsrv.jp 次郎作ブログ,META,0,0,0,全対象,,競合分析,,循環器研修おすすめ参考書。研修医ブロガー
+32-new-competitor,note.com/kochoniide 新出孤蝶,META,0,0,0,全対象,,競合分析,,note。研修医が本当に使った医学書15冊(高PV)
+32-new-competitor,note.com/lovely_hyssop216 かいのーと,META,0,0,0,全対象,,競合分析,,note。医学生マッチング対策/実習ノート
+32-new-competitor,note.com/maitakenorth わん,META,0,0,0,全対象,,競合分析,,note。マッチング体験記(2024年終了組)
+32-new-competitor,note.com/li_fe_igaku リーフェ医学情報,META,0,0,0,全対象,,競合分析,,note。国試情報/ストレート卒業率ランキング
+32-new-competitor,note.com/dharma_ph おにだるま,META,0,0,0,全対象,,競合分析,,note。研修医の教科書まとめ(2025年度)
+32-new-competitor,www.clearnotebooks.com Clearnote,META,0,0,0,全対象,,競合分析,,ノート共有プラットフォーム。医学生の循環器/解剖ノート
+32-new-competitor,www.travel-rescue-tips.com 雲の上はいつも晴れ,META,0,0,0,全対象,,競合分析,,ブログ村10位。医学生マイラー。ポリクリ持ち物記事
+32-new-competitor,yurudream.com しおんブログ,META,0,0,0,全対象,,競合分析,,ブログ村11位。iPad/PC勉強法
+32-new-competitor,www.bakuekimed.com 爆益MED,META,0,0,0,全対象,,競合分析,,ブログ村18位。医学生・受験生向け
+32-new-competitor,pyecracker99.hatenablog.com わくば,META,0,0,0,全対象,,競合分析,,ブログ村6位。医学とプログラミング
+38-bigword-analysis,eGFR 計算 — 上位: 製薬(大塚/ベーリンガー/協和キリン)+学会(JSNP)+大学(東大),META,0,0,0,全対象,,ビッグKW分析,,製薬ドメインパワー大。iwor: UI差で割込み
+38-bigword-analysis,CBT 勉強法 — 上位: 予備校(MEDICINE/MediE/MEC/医学生道場)+出版(INFORMA),META,0,0,0,全対象,,ビッグKW分析,,予備校支配。iwor: Study 820枚デッキで差別化
+38-bigword-analysis,研修医 おすすめ 本 — 上位: 書店(M2PLUS)+メディア(民間医局/日経)+ブロガー(ikuji/nogusan),META,0,0,0,全対象,,ビッグKW分析,,書評系は毎年更新で安定流入。iwor: 本→ツール/デッキ導線
+38-bigword-analysis,内科専門医試験 勉強法 — 上位: ブロガー(ikuji/stressfree)+予備校(ドクスタ)+CareNet,META,0,0,0,全対象,,ビッグKW分析,,ブロガーが強い=iwor記事で勝てる
+38-bigword-analysis,J-OSLER 病歴要約 — 上位: ブロガー(ikuji/drtaisho/medaitool)+学会(naika.or.jp),META,0,0,0,全対象,,ビッグKW分析,,iwor既に66記事で支配可能。ピラーページ強化で1位狙い
+38-bigword-analysis,マッチング 病院 選び方 — 上位: INFORMA+レジナビ+C-MEC+予備校,META,0,0,0,全対象,,ビッグKW分析,,iwor: 1470病院DB+穴場度分析で独自コンテンツ
