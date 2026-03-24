@@ -185,5 +185,185 @@
       "統計",
       "生存分析"
     ]
+  },
+  {
+    "id": "cbt-stat-018",
+    "front": "正規分布と標準偏差の意味を述べよ",
+    "back": "平均を中心に左右対称のベル型。平均±1SD: 68.3%, ±2SD: 95.4%, ±3SD: 99.7%。標準偏差(SD): データのばらつきの指標。標準誤差(SE)=SD/√n: 標本平均のばらつき(nが大きい→SE小)",
+    "source_code": "B-1-1)-①",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-019",
+    "front": "仮説検定(p値/有意水準/検出力)を述べよ",
+    "back": "帰無仮説(H0: 差がない)→p値: H0が正しいとき得られたデータ以上の結果が生じる確率。p<0.05→有意(H0を棄却)。αエラー(偽陽性)=0.05。βエラー(偽陰性)。検出力=1-β(通常0.8以上が必要)。n↑→検出力↑",
+    "source_code": "B-1-1)-②",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-020",
+    "front": "代表的な統計検定の選択を述べよ",
+    "back": "2群の平均比較: 対応なしt検定(正規分布)→Mann-Whitney(非正規)。対応ありt検定→Wilcoxon。3群以上: ANOVA→Kruskal-Wallis。割合の比較: χ²検定→Fisherの正確検定(期待度数<5)。相関: Pearson(直線)/Spearman(順位)",
+    "source_code": "B-1-1)-③",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-021",
+    "front": "信頼区間(CI)の意味を述べよ",
+    "back": "95%CI: 同じ実験を100回行えば95回はこの範囲に真の値が含まれる。CI=点推定値±1.96×SE。CIが0をまたぐ(差)or 1をまたぐ(RR/OR)→有意でない。n↑→CI狭くなる→精度↑",
+    "source_code": "B-1-1)-④",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-022",
+    "front": "多変量解析の種類と使い分けを述べよ",
+    "back": "ロジスティック回帰: 結果変数が2値(発症/非発症)→OR算出+交絡調整。Cox回帰: 生存時間データ→HR算出。重回帰: 結果変数が連続量。傾向スコアマッチング: 観察研究での交絡調整。主成分分析: 変数の次元削減",
+    "source_code": "B-1-1)-⑤",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-023",
+    "front": "EBMの5ステップを述べよ",
+    "back": "①臨床疑問の定式化(PICO: Patient/Intervention/Comparison/Outcome)→②文献検索(PubMed/Cochrane)→③批判的吟味(内的妥当性/バイアス)→④患者への適用(外的妥当性+患者の価値観)→⑤自己評価",
+    "source_code": "B-1-2)-①",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-024",
+    "front": "エビデンスのピラミッドを述べよ",
+    "back": "高い↑: メタ分析/SR→RCT→コホート→症例対照→横断→症例報告→専門家意見。ガイドラインの推奨グレード: A(強い推奨/高エビデンス)→B(弱い推奨)→C(条件付き)→D(エビデンス不十分)。GRADEシステム",
+    "source_code": "B-1-2)-②",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-025",
+    "front": "感度・特異度からの陽性的中率の計算を述べよ",
+    "back": "2×2表: 疾患あり(TP/FN)/なし(FP/TN)。感度=TP/(TP+FN)。特異度=TN/(TN+FP)。PPV=TP/(TP+FP): 有病率が低い→PPV↓。NPV=TN/(TN+FN)。LR+=感度/(1-特異度)。LR-=(1-感度)/特異度",
+    "source_code": "B-1-3)-①",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-026",
+    "front": "生存分析(Kaplan-Meier/Cox回帰)を述べよ",
+    "back": "Kaplan-Meier: 生存曲線描画(階段状)。打ち切り(+マーク): 追跡不能/期間終了。ログランク検定: 2群の生存曲線比較。Cox比例ハザードモデル: ハザード比(HR)算出→予後因子の同定。HR>1=リスク因子",
+    "source_code": "B-1-3)-②",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-027",
+    "front": "ROC曲線とAUCの臨床的意義を述べよ",
+    "back": "ROC: 感度(Y軸)vs 1-特異度(X軸)。AUC: 曲線下面積(0.5=ランダム, 1.0=完璧)。最適カットオフ: Youden index=感度+特異度-1が最大の点。カットオフ↓→感度↑特異度↓(スクリーニング向き)",
+    "source_code": "B-1-3)-③",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-028",
+    "front": "研究デザインの内的妥当性と外的妥当性を述べよ",
+    "back": "内的妥当性: 研究内での因果関係の正しさ→バイアス/交絡の影響が少ない。RCTが最高。外的妥当性: 一般集団への適用可能性(generalizability)。選択基準が厳しいRCT→外的妥当性↓。pragmatic trial→実臨床に近い",
+    "source_code": "B-1-2)-③",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-029",
+    "front": "システマティックレビューとメタ分析の方法を述べよ",
+    "back": "SR: 網羅的文献検索(複数DB)+選択基準→バイアスリスク評価(Cochrane RoB)→定性的統合。MA: 統計的統合→統合効果量(forest plot)。異質性: I²(>50%で高)。出版バイアス: funnel plot(非対称→バイアス疑い)",
+    "source_code": "B-1-2)-④",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-030",
+    "front": "臨床疫学の指標(NNT/ARR/RRR)を述べよ",
+    "back": "ARR(絶対リスク減少)=対照群イベント率-治療群イベント率。RRR(相対リスク減少)=ARR/対照群イベント率。NNT=1/ARR: 1人の発症を防ぐ治療人数(小さい→効果大)。NNH(害の必要数)=1/ARI",
+    "source_code": "B-1-3)-④",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-031",
+    "front": "診断閾値と治療閾値(Paukerモデル)を述べよ",
+    "back": "事前確率<診断閾値: 疾患否定→検査不要。診断閾値<事前確率<治療閾値: 追加検査で確率を更新。事前確率>治療閾値: 治療開始→検査不要。ベイズの定理: 事前確率×尤度比→事後確率",
+    "source_code": "B-1-3)-⑤",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-032",
+    "front": "臨床研究におけるサンプルサイズの決定を述べよ",
+    "back": "必要サンプル数はα(通常0.05), β(通常0.2: 検出力80%), 効果量(臨床的に意味のある差), 分散で決定。n↑→精度↑+費用↑。パイロット研究→分散推定→本研究のn算出。非劣性試験→マージン設定+大きなn",
+    "source_code": "B-1-1)-⑥",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-033",
+    "front": "交絡因子と効果修飾の違いを述べよ",
+    "back": "交絡: 曝露と結果の両方に関連する第3因子→見かけの関連(制御: 層別化/多変量解析/ランダム化)。効果修飾(交互作用): 第3因子で効果の大きさが変わる(制御すべきではなく報告すべき)。例: 性別で治療効果が異なる→サブグループ解析",
+    "source_code": "B-1-1)-⑦",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-034",
+    "front": "臨床判断のバイアスを述べよ",
+    "back": "確証バイアス: 自分の仮説を支持する情報ばかり集める。アンカリング: 最初の情報に引きずられる。利用可能性ヒューリスティック: 思い出しやすい疾患を過大評価。早期閉鎖: 鑑別を十分検討せず診断を確定。対策: 意識的にbias checkリストを使う",
+    "source_code": "B-1-3)-⑥",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
+  },
+  {
+    "id": "cbt-stat-035",
+    "front": "ガイドラインの作成とGRADEシステムを述べよ",
+    "back": "GRADE: エビデンスの質(高/中/低/非常に低)+推奨の強さ(強い/弱い)。質を下げる因子: バイアスリスク/非一貫性/非直接性/不精確/出版バイアス。質を上げる因子: 大きな効果量/用量反応関係。Minds(日本): 診療ガイドライン作成指針",
+    "source_code": "B-1-2)-⑤",
+    "deck": "cbt-statistics-ebm",
+    "tags": [
+      "B"
+    ]
   }
 ]

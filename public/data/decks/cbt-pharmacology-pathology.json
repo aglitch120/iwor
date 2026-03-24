@@ -152,5 +152,315 @@
       "病理学",
       "DIC"
     ]
+  },
+  {
+    "id": "cbt-phrm-015",
+    "front": "薬物動態の4過程(ADME)を述べよ",
+    "back": "A(吸収): 経口→消化管→門脈→肝(初回通過効果)。D(分布): 血漿蛋白結合(遊離型のみ活性)+組織分布(脂溶性→BBB通過)。M(代謝): 肝CYP450(第I相)+抱合(第II相)。E(排泄): 腎(糸球体濾過+尿細管分泌)or胆汁",
+    "source_code": "C-3-3)-①",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-016",
+    "front": "薬物の用量反応関係(ED50・LD50・治療係数)を述べよ",
+    "back": "ED50: 50%に有効な用量。LD50: 50%が死亡する用量。治療係数(TI)=LD50/ED50: 大きいほど安全。力価(potency): 同じ効果に必要な用量(低い=力価高い)。有効性(efficacy): 最大効果の大きさ。完全作動薬>部分作動薬",
+    "source_code": "C-3-3)-②",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-017",
+    "front": "受容体の種類と情報伝達を述べよ",
+    "back": "イオンチャネル型: nAChR,GABA_A(秒)。Gタンパク質共役型: ムスカリン,アドレナリン,ドパミン(秒〜分)。チロシンキナーゼ型: インスリン,EGF(分〜時間)。核内受容体: ステロイド,甲状腺ホルモン(時間〜日)",
+    "source_code": "C-3-3)-③",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-018",
+    "front": "自律神経作用薬の分類を述べよ",
+    "back": "交感神経: α1作動(フェニレフリン→血管収縮),β1作動(ドブタミン→強心),β2作動(サルブタモール→気管支拡張)。α1遮断(プラゾシン→降圧),β遮断(プロプラノロール→降圧/抗不整脈)。副交感: ムスカリン作動(ピロカルピン→縮瞳),抗コリン(アトロピン→散瞳)",
+    "source_code": "C-3-3)-④",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-019",
+    "front": "薬物相互作用の機序を述べよ",
+    "back": "薬物動態的: CYP誘導(RFP→ワルファリン効果↓),CYP阻害(マクロライド→CYP3A4阻害→シクロスポリン↑),蛋白結合競合。薬力学的: 相加(A+B=A+B),相乗(A+B>A+B),拮抗(受容体レベル: 競合/非競合)。ポリファーマシー(6剤以上)で有害事象↑",
+    "source_code": "C-3-3)-⑤",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-020",
+    "front": "細胞障害(壊死とアポトーシス)の違いを述べよ",
+    "back": "壊死: 外因(虚血/毒素)→細胞膨化→膜破裂→炎症反応。凝固壊死(心筋梗塞),液化壊死(脳梗塞),壊疽(乾性/湿性),乾酪壊死(結核)。アポトーシス: プログラム死→細胞収縮→クロマチン凝縮→アポトーシス小体→炎症なし。カスパーゼ経路",
+    "source_code": "C-4-2)-①",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-021",
+    "front": "炎症の分類(急性/慢性)と肉芽腫を述べよ",
+    "back": "急性: 好中球浸潤,血管拡張,浮腫。慢性: リンパ球/マクロファージ浸潤,線維化。肉芽腫: 類上皮細胞+多核巨細胞(Langhans型: 結核, 異物型: 縫合糸)。肉芽腫形成疾患: 結核,サルコイドーシス,クローン病,真菌感染",
+    "source_code": "C-4-3)-①",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-022",
+    "front": "循環障害(血栓/塞栓/梗塞)を述べよ",
+    "back": "Virchow三徴: 血流停滞+血管内皮障害+血液凝固能亢進→血栓形成。動脈血栓: 白色(血小板),アテローム破裂。静脈血栓: 赤色(フィブリン+RBC),DVT。塞栓: 血栓塞栓(PE),脂肪塞栓(長管骨骨折),羊水塞栓。梗塞: 貧血性(心/脳/腎) vs 出血性(肺/腸)",
+    "source_code": "C-4-4)-①",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-023",
+    "front": "腫瘍の良性/悪性の違いと命名法を述べよ",
+    "back": "良性: 緩徐増殖,被膜あり,転移なし,分化度高い。悪性: 急速増殖,浸潤性,転移あり,分化度低い。命名: 上皮性良性→〜腫(腺腫/乳頭腫),悪性→癌(腺癌/扁平上皮癌)。非上皮性良性→〜腫(筋腫/脂肪腫),悪性→肉腫",
+    "source_code": "C-4-5)-①",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-024",
+    "front": "腫瘍の浸潤・転移の機序を述べよ",
+    "back": "浸潤: 基底膜分解(MMP)+細胞接着↓(E-カドヘリン↓)+遊走。転移: ①血行性(肺→肝→骨/脳,静脈経由) ②リンパ行性(リンパ節転移: センチネルリンパ節) ③播種(腹膜播種: 卵巣癌/胃癌)。Virchow転移: 左鎖骨上リンパ節(胃癌)",
+    "source_code": "C-4-5)-②",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-025",
+    "front": "発癌の多段階過程とがん遺伝子/がん抑制遺伝子を述べよ",
+    "back": "多段階発癌: イニシエーション(DNA変異)→プロモーション(クローン増殖)→プログレッション(悪性化)。がん遺伝子: RAS(点変異),MYC(増幅),BCR-ABL(転座)。がん抑制遺伝子: TP53(最頻),RB,APC(大腸癌),BRCA1/2(乳/卵巣)。Two-hit theory(Knudson)",
+    "source_code": "C-4-5)-③",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-026",
+    "front": "副腎皮質ステロイドの薬理作用と副作用を述べよ",
+    "back": "薬理: 抗炎症(PG/LT合成↓,サイトカイン↓),免疫抑制(T/B細胞↓),糖新生↑。副作用: 骨粗鬆症,高血糖,消化性潰瘍,感染症,白内障,副腎萎縮(突然中止→副腎クリーゼ)。漸減が必須。PSL≥5mg/日×3ヶ月→骨粗鬆症予防",
+    "source_code": "C-3-3)-⑥",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-027",
+    "front": "NSAIDsの作用機序と副作用を述べよ",
+    "back": "COX阻害→PG合成↓→解熱/鎮痛/抗炎症。COX-1(恒常的): 胃粘膜保護,血小板TXA₂。COX-2(誘導型): 炎症部位。副作用: 胃潰瘍(COX-1↓),腎血流↓(AKI),喘息悪化(ASA喘息: LT↑)。選択的COX-2阻害(セレコキシブ): 胃障害↓",
+    "source_code": "C-3-3)-⑦",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-028",
+    "front": "抗菌薬の選択原則(エンピリック→de-escalation)を述べよ",
+    "back": "エンピリック治療: 起因菌不明→感染部位+患者背景から推定→広域抗菌薬。培養結果判明(48-72h)→de-escalation(狭域に変更)。TDM必要薬: VCM(トラフ),アミノグリコシド。PK/PD: 時間依存性(βラクタム: T>MIC),濃度依存性(AG: Cmax/MIC)",
+    "source_code": "C-3-3)-⑧",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-029",
+    "front": "アポトーシスの内因性経路と外因性経路を述べよ",
+    "back": "内因性(ミトコンドリア): DNA損傷→p53→Bax→ミトコンドリア外膜透過→CytC放出→カスパーゼ9→カスパーゼ3→アポトーシス。Bcl-2: 抗アポトーシス(濾胞性リンパ腫で過剰発現)。外因性: Fas/TNF受容体→カスパーゼ8→カスパーゼ3",
+    "source_code": "C-4-2)-②",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-030",
+    "front": "浮腫の病態生理(Starling力)を述べよ",
+    "back": "毛細血管濾過圧: (毛細血管静水圧-間質静水圧)-(血漿膠質浸透圧-間質膠質浸透圧)。浮腫の原因: ①毛細血管圧↑(心不全,門脈圧亢進) ②血漿Alb↓(ネフローゼ,肝硬変) ③毛細血管透過性↑(炎症/アレルギー) ④リンパ管閉塞",
+    "source_code": "C-4-4)-②",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-031",
+    "front": "ショックの病態生理4型を述べよ",
+    "back": "①循環血液量減少(出血/脱水)→前負荷↓。②心原性(AMI/心筋炎)→心収縮力↓。③閉塞性(PE/心タンポナーデ/緊張性気胸)→心拍出量物理的↓。④血液分布異常(敗血症/アナフィラキシー)→末梢血管拡張。共通: 組織低灌流→嫌気的代謝→乳酸↑→臓器障害",
+    "source_code": "C-4-4)-③",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-032",
+    "front": "DICの病態と検査所見を述べよ",
+    "back": "基礎疾患(敗血症/APL/固形腫瘍/産科)→全身的凝固活性化→微小血栓+凝固因子消費→出血傾向。検査: FDP↑↑,D-dimer↑↑,フィブリノーゲン↓,PT延長,血小板↓。治療: 原疾患治療+トロンボモジュリン/AT III+補充(FFP/PC)",
+    "source_code": "C-4-4)-④",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-033",
+    "front": "アミロイドーシスの分類と臓器障害を述べよ",
+    "back": "AL型(原発性): 免疫グロブリン軽鎖→多発性骨髄腫関連。心(拘束型心筋症),腎(ネフローゼ),末梢神経,肝,消化管。AA型(続発性): SAA蛋白→RA,IBD等の慢性炎症。腎に好発。ATTRwt: 野生型トランスサイレチン→高齢者の心アミロイド",
+    "source_code": "C-4-5)-④",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-034",
+    "front": "代謝障害(脂肪変性・糖原変性・石灰化)を述べよ",
+    "back": "脂肪変性: 肝細胞内にTG蓄積(アルコール/肥満/栄養不良)→脂肪肝→NASH→肝硬変。糖原変性: 糖原病(von Gierke: G6Pase欠損→低血糖+肝腫大)。異所性石灰化: 転移性(Ca↑: 副甲状腺↑)vs 栄養障害性(壊死組織に沈着)",
+    "source_code": "C-4-3)-②",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-035",
+    "front": "創傷治癒の過程と異常治癒を述べよ",
+    "back": "①炎症期(0-3日: 血小板+好中球)→②増殖期(3-21日: 肉芽組織+血管新生+コラーゲン)→③成熟期(数週-年: リモデリング)。一次治癒(縫合創)vs 二次治癒(開放創: 肉芽組織で充填)。異常: ケロイド(過剰コラーゲン),慢性潰瘍(糖尿病/血管障害)",
+    "source_code": "C-4-3)-③",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-036",
+    "front": "免疫組織化学の原理と腫瘍診断への応用を述べよ",
+    "back": "抗体で組織中の特異的抗原を検出。上皮: サイトケラチン(CK,癌の確認)。間葉: ビメンチン。リンパ: LCA(白血球共通抗原)。CD20(B細胞リンパ腫→リツキシマブ標的)。HER2(乳癌→トラスツズマブ)。Ki-67(増殖活性)。ER/PR(乳癌ホルモン受容体)",
+    "source_code": "C-4-5)-⑤",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-037",
+    "front": "適応と不適応(萎縮/肥大/化生/異形成)を述べよ",
+    "back": "萎縮: 細胞サイズ/数↓(廃用,栄養不足,神経支配喪失)。肥大: 細胞サイズ↑(心肥大: 高血圧)。過形成: 細胞数↑(前立腺肥大)。化生: 分化方向の変化(Barrett食道: 扁平上皮→円柱上皮)。異形成: 前癌状態(CIN: 子宮頸部)",
+    "source_code": "C-4-2)-③",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-038",
+    "front": "薬物有害反応の分類を述べよ",
+    "back": "Type A(augmented): 用量依存性,予測可能,薬理作用の延長(β遮断→徐脈)。Type B(bizarre): 用量非依存性,予測不能,免疫学的(アナフィラキシー/SJS)。Type C(chronic): 長期投与(ステロイド→骨粗鬆症)。Type D(delayed): 催奇形性/発癌。薬物アレルギーはType B",
+    "source_code": "C-3-3)-⑨",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-039",
+    "front": "主要なCYP450酵素と基質/阻害剤/誘導剤を述べよ",
+    "back": "CYP3A4(最多): 基質→シクロスポリン,スタチン,Ca拮抗薬。阻害→マクロライド,アゾール系,グレープフルーツ。誘導→RFP,フェニトイン,カルバマゼピン。CYP2D6: β遮断薬,コデイン。CYP2C19: PPI,クロピドグレル。CYP2C9: ワルファリン",
+    "source_code": "C-3-3)-⑩",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-040",
+    "front": "がん薬物療法の分類を述べよ",
+    "back": "殺細胞性: アルキル化薬(DNA架橋),代謝拮抗薬(5-FU: S期),微小管阻害(ビンクリスチン/パクリタキセル),白金製剤(シスプラチン)。分子標的: チロシンキナーゼ阻害(イマチニブ→BCR-ABL),抗体(トラスツズマブ→HER2)。免疫チェックポイント: 抗PD-1/CTLA-4",
+    "source_code": "C-3-3)-⑪",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-041",
+    "front": "臓器の虚血再灌流障害を述べよ",
+    "back": "虚血→ATP↓→Na⁺-K⁺ ATPase停止→細胞浮腫+Ca²⁺過負荷。再灌流→活性酸素(O₂⁻/OH·)大量産生→脂質過酸化→膜障害→さらなる細胞死。臨床: 心筋梗塞後のPCI(再灌流不整脈),臓器移植,脳梗塞。対策: 低温保存,抗酸化剤",
+    "source_code": "C-4-4)-⑤",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-042",
+    "front": "老化の細胞生物学的機序を述べよ",
+    "back": "テロメア短縮: 細胞分裂ごとに短縮→Hayflick限界→細胞老化(senescence)。テロメラーゼ: 幹細胞/癌細胞で活性。酸化ストレス: ミトコンドリアROS→DNA/蛋白/脂質障害蓄積。オートファジー↓→異常蛋白蓄積。エピジェネティック変化",
+    "source_code": "C-4-2)-④",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-043",
+    "front": "腫瘍マーカーの臨床的意義を述べよ",
+    "back": "AFP: 肝細胞癌/卵黄嚢腫瘍。CEA: 大腸癌(経過観察)。CA19-9: 膵癌/胆道癌。CA125: 卵巣癌。PSA: 前立腺癌(スクリーニング)。hCG: 絨毛癌/精巣腫瘍。SCC: 扁平上皮癌。注意: スクリーニングより治療効果判定/再発監視に有用",
+    "source_code": "C-4-5)-⑥",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-044",
+    "front": "遺伝性腫瘍症候群の代表5つを述べよ",
+    "back": "Lynch症候群(HNPCC): ミスマッチ修復遺伝子(MLH1/MSH2)→大腸癌/子宮体癌。Li-Fraumeni: TP53→多発腫瘍。FAP: APC→大腸腺腫→癌。VHL: VHL→腎細胞癌/褐色細胞腫。MEN2: RET→甲状腺髄様癌/褐色細胞腫",
+    "source_code": "C-4-5)-⑦",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-phrm-045",
+    "front": "感染経路と代表的微生物の対応を述べよ",
+    "back": "空気感染: 結核/麻疹/水痘→N95+陰圧個室。飛沫感染: インフル/百日咳/風疹/ムンプス→サージカルマスク。接触感染: MRSA/CDI/疥癬/ノロ→手袋+ガウン。経口感染: ノロ/ロタ/A型肝炎/コレラ。血液媒介: HBV/HCV/HIV→針刺し予防。媒介動物: マラリア(蚊)/ツツガムシ(ダニ)",
+    "source_code": "C-3-1)-㉙",
+    "deck": "cbt-pharmacology-pathology",
+    "tags": [
+      "C"
+    ]
   }
 ]

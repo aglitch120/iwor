@@ -130,5 +130,285 @@
       "免疫学",
       "B細胞"
     ]
+  },
+  {
+    "id": "cbt-imm-013",
+    "front": "自然免疫と獲得免疫の違いを述べよ",
+    "back": "自然免疫: 即座(分〜時間),非特異的,パターン認識(TLR等),好中球/マクロファージ/NK。獲得免疫: 遅い(日),特異的,抗原認識,T/B細胞,免疫記憶あり。橋渡し: 樹状細胞(自然免疫で抗原取込み→獲得免疫に提示)",
+    "source_code": "C-3-2)-①",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-014",
+    "front": "T細胞の分化と機能(CD4/CD8/Treg)を述べよ",
+    "back": "骨髄→胸腺で成熟(正の選択+負の選択)。CD4+(ヘルパー): Th1(IFNγ→細胞性免疫), Th2(IL-4/5/13→液性免疫/アレルギー), Th17(IL-17→好中球動員)。CD8+(キラー): MHC I→細胞傷害。Treg(CD4+CD25+Foxp3): 免疫抑制",
+    "source_code": "C-3-2)-②",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-015",
+    "front": "B細胞の分化と抗体産生機構を述べよ",
+    "back": "骨髄で成熟→濾胞でT細胞依存的活性化→胚中心(体細胞超変異+親和性成熟)→形質細胞(抗体産生)+メモリーB細胞。クラススイッチ: IgM→IgG/IgA/IgE(サイトカイン依存)。T非依存性: 莢膜多糖→IgMのみ",
+    "source_code": "C-3-2)-③",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-016",
+    "front": "免疫グロブリンの5クラスと機能を述べよ",
+    "back": "IgG: 最多,胎盤通過,オプソニン化,補体活性化。IgM: 初期応答(5量体),補体活性化最強。IgA: 粘膜免疫(分泌型: 2量体+分泌片),母乳。IgE: I型アレルギー,寄生虫(肥満細胞/好塩基球のFcεRI)。IgD: B細胞表面",
+    "source_code": "C-3-2)-④",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-017",
+    "front": "補体系の活性化経路と機能を述べよ",
+    "back": "古典経路: Ag-Ab複合体→C1q→C4→C2→C3。レクチン経路: MBL→MASP→C4/C2→C3。副経路: C3の自発的加水分解→B因子→C3bBb。最終: C5→C6-C9→MAC(膜侵襲複合体)→溶菌。C3a/C5a: アナフィラトキシン",
+    "source_code": "C-3-2)-⑤",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-018",
+    "front": "MHC(HLA)のクラスI/IIの違いを述べよ",
+    "back": "MHC I(HLA-A/B/C): 全有核細胞に発現,細胞内蛋白(ウイルス等)を提示→CD8+T細胞が認識。MHC II(HLA-DR/DQ/DP): 抗原提示細胞(DC/Mφ/B)に発現,外来抗原を提示→CD4+T細胞が認識。移植: HLA適合が重要",
+    "source_code": "C-3-2)-⑥",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-019",
+    "front": "アレルギーの4型(Gell-Coombs分類)を述べよ",
+    "back": "I型(即時型): IgE+肥満細胞→ヒスタミン(アナフィラキシー/喘息)。II型(細胞障害型): IgG/IgM→補体/ADCC(AIHA/ITP/Goodpasture)。III型(免疫複合体型): 沈着→補体活性化(SLE/血清病)。IV型(遅延型): T細胞介在(接触皮膚炎/ツ反)",
+    "source_code": "C-3-2)-⑦",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-020",
+    "front": "自己免疫疾患の発症機序と免疫寛容破綻を述べよ",
+    "back": "中枢性寛容: 胸腺で自己反応性T細胞除去(負の選択)。末梢性寛容: Treg,アネルギー,アポトーシス。破綻要因: 遺伝(HLA),環境(感染→分子擬態),ホルモン(女性に多い)。例: SLE(抗dsDNA), RA(抗CCP)",
+    "source_code": "C-3-2)-⑧",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-021",
+    "front": "臓器移植の拒絶反応の種類を述べよ",
+    "back": "超急性(分〜時間): 既存抗体→血管内血栓→移植片壊死。急性(日〜週): T細胞介在→細胞浸潤→免疫抑制強化。慢性(月〜年): 抗体介在→血管障害→線維化→不可逆。GVHD: ドナーT細胞がレシピエント攻撃(骨髄移植)",
+    "source_code": "C-3-2)-⑨",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-022",
+    "front": "免疫不全症の先天性と後天性を述べよ",
+    "back": "先天性: Bruton(X連鎖,B細胞欠損→反復細菌感染), DiGeorge(胸腺無形成→T細胞欠損), SCID(T+B欠損→致死的)。後天性: HIV/AIDS(CD4+T↓→日和見感染), 医原性(ステロイド/免疫抑制薬)",
+    "source_code": "C-3-2)-⑩",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-023",
+    "front": "免疫抑制薬の種類と作用機序を述べよ",
+    "back": "カルシニューリン阻害: タクロリムス/シクロスポリン(T細胞IL-2産生↓)。代謝拮抗: MMF/AZA(リンパ球増殖↓)。mTOR阻害: シロリムス。抗体: バシリキシマブ(抗IL-2R),ATG。ステロイド: 広範な免疫抑制。生物学的製剤: リツキシマブ(抗CD20)",
+    "source_code": "C-3-2)-⑪",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-024",
+    "front": "サイトカインの主要な種類と機能を述べよ",
+    "back": "IL-1/TNFα: 炎症誘導(発熱/急性期蛋白)。IL-2: T細胞増殖。IL-4/5/13: Th2→IgE/好酸球。IL-6: 急性期蛋白/B細胞分化。IL-10/TGFβ: 抑制性。IL-12: Th1分化。IL-17: 好中球動員。IFNγ: マクロファージ活性化。IFNα/β: 抗ウイルス",
+    "source_code": "C-3-2)-⑫",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-025",
+    "front": "ワクチンの種類と免疫原性を述べよ",
+    "back": "生ワクチン(BCG/MR/水痘/ロタ): 弱毒化→細胞性+液性免疫→免疫不全者禁忌。不活化(インフル/HBV/HPV/Hib/PCV): 抗原のみ→主に液性免疫。mRNA(COVID-19): 抗原蛋白を体内産生。トキソイド(DT): 毒素無毒化",
+    "source_code": "C-3-2)-⑬",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-026",
+    "front": "パターン認識受容体(PRR)の種類と機能を述べよ",
+    "back": "TLR: TLR4(LPS/グラム陰性菌), TLR3(dsRNA/ウイルス), TLR9(CpG DNA)。NOD様受容体(NLR): インフラマソーム→IL-1β/IL-18。RIG-I: 細胞質RNA認識。C型レクチン: マンノース受容体(真菌)",
+    "source_code": "C-3-2)-⑭",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-027",
+    "front": "粘膜免疫とIgAの役割を述べよ",
+    "back": "粘膜関連リンパ組織(MALT): 腸管(GALT: Peyer板), 気道(BALT)。M細胞: 抗原取込み→樹状細胞へ。IgA: 二量体+分泌片→粘膜表面で病原体中和。母乳IgA→新生児の腸管免疫。経口寛容: 食物抗原に対する免疫応答抑制",
+    "source_code": "C-3-2)-⑮",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-028",
+    "front": "NK細胞の機能と認識機構を述べよ",
+    "back": "自然免疫のリンパ球。MHC I欠損細胞を攻撃(missing-self: ウイルス感染細胞/腫瘍)。活性化受容体(NKG2D等)+抑制受容体(KIR: MHC I認識)のバランス。ADCC: IgG Fc部をFcγRIIIで認識→抗体依存性細胞傷害。パーフォリン/グランザイム",
+    "source_code": "C-3-2)-⑯",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-029",
+    "front": "食作用の機構(好中球/マクロファージ)を述べよ",
+    "back": "①認識(オプソニン化: IgG/C3b→Fc受容体/CR)→②貪食(ファゴソーム形成)→③殺菌(ファゴリソソーム: 活性酸素[O₂⁻/H₂O₂/HOCl]+NO+リゾチーム+デフェンシン)。慢性肉芽腫症(CGD): NADPHオキシダーゼ欠損→殺菌障害",
+    "source_code": "C-3-2)-⑰",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-030",
+    "front": "抗原提示の経路(MHC I vs II)を述べよ",
+    "back": "MHC I経路: 細胞内蛋白→プロテアソーム分解→TAP→小胞体でMHC Iに載せる→細胞表面→CD8+T。MHC II経路: 外来抗原→エンドサイトーシス→エンドソーム内でペプチド化→CLIP除去→MHC IIに載せる→細胞表面→CD4+T。交差提示: DCがMHC Iで外来抗原提示→CD8活性化",
+    "source_code": "C-3-2)-⑱",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-031",
+    "front": "炎症反応の5徴候と分子機構を述べよ",
+    "back": "5徴: 発赤(血管拡張)+腫脹(血管透過性↑)+熱感(血流↑)+疼痛(PG/ブラジキニン)+機能障害。分子: ヒスタミン(即座)→PG/LT(アラキドン酸代謝)→TNFα/IL-1(全身: 発熱/CRP)。好中球浸潤(IL-8/CXCL8)→マクロファージ→修復",
+    "source_code": "C-3-2)-⑲",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-032",
+    "front": "腫瘍免疫と免疫チェックポイントを述べよ",
+    "back": "腫瘍はネオアンチゲンを発現→CD8+T/NK細胞で排除(免疫監視)。腫瘍の免疫回避: MHC I↓, PD-L1発現(T細胞疲弊)。チェックポイント阻害薬: 抗PD-1(ニボルマブ)/抗PD-L1(アテゾリズマブ)/抗CTLA-4(イピリムマブ)→T細胞再活性化",
+    "source_code": "C-3-2)-⑳",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-033",
+    "front": "即時型アレルギー(I型)の発症機構と治療を述べよ",
+    "back": "感作: アレルゲン→Th2→IL-4→B細胞IgEクラススイッチ→IgEが肥満細胞FcεRIに結合。発症: 再曝露→架橋→脱顆粒→ヒスタミン/LT/PG放出→血管拡張+気管支攣縮+粘液↑。治療: 抗ヒスタミン,ステロイド。アナフィラキシー→アドレナリン筋注",
+    "source_code": "C-3-2)-㉑",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-034",
+    "front": "免疫学的検査法(ELISA/フローサイトメトリー等)を述べよ",
+    "back": "ELISA: 抗原/抗体の定量(サンドイッチ法)。フローサイトメトリー: 細胞表面マーカー(CD分類)解析→白血病の診断。蛍光抗体法: 組織中の抗原/抗体沈着(腎生検: IgA/IgG/C3)。ウェスタンブロット: 蛋白質検出",
+    "source_code": "C-3-2)-㉒",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-035",
+    "front": "遅延型アレルギー(IV型)の機序と代表疾患を述べよ",
+    "back": "感作T細胞が再曝露で活性化→IFNγ→マクロファージ活性化→肉芽腫形成。48-72時間で反応(遅延型)。代表: ツベルクリン反応,接触皮膚炎(パッチテスト),薬疹(SJS/TEN),移植片拒絶(急性),サルコイドーシスの肉芽腫",
+    "source_code": "C-3-2)-㉓",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-036",
+    "front": "免疫特権部位(immune privilege)を述べよ",
+    "back": "免疫応答が抑制される部位: 眼(前房,硝子体: TGFβ,FasL), 脳(BBB), 精巣(Sertoli細胞barrier), 胎盤(HLA-G→NK抑制)。移植: 角膜は血管なし→拒絶起こりにくい。眼内炎症→ぶどう膜炎(自己免疫: ベーチェット/Vogt-小柳-原田)",
+    "source_code": "C-3-2)-㉔",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-037",
+    "front": "血液型とRh不適合の免疫学的機序を述べよ",
+    "back": "ABO: A/B抗原(糖鎖)。自然抗体(IgM): A型は抗B,O型は抗A+抗B→不適合輸血で即時溶血。Rh: D抗原。RhD(-)母→RhD(+)児: 分娩時感作→次回妊娠で抗D(IgG)が胎盤通過→胎児溶血(HDN)。予防: 抗D免疫グロブリン",
+    "source_code": "C-3-2)-㉕",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-038",
+    "front": "自然リンパ球(ILC)の分類を述べよ",
+    "back": "ILC1: IFNγ→抗ウイルス(Th1相当)。ILC2: IL-5/13→好酸球活性化/粘液↑(Th2相当: アレルギー/寄生虫)。ILC3: IL-17/22→粘膜バリア/抗菌(Th17相当)。NK細胞もILCの一種。適応免疫のT細胞に対応するが抗原特異性なし",
+    "source_code": "C-3-2)-㉖",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-039",
+    "front": "造血幹細胞移植の種類と適応を述べよ",
+    "back": "自家移植: 患者自身の幹細胞(悪性リンパ腫等)。同種移植: HLA適合ドナー(白血病/再生不良性貧血)→GVL効果。臍帯血移植: HLA不一致でも可能。前処置: 骨髄破壊的(MAC) vs 骨髄非破壊的(RIC: 高齢者)。合併症: GVHD,感染,VOD",
+    "source_code": "C-3-2)-㉗",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
+  },
+  {
+    "id": "cbt-imm-040",
+    "front": "脾臓の免疫学的機能を述べよ",
+    "back": "白脾髄: T細胞(動脈周囲リンパ鞘: PALS)+B細胞(濾胞→胚中心)→適応免疫応答。赤脾髄: マクロファージ→老化赤血球除去+被莢膜菌捕捉。脾摘後: 肺炎球菌/髄膜炎菌/インフルエンザ桿菌のリスク↑→ワクチン+教育",
+    "source_code": "C-3-2)-㉘",
+    "deck": "cbt-immunology",
+    "tags": [
+      "C"
+    ]
   }
 ]
