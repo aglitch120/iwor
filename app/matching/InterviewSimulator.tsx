@@ -360,7 +360,7 @@ function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, ti
   const isUrgent = timeLeft <= 60
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col" style={{ background: '#FEFEFC' }}>
+    <div className="fixed inset-0 z-[60] flex flex-col" style={{ background: '#FEFEFC' }}>
       {/* ヘッダー（固定） */}
       <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ background: MCL }}>
         <div className="flex items-center gap-2">
