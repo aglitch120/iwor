@@ -23,6 +23,8 @@ export interface Conference {
   year: number
   estimated?: boolean  // 日程未確定（例年の傾向から推定）
   meetingType?: 'annual' | 'regional' | 'seminar'  // 年次総会 / 地方会 / セミナー
+  abstractDeadline?: string  // 演題提出締切（YYYY-MM-DD）
+  abstractUrl?: string  // 演題提出ページURL
 }
 
 // 診療科カテゴリ色（カレンダー表示用）

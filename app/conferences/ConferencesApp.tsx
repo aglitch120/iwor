@@ -441,6 +441,27 @@ function ConferenceCard({ conf, isAttending, onToggleAttend, isReminded, onToggl
               会長: {conf.president}{conf.presidentAffiliation && `（${conf.presidentAffiliation}）`}
             </p>
           )}
+          {conf.abstractDeadline && (() => {
+            const deadlineDays = getDaysUntil(conf.abstractDeadline)
+            const isUrgent = deadlineDays >= 0 && deadlineDays <= 14
+            const isPastDeadline = deadlineDays < 0
+            return (
+              <div className="flex items-center gap-1.5 mt-1.5">
+                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                  isPastDeadline ? 'bg-s1 text-muted line-through' :
+                  isUrgent ? 'bg-red-50 text-red-700 border border-red-200' :
+                  'bg-blue-50 text-blue-700 border border-blue-200'
+                }`}>
+                  演題締切: {conf.abstractDeadline.slice(5).replace('-', '/')}
+                  {!isPastDeadline && deadlineDays <= 30 && ` (あと${deadlineDays}日)`}
+                </span>
+                {conf.abstractUrl && !isPastDeadline && (
+                  <a href={conf.abstractUrl} target="_blank" rel="noopener noreferrer"
+                    className="text-[10px] underline" style={{ color: MC }}>提出</a>
+                )}
+              </div>
+            )
+          })()}
           <div className="flex items-center gap-2 mt-2 flex-wrap">
             {onToggleAttend && !isPast && (
               isPro ? (
