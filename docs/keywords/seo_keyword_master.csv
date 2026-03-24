@@ -989,3 +989,19 @@ theme,keyword,funnel,priority,search_vol_est,difficulty,target_persona,existing_
 32-new-competitor,ubie.app Ubie,META,0,0,0,全対象,,競合分析,,「補正Ca」上位。AI問診サービスがQ&A記事でSEO
 32-new-competitor,career-lab.m3.com m3キャリアデザインラボ,META,0,0,0,全対象,,競合分析,,「専門医メリット」上位。m3系コンテンツマーケティング
 32-new-competitor,kango-oshigoto.jp レバウェル看護,META,0,0,0,全対象,,競合分析,,「SOFAスコア」上位。看護系だが医師も参照
+38-bigword-analysis,Child-Pugh計算 — 上位: kanzo-kensa.com(1位!)/HOKUTO/ubie/QLifePro/武田薬品/日経メディカル,META,0,0,0,全対象,,ビッグKW分析,,新発見: kanzo-kensa.com(肝臓検査.com)がChild-Pugh/FIB-4で1位。個人サイトで勝てる実例
+38-bigword-analysis,FIB-4 index計算 — 上位: kanzo-kessa.com(1位)/徳大肝疾患/動脈硬化学会/日本肝臓学会(EAファーマ提供)/HOKUTO/エーザイ/武蔵野赤十字/クリニック2院/熊本大,META,0,0,0,全対象,,ビッグKW分析,,学会公式+製薬(EAファーマ/エーザイ)+大学。kanzo-kensa.comが個人で1位
+38-bigword-analysis,MELD計算 — 上位: HOKUTO(1位)/臓器移植ネットワーク/名大移植外科/日本肝臓学会/HOKUTO(MELD-Na)/MSD/alife.jp,META,0,0,0,全対象,,ビッグKW分析,,HOKUTO1位。移植関連の公式サイト多い
+38-bigword-analysis,HAS-BLED計算 — 上位: QLifePro(1位)/ベーリンガー/HOKUTO/medical.tokyo(MedCalc)/JStage/日経メディカル/dobashin(心房細動な日々),META,0,0,0,全対象,,ビッグKW分析,,新発見: medical.tokyo(MedCalc)/dobashin.exblog.jp(心房細動な日々ブログ)
+38-bigword-analysis,Wells DVT計算 — 上位: HOKUTO(1位)/MSD/静脈学会PDF/MDCalc(英語)/mdapp(英語),META,0,0,0,全対象,,ビッグKW分析,,日本語サイト少ない。iwor:日本語Wells DVTで上位狙える
+38-bigword-analysis,GRACE計算 — 上位: HOKUTO(1位)/note(ドクター・ミュラー)/日経メディカル/ナース専科/CareNet/m3,META,0,0,0,全対象,,ビッグKW分析,,note個人記事が2位。iwor:計算ツール+解説記事で上位可能
+32-new-competitor,kanzo-kessa.com 肝臓検査.com,META,0,0,0,全対象,,競合分析,,Child-Pugh/FIB-4で1位！個人サイト。iwor直接の計算ツール競合
+32-new-competitor,tokudai-kanshikkan.jp 徳大肝疾患,META,0,0,0,全対象,,競合分析,,FIB-4計算。大学系
+32-new-competitor,j-athero.org 動脈硬化学会,META,0,0,0,全対象,,競合分析,,FIB-4ツール。学会公式
+32-new-competitor,medical.eisai.jp エーザイ,META,0,0,0,全対象,,競合分析,,FIB-4計算。製薬企業
+32-new-competitor,gastro-kumamoto-u.com 熊本大消化器,META,0,0,0,全対象,,競合分析,,FIB-4計算。大学系
+32-new-competitor,medical.tokyo MedCalc,META,0,0,0,全対象,,競合分析,,HAS-BLED計算。医療計算サイト
+32-new-competitor,dobashin.exblog.jp 心房細動な日々,META,0,0,0,全対象,,競合分析,,HAS-BLED上位。循環器医ブログ。長期運営
+32-new-competitor,alife.jp alife,META,0,0,0,全対象,,競合分析,,MELD/MELD-Na計算個人サイト
+32-new-competitor,note.com/cardiology_m ドクター・ミュラー,META,0,0,0,全対象,,競合分析,,GRACE計算上位。noteの循環器医
+32-new-competitor,js-phlebology.jp 日本静脈学会,META,0,0,0,全対象,,競合分析,,Wells DVT PDF。学会公式
