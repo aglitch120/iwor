@@ -310,10 +310,39 @@ function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, ti
 }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [ttsEnabled, setTtsEnabled] = useState(false)
   const [silenceTimer, setSilenceTimer] = useState(0)
   const silenceRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const { transcript, isListening, start: startMic, stop: stopMic, supported: micSupported } = useSpeechRecognition()
+
+  // ── モバイルキーボード対応: visualViewportで高さ追従 ──
+  useEffect(() => {
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null
+    if (!vv) return
+
+    const handleResize = () => {
+      if (containerRef.current) {
+        // visualViewportの高さとオフセットでコンテナを調整
+        containerRef.current.style.height = `${vv.height}px`
+        containerRef.current.style.top = `${vv.offsetTop}px`
+      }
+      // キーボード表示時にメッセージを末尾へスクロール
+      requestAnimationFrame(() => {
+        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+      })
+    }
+
+    // 初期設定
+    handleResize()
+
+    vv.addEventListener('resize', handleResize)
+    vv.addEventListener('scroll', handleResize)
+    return () => {
+      vv.removeEventListener('resize', handleResize)
+      vv.removeEventListener('scroll', handleResize)
+    }
+  }, [])
 
   // マイク入力を入力欄に反映
   useEffect(() => {
@@ -360,7 +389,7 @@ function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, ti
   const isUrgent = timeLeft <= 60
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col" style={{ background: '#FEFEFC' }}>
+    <div ref={containerRef} className="fixed left-0 right-0 top-0 z-[60] flex flex-col" style={{ background: '#FEFEFC', height: '100%' }}>
       {/* ヘッダー（固定） */}
       <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ background: MCL }}>
         <div className="flex items-center gap-2">
@@ -472,6 +501,12 @@ function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, ti
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onFocus={() => {
+              // キーボード展開後にメッセージ末尾へスクロール
+              setTimeout(() => {
+                scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+              }, 300)
+            }}
             rows={1}
             className="flex-1 resize-none rounded-xl px-4 py-3 text-sm border focus:outline-none focus:ring-2"
             style={{ borderColor: '#DDD9D2', background: '#F0EDE7', fontSize: '16px', maxHeight: 120 }}
