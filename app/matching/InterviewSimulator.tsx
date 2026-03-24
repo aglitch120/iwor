@@ -5,7 +5,7 @@ import ProModal from '@/components/pro/ProModal'
 
 const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
-const API_BASE = process.env.NEXT_PUBLIC_WORKER_URL || 'https://api.iwor.jp'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://iwor-api.mightyaddnine.workers.dev'
 
 // ── 都道府県リスト ──
 const PREFECTURES = [
