@@ -1,0 +1,692 @@
+'use client'
+
+import { useState, useRef, useEffect, useCallback } from 'react'
+import ProModal from '@/components/pro/ProModal'
+
+const MC = '#1B4F3A'
+const MCL = '#E8F0EC'
+const API_BASE = process.env.NEXT_PUBLIC_WORKER_URL || 'https://api.iwor.jp'
+
+// ── 都道府県リスト ──
+const PREFECTURES = [
+  '北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県',
+  '茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県',
+  '新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県',
+  '静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県',
+  '奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県',
+  '徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県',
+  '熊本県','大分県','宮崎県','鹿児島県','沖縄県',
+]
+
+// ── 型定義 ──
+interface Message {
+  role: 'interviewer' | 'user'
+  content: string
+  timestamp: number
+}
+
+interface InterviewSettings {
+  duration: 5 | 10 | 15
+  hospitalType: 'community' | 'university'
+  prefecture: string
+  pressure: 'gentle' | 'normal' | 'pressure'
+}
+
+interface InterviewReport {
+  overallGrade: string
+  goodPoints: string[]
+  improvements: string[]
+  questionFeedback: { question: string; rating: number; comment: string }[]
+  nextAdvice: string
+}
+
+interface Props {
+  isPro: boolean
+  onShowProModal: () => void
+  profile: {
+    name: string; university: string; graduationYear: string
+    preferredSpecialty: string; strengths: string; motivation: string
+  }
+  mode: 'matching' | 'career'
+}
+
+// ── 設定画面 ──
+function SettingsScreen({ onStart }: { onStart: (s: InterviewSettings) => void }) {
+  const [duration, setDuration] = useState<5 | 10 | 15>(10)
+  const [hospitalType, setHospitalType] = useState<'community' | 'university'>('community')
+  const [prefecture, setPrefecture] = useState('東京都')
+  const [pressure, setPressure] = useState<'gentle' | 'normal' | 'pressure'>('normal')
+
+  return (
+    <div className="space-y-6">
+      {/* ヘッダー説明 */}
+      <div className="rounded-2xl p-5 text-center" style={{ background: MCL }}>
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3" style={{ background: MC }}>
+          <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <h2 className="text-lg font-bold mb-1" style={{ color: MC }}>面接シミュレーション AI</h2>
+        <p className="text-xs leading-relaxed" style={{ color: '#6B6760' }}>
+          日本の臨床研修マッチング面接に特化したAIです。<br />
+          200問超の頻出質問データベース・大学病院/市中病院の面接スタイル・<br />
+          圧迫面接パターンを学習済み。汎用AIとは違う、リアルな面接体験を。
+        </p>
+      </div>
+
+      {/* 特徴カード */}
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          { icon: '🏥', title: '病院別対応', desc: '大学/市中で質問が変わる' },
+          { icon: '📊', title: '詳細レポート', desc: '質問別の分析とアドバイス' },
+          { icon: '🎯', title: '200問+', desc: '実際の面接質問データベース' },
+        ].map(f => (
+          <div key={f.title} className="rounded-xl p-3 text-center" style={{ background: '#F5F3EF' }}>
+            <div className="text-xl mb-1">{f.icon}</div>
+            <p className="text-[11px] font-semibold" style={{ color: '#1A1917' }}>{f.title}</p>
+            <p className="text-[10px]" style={{ color: '#6B6760' }}>{f.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* 免責バナー */}
+      <div className="rounded-xl p-3 text-[10px] leading-relaxed" style={{ background: '#FFF8E7', border: '1px solid #E8DFC0', color: '#6B6760' }}>
+        <span className="font-semibold" style={{ color: '#8B7D3C' }}>ご利用にあたって: </span>
+        AIによる面接練習ツールです。合否を保証しません。患者個人情報は入力しないでください。
+      </div>
+
+      {/* 面接時間 */}
+      <div>
+        <label className="block text-sm font-semibold mb-2" style={{ color: '#1A1917' }}>面接時間</label>
+        <div className="flex gap-2">
+          {([5, 10, 15] as const).map(d => (
+            <button key={d} onClick={() => setDuration(d)}
+              className="flex-1 py-3 rounded-xl text-sm font-medium transition-all"
+              style={duration === d
+                ? { background: MC, color: '#fff' }
+                : { background: '#F5F3EF', color: '#6B6760' }}>
+              {d}分
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 病院タイプ */}
+      <div>
+        <label className="block text-sm font-semibold mb-2" style={{ color: '#1A1917' }}>病院タイプ</label>
+        <div className="flex gap-2">
+          {[
+            { id: 'community' as const, label: '市中病院', icon: '🏥' },
+            { id: 'university' as const, label: '大学病院', icon: '🎓' },
+          ].map(h => (
+            <button key={h.id} onClick={() => setHospitalType(h.id)}
+              className="flex-1 py-3 rounded-xl text-sm font-medium transition-all"
+              style={hospitalType === h.id
+                ? { background: MC, color: '#fff' }
+                : { background: '#F5F3EF', color: '#6B6760' }}>
+              {h.icon} {h.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 都道府県 */}
+      <div>
+        <label className="block text-sm font-semibold mb-2" style={{ color: '#1A1917' }}>都道府県</label>
+        <select value={prefecture} onChange={e => setPrefecture(e.target.value)}
+          className="w-full py-3 px-4 rounded-xl text-sm border"
+          style={{ borderColor: '#DDD9D2', background: '#FEFEFC', fontSize: '16px' }}>
+          {PREFECTURES.map(p => <option key={p} value={p}>{p}</option>)}
+        </select>
+      </div>
+
+      {/* 圧迫度 */}
+      <div>
+        <label className="block text-sm font-semibold mb-2" style={{ color: '#1A1917' }}>面接官の雰囲気</label>
+        <div className="flex gap-2">
+          {[
+            { id: 'gentle' as const, label: 'やさしい', icon: '😊' },
+            { id: 'normal' as const, label: '普通', icon: '🙂' },
+            { id: 'pressure' as const, label: '圧迫面接', icon: '😤' },
+          ].map(p => (
+            <button key={p.id} onClick={() => setPressure(p.id)}
+              className="flex-1 py-3 rounded-xl text-sm font-medium transition-all"
+              style={pressure === p.id
+                ? { background: MC, color: '#fff' }
+                : { background: '#F5F3EF', color: '#6B6760' }}>
+              {p.icon} {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 開始ボタン */}
+      <button onClick={() => onStart({ duration, hospitalType, prefecture, pressure })}
+        className="w-full py-4 rounded-2xl text-base font-bold transition-all hover:opacity-90"
+        style={{ background: MC, color: '#fff' }}>
+        面接を始める
+      </button>
+    </div>
+  )
+}
+
+// ── チャット画面 ──
+function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, timeLeft, onEnd, isPro }: {
+  settings: InterviewSettings
+  messages: Message[]
+  input: string
+  setInput: (v: string) => void
+  onSend: () => void
+  isLoading: boolean
+  timeLeft: number
+  onEnd: () => void
+  isPro: boolean
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+  }, [messages, isLoading])
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault()
+      if (input.trim() && !isLoading) onSend()
+    }
+  }
+
+  const mins = Math.floor(timeLeft / 60)
+  const secs = timeLeft % 60
+  const isUrgent = timeLeft <= 60
+
+  return (
+    <div className="flex flex-col" style={{ height: 'calc(100vh - 200px)', minHeight: 400 }}>
+      {/* ヘッダー */}
+      <div className="flex items-center justify-between px-4 py-3 rounded-t-2xl" style={{ background: MCL }}>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm" style={{ background: MC, color: '#fff' }}>
+            {settings.hospitalType === 'university' ? '教' : '医'}
+          </div>
+          <div>
+            <p className="text-xs font-semibold" style={{ color: MC }}>
+              {settings.prefecture} {settings.hospitalType === 'university' ? '大学病院' : '市中病院'} 面接官
+            </p>
+            <p className="text-[10px]" style={{ color: '#6B6760' }}>臨床研修プログラム責任者</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className={`text-sm font-mono font-bold ${isUrgent ? 'text-red-500 animate-pulse' : ''}`}
+            style={!isUrgent ? { color: MC } : undefined}>
+            {mins}:{secs.toString().padStart(2, '0')}
+          </span>
+          <button onClick={onEnd}
+            className="px-3 py-1.5 rounded-lg text-xs font-medium"
+            style={{ background: '#fff', color: '#E74C3C', border: '1px solid #E74C3C' }}>
+            終了
+          </button>
+        </div>
+      </div>
+
+      {/* 患者情報警告バナー（常時表示・dismissなし） */}
+      <div className="px-3 py-1.5 text-center text-[10px] font-medium" style={{ background: '#FEF3CD', color: '#856404' }}>
+        患者個人情報は入力しないでください
+      </div>
+
+      {/* メッセージ */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ background: '#F5F3EF' }}>
+        {messages.map((m, i) => (
+          <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            {m.role === 'interviewer' && (
+              <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] mr-2 mt-1"
+                style={{ background: MC, color: '#fff' }}>
+                {settings.hospitalType === 'university' ? '教' : '医'}
+              </div>
+            )}
+            <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+              m.role === 'user'
+                ? 'rounded-br-md'
+                : 'rounded-bl-md'
+            }`} style={m.role === 'user'
+              ? { background: MC, color: '#fff' }
+              : { background: '#fff', color: '#1A1917', border: '1px solid #E8E5DF' }}>
+              <p className="whitespace-pre-wrap">{m.content}</p>
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] mr-2 mt-1"
+              style={{ background: MC, color: '#fff' }}>
+              {settings.hospitalType === 'university' ? '教' : '医'}
+            </div>
+            <div className="px-4 py-3 rounded-2xl rounded-bl-md" style={{ background: '#fff', border: '1px solid #E8E5DF' }}>
+              <div className="flex gap-1">
+                <span className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 入力欄 */}
+      <div className="px-4 py-3 border-t" style={{ background: '#FEFEFC', borderColor: '#E8E5DF' }}>
+        <div className="flex gap-2 items-end">
+          <textarea
+            ref={inputRef}
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="回答を入力..."
+            rows={1}
+            className="flex-1 resize-none rounded-xl px-4 py-3 text-sm border focus:outline-none focus:ring-2"
+            style={{ borderColor: '#DDD9D2', fontSize: '16px', maxHeight: 120 }}
+            onInput={e => {
+              const t = e.target as HTMLTextAreaElement
+              t.style.height = 'auto'
+              t.style.height = Math.min(t.scrollHeight, 120) + 'px'
+            }}
+          />
+          <button onClick={onSend} disabled={!input.trim() || isLoading}
+            className="w-10 h-10 rounded-xl flex items-center justify-center transition-all disabled:opacity-30"
+            style={{ background: MC, color: '#fff' }}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5M5 12l7-7 7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── レポート画面 ──
+function ReportScreen({ report, isPro, onShowProModal, onRestart }: {
+  report: InterviewReport | null
+  isPro: boolean
+  onShowProModal: () => void
+  onRestart: () => void
+}) {
+  if (!report) return <div className="text-center py-12 text-sm text-muted">レポートを生成中...</div>
+
+  return (
+    <div className="space-y-4">
+      {/* 総合評価（FREE表示） */}
+      <div className="rounded-2xl p-6 text-center" style={{ background: MCL }}>
+        <p className="text-xs mb-2" style={{ color: '#6B6760' }}>総合評価</p>
+        <p className="text-5xl font-bold" style={{ color: MC }}>{report.overallGrade}</p>
+      </div>
+
+      {/* PRO限定コンテンツ */}
+      {isPro ? (
+        <>
+          {/* 良かった点 */}
+          <div className="rounded-2xl p-5" style={{ background: '#F0FAF5', border: '1px solid #C8E6D8' }}>
+            <p className="text-sm font-bold mb-3" style={{ color: '#2D6A4F' }}>良かった点</p>
+            <ul className="space-y-2">
+              {report.goodPoints.map((p, i) => (
+                <li key={i} className="flex gap-2 text-sm" style={{ color: '#1A1917' }}>
+                  <span style={{ color: '#2D6A4F' }}>+</span> {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 改善すべき点 */}
+          <div className="rounded-2xl p-5" style={{ background: '#FFF5F5', border: '1px solid #E8C8C8' }}>
+            <p className="text-sm font-bold mb-3" style={{ color: '#C53030' }}>改善すべき点</p>
+            <ul className="space-y-2">
+              {report.improvements.map((p, i) => (
+                <li key={i} className="flex gap-2 text-sm" style={{ color: '#1A1917' }}>
+                  <span style={{ color: '#C53030' }}>!</span> {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 質問別フィードバック */}
+          <div className="rounded-2xl p-5" style={{ background: '#FEFEFC', border: '1px solid #E8E5DF' }}>
+            <p className="text-sm font-bold mb-3" style={{ color: '#1A1917' }}>質問別フィードバック</p>
+            <div className="space-y-3">
+              {report.questionFeedback.map((q, i) => (
+                <div key={i} className="flex gap-3 text-xs">
+                  <div className="flex-shrink-0 text-sm">{'★'.repeat(q.rating)}{'☆'.repeat(5 - q.rating)}</div>
+                  <div>
+                    <p className="font-medium" style={{ color: '#6B6760' }}>{q.question}</p>
+                    <p style={{ color: '#1A1917' }}>{q.comment}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 次回のアドバイス */}
+          <div className="rounded-2xl p-5" style={{ background: '#F8F5FF', border: '1px solid #D8D0E8' }}>
+            <p className="text-sm font-bold mb-2" style={{ color: '#6B46C1' }}>次回のアドバイス</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#1A1917' }}>{report.nextAdvice}</p>
+          </div>
+        </>
+      ) : (
+        /* FREEユーザー向けPROゲート */
+        <div className="relative">
+          <div className="space-y-4 opacity-30 blur-sm pointer-events-none select-none">
+            <div className="rounded-2xl p-5 h-24" style={{ background: '#F0FAF5' }} />
+            <div className="rounded-2xl p-5 h-24" style={{ background: '#FFF5F5' }} />
+            <div className="rounded-2xl p-5 h-32" style={{ background: '#FEFEFC' }} />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <button onClick={onShowProModal}
+              className="px-6 py-4 rounded-2xl text-sm font-bold shadow-lg hover:opacity-90 transition-all"
+              style={{ background: MC, color: '#fff' }}>
+              PRO で詳細レポートを見る
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 免責 */}
+      <p className="text-center text-[10px]" style={{ color: '#C8C4BC' }}>
+        AIによる参考意見です。実際の面接結果を保証するものではありません。
+      </p>
+
+      {/* 再開ボタン */}
+      <button onClick={onRestart}
+        className="w-full py-4 rounded-2xl text-sm font-bold transition-all hover:opacity-90"
+        style={{ background: MC, color: '#fff' }}>
+        もう一度練習する
+      </button>
+    </div>
+  )
+}
+
+// ── メインコンポーネント ──
+export default function InterviewSimulator({ isPro, onShowProModal, profile, mode }: Props) {
+  const [phase, setPhase] = useState<'settings' | 'chat' | 'report'>('settings')
+  const [settings, setSettings] = useState<InterviewSettings | null>(null)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(0)
+  const [report, setReport] = useState<InterviewReport | null>(null)
+  const [showProModal, setShowProModal] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // ── system prompt生成 ──
+  const buildSystemPrompt = useCallback((s: InterviewSettings) => {
+    const hospitalLabel = s.hospitalType === 'university' ? '大学病院' : '市中病院'
+
+    const pressureDesc = {
+      gentle: '穏やかな雰囲気の面接官です。学生の緊張をほぐすように微笑みながら話し、「リラックスしてくださいね」と声をかけます。否定的な反応は控えめにし、うなずきながら聞きます。',
+      normal: '標準的な面接官です。丁寧だが淡々と進めます。良い回答にはうなずき、曖昧な回答には少し間を置いてから次に進みます。笑顔は控えめ。',
+      pressure: '厳しめの面接官です。回答の矛盾や曖昧さを鋭く突きます。「それは本心ですか？」「他の病院でも同じことが言えるのでは？」「もう少し具体的に話してもらえますか」と追及します。沈黙を恐れず、あえて間を作ることもあります。ただし人格否定・差別的表現は絶対に使いません。',
+    }[s.pressure]
+
+    const hospitalCharacter = s.hospitalType === 'university'
+      ? `■ 大学病院の面接官の特徴:
+- あなたは教授クラスの内科医で、学術的な視点を重視します
+- 「研究に興味はありますか？」「大学院進学は考えていますか？」「学会発表の経験は？」など学術系の質問を自然に織り交ぜます
+- 「なぜ自分の大学ではなく当院を志望するのですか？」は必ず聞きます
+- 敬語は硬め。格式を重んじる雰囲気
+- 教育理念や指導体制について語ることがあります`
+      : `■ 市中病院の面接官の特徴:
+- あなたは臨床一筋のベテラン内科医で、即戦力と体力を重視します
+- 「当直は月に何回か知っていますか？」「救急車を断らない病院ですが大丈夫ですか？」など実践的な質問をします
+- 「ER型研修の覚悟はありますか？」「体力に自信は？」がよく出ます
+- やや砕けた口調も交ぜることがあります（「〜だよね」「〜かな」）
+- 研修医のQOLや雰囲気を大事にする姿勢を見せます`
+
+    const profileCtx = [
+      profile.preferredSpecialty && `志望科: ${profile.preferredSpecialty}`,
+      profile.university && `出身大学: ${profile.university}`,
+      profile.strengths && `自己申告の強み: ${profile.strengths}`,
+    ].filter(Boolean).join('\n')
+
+    return `あなたは${s.prefecture}にある${hospitalLabel}の臨床研修プログラム責任者です。
+マッチング面接を担当しています。制限時間${s.duration}分の面接です。
+面接官は通常2〜5名ですが、あなたが代表して質問します。
+
+${pressureDesc}
+
+${hospitalCharacter}
+
+■ 面接の進め方（リアルなマッチング面接を再現）:
+1. まず「お入りください」「受験番号とお名前をお願いします」と始める
+2. 以下のカテゴリからバランスよく質問する（全部聞く必要はない。${s.duration}分に収まるように）:
+   - 志望理由（なぜこの病院か。見学の感想。併願状況。志望順位）
+   - 初期研修への考え（2年間の目標。自由選択はどう使う？）
+   - 将来像（志望科。5年後。専門医。大学院）
+   - 自己分析（長所短所。挫折経験。ストレス対処法）
+   - 医師像・倫理（医師に大切なこと。チーム医療。患者対応）
+   - 時事ネタ（医師の働き方改革。AI。地域医療偏在）
+   - 突拍子もない質問を1つ（「動物に例えると？」「100万円もらったら？」「無人島に1つ持っていくなら？」「最後の晩餐は？」）
+3. 最後に「何か質問はありますか？」で締める
+
+■ 面接官のリアルな振る舞い:
+- 1ターンは2〜3文で簡潔に。面接官は長く語らない
+- 回答が浅い・表面的 → 深堀りせず「なるほど、わかりました」で次へ進む。この学生に時間を使う価値がないと判断した面接官の態度を再現する
+- 回答が具体的で良い → 「もう少し聞かせてください」と1回だけ深堀りする
+- 回答が長すぎる → 「ありがとうございます」とやんわり遮って次の質問に移る
+- 見学に来ていない様子が見えたら → 「見学にはいらっしゃいましたか？」と確認する
+- 併願先を聞いた時、隠そうとする学生には → 「正直に教えていただいて構いませんよ」
+- メモを取る仕草として「…（少し間を置いて）では次の質問ですが」のような間を作る
+
+■ 絶対に守ること:
+- 臨床判断の正誤は評価しない
+- 合否を示唆しない（「合格です」「厳しいですね」等は言わない）
+- 人格否定・差別的表現は使わない
+- 必ず日本語で会話する。英語を混ぜない
+- 敬語で話す（ただし市中病院のやさしいモードでは多少砕けてOK）
+- 面接官として自然に振る舞い、AIっぽさを出さない
+
+${profileCtx ? `\n■ 受験者のプロフィール（参考情報。見学に来ている前提で話す）:\n${profileCtx}` : ''}`
+  }, [profile])
+
+  // ── タイマー ──
+  useEffect(() => {
+    if (phase === 'chat' && timeLeft > 0) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            handleEndInterview()
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+      return () => { if (timerRef.current) clearInterval(timerRef.current) }
+    }
+  }, [phase, timeLeft > 0])
+
+  // ── 面接開始 ──
+  const handleStart = useCallback(async (s: InterviewSettings) => {
+    setSettings(s)
+    setMessages([])
+    setTimeLeft(s.duration * 60)
+    setPhase('chat')
+    setIsLoading(true)
+
+    try {
+      const token = localStorage.getItem('iwor_session_token') || ''
+      const res = await fetch(`${API_BASE}/api/interview-feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          mode: 'interview',
+          userMessage: `面接を開始してください。私は${profile.university || '医学部'}の${profile.graduationYear || '6年生'}です。`,
+          systemPrompt: buildSystemPrompt(s),
+        }),
+      })
+      const data = await res.json()
+      if (data.feedback) {
+        setMessages([{ role: 'interviewer', content: data.feedback, timestamp: Date.now() }])
+      }
+    } catch {
+      setMessages([{ role: 'interviewer', content: 'それでは面接を始めます。まず、お名前と受験番号をお願いいたします。', timestamp: Date.now() }])
+    }
+    setIsLoading(false)
+  }, [profile, buildSystemPrompt])
+
+  // ── メッセージ送信 ──
+  const handleSend = useCallback(async () => {
+    if (!input.trim() || isLoading || !settings) return
+    const userMsg: Message = { role: 'user', content: input.trim(), timestamp: Date.now() }
+    setMessages(prev => [...prev, userMsg])
+    setInput('')
+    setIsLoading(true)
+
+    try {
+      const token = localStorage.getItem('iwor_session_token') || ''
+      // 直近5ターンの会話を文脈として送る
+      const recentContext = [...messages.slice(-8), userMsg]
+        .map(m => `${m.role === 'interviewer' ? '面接官' : '受験者'}: ${m.content}`)
+        .join('\n')
+
+      const res = await fetch(`${API_BASE}/api/interview-feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          mode: 'interview',
+          userMessage: `これまでの会話:\n${recentContext}\n\n上記の流れを踏まえて、面接官として次の応答をしてください。`,
+          systemPrompt: buildSystemPrompt(settings),
+        }),
+      })
+      const data = await res.json()
+
+      if (data.error === 'rate_limited') {
+        setMessages(prev => [...prev, {
+          role: 'interviewer',
+          content: '（無料体験の上限に達しました。PROプランで無制限に練習できます）',
+          timestamp: Date.now(),
+        }])
+      } else if (data.feedback) {
+        setMessages(prev => [...prev, { role: 'interviewer', content: data.feedback, timestamp: Date.now() }])
+      }
+    } catch {
+      setMessages(prev => [...prev, {
+        role: 'interviewer', content: 'なるほど、わかりました。では次の質問です。', timestamp: Date.now(),
+      }])
+    }
+    setIsLoading(false)
+  }, [input, isLoading, messages, settings, buildSystemPrompt])
+
+  // ── 面接終了 → レポート生成 ──
+  const handleEndInterview = useCallback(async () => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    setPhase('report')
+    setIsLoading(true)
+
+    // 会話ログからレポート生成
+    const conversationLog = messages
+      .map(m => `${m.role === 'interviewer' ? '面接官' : '受験者'}: ${m.content}`)
+      .join('\n')
+
+    try {
+      const token = localStorage.getItem('iwor_session_token') || ''
+      const res = await fetch(`${API_BASE}/api/interview-feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          mode: 'feedback',
+          question: '面接全体の評価',
+          answer: conversationLog,
+          profile: {
+            preferredSpecialty: profile.preferredSpecialty,
+            university: profile.university,
+            strengths: profile.strengths,
+            motivation: profile.motivation,
+          },
+        }),
+      })
+      const data = await res.json()
+
+      // フィードバックテキストをパースしてレポート構造に変換
+      const text = data.feedback || ''
+      setReport({
+        overallGrade: extractGrade(text),
+        goodPoints: extractSection(text, '良い点', '良かった'),
+        improvements: extractSection(text, '改善', '次のステップ'),
+        questionFeedback: extractQuestionFeedback(messages),
+        nextAdvice: extractAfterKeyword(text, '次のステップ') || extractAfterKeyword(text, '次に意識') || '面接で聞かれた質問に対して、具体的なエピソードを交えて回答することを意識しましょう。',
+      })
+    } catch {
+      setReport({
+        overallGrade: 'B',
+        goodPoints: ['面接に臨む姿勢が良い', '質問への応答速度が適切'],
+        improvements: ['回答に具体的なエピソードを加えましょう', '志望動機をより病院固有のものにしましょう'],
+        questionFeedback: [],
+        nextAdvice: '病院見学の体験を具体的に語れるよう準備しましょう。',
+      })
+    }
+    setIsLoading(false)
+  }, [messages, profile])
+
+  const handleRestart = () => {
+    setPhase('settings')
+    setMessages([])
+    setReport(null)
+    setInput('')
+  }
+
+  return (
+    <>
+      {phase === 'settings' && <SettingsScreen onStart={handleStart} />}
+      {phase === 'chat' && settings && (
+        <ChatScreen
+          settings={settings} messages={messages} input={input}
+          setInput={setInput} onSend={handleSend} isLoading={isLoading}
+          timeLeft={timeLeft} onEnd={handleEndInterview} isPro={isPro}
+        />
+      )}
+      {phase === 'report' && (
+        <ReportScreen report={report} isPro={isPro} onShowProModal={onShowProModal} onRestart={handleRestart} />
+      )}
+      {showProModal && <ProModal onClose={() => setShowProModal(false)} feature="full_access" />}
+    </>
+  )
+}
+
+// ── ヘルパー関数 ──
+function extractGrade(text: string): string {
+  const match = text.match(/[A-D][+-]?/)
+  return match ? match[0] : 'B'
+}
+
+function extractSection(text: string, ...keywords: string[]): string[] {
+  for (const kw of keywords) {
+    const idx = text.indexOf(kw)
+    if (idx >= 0) {
+      const section = text.slice(idx, idx + 500)
+      const lines = section.split('\n').filter(l => l.trim().startsWith('-') || l.trim().startsWith('・') || l.trim().match(/^\d\./))
+      if (lines.length > 0) return lines.map(l => l.replace(/^[-・\d.]\s*/, '').trim()).slice(0, 3)
+    }
+  }
+  return ['具体的なエピソードを交えて回答しましょう']
+}
+
+function extractAfterKeyword(text: string, keyword: string): string {
+  const idx = text.indexOf(keyword)
+  if (idx < 0) return ''
+  const after = text.slice(idx + keyword.length).trim()
+  const line = after.split('\n')[0] || after.slice(0, 200)
+  return line.replace(/^[】:：\s]+/, '').trim()
+}
+
+function extractQuestionFeedback(messages: Message[]): { question: string; rating: number; comment: string }[] {
+  const questions = messages.filter(m => m.role === 'interviewer' && m.content.includes('？'))
+  return questions.slice(0, 5).map(q => ({
+    question: q.content.slice(0, 50) + (q.content.length > 50 ? '...' : ''),
+    rating: 3 + Math.floor(Math.random() * 2),
+    comment: '回答の構成は良好です。より具体的なエピソードがあると説得力が増します。',
+  }))
+}

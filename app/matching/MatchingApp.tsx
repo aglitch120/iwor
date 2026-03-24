@@ -7,6 +7,7 @@ import AppHeader from '@/components/AppHeader'
 import HospitalTab from './HospitalSection'
 import DocumentsTab, { HospitalCompare } from './DocumentsTab'
 import ProfileWizard from './ProfileWizard'
+import InterviewSimulator from './InterviewSimulator'
 
 const MC = '#1B4F3A'
 const MCL = '#E8F0EC'
@@ -25,7 +26,7 @@ const STORAGE_KEY = "iwor_matching_profile"
 const MODE_STORAGE_KEY = "iwor_matching_mode"
 
 type Mode = 'matching' | 'career'
-type TabId = 'profile' | 'documents' | 'hospitals' | 'compare' | 'wishlist'
+type TabId = 'profile' | 'documents' | 'hospitals' | 'compare' | 'wishlist' | 'interview'
 
 function getTabs(mode: Mode) {
   const tabs: { id: TabId; label: string; icon: React.ReactNode; pro?: boolean }[] = [
@@ -43,6 +44,15 @@ function getTabs(mode: Mode) {
       { id: 'wishlist', label: '志望リスト',
         icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>,
         pro: true },
+      { id: 'interview', label: '面接AI',
+        icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> },
+    )
+  }
+  // 専攻医・転職モードにも面接タブ追加
+  if (mode === 'career') {
+    tabs.push(
+      { id: 'interview', label: '面接AI',
+        icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> },
     )
   }
   return tabs
@@ -65,11 +75,14 @@ export default function MatchingApp() {
     if (m === 'career' || m === 'matching') {
       setMode(m)
     } else {
-      // 属性に応じてデフォルトモードを設定
       const role = localStorage.getItem('iwor_user_role')
       if (role === 'student') setMode('matching')
       else if (role && role !== 'student') setMode('career')
     }
+    // URLパラメータ ?tab=interview に対応
+    const params = new URLSearchParams(window.location.search)
+    const tabParam = params.get('tab')
+    if (tabParam === 'interview') setTab('interview')
     if (!localStorage.getItem('iwor_matching_tutorial_done')) setShowTutorial(true)
     else setTutorialDone(true)
     if (localStorage.getItem('iwor_matching_help_dismissed')) setHelpDismissed(true)
@@ -151,6 +164,9 @@ export default function MatchingApp() {
       )}
       {tab === 'wishlist' && (
         <HospitalTab profile={basicProfile} isPro={isPro} onShowProModal={() => setShowProModal(true)} initialSubTab="wishlist" />
+      )}
+      {tab === 'interview' && (
+        <InterviewSimulator profile={basicProfile} isPro={isPro} onShowProModal={() => setShowProModal(true)} mode={mode} />
       )}
 
       {showProModal && <ProModal onClose={() => setShowProModal(false)} feature="save" />}
