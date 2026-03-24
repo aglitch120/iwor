@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import IworLoader from '@/components/IworLoader'
 import AppHeader from '@/components/AppHeader'
 import ProModal from '@/components/pro/ProModal'
 import { useProStatus } from '@/components/pro/useProStatus'
@@ -152,6 +153,14 @@ export default function CreditsApp() {
   }, [isPro])
 
   // 複数専門医対応: selectedSpecialtiesが空なら旧selectedSpecialtyを使う
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <IworLoader size="lg" />
+      </div>
+    )
+  }
+
   const selectedIds = data.selectedSpecialties?.length ? data.selectedSpecialties : (data.selectedSpecialty ? [data.selectedSpecialty] : [])
   // 現在表示中の専門医（タブ切替）
   const [activeSpecIdx, setActiveSpecIdx] = useState(0)
