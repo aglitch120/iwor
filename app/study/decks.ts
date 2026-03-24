@@ -458,41 +458,61 @@ const CBT_DECK_META: { id: string; name: string; emoji: string; file: string }[]
 
 let cbtDecksCache: Deck[] | null = null
 
-/** CBTデッキをpublic/data/decks/から非同期ロード */
+// CBTデッキJSONをdynamic importでバンドルに含める（fetchの失敗を回避）
+const CBT_IMPORTS: Record<string, () => Promise<any>> = {
+  'cbt-professional.json': () => import('../../public/data/decks/cbt-professional.json'),
+  'cbt-statistics-ebm.json': () => import('../../public/data/decks/cbt-statistics-ebm.json'),
+  'cbt-epidemiology.json': () => import('../../public/data/decks/cbt-epidemiology.json'),
+  'cbt-health-system.json': () => import('../../public/data/decks/cbt-health-system.json'),
+  'cbt-cell-genetics.json': () => import('../../public/data/decks/cbt-cell-genetics.json'),
+  'cbt-histology-embryology.json': () => import('../../public/data/decks/cbt-histology-embryology.json'),
+  'cbt-physiology.json': () => import('../../public/data/decks/cbt-physiology.json'),
+  'cbt-biochemistry.json': () => import('../../public/data/decks/cbt-biochemistry.json'),
+  'cbt-microbiology.json': () => import('../../public/data/decks/cbt-microbiology.json'),
+  'cbt-immunology.json': () => import('../../public/data/decks/cbt-immunology.json'),
+  'cbt-pharmacology-pathology.json': () => import('../../public/data/decks/cbt-pharmacology-pathology.json'),
+  'cbt-behavioral-science.json': () => import('../../public/data/decks/cbt-behavioral-science.json'),
+  'cbt-clinical-core.json': () => import('../../public/data/decks/cbt-clinical-core.json'),
+  'cbt-systemic-disease.json': () => import('../../public/data/decks/cbt-systemic-disease.json'),
+  'cbt-clinical-reasoning.json': () => import('../../public/data/decks/cbt-clinical-reasoning.json'),
+}
+
+function parseCbtCards(rawCards: any[]): FlashCard[] {
+  return rawCards.map((c: any) => {
+    if (c.type === 'step_card' && c.steps) {
+      const steps = c.steps as { step: number; question: string; answer: string; hint?: string }[]
+      return {
+        id: c.id,
+        front: `[4連問] ${c.scenario}\n\nStep 1: ${steps[0]?.question || ''}`,
+        back: steps.map((s: any) => `Step ${s.step}: ${s.question}\n→ ${s.answer}`).join('\n\n'),
+        tag: (c.tags && c.tags[0]) || '臨床推論',
+        explanation: `対象疾患: ${c.target_disease || ''}（${c.disease_class || ''}群）`,
+        source: c.source_code || '',
+      }
+    }
+    return {
+      id: c.id,
+      front: c.front || '',
+      back: c.back || '',
+      tag: (c.tags && c.tags[0]) || c.deck || '',
+      explanation: c.explanation || '',
+      source: c.source_code || '',
+    }
+  })
+}
+
+/** CBTデッキをdynamic importで非同期ロード */
 export async function loadCbtDecks(): Promise<Deck[]> {
   if (cbtDecksCache) return cbtDecksCache
   const decks: Deck[] = []
   for (const meta of CBT_DECK_META) {
     try {
-      const res = await fetch(`/data/decks/${meta.file}`)
-      if (!res.ok) continue
-      const rawCards = await res.json()
-      const cards: FlashCard[] = (Array.isArray(rawCards) ? rawCards : []).map((c: any) => {
-        // ステップカード（4連問）をFlashCard形式に変換
-        if (c.type === 'step_card' && c.steps) {
-          const steps = c.steps as { step: number; question: string; answer: string; hint?: string }[]
-          const front = `[4連問] ${c.scenario}\n\nStep 1: ${steps[0]?.question || ''}`
-          const back = steps.map((s: any) =>
-            `Step ${s.step}: ${s.question}\n→ ${s.answer}`
-          ).join('\n\n')
-          return {
-            id: c.id,
-            front,
-            back,
-            tag: (c.tags && c.tags[0]) || '臨床推論',
-            explanation: `対象疾患: ${c.target_disease || ''}（${c.disease_class || ''}群）`,
-            source: c.source_code || '',
-          }
-        }
-        return {
-          id: c.id,
-          front: c.front || '',
-          back: c.back || '',
-          tag: (c.tags && c.tags[0]) || c.deck || '',
-          explanation: c.explanation || '',
-          source: c.source_code || '',
-        }
-      })
+      const importer = CBT_IMPORTS[meta.file]
+      if (!importer) continue
+      const mod = await importer()
+      const rawCards = mod.default || mod
+      const cards = parseCbtCards(Array.isArray(rawCards) ? rawCards : [])
+      if (cards.length === 0) continue
       decks.push({
         id: meta.id,
         name: meta.name,
@@ -504,7 +524,9 @@ export async function loadCbtDecks(): Promise<Deck[]> {
         createdAt: '2026-03-23T00:00:00Z',
         updatedAt: '2026-03-23T00:00:00Z',
       })
-    } catch {}
+    } catch (err) {
+      console.error(`CBT deck load error (${meta.file}):`, err)
+    }
   }
   cbtDecksCache = decks
   return decks
