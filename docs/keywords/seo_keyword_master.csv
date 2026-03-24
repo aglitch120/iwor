@@ -784,3 +784,51 @@ theme,keyword,funnel,priority,search_vol_est,difficulty,target_persona,existing_
 30-comparison,HOKUTO vs iwor 比較,MOFU,2,100-300,低,全対象,,未着手,,比較KW。高CVR
 30-comparison,QB vs レビューブック vs イヤーノート 使い分け,MOFU,2,100-300,低,全対象,,未着手,,比較KW。高CVR
 30-comparison,medu4 vs Q-Assist vs mediLink 比較,MOFU,2,100-300,低,全対象,,未着手,,比較KW。高CVR
+31-emotional,研修医 辞めたい,MOFU,3,500-1000,低,研修医,,未着手,,Yahoo知恵袋頻出。感情KW→メンタル記事+iwor全体
+31-emotional,研修医 辛い しんどい,MOFU,3,300-500,低,研修医,,未着手,,Yahoo知恵袋頻出
+31-emotional,当直 緊張 眠れない,MOFU,3,200-300,低,研修医,,未着手,当直シフト,Yahoo知恵袋2位
+31-emotional,J-OSLER 間に合わない 焦り,MOFU,3,200-300,低,専攻医,,未着手,J-OSLER管理,Yahoo知恵袋。感情→ツールで解決
+31-emotional,CBT 落ちた どうする,MOFU,3,200-300,低,医学生,,未着手,Study CBTデッキ,Yahoo知恵袋頻出
+31-emotional,CBT 留年 怖い,MOFU,2,200-300,低,医学生,,未着手,Study CBTデッキ,感情KW
+31-emotional,国試 落ちた 再受験,MOFU,2,300-500,低,医学生,,未着手,Study国試デッキ,
+31-emotional,医学部 留年 つらい,MOFU,2,300-500,低,医学生,,未着手,,
+31-emotional,医師 バーンアウト 辞めたい,MOFU,2,300-500,中,全医師,,未着手,,
+31-emotional,専攻医 きつい やめたい,MOFU,2,200-300,低,専攻医,,未着手,,
+31-emotional,医師 うつ 休職,MOFU,2,200-300,低,全医師,,未着手,,
+31-emotional,当直 多すぎ 過労,MOFU,3,200-300,低,研修医/専攻医,,未着手,当直シフト,感情→公平なシフトで解決
+31-emotional,マッチング 不安,MOFU,2,200-300,低,医学生,,未着手,マッチング機能,感情KW
+31-emotional,マッチング アンマッチ どうする,MOFU,2,200-300,低,医学生,,未着手,,季節KW(10月)
+32-new-competitor,MediE CBT 対策,MOFU,1,100-200,低,医学生,,未着手,,新発見競合
+32-new-competitor,ガッシーブログ CBT,MOFU,1,100-200,低,医学生,,未着手,,新発見競合
+32-new-competitor,MEC 国試 予備校,MOFU,1,200-300,低,医学生,,未着手,,予備校KW
+32-new-competitor,CES 国試 予備校,MOFU,1,100-200,低,医学生,,未着手,,予備校KW
+32-new-competitor,病歴要約アシスト 評判,MOFU,2,100-200,低,専攻医,,未着手,,競合ブランドKW
+32-new-competitor,medaitool 使い方,MOFU,2,100-200,低,専攻医,,未着手,,競合ブランドKW
+33-regional,東京 研修病院 おすすめ,MOFU,2,300-500,中,医学生,,未着手,病院DB,地域KW。1470病院DBと連携
+33-regional,大阪 研修病院 おすすめ,MOFU,2,200-300,低,医学生,,未着手,病院DB,地域KW
+33-regional,福岡 研修病院 おすすめ,MOFU,2,100-200,低,医学生,,未着手,病院DB,地域KW
+33-regional,名古屋 研修病院 おすすめ,MOFU,2,100-200,低,医学生,,未着手,病院DB,地域KW
+33-regional,北海道 研修病院 おすすめ,MOFU,2,100-200,低,医学生,,未着手,病院DB,地域KW
+33-regional,沖縄 研修病院 おすすめ,MOFU,1,100-200,低,医学生,,未着手,病院DB,地域KW
+33-regional,マッチング 関東 人気病院,MOFU,2,200-300,低,医学生,,未着手,病院DB,地域KW
+33-regional,マッチング 関西 人気病院,MOFU,2,200-300,低,医学生,,未着手,病院DB,地域KW
+34-drug-specific,メトホルミン 腎機能 eGFR,BOFU,2,300-500,低,全医師,,未着手,eGFRツール,薬剤名KW
+34-drug-specific,ワルファリン INR 調整,BOFU,2,300-500,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,DOACドアック 使い分け,BOFU,2,300-500,中,全医師,,未着手,,薬剤名KW
+34-drug-specific,アミオダロン 副作用 モニタリング,BOFU,2,200-300,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,プレドニゾロン 減量 方法,BOFU,2,300-500,低,全医師,,未着手,ステロイドカバーツール,薬剤名KW
+34-drug-specific,リチウム 血中濃度 TDM,BOFU,2,200-300,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,フェニトイン 補正 アルブミン,BOFU,2,200-300,低,全医師,,未着手,補正フェニトインツール,iwor直結
+34-drug-specific,バンコマイシン AUC TDM,BOFU,2,300-500,低,全医師,,未着手,,踊る救急医57K PV記事KW
+34-drug-specific,タクロリムス 血中濃度,BOFU,2,200-300,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,デノスマブ 投与間隔,BOFU,2,200-300,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,テリパラチド 使い方,BOFU,2,100-200,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,SGLT2阻害薬 使い分け,BOFU,2,300-500,中,全医師,,未着手,,薬剤名KW
+34-drug-specific,GLP-1受容体作動薬 一覧,BOFU,2,300-500,中,全医師,,未着手,,薬剤名KW
+34-drug-specific,DPP-4阻害薬 使い分け,BOFU,2,200-300,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,PPI 使い分け 長期投与,BOFU,2,300-500,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,抗てんかん薬 使い分け,BOFU,2,200-300,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,抗うつ薬 SSRI SNRI 使い分け,BOFU,2,300-500,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,睡眠薬 高齢者 選び方,BOFU,2,300-500,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,鎮痛薬 NSAIDs アセトアミノフェン 使い分け,BOFU,2,300-500,低,全医師,,未着手,,薬剤名KW
+34-drug-specific,利尿薬 種類 使い分け,BOFU,2,300-500,低,全医師,,未着手,,薬剤名KW
