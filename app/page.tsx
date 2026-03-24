@@ -17,8 +17,9 @@ const apps = [
   {
     href: '/tools',
     label: '臨床ツール',
-    sub: '計算・薬剤・手技・基準値',
+    sub: '計算222種・薬剤ガイド・手技・基準値',
     badge: 'FREE',
+    featured: true,
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
@@ -147,8 +148,9 @@ const apps = [
   {
     href: '/study',
     label: 'Study',
-    sub: '医学知識を毎日5分で定着',
+    sub: 'フラッシュカードで医学知識を毎日5分で定着',
     badge: 'NEW',
+    featured: true,
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 6.253v13M12 6.253C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />

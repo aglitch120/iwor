@@ -477,20 +477,52 @@ function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, ti
               : { background: 'transparent', color: '#C8C4BC', border: '1px solid #E8E5DF' }}>
             {ttsEnabled ? '🔊' : '🔇'} 読み上げ{ttsEnabled ? 'ON' : 'OFF'}
           </button>
-          {isListening && (
-            <span className="text-[10px] text-red-500 animate-pulse flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-red-500" /> 録音中...
-            </span>
-          )}
-        </div>
+          </div>
+
+        {/* 録音中: ボイスメモ風UI */}
+        {isListening ? (
+          <div className="rounded-2xl p-4" style={{ background: '#FEE2E2', border: '2px solid #EF4444' }}>
+            <div className="flex items-center gap-3">
+              <button onClick={handleMicToggle}
+                className="w-12 h-12 rounded-full flex items-center justify-center animate-pulse flex-shrink-0"
+                style={{ background: '#EF4444', color: '#fff' }}>
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                </svg>
+              </button>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+                  <span className="text-sm font-bold text-red-700">録音中</span>
+                </div>
+                {/* 波形アニメーション */}
+                <div className="flex items-center gap-[2px] h-5">
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <div key={i} className="w-[3px] rounded-full bg-red-400"
+                      style={{
+                        height: `${8 + Math.sin(Date.now() / 200 + i * 0.5) * 8}px`,
+                        animation: `waveform 0.8s ease-in-out ${i * 0.03}s infinite alternate`,
+                        opacity: 0.5 + Math.random() * 0.5,
+                      }} />
+                  ))}
+                </div>
+                <p className="text-xs text-red-600 mt-1 truncate">{input || '話してください...'}</p>
+              </div>
+              <button onClick={() => { stopMic(); if (input.trim()) onSend() }}
+                className="px-4 py-2 rounded-xl text-xs font-bold flex-shrink-0"
+                style={{ background: MC, color: '#fff' }}>
+                送信
+              </button>
+            </div>
+            <style>{`@keyframes waveform{from{height:4px}to{height:18px}}`}</style>
+          </div>
+        ) : (
         <div className="flex gap-2 items-end">
           {/* マイクボタン */}
           {micSupported && (
             <button onClick={handleMicToggle}
               className="w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0"
-              style={isListening
-                ? { background: '#EF4444', color: '#fff' }
-                : { background: '#F0EDE7', color: '#6B6760', border: '1.5px solid #DDD9D2' }}>
+              style={{ background: '#F0EDE7', color: '#6B6760', border: '1.5px solid #DDD9D2' }}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
               </svg>
@@ -525,6 +557,7 @@ function ChatScreen({ settings, messages, input, setInput, onSend, isLoading, ti
             </svg>
           </button>
         </div>
+        )}
       </div>
     </div>
   )
