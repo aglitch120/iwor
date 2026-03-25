@@ -307,7 +307,7 @@ export default function HospitalTab({
                 ))}
               </div>
               {!isPro && (
-                <button onClick={onShowProModal} className="w-full mt-3 py-2.5 rounded-xl text-[11px] font-bold text-white shadow-lg transition-transform hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, ${MC}, #2D7A5A)` }}>
+                <button onClick={onShowProModal} className="pro-cta-glow w-full mt-3 py-2.5 rounded-xl text-[11px] font-bold text-white shadow-lg transition-transform hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, ${MC}, #2D7A5A)` }}>
                   PRO会員であなた専用のおすすめを見る
                 </button>
               )}
@@ -390,7 +390,7 @@ export default function HospitalTab({
               <p className="text-sm font-bold text-tx mb-1">あと{hiddenCount}件の病院があります</p>
               <p className="text-xs text-muted mb-4">PRO会員で全{filtered.length}件＋倍率推移＋おすすめ情報にアクセス</p>
               <button onClick={onShowProModal}
-                className="px-6 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: MC }}>
+                className="pro-cta-glow px-6 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: MC }}>
                 PRO会員になる
               </button>
             </div>
@@ -442,7 +442,7 @@ export default function HospitalTab({
               <div className="mt-4 pt-3 border-t" style={{ borderColor: 'var(--br)' }}>
                 <p className="text-[11px] text-muted text-center mb-2">PRO会員で人気数を確認</p>
                 <button onClick={onShowProModal}
-                  className="w-full py-2 rounded-lg text-xs font-bold text-white" style={{ background: MC }}>
+                  className="pro-cta-glow w-full py-2 rounded-lg text-xs font-bold text-white" style={{ background: MC }}>
                   PRO会員になる
                 </button>
               </div>
@@ -669,7 +669,7 @@ function HospitalCard({
                     </p>
                     <p className="text-[9px] text-white/60 mb-2">PRO会員でスコア詳細を表示</p>
                     <button onClick={e => { e.stopPropagation(); onShowPro?.() }}
-                      className="px-4 py-1.5 rounded-lg text-[10px] font-bold bg-white shadow-sm" style={{ color: MC }}>
+                      className="pro-cta-glow px-4 py-1.5 rounded-lg text-[10px] font-bold bg-white shadow-sm" style={{ color: MC }}>
                       穴場度を見る
                     </button>
                   </div>
@@ -732,7 +732,7 @@ function ListTab({
         </div>
         <p className="text-sm font-bold text-tx mb-1">PRO限定機能</p>
         <p className="text-xs text-muted mb-4">{listType === 'interested' ? '志望病院リスト' : '志望リスト＆マッチ確率計算'}はPRO会員で使えます</p>
-        <button onClick={onShowProModal} className="px-6 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: MC }}>
+        <button onClick={onShowProModal} className="pro-cta-glow px-6 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: MC }}>
           PRO会員になる
         </button>
       </div>
@@ -871,7 +871,7 @@ function MatchProbabilityCard({
             </div>
           </div>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <button className="px-5 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg" style={{ background: MC }}>
+            <button className="pro-cta-glow px-5 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg" style={{ background: MC }}>
               🔒 PRO会員でマッチ確率を計算
             </button>
             <p className="text-xs text-muted mt-2">志望病院の倍率・プロフィールから算出</p>

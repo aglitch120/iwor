@@ -299,7 +299,7 @@ export default function JournalTeaser() {
             PRO会員は完成時に追加料金なしで利用できます。
           </p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/pro" style={{
+            <Link href="/pro" className="pro-cta-glow" style={{
               padding: '13px 32px', borderRadius: 10,
               background: `linear-gradient(135deg, ${C.ac}, ${C.ac2})`, color: '#fff',
               fontSize: 15, fontWeight: 700, textDecoration: 'none', boxShadow: `0 4px 20px ${C.ac}44`,

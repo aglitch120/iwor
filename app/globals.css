@@ -170,6 +170,37 @@
   }
 }
 
+/* ── PRO CTAボタン ボーダーグロウエフェクト ── */
+.pro-cta-glow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.pro-cta-glow::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from 0deg, transparent 0%, #2DD4BF 10%, #1B4F3A 20%, transparent 30%);
+  animation: proCTASpin 2.5s linear infinite, proCTAFadeOut 4s ease-out forwards;
+  z-index: -1;
+}
+.pro-cta-glow::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}
+@keyframes proCTASpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes proCTAFadeOut {
+  0%, 60% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* ── 印刷用スタイル ── */
 @media print {
   /* ナビゲーション・フッター・BottomNav非表示 */

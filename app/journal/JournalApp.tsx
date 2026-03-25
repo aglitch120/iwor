@@ -614,7 +614,7 @@ export default function JournalApp() {
               )}
               <div className="space-y-2">
                 <button onClick={() => setShowProModal(true)}
-                  className="block w-full max-w-xs mx-auto px-6 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: MC }}>
+                  className="pro-cta-glow block w-full max-w-xs mx-auto px-6 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: MC }}>
                   PRO会員で全{filteredArticles.length}件を読む
                 </button>
                 <p className="text-[9px] text-muted">フィルタ設定はFREEでも自動保存されます</p>

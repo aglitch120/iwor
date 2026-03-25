@@ -167,7 +167,7 @@ function SettingsScreen({ onStart, isPro }: { onStart: (s: InterviewSettings) =>
 
       {/* 開始ボタン */}
       <button onClick={() => onStart({ duration, hospitalType, prefecture, pressure, useProfile })}
-        className="w-full py-3.5 rounded-xl text-sm font-bold transition-all hover:opacity-90"
+        className="pro-cta-glow w-full py-3.5 rounded-xl text-sm font-bold transition-all hover:opacity-90"
         style={{ background: MC, color: '#fff' }}>
         {isPro ? '面接を始める' : '無料で始める'}
       </button>

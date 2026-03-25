@@ -522,7 +522,7 @@ export default function CreditsApp() {
                   </div>
                   <p className="text-sm font-bold text-white mb-1">学会連携を解放</p>
                   <p className="text-[10px] text-white/60 mb-3">地方会・e-learning・公式基準を表示</p>
-                  <button onClick={() => setShowProModal(true)} className="px-5 py-2 rounded-lg text-xs font-bold bg-white text-ac shadow-lg hover:shadow-xl transition-all">
+                  <button onClick={() => setShowProModal(true)} className="pro-cta-glow px-5 py-2 rounded-lg text-xs font-bold bg-white text-ac shadow-lg hover:shadow-xl transition-all">
                     PRO会員になる
                   </button>
                 </div>
@@ -651,7 +651,7 @@ export default function CreditsApp() {
             <p className="text-sm font-bold" style={{ color: C.ac }}>データを保存するにはPRO会員登録が必要です</p>
             <p className="text-xs mt-1" style={{ color: C.m }}>現在の入力はブラウザを閉じると失われます</p>
             <button onClick={() => setShowProModal(true)}
-              className="mt-2 px-4 py-2 rounded-xl text-xs font-bold text-white"
+              className="pro-cta-glow mt-2 px-4 py-2 rounded-xl text-xs font-bold text-white"
               style={{ background: C.ac }}>
               PRO会員について詳しく見る
             </button>
