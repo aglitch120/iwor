@@ -30,8 +30,72 @@ async function loadIndex(): Promise<IndexEntry[]> {
 
 import { tools, implementedTools } from '@/lib/tools-config'
 
+// ローマ字→ひらがなマッピング（長いものから優先マッチ）
+const ROMAJI: [string, string][] = [
+  ['sha','しゃ'],['shi','し'],['shu','しゅ'],['sho','しょ'],
+  ['cha','ちゃ'],['chi','ち'],['chu','ちゅ'],['cho','ちょ'],['tsu','つ'],
+  ['nya','にゃ'],['nyu','にゅ'],['nyo','にょ'],
+  ['hya','ひゃ'],['hyu','ひゅ'],['hyo','ひょ'],
+  ['mya','みゃ'],['myu','みゅ'],['myo','みょ'],
+  ['rya','りゃ'],['ryu','りゅ'],['ryo','りょ'],
+  ['gya','ぎゃ'],['gyu','ぎゅ'],['gyo','ぎょ'],
+  ['bya','びゃ'],['byu','びゅ'],['byo','びょ'],
+  ['pya','ぴゃ'],['pyu','ぴゅ'],['pyo','ぴょ'],
+  ['ja','じゃ'],['ju','じゅ'],['jo','じょ'],
+  ['ka','か'],['ki','き'],['ku','く'],['ke','け'],['ko','こ'],
+  ['sa','さ'],['si','し'],['su','す'],['se','せ'],['so','そ'],
+  ['ta','た'],['ti','ち'],['tu','つ'],['te','て'],['to','と'],
+  ['na','な'],['ni','に'],['nu','ぬ'],['ne','ね'],['no','の'],
+  ['ha','は'],['hi','ひ'],['hu','ふ'],['fu','ふ'],['he','へ'],['ho','ほ'],
+  ['ma','ま'],['mi','み'],['mu','む'],['me','め'],['mo','も'],
+  ['ya','や'],['yu','ゆ'],['yo','よ'],
+  ['ra','ら'],['ri','り'],['ru','る'],['re','れ'],['ro','ろ'],
+  ['wa','わ'],['wi','ゐ'],['we','ゑ'],['wo','を'],
+  ['ga','が'],['gi','ぎ'],['gu','ぐ'],['ge','げ'],['go','ご'],
+  ['za','ざ'],['zi','じ'],['zu','ず'],['ze','ぜ'],['zo','ぞ'],
+  ['da','だ'],['di','ぢ'],['du','づ'],['de','で'],['do','ど'],
+  ['ba','ば'],['bi','び'],['bu','ぶ'],['be','べ'],['bo','ぼ'],
+  ['pa','ぱ'],['pi','ぴ'],['pu','ぷ'],['pe','ぺ'],['po','ぽ'],
+  ['a','あ'],['i','い'],['u','う'],['e','え'],['o','お'],
+  ['n','ん'],
+]
+
+function romajiToHiragana(s: string): string {
+  let result = ''; let i = 0
+  while (i < s.length) {
+    // 促音: 同じ子音が連続 (kk→っk)
+    if (i + 1 < s.length && s[i] === s[i + 1] && /[bcdfghjklmpqrstvwxyz]/.test(s[i])) {
+      result += 'っ'; i++; continue
+    }
+    let matched = false
+    for (const [rom, hira] of ROMAJI) {
+      if (s.startsWith(rom, i)) { result += hira; i += rom.length; matched = true; break }
+    }
+    if (!matched) { result += s[i]; i++ }
+  }
+  return result
+}
+
+function hiraganaToKatakana(s: string): string {
+  return s.replace(/[\u3041-\u3096]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60))
+}
+
+function katakanaToHiragana(s: string): string {
+  return s.replace(/[\u30A1-\u30F6]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60))
+}
+
 function normalize(s: string): string {
-  return s.toLowerCase().replace(/[-_・．.　\s₂]/g, '')
+  // カタカナ→ひらがなに統一、ローマ字→ひらがなに変換
+  const stripped = s.toLowerCase().replace(/[-_・．.　\s₂]/g, '')
+  return katakanaToHiragana(stripped)
+}
+
+// クエリを複数形式に展開して検索ヒット率を上げる
+function expandQuery(q: string): string[] {
+  const base = normalize(q)
+  const hiragana = romajiToHiragana(base)
+  const katakana = hiraganaToKatakana(hiragana)
+  return [base, hiragana, katakanaToHiragana(katakana)].filter((v, i, a) => a.indexOf(v) === i)
 }
 
 // ツール+アプリのエントリ
@@ -60,7 +124,8 @@ function search(index: IndexEntry[], query: string): SearchResult[] {
   return allEntries
     .map((entry) => {
       const haystack = normalize(`${entry.t} ${entry.d} ${entry.c} ${entry.g} ${entry.s}`)
-      const normalMatch = haystack.includes(normalizedQuery) ? 1 : 0
+      const queries = expandQuery(query)
+      const normalMatch = queries.some(q => haystack.includes(q)) ? 1 : 0
       const kwHaystack = `${entry.t} ${entry.d} ${entry.c} ${entry.g}`.toLowerCase()
       const matchCount = keywords.filter((kw) => kwHaystack.includes(kw)).length
       const score = normalMatch + matchCount / keywords.length

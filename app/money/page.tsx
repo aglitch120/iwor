@@ -282,11 +282,16 @@ function BaitoTaxCalc() {
   const [family, setFamily] = useState('single')
   const [age, setAge] = useState('under40')
   const [inputMode, setInputMode] = useState<'annual' | 'monthly'>('monthly')
+  const [mainIncomeType, setMainIncomeType] = useState<'tedori' | 'gakumen'>('tedori')
+  const [baitoIncomeType, setBaitoIncomeType] = useState<'tedori' | 'gakumen'>('gakumen')
 
   const result = (() => {
     const mul = inputMode === 'monthly' ? 12 : 1
-    const main = Number(mainIncome) * mul
-    const baito = Number(baitoIncome) * mul
+    let main = Number(mainIncome) * mul
+    let baito = Number(baitoIncome) * mul
+    // 手取り→額面の概算逆算（手取り≒額面×0.75〜0.80）
+    if (mainIncomeType === 'tedori' && main > 0) main = Math.round(main / 0.78)
+    if (baitoIncomeType === 'tedori' && baito > 0) baito = Math.round(baito / 0.90)
     if (!main || main <= 0) return null
     if (!baito || baito <= 0) return null
 
@@ -387,9 +392,19 @@ function BaitoTaxCalc() {
         ))}
       </div>
       <div>
-        <label className="text-xs font-medium text-tx block mb-1.5">
-          常勤先の{inputMode === 'monthly' ? '月収' : '年収'}（税込み）
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-medium text-tx">
+            常勤先の{inputMode === 'monthly' ? '月収' : '年収'}
+          </label>
+          <div className="flex items-center gap-0.5 bg-s1 rounded-md p-0.5">
+            {(['tedori', 'gakumen'] as const).map(t => (
+              <button key={t} onClick={() => setMainIncomeType(t)}
+                className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${mainIncomeType === t ? 'bg-s0 text-ac shadow-sm' : 'text-muted'}`}>
+                {t === 'tedori' ? '手取り' : '額面'}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="relative">
           <input type="number" value={mainIncome} onChange={e => setMainIncome(e.target.value)}
             placeholder={inputMode === 'monthly' ? '例: 500000' : '例: 6000000'}
@@ -398,9 +413,19 @@ function BaitoTaxCalc() {
         </div>
       </div>
       <div>
-        <label className="text-xs font-medium text-tx block mb-1.5">
-          バイト{inputMode === 'monthly' ? '月収' : '年収'}合計（税込み）
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-medium text-tx">
+            バイト{inputMode === 'monthly' ? '月収' : '年収'}合計
+          </label>
+          <div className="flex items-center gap-0.5 bg-s1 rounded-md p-0.5">
+            {(['gakumen', 'tedori'] as const).map(t => (
+              <button key={t} onClick={() => setBaitoIncomeType(t)}
+                className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${baitoIncomeType === t ? 'bg-s0 text-ac shadow-sm' : 'text-muted'}`}>
+                {t === 'tedori' ? '手取り' : '額面'}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="relative">
           <input type="number" value={baitoIncome} onChange={e => setBaitoIncome(e.target.value)}
             placeholder={inputMode === 'monthly' ? '例: 150000' : '例: 2000000'}

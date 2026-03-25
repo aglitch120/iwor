@@ -25,24 +25,31 @@ export default function HarrisBenedictPage() {
   const [height, setHeight] = useState('170')
   const [weight, setWeight] = useState('65')
   const [stress, setStress] = useState('bed')
+  const [weightType, setWeightType] = useState<'actual' | 'ibw'>('ibw')
 
   const result = useMemo(() => {
     const a = parseFloat(age); const h = parseFloat(height); const w = parseFloat(weight)
     if (!a || !h || !w) return null
+    const ibw = 22 * (h / 100) ** 2
+    const useW = weightType === 'ibw' ? ibw : w
     const bee = sex === 'male'
-      ? 66.47 + 13.75 * w + 5.0 * h - 6.76 * a
-      : 655.1 + 9.56 * w + 1.85 * h - 4.68 * a
+      ? 66.47 + 13.75 * useW + 5.0 * h - 6.76 * a
+      : 655.1 + 9.56 * useW + 1.85 * h - 4.68 * a
     const sf = stressFactors.find(s => s.value === stress)!
     const tee = bee * sf.factor
-    return { bee: Math.round(bee), tee: Math.round(tee), factor: sf.factor }
-  }, [sex, age, height, weight, stress])
+    return { bee: Math.round(bee), tee: Math.round(tee), factor: sf.factor, ibw: Math.round(ibw * 10) / 10, usedWeight: Math.round(useW * 10) / 10 }
+  }, [sex, age, height, weight, stress, weightType])
 
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={result && (<ResultCard label="TEE（総エネルギー）" value={result.tee} unit="kcal/日"
         interpretation={`BEE ${result.bee} kcal × 係数 ${result.factor}`} severity="neutral"
-        details={[{ label: 'BEE（基礎代謝）', value: `${result.bee} kcal/日` }]} />)}
+        details={[
+          { label: 'BEE（基礎代謝）', value: `${result.bee} kcal/日` },
+          { label: '使用体重', value: `${result.usedWeight} kg（${weightType === 'ibw' ? 'IBW' : '実測'}）` },
+          ...(weightType === 'ibw' ? [{ label: 'IBW（理想体重）', value: `${result.ibw} kg（BMI 22）` }] : []),
+        ]} />)}
       explanation={undefined}
       relatedTools={toolDef.relatedSlugs.map(s => { const t = implementedTools.has(s) ? getToolBySlug(s) : null; return t ? { slug: t.slug, name: t.name } : null }).filter(Boolean) as { slug: string; name: string }[]}
       references={[{ text: 'Harris JA, Benedict FG. Proc Natl Acad Sci 1918;4:370-373' }]}
@@ -51,7 +58,9 @@ export default function HarrisBenedictPage() {
         <RadioGroup label="性別" name="sex" value={sex} onChange={setSex} options={[{ value: 'male', label: '男性' }, { value: 'female', label: '女性' }]} />
         <NumberInput id="age" label="年齢" unit="歳" value={age} onChange={setAge} />
         <NumberInput id="height" label="身長" unit="cm" value={height} onChange={setHeight} />
-        <NumberInput id="weight" label="体重" unit="kg" value={weight} onChange={setWeight} />
+        <NumberInput id="weight" label="体重（実測）" unit="kg" value={weight} onChange={setWeight} />
+        <RadioGroup label="計算に使用する体重" name="weightType" value={weightType} onChange={(v) => setWeightType(v as 'actual' | 'ibw')}
+          options={[{ value: 'ibw', label: 'IBW（理想体重）' }, { value: 'actual', label: '実測体重' }]} />
         <SelectInput id="stress" label="活動/ストレス係数" value={stress} onChange={setStress}
           options={stressFactors.map(s => ({ value: s.value, label: s.label }))} />
       </div>
