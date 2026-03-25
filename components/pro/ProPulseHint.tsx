@@ -21,20 +21,15 @@ export default function ProPulseHint({ children }: ProPulseHintProps) {
     // PRO会員は表示しない
     if (localStorage.getItem('iwor_pro_user') === 'true') return
 
-    // お気に入りが既にあれば表示しない
-    try {
-      const favs = JSON.parse(localStorage.getItem('iwor_favorites') || '[]')
-      if (favs.length > 0) return
-    } catch {}
-
-    // ページ訪問回数で判定（ツール使用回数がなくても動くように）
+    // FREEユーザー: 3〜5回に1回表示（お気に入りの有無に関係なく）
     try {
       const visitCount = parseInt(localStorage.getItem('iwor_visit_count') || '0', 10) + 1
       localStorage.setItem('iwor_visit_count', String(visitCount))
 
-      // 初回〜2回目はスキップ、3回目以降は5回に1回
+      // 初回〜2回目はスキップ
       if (visitCount < 3) return
-      if (visitCount % 5 !== 0) return
+      // 3〜5回に1回（4回に1回 = 25%の確率で表示）
+      if (visitCount % 4 !== 0) return
     } catch { return }
 
     const showTimer = setTimeout(() => {
