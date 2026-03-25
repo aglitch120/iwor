@@ -138,16 +138,29 @@ export default function ProGate({
         {/* CTA オーバーレイ */}
         {needsGate && (
           <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center pb-4 pt-8 bg-gradient-to-t from-bg via-bg/90 to-transparent">
-            <div className="pro-glow-btn inline-flex items-center gap-2 px-5 py-2.5 bg-ac text-white rounded-xl text-sm font-bold shadow-lg group-hover:bg-ac/90 transition-colors relative overflow-hidden">
-              <span className="text-base">🔒</span>
-              {label || defaultLabel}
+            <div className="pro-glow-wrapper relative inline-flex rounded-xl p-[2px]">
+              {/* 回転するボーダーグラデーション */}
+              <div className="pro-glow-border absolute inset-0 rounded-xl overflow-hidden">
+                <div className="pro-glow-spin absolute inset-[-50%] bg-[conic-gradient(from_0deg,transparent_0%,#2DD4BF_10%,#1B4F3A_20%,transparent_30%)]" />
+              </div>
+              {/* ボタン本体 */}
+              <div className="relative inline-flex items-center gap-2 px-5 py-2.5 bg-ac text-white rounded-[10px] text-sm font-bold group-hover:bg-ac/90 transition-colors z-10">
+                <span className="text-base">🔒</span>
+                {label || defaultLabel}
+              </div>
             </div>
             <style>{`
-              .pro-glow-btn { animation: proGlowFade 3s ease-out forwards; }
-              @keyframes proGlowFade {
-                0% { box-shadow: 0 0 8px 2px rgba(27,79,58,0.6), 0 0 20px 4px rgba(27,79,58,0.3); }
-                50% { box-shadow: 0 0 16px 4px rgba(27,79,58,0.5), 0 0 32px 8px rgba(27,79,58,0.2); }
-                100% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+              .pro-glow-border { pointer-events: none; }
+              .pro-glow-spin {
+                animation: proGlowSpin 2.5s linear infinite, proGlowOut 4s ease-out forwards;
+              }
+              @keyframes proGlowSpin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
+              @keyframes proGlowOut {
+                0%, 60% { opacity: 1; }
+                100% { opacity: 0; }
               }
             `}</style>
             <p className="text-xs text-muted mt-2">
