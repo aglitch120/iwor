@@ -413,6 +413,10 @@ export default function DocumentsTab({
           .print-area { position: absolute; left: 0; top: 0; width: 100%; }
           nav, header, footer, .no-print { display: none !important; }
           @page { size: A4; margin: 10mm; }
+          /* 比較表: スコアが切れないように */
+          .print-area input[type="range"] { display: none; }
+          .print-area .grid { page-break-inside: avoid; }
+          .print-area button { border: 1px solid #ddd !important; }
         }
       `}</style>
       {/* サブタブ */}
@@ -647,6 +651,10 @@ function VisitChecklist() {
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs font-medium text-tx">準備の進捗</p>
           <div className="flex items-center gap-2">
+            <button onClick={() => window.print()}
+              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium text-white" style={{ background: MC }}>
+              印刷
+            </button>
             <p className="text-sm font-bold" style={{ color: MC }}>{checkedCount}/{totalItems}</p>
             {checkedCount > 0 && (
               <button onClick={reset} className="text-[10px] text-muted hover:text-tx underline">リセット</button>
@@ -712,7 +720,7 @@ function VisitChecklist() {
 //  聞くべきことリスト
 // ═══════════════════════════════════════
 function VisitQuestions({ isPro, onShowProModal }: { isPro?: boolean; onShowProModal?: () => void }) {
-  const [openCat, setOpenCat] = useState<number>(0)
+  const [openCat, setOpenCat] = useState<number | 'all'>('all')
   const STORAGE_KEY = 'iwor_visit_questions_notes'
   const [notes, setNotes] = useState<Record<string, string>>(() => {
     if (typeof window === 'undefined') return {}
@@ -745,7 +753,7 @@ function VisitQuestions({ isPro, onShowProModal }: { isPro?: boolean; onShowProM
       {VISIT_QUESTIONS.map((cat, ci) => (
         <div key={ci} className="bg-s0 border border-br rounded-xl overflow-hidden">
           <button
-            onClick={() => setOpenCat(prev => prev === ci ? -1 : ci)}
+            onClick={() => setOpenCat(prev => prev === ci ? -1 : prev === 'all' ? ci : ci)}
             className="w-full flex items-center justify-between px-4 py-3 hover:bg-s1/30 transition-colors"
           >
             <span className="text-sm font-bold text-tx flex items-center gap-2">
@@ -753,9 +761,9 @@ function VisitQuestions({ isPro, onShowProModal }: { isPro?: boolean; onShowProM
               {cat.title}
               <span className="text-[10px] font-normal text-muted">({cat.questions.length}項目)</span>
             </span>
-            <span className={`text-muted transition-transform text-sm ${openCat === ci ? 'rotate-180' : ''}`}>▾</span>
+            <span className={`text-muted transition-transform text-sm ${openCat === ci || openCat === 'all' ? 'rotate-180' : ''}`}>▾</span>
           </button>
-          {openCat === ci && (
+          {(openCat === ci || openCat === 'all') && (
             <div className="border-t border-br divide-y divide-br/50">
               {cat.questions.map((q, qi) => {
                 const key = `${ci}-${qi}`
@@ -1259,6 +1267,10 @@ function ResumeGuide() {
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs font-medium text-tx">履歴書チェック進捗</p>
           <div className="flex items-center gap-2">
+            <button onClick={() => window.print()}
+              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium text-white" style={{ background: MC }}>
+              印刷
+            </button>
             <p className="text-sm font-bold" style={{ color: MC }}>{checkedCount}/{totalItems}</p>
             {checkedCount > 0 && <button onClick={reset} className="text-[10px] text-muted hover:text-tx underline">リセット</button>}
           </div>
