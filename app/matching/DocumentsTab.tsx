@@ -61,7 +61,7 @@ const TEMPLATES: Template[] = [
       { key: 'spec3', label: '見学希望科 第3希望（任意）', placeholder: '', type: 'select', options: ['', ...ALL_SPECIALTIES] },
       { key: 'phone', label: '電話番号', placeholder: '090-XXXX-XXXX' },
       { key: 'email', label: 'メールアドレス', placeholder: 'example@univ.ac.jp' },
-      { key: 'zip', label: '郵便番号', placeholder: '〒XXX-XXXX' },
+      { key: 'zip', label: '郵便番号（7桁で住所自動入力）', placeholder: '1000001' },
       { key: 'address', label: '住所', placeholder: '東京都○○区...' },
     ],
     generate: (v, p) => {
@@ -189,7 +189,7 @@ ${p.university || '○○大学医学部'} ${p.name || '○○ ○○'}
       { key: 'documents', label: '同封書類（カンマ区切り）', placeholder: '履歴書, 成績証明書, 卒業見込証明書', type: 'textarea', rows: 2 },
       { key: 'phone', label: '電話番号', placeholder: '090-XXXX-XXXX' },
       { key: 'email', label: 'メールアドレス', placeholder: 'example@univ.ac.jp' },
-      { key: 'zip', label: '郵便番号', placeholder: '〒XXX-XXXX' },
+      { key: 'zip', label: '郵便番号（7桁で住所自動入力）', placeholder: '1000001' },
       { key: 'address', label: '住所', placeholder: '東京都○○区...' },
     ],
     generate: (v, p) => {
@@ -575,19 +575,21 @@ function EmailTemplates({ profile, mode }: { profile: Profile; mode: 'matching' 
                     type="text"
                     value={fieldValues[f.key] || ''}
                     onChange={e => updateField(f.key, e.target.value)}
-                    onBlur={f.key === 'zip' ? async (e) => {
+                    onChange={f.key === 'zip' ? (e) => {
+                      updateField(f.key, e.target.value)
                       const zip = e.target.value.replace(/[^\d]/g, '')
                       if (zip.length === 7) {
-                        try {
-                          const res = await fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zip}`)
-                          const data = await res.json()
-                          if (data.results?.[0]) {
-                            const r = data.results[0]
-                            updateField('address', `${r.address1}${r.address2}${r.address3}`)
-                          }
-                        } catch {}
+                        fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zip}`)
+                          .then(r => r.json())
+                          .then(data => {
+                            if (data.results?.[0]) {
+                              const r = data.results[0]
+                              updateField('address', `${r.address1}${r.address2}${r.address3}`)
+                            }
+                          })
+                          .catch(() => {})
                       }
-                    } : undefined}
+                    } : (e) => updateField(f.key, e.target.value)}
                     placeholder={f.placeholder}
                     list={f.key === 'hospitalName' ? 'hospital-list' : undefined}
                     className="w-full px-3 py-2 border border-br rounded-lg bg-bg text-sm text-tx focus:border-ac focus:ring-1 focus:ring-ac/20 outline-none transition-all"
