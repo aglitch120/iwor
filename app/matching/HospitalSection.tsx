@@ -517,8 +517,12 @@ function HospitalCard({
     : pop <= 4 ? { bg: '#FEF3C7', text: '#92400E' }
     : { bg: '#FEE2E2', text: '#991B1B' }
 
-  // 本命度の色分け
-  const honmei = (h as any).honmeiIndex || 0
+  // 本命度（データがない場合はマッチ率+倍率から推定）
+  let honmei = (h as any).honmeiIndex || 0
+  if (honmei === 0 && h.matchRate > 0) {
+    const popFactor = Math.min((h.popularity || 1) / 5, 1)
+    honmei = Math.round((h.matchRate / 100 * 0.6 + popFactor * 0.4) * 100) / 100
+  }
   const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '本命' }
     : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '併願多め' }
     : honmei > 0 ? { bg: '#FEE2E2', text: '#991B1B', label: 'おさえ' }

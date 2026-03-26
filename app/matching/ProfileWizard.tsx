@@ -1038,7 +1038,40 @@ td, th { border: 1px solid #333; padding: 3pt 5pt; vertical-align: top; }
         </span>
       </div>
       {!hasData ? (
-        <div className="p-6 text-center"><p className="text-xs text-muted">プロフィールウィザードで氏名と大学を入力すると表示されます</p></div>
+        <div className="p-4 relative">
+          {/* フェイク履歴書プレビュー（モザイク付き） */}
+          <div className="flex gap-2 overflow-hidden" style={{ maxHeight: 280 }}>
+            <div className="flex-shrink-0 bg-white border border-gray-300 rounded shadow-sm p-3" style={{ width: 280, minHeight: 396, fontFamily: 'serif', fontSize: 7, color: '#222', lineHeight: 1.5 }}>
+              <div className="text-center font-bold mb-1" style={{ fontSize: 11, letterSpacing: '0.5em' }}>履　歴　書</div>
+              <div className="text-right mb-1.5" style={{ fontSize: 6 }}>令和○年○月○日現在</div>
+              <div className="flex border border-gray-400 mb-1">
+                <div className="flex-1 border-r border-gray-400">
+                  <div className="border-b border-gray-300 px-1 py-0.5" style={{ fontSize: 5 }}>ふりがな</div>
+                  <div className="px-1 py-1 font-bold" style={{ fontSize: 10 }}>山田 太郎</div>
+                </div>
+                <div className="flex items-center justify-center" style={{ width: 55 }}>
+                  <div className="border border-gray-200 flex items-center justify-center" style={{ width: 48, height: 64, fontSize: 5, color: '#999', background: '#fafafa' }}>写真貼付</div>
+                </div>
+              </div>
+              <div className="border border-gray-400 mb-1 px-1 py-0.5" style={{ fontSize: 6 }}>
+                <span style={{ color: '#999' }}>生年月日: </span>平成○年○月○日生（○歳）
+              </div>
+              <div className="border border-gray-400 px-1 py-0.5" style={{ fontSize: 6 }}>
+                <span style={{ color: '#999' }}>現住所: </span>東京都○○区○○
+              </div>
+            </div>
+            <div className="flex-shrink-0 bg-white border border-gray-300 rounded shadow-sm p-3" style={{ width: 280, minHeight: 396, fontFamily: 'serif', fontSize: 7, color: '#222' }}>
+              <div className="border border-gray-400 p-1 mb-1"><span style={{ fontSize: 6, fontWeight: 'bold' }}>志望動機</span><br/><span style={{ fontSize: 6, color: '#666' }}>貴院の充実した研修プログラムに魅力を感じ、幅広い症例を...</span></div>
+              <div className="border border-gray-400 p-1"><span style={{ fontSize: 6, fontWeight: 'bold' }}>自己PR</span><br/><span style={{ fontSize: 6, color: '#666' }}>大学では○○部に所属し、チームワークの大切さを学びました...</span></div>
+            </div>
+          </div>
+          {/* モザイク+CTA */}
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-6"
+            style={{ background: 'linear-gradient(to bottom, transparent 20%, rgba(245,244,240,0.7) 50%, rgba(245,244,240,0.98) 80%)' }}>
+            <p className="text-sm font-bold text-tx mb-1">プロフィールを入力して履歴書を自動生成</p>
+            <p className="text-[10px] text-muted mb-3">質問に答えるだけで完成します</p>
+          </div>
+        </div>
       ) : (
         <div className="p-4 relative">
           {/* PDF出力ボタン (PRO only) */}

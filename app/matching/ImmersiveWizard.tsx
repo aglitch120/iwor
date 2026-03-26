@@ -90,6 +90,17 @@ export default function ImmersiveWizard({ onComplete, savedAnswers, editMode }: 
     } catch {}
   }, [])
 
+  // ステップ変更時に保存済み回答を復元
+  useEffect(() => {
+    const s = STEPS[stepIdx]
+    if (!s) return
+    const existing = answersRef.current[s.id]
+    if (existing) {
+      setSelected(existing.choices || [])
+      setFreeText(existing.freeText || '')
+    }
+  }, [stepIdx])
+
   const step = STEPS[stepIdx]
   const progress = Math.round(((stepIdx) / STEPS.length) * 100)
 

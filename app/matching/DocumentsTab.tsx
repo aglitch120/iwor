@@ -425,9 +425,9 @@ export default function DocumentsTab({
           /* グリッド改ページ防止 */
           .print-area .grid { page-break-inside: avoid; }
           .print-area > div { page-break-inside: avoid; }
-          /* ボタン非表示 */
-          .print-area button { display: none !important; }
-          .print-area button[disabled] { display: block !important; }
+          /* 操作系ボタンは非表示、スコアボタンは表示 */
+          .print-area button:not([data-score]) { display: none !important; }
+          .print-area button[data-score] { display: block !important; pointer-events: none; }
         }
       `}</style>
       {/* サブタブ */}
@@ -1235,6 +1235,7 @@ export function HospitalCompare({ isPro, onShowProModal }: { isPro?: boolean; on
                         {[1, 2, 3, 4, 5].map(star => (
                           <button
                             key={star}
+                            data-score
                             onClick={() => setScore(hi, ci, ii, star)}
                             className="flex-1 h-5 rounded text-[10px] font-bold transition-all"
                             style={{
