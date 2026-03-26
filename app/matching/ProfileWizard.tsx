@@ -356,7 +356,7 @@ export default function ProfileWizard({
         )}
 
         {/* 履歴書プレビュー — 常時表示 */}
-        <ResumePreview profile={profile} isPro={isPro} />
+        <ResumePreview profile={profile} isPro={isPro} onStartWizard={() => setShowWizardModal(true)} />
 
       </div>
     )
@@ -796,8 +796,8 @@ function Step9({ profile, updateField, toggleArrayField }: StepProps & { toggleA
 // ═══════════════════════════════════════
 //  履歴書プレビュー
 // ═══════════════════════════════════════
-function ResumePreview({ profile, isPro }: {
-  profile: WizardProfile; isPro: boolean
+function ResumePreview({ profile, isPro, onStartWizard }: {
+  profile: WizardProfile; isPro: boolean; onStartWizard?: () => void
 }) {
   const hasData = profile.name && profile.university
 
@@ -1070,6 +1070,13 @@ td, th { border: 1px solid #333; padding: 3pt 5pt; vertical-align: top; }
             style={{ background: 'linear-gradient(to bottom, transparent 20%, rgba(245,244,240,0.7) 50%, rgba(245,244,240,0.98) 80%)' }}>
             <p className="text-sm font-bold text-tx mb-1">プロフィールを入力して履歴書を自動生成</p>
             <p className="text-[10px] text-muted mb-3">質問に答えるだけで完成します</p>
+            <GlowButton radius={12}>
+              <button onClick={() => onStartWizard?.()}
+                className="px-8 py-3 rounded-xl text-sm font-bold text-white"
+                style={{ background: MC }}>
+                作成を開始
+              </button>
+            </GlowButton>
           </div>
         </div>
       ) : (
