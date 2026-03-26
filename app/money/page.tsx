@@ -605,20 +605,20 @@ export default function MoneyPage() {
         favoriteHref="/money"
       />
 
-      {/* Tool Tabs */}
-      <div className="grid grid-cols-5 gap-1.5 mb-6">
+      {/* Tool Tabs — 横スクロールピル */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-4 px-4" style={{ scrollbarWidth: 'none' }}>
         {tools.map(tool => (
           <button
             key={tool.key}
             onClick={() => setActiveTool(tool.key)}
-            className={`flex flex-col items-center gap-1 rounded-xl p-2.5 border transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full border whitespace-nowrap transition-all flex-shrink-0 ${
               activeTool === tool.key
                 ? 'border-ac/30 bg-acl shadow-sm'
                 : 'border-br bg-s0 hover:border-ac/20'
             }`}
           >
-            <span className="text-lg">{tool.icon}</span>
-            <span className={`text-[10px] font-bold ${activeTool === tool.key ? 'text-ac' : 'text-muted'}`}>
+            <span className="text-sm">{tool.icon}</span>
+            <span className={`text-xs font-medium ${activeTool === tool.key ? 'text-ac' : 'text-muted'}`}>
               {tool.label}
             </span>
           </button>
