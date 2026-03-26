@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
-import CreditsApp from './CreditsApp'
+import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
+import IworLoader from '@/components/IworLoader'
+
+const CreditsApp = dynamic(() => import('./CreditsApp'), { ssr: false })
 
 export const metadata: Metadata = {
   title: '専門医単位管理 — iwor',
@@ -7,5 +11,9 @@ export const metadata: Metadata = {
 }
 
 export default function CreditsPage() {
-  return <CreditsApp />
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><IworLoader size="lg" /></div>}>
+      <CreditsApp />
+    </Suspense>
+  )
 }
