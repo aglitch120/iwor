@@ -398,66 +398,64 @@ ${settings.format === 'slide' ? `スライドごとに以下の形式で出力:
         {/* ═══ Step 1: 設定 ═══ */}
         <Section title={<><span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-xs font-bold mr-2" style={{ background: MC }}>1</span>発表の設定</>}>
           {/* 発表タイプ */}
-          <div className="flex gap-1.5 flex-wrap mb-3">
+          <p className="text-xs font-medium text-tx mb-1.5">発表タイプ</p>
+          <div className="flex gap-2 flex-wrap mb-4">
             {TYPES.map(t => (
               <button key={t.id} onClick={() => updateSetting('type', t.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1 ${
+                className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${
                   settings.type === t.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
                 }`}><span>{t.icon}</span>{t.label}</button>
             ))}
           </div>
-          {/* 対象者 + 時間 + 形式 を横並び */}
-          <div className="grid grid-cols-3 gap-2 mb-2">
-            <div>
-              <p className="text-[10px] text-muted mb-1">対象者</p>
-              <div className="flex gap-1 flex-wrap">
-                {AUDIENCES.map(a => (
-                  <button key={a.id} onClick={() => updateSetting('audience', a.id)}
-                    className={`px-2 py-1 rounded text-[10px] font-medium border transition-all ${
-                      settings.audience === a.id ? 'bg-ac text-white border-ac' : 'border-br text-muted'
-                    }`}>{a.label}</button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] text-muted mb-1">発表時間</p>
-              <div className="flex gap-1 flex-wrap">
-                {DURATIONS.map(d => (
-                  <button key={d} onClick={() => updateSetting('duration', d)}
-                    className={`px-2 py-1 rounded text-[10px] font-medium border transition-all ${
-                      settings.duration === d ? 'bg-ac text-white border-ac' : 'border-br text-muted'
-                    }`}>{d}分</button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] text-muted mb-1">出力形式</p>
-              <div className="flex gap-1 flex-wrap">
-                {FORMATS.map(f => (
-                  <button key={f.id} onClick={() => updateSetting('format', f.id)}
-                    className={`px-2 py-1 rounded text-[10px] font-medium border transition-all ${
-                      settings.format === f.id ? 'bg-ac text-white border-ac' : 'border-br text-muted'
-                    }`}>{f.label}</button>
-                ))}
-              </div>
-            </div>
+
+          {/* 対象者 */}
+          <p className="text-xs font-medium text-tx mb-1.5">対象者</p>
+          <div className="flex gap-2 flex-wrap mb-4">
+            {AUDIENCES.map(a => (
+              <button key={a.id} onClick={() => updateSetting('audience', a.id)}
+                className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all ${
+                  settings.audience === a.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
+                }`}>{a.label}</button>
+            ))}
           </div>
-          {/* 枚数/文字数（該当時のみ） */}
+
+          {/* 発表時間 */}
+          <p className="text-xs font-medium text-tx mb-1.5">発表時間</p>
+          <div className="flex gap-2 flex-wrap mb-4">
+            {DURATIONS.map(d => (
+              <button key={d} onClick={() => updateSetting('duration', d)}
+                className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all ${
+                  settings.duration === d ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
+                }`}>{d}分</button>
+            ))}
+          </div>
+
+          {/* 出力形式 */}
+          <p className="text-xs font-medium text-tx mb-1.5">出力形式</p>
+          <div className="flex gap-2 flex-wrap">
+            {FORMATS.map(f => (
+              <button key={f.id} onClick={() => updateSetting('format', f.id)}
+                className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${
+                  settings.format === f.id ? 'bg-ac text-white border-ac' : 'border-br text-muted hover:border-ac/30'
+                }`}><span>{f.icon}</span>{f.label}</button>
+            ))}
+          </div>
+          {/* 枚数/文字数 */}
           {(settings.format === 'slide' || settings.format === 'a4-handout') && (
-            <div className="flex items-center gap-2 mt-1">
-              <p className="text-[10px] text-muted">枚数:</p>
+            <div className="flex items-center gap-2 mt-3">
+              <p className="text-xs text-muted">枚数目安:</p>
               {[3,5,8,10,15,20].map(n => (
                 <button key={n} onClick={() => updateSetting('slideCount', n)}
-                  className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-all ${settings.slideCount === n ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>{n}</button>
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${settings.slideCount === n ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>{n}枚</button>
               ))}
             </div>
           )}
           {settings.format === 'abstract-doc' && (
-            <div className="flex items-center gap-2 mt-1">
-              <p className="text-[10px] text-muted">文字数:</p>
+            <div className="flex items-center gap-2 mt-3">
+              <p className="text-xs text-muted">文字数:</p>
               {[200,400,600,800,1200].map(n => (
                 <button key={n} onClick={() => updateSetting('abstractChars', n)}
-                  className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-all ${settings.abstractChars === n ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>{n}字</button>
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${settings.abstractChars === n ? 'bg-ac text-white border-ac' : 'border-br text-muted'}`}>{n}字</button>
               ))}
             </div>
           )}
