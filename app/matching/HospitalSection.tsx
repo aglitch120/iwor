@@ -415,38 +415,56 @@ export default function HospitalTab({
                 <p className="text-xs text-muted text-center py-8">まだデータがありません</p>
               )
 
-              return (
-                <div className="space-y-2">
-                  {ranked.map((h, i) => {
-                    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`
-                    return (
-                      <div key={h.id} className="flex items-center gap-3 py-2 border-b last:border-b-0" style={{ borderColor: 'var(--br)' }}>
-                        <span className="text-sm w-8 text-center flex-shrink-0">{medal}</span>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-tx truncate">{h.name}</p>
-                          {programLabel(h) && <p className="text-[10px] text-muted truncate">{programLabel(h)}</p>}
-                          <p className="text-[10px] text-muted">{h.prefecture} · 倍率{h.popularity}</p>
-                        </div>
-                        {isPro ? (
+              if (isPro) {
+                return (
+                  <div className="space-y-2">
+                    {ranked.map((h, i) => {
+                      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`
+                      return (
+                        <div key={h.id} className="flex items-center gap-3 py-2 border-b last:border-b-0" style={{ borderColor: 'var(--br)' }}>
+                          <span className="text-sm w-8 text-center flex-shrink-0">{medal}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-tx truncate">{h.name}</p>
+                            {programLabel(h) && <p className="text-[10px] text-muted truncate">{programLabel(h)}</p>}
+                            <p className="text-[10px] text-muted">{h.prefecture} · 倍率{h.popularity}</p>
+                          </div>
                           <span className="text-xs font-bold flex-shrink-0" style={{ color: MC }}>♥ {h.count}</span>
-                        ) : (
-                          <span className="text-xs flex-shrink-0 blur-[3px] select-none" style={{ color: MC }}>♥ {h.count}</span>
-                        )}
-                      </div>
-                    )
-                  })}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              }
+              // FREE: フェイクランキング + モザイク
+              const fakeNames = ['○○大学医学部附属病院','△△市立医療センター','□□赤十字病院','☆☆記念病院','◇◇総合病院','◎◎医科大学附属病院','▽▽中央病院','★★医療センター','●●共済病院','■■労災病院']
+              return (
+                <div className="relative">
+                  <div className="space-y-2" style={{ filter: 'blur(4px)', userSelect: 'none' }}>
+                    {fakeNames.map((name, i) => {
+                      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`
+                      return (
+                        <div key={i} className="flex items-center gap-3 py-2 border-b last:border-b-0" style={{ borderColor: 'var(--br)' }}>
+                          <span className="text-sm w-8 text-center flex-shrink-0">{medal}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-tx truncate">{name}</p>
+                            <p className="text-[10px] text-muted">東京都 · 倍率{(2 + Math.random() * 4).toFixed(1)}</p>
+                          </div>
+                          <span className="text-xs font-bold flex-shrink-0" style={{ color: MC }}>♥ {Math.floor(20 + Math.random() * 80)}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-s0/80 to-s0/95">
+                    <p className="text-sm font-bold text-tx mb-1">人気病院ランキング</p>
+                    <p className="text-[10px] text-muted mb-3">iwor全ユーザーの志望動向をリアルタイム集計</p>
+                    <button onClick={onShowProModal}
+                      className="pro-cta-glow px-6 py-2.5 rounded-xl text-xs font-bold text-white" style={{ background: MC }}>
+                      PRO会員でランキングを見る
+                    </button>
+                  </div>
                 </div>
               )
             })()}
-            {!isPro && (
-              <div className="mt-4 pt-3 border-t" style={{ borderColor: 'var(--br)' }}>
-                <p className="text-[11px] text-muted text-center mb-2">PRO会員で人気数を確認</p>
-                <button onClick={onShowProModal}
-                  className="pro-cta-glow w-full py-2 rounded-lg text-xs font-bold text-white" style={{ background: MC }}>
-                  PRO会員になる
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}
