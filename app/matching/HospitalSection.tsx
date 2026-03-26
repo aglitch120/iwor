@@ -411,6 +411,38 @@ export default function HospitalTab({
                 .sort((a, b) => b.count - a.count)
                 .slice(0, 20)
 
+              // FREE: データの有無にかかわらずフェイクランキング+モザイク
+              if (!isPro) {
+                const fakeNames = ['東京大学医学部附属病院','聖路加国際病院','虎の門病院','亀田総合病院','国立国際医療研究センター','慶應義塾大学病院','手稲渓仁会病院','沖縄県立中部病院','飯塚病院','湘南鎌倉総合病院']
+                return (
+                  <div className="relative">
+                    <div className="space-y-2" style={{ filter: 'blur(4px)', userSelect: 'none' }}>
+                      {fakeNames.map((name, i) => {
+                        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`
+                        return (
+                          <div key={i} className="flex items-center gap-3 py-2 border-b last:border-b-0" style={{ borderColor: 'var(--br)' }}>
+                            <span className="text-sm w-8 text-center flex-shrink-0">{medal}</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-bold text-tx truncate">{name}</p>
+                              <p className="text-[10px] text-muted">倍率{(2 + Math.random() * 6).toFixed(1)}</p>
+                            </div>
+                            <span className="text-xs font-bold flex-shrink-0" style={{ color: MC }}>♥ {Math.floor(30 + Math.random() * 120)}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-s0/80 to-s0/95">
+                      <p className="text-sm font-bold text-tx mb-1">志望人気ランキング</p>
+                      <p className="text-[10px] text-muted mb-3">iwor全ユーザーの志望動向をリアルタイム集計</p>
+                      <button onClick={onShowProModal}
+                        className="pro-cta-glow px-6 py-2.5 rounded-xl text-xs font-bold text-white" style={{ background: MC }}>
+                        PRO会員でランキングを見る
+                      </button>
+                    </div>
+                  </div>
+                )
+              }
+
               if (ranked.length === 0) return (
                 <p className="text-xs text-muted text-center py-8">まだデータがありません</p>
               )
