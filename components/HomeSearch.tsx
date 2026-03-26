@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { normalize, expandQuery, TOOL_READINGS } from './SearchDialog'
 
 interface IndexEntry {
   s: string
@@ -24,10 +25,6 @@ interface SearchResult {
 import { tools, implementedTools } from '@/lib/tools-config'
 
 // 正規化: ハイフン・記号・スペースを除去してあいまい一致
-function normalize(s: string): string {
-  return s.toLowerCase().replace(/[-_・．.　\s₂]/g, '')
-}
-
 // App/tool entries for search
 const appEntries: SearchResult[] = [
   { slug: 'tools', title: '臨床ツール', description: '臨床計算178種・薬剤ガイド・比較・手技・基準値・γ計算', categoryName: 'アプリ', type: 'app', href: '/tools' },
@@ -75,9 +72,10 @@ function searchAll(index: IndexEntry[], query: string): SearchResult[] {
   // Search apps/tools (normalize matching)
   const appResults = appEntries
     .map(entry => {
-      const haystack = normalize(`${entry.title} ${entry.description} ${entry.categoryName} ${entry.slug}`)
-      // normalized match (josler → josler in "josler症例登録")
-      const normalMatch = haystack.includes(normalizedQuery) ? 1 : 0
+      const reading = TOOL_READINGS[entry.slug] || ''
+      const haystack = normalize(`${entry.title} ${entry.description} ${entry.categoryName} ${entry.slug} ${reading}`)
+      const queries = expandQuery(query)
+      const normalMatch = queries.some(q => haystack.includes(q)) ? 1 : 0
       // keyword match
       const kwHaystack = `${entry.title} ${entry.description} ${entry.categoryName}`.toLowerCase()
       const matchCount = keywords.filter(kw => kwHaystack.includes(kw)).length
@@ -91,7 +89,8 @@ function searchAll(index: IndexEntry[], query: string): SearchResult[] {
   const articleResults = index
     .map(entry => {
       const haystack = normalize(`${entry.t} ${entry.d} ${entry.c} ${entry.g}`)
-      const normalMatch = haystack.includes(normalizedQuery) ? 1 : 0
+      const queries = expandQuery(query)
+      const normalMatch = queries.some(q => haystack.includes(q)) ? 1 : 0
       const kwHaystack = `${entry.t} ${entry.d} ${entry.c} ${entry.g}`.toLowerCase()
       const matchCount = keywords.filter(kw => kwHaystack.includes(kw)).length
       const score = normalMatch + matchCount / keywords.length

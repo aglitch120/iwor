@@ -84,7 +84,7 @@ function katakanaToHiragana(s: string): string {
   return s.replace(/[\u30A1-\u30F6]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60))
 }
 
-function normalize(s: string): string {
+export function normalize(s: string): string {
   // カタカナ→ひらがなに統一、ローマ字→ひらがなに変換
   const stripped = s.toLowerCase().replace(/[-_・．.　\s₂]/g, '')
   return katakanaToHiragana(stripped)
@@ -127,36 +127,32 @@ const ABBR_READINGS: Record<string, string[]> = {
 }
 
 // クエリを複数形式に展開して検索ヒット率を上げる
-function expandQuery(q: string): string[] {
+export function expandQuery(q: string): string[] {
   const base = normalize(q)
   const hiragana = romajiToHiragana(base)
   const katakana = hiraganaToKatakana(hiragana)
   const results = [base, hiragana, katakanaToHiragana(katakana)]
 
-  // 略語辞書から逆引き: ひらがなクエリ→英語略語
+  // 略語辞書から逆引き: ひらがなクエリ→英語略語（3文字以上のみ）
   const hiraQuery = katakanaToHiragana(hiragana)
-  for (const [abbr, readings] of Object.entries(ABBR_READINGS)) {
-    if (readings.some(r => r.startsWith(hiraQuery) || hiraQuery.startsWith(r))) {
-      results.push(abbr)
+  if (hiraQuery.length >= 2) {
+    for (const [abbr, readings] of Object.entries(ABBR_READINGS)) {
+      if (readings.some(r => r.startsWith(hiraQuery))) {
+        results.push(abbr)
+      }
     }
   }
-  // 英語クエリ→日本語読み
+  // 英語クエリ→日本語読み（完全一致のみ）
   const lower = q.toLowerCase().replace(/[^a-z0-9]/g, '')
-  if (ABBR_READINGS[lower]) {
+  if (lower.length >= 2 && ABBR_READINGS[lower]) {
     results.push(...ABBR_READINGS[lower])
-  }
-  // 部分一致: 辞書のキーが入力に含まれる or 入力がキーに含まれる
-  for (const [abbr, readings] of Object.entries(ABBR_READINGS)) {
-    if (lower.includes(abbr) || abbr.includes(lower)) {
-      results.push(abbr, ...readings)
-    }
   }
 
   return results.filter((v, i, a) => a.indexOf(v) === i)
 }
 
 // 全ツールのひらがな読み辞書（slug → よみがな）
-const TOOL_READINGS: Record<string, string> = {
+export const TOOL_READINGS: Record<string, string> = {
   'egfr': 'いーじーえふあーる けいさん しーけーでぃーいーぴーあい じんきのう すいさんしきゅうたいろかりょう',
   'cha2ds2-vasc': 'ちゃっずばすく しんぼうさいどう のうそっちゅう',
   'chads2': 'ちゃっず しんぼうさいどう',
