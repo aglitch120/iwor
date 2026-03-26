@@ -1206,9 +1206,11 @@ td, th { border: 1px solid #333; padding: 3pt 5pt; vertical-align: top; }
                 </div>
                 <p className="text-base font-bold text-tx mb-1">JIS履歴書を自動生成</p>
                 <p className="text-xs text-muted text-center mb-3">A4見開き・PDF出力・印刷対応</p>
-                <a href="/pro" className="px-6 py-2.5 rounded-xl text-xs font-bold text-white shadow-lg inline-block" style={{ background: MC }}>
-                  PROで使う
-                </a>
+                <GlowButton radius={12}>
+                  <a href="/pro" className="px-6 py-2.5 rounded-xl text-xs font-bold text-white shadow-lg inline-block" style={{ background: MC }}>
+                    PROで使う
+                  </a>
+                </GlowButton>
               </div>
             </div>
           )}

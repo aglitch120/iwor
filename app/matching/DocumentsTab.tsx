@@ -407,27 +407,18 @@ export default function DocumentsTab({
 
   return (
     <div className="space-y-4">
-      {/* 印刷用スタイル */}
+      {/* 印刷用スタイル — globals.cssの@media printと連携 */}
       <style>{`
         @media print {
-          body * { visibility: hidden; }
-          .print-area, .print-area * { visibility: visible !important; }
-          .print-area { position: absolute; left: 0; top: 0; width: 100%; }
-          nav, header, footer, .no-print { display: none !important; }
           @page { size: A4; margin: 10mm; }
-          /* アコーディオン: 全展開して印刷 */
-          .print-area [class*="border-t"] { display: block !important; }
-          /* textarea: メモ欄を枠線付きで表示 */
-          .print-area textarea { border: 1px solid #ccc !important; min-height: 24px !important; visibility: visible !important; }
-          /* チェックボックス・スライダー */
-          .print-area input[type="range"] { display: none; }
-          .print-area input[type="checkbox"] { visibility: visible !important; }
-          /* グリッド改ページ防止 */
-          .print-area .grid { page-break-inside: avoid; }
-          .print-area > div { page-break-inside: avoid; }
-          /* 操作系ボタンは非表示、スコアボタンは表示 */
-          .print-area button:not([data-score]) { display: none !important; }
-          .print-area button[data-score] { display: block !important; pointer-events: none; }
+          /* 全コンテンツを表示（visibility:hiddenは使わない） */
+          textarea { border: 1px solid #ccc !important; min-height: 28px !important; }
+          input[type="range"] { display: none !important; }
+          /* スコアボタンは表示、操作ボタンは非表示 */
+          button:not([data-score]) { display: none !important; }
+          button[data-score] { pointer-events: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          /* 改ページ制御 */
+          .space-y-2 > div, .space-y-3 > div { page-break-inside: avoid; }
         }
       `}</style>
       {/* サブタブ */}
@@ -450,8 +441,8 @@ export default function DocumentsTab({
       )}
 
       {subTab === 'emails' && <EmailTemplates profile={profile} mode={mode} />}
-      {subTab === 'resume-guide' && <ResumeGuide />}
-      {subTab === 'checklist' && <VisitChecklist />}
+      {subTab === 'resume-guide' && <ResumeGuide isPro={!!isPro} onShowProModal={onShowProModal} />}
+      {subTab === 'checklist' && <VisitChecklist isPro={!!isPro} onShowProModal={onShowProModal} />}
       {subTab === 'questions' && <VisitQuestions isPro={isPro} onShowProModal={onShowProModal} />}
     </div>
   )
@@ -578,15 +569,20 @@ function EmailTemplates({ profile, mode }: { profile: Profile; mode: 'matching' 
                       updateField(f.key, e.target.value)
                       const zip = e.target.value.replace(/[^\d]/g, '')
                       if (zip.length === 7) {
-                        fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zip}`)
-                          .then(r => r.json())
-                          .then(data => {
-                            if (data.results?.[0]) {
-                              const r = data.results[0]
-                              updateField('address', `${r.address1}${r.address2}${r.address3}`)
-                            }
-                          })
-                          .catch(() => {})
+                        // JSONP方式（CORS回避）
+                        const cbName = '_zipCb' + Date.now()
+                        ;(window as any)[cbName] = (data: any) => {
+                          if (data.results?.[0]) {
+                            const r = data.results[0]
+                            updateField('address', `${r.address1}${r.address2}${r.address3}`)
+                          }
+                          delete (window as any)[cbName]
+                          document.getElementById(cbName)?.remove()
+                        }
+                        const s = document.createElement('script')
+                        s.id = cbName
+                        s.src = `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zip}&callback=${cbName}`
+                        document.body.appendChild(s)
                       }
                     } : (e) => updateField(f.key, e.target.value)}
                     placeholder={f.placeholder}
@@ -642,7 +638,7 @@ function EmailTemplates({ profile, mode }: { profile: Profile; mode: 'matching' 
 // ═══════════════════════════════════════
 //  見学準備チェックリスト
 // ═══════════════════════════════════════
-function VisitChecklist() {
+function VisitChecklist({ isPro, onShowProModal }: { isPro: boolean; onShowProModal?: () => void }) {
   const STORAGE_KEY = 'iwor_visit_checklist'
   const [checked, setChecked] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set()
@@ -676,9 +672,9 @@ function VisitChecklist() {
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs font-medium text-tx">準備の進捗</p>
           <div className="flex items-center gap-2">
-            <button onClick={() => window.print()}
+            <button onClick={() => isPro ? window.print() : onShowProModal?.()}
               className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium text-white" style={{ background: MC }}>
-              印刷
+              印刷 {!isPro && '🔒'}
             </button>
             <p className="text-sm font-bold" style={{ color: MC }}>{checkedCount}/{totalItems}</p>
             {checkedCount > 0 && (
@@ -1055,7 +1051,41 @@ export function HospitalCompare({ isPro, onShowProModal }: { isPro?: boolean; on
       <div className="flex items-center justify-between">
         <p className="text-xs text-muted">最大3病院を比較。重みと点数を設定して総合評価を自動計算します。</p>
         <button
-          onClick={() => isPro ? window.print() : onShowProModal?.()}
+          onClick={() => {
+            if (!isPro) { onShowProModal?.(); return }
+            const w = window.open('', '_blank', 'width=900,height=1200')
+            if (!w) return
+            const names = hospitalNames.slice(0, activeHospitals).map(n => n || '未入力')
+            let html = `<html><head><title>病院比較表 — iwor</title><style>
+              body{font-family:-apple-system,sans-serif;margin:20px;color:#222;font-size:12px}
+              h1{font-size:18px;margin-bottom:8px}
+              table{width:100%;border-collapse:collapse;margin-bottom:16px}
+              th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;font-size:11px}
+              th{background:#f5f5f5;font-weight:bold}
+              .score{text-align:center;font-weight:bold}
+            </style></head><body>
+            <h1>病院比較レポート</h1>
+            <p style="color:#666;margin-bottom:16px">${new Date().toLocaleDateString('ja-JP')} 作成 — iwor.jp</p>
+            <h2>総合スコア</h2>
+            <table><tr><th></th>${names.map(n => '<th>' + n + '</th>').join('')}</tr>
+            <tr><td>加重平均スコア</td>${Array.from({length: activeHospitals}, (_, hi) => {
+              let ws = 0, ss = 0
+              COMPARE_CATEGORIES.forEach((cat, ci) => cat.items.forEach((_, ii) => { const wt = weights[ci][ii]; ws += wt; ss += wt * scores[hi][ci][ii] }))
+              return '<td class="score">' + (ws > 0 ? (ss/ws).toFixed(1) : '0') + ' / 5.0</td>'
+            }).join('')}</tr></table>`
+            COMPARE_CATEGORIES.forEach((cat, ci) => {
+              html += '<h3>' + cat.title + '</h3><table><tr><th>項目</th><th>重み</th>' + names.map(n => '<th>' + n + '</th>').join('') + '</tr>'
+              cat.items.forEach((item, ii) => {
+                html += '<tr><td>' + item + '</td><td class="score">' + weights[ci][ii] + '</td>'
+                for (let hi = 0; hi < activeHospitals; hi++) html += '<td class="score">' + scores[hi][ci][ii] + '</td>'
+                html += '</tr>'
+              })
+              html += '</table>'
+            })
+            html += '<script>window.onload=function(){window.print()}<\/script></body></html>'
+            w.document.write(html)
+            w.document.close()
+          }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all flex-shrink-0"
           style={{ background: MC }}
         >
@@ -1260,7 +1290,7 @@ export function HospitalCompare({ isPro, onShowProModal }: { isPro?: boolean; on
   )
 }
 
-function ResumeGuide() {
+function ResumeGuide({ isPro, onShowProModal }: { isPro: boolean; onShowProModal?: () => void }) {
   const STORAGE_KEY = 'iwor_resume_checklist'
   const [checked, setChecked] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set()
@@ -1293,9 +1323,9 @@ function ResumeGuide() {
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs font-medium text-tx">履歴書チェック進捗</p>
           <div className="flex items-center gap-2">
-            <button onClick={() => window.print()}
+            <button onClick={() => isPro ? window.print() : onShowProModal?.()}
               className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium text-white" style={{ background: MC }}>
-              印刷
+              印刷 {!isPro && '🔒'}
             </button>
             <p className="text-sm font-bold" style={{ color: MC }}>{checkedCount}/{totalItems}</p>
             {checkedCount > 0 && <button onClick={reset} className="text-[10px] text-muted hover:text-tx underline">リセット</button>}
