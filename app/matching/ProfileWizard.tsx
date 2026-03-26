@@ -1039,35 +1039,58 @@ td, th { border: 1px solid #333; padding: 3pt 5pt; vertical-align: top; }
       </div>
       {!hasData ? (
         <div className="p-4 relative">
-          {/* フェイク履歴書プレビュー（モザイク付き） */}
-          <div className="flex gap-2 overflow-hidden" style={{ maxHeight: 280 }}>
-            <div className="flex-shrink-0 bg-white border border-gray-300 rounded shadow-sm p-3" style={{ width: 280, minHeight: 396, fontFamily: 'serif', fontSize: 7, color: '#222', lineHeight: 1.5 }}>
+          {/* フェイク履歴書プレビュー（充実した内容でモザイク） */}
+          <div className="flex gap-2 overflow-hidden" style={{ maxHeight: 320, filter: 'blur(1.5px)' }}>
+            {/* PAGE 1: 基本情報+学歴+資格 */}
+            <div className="flex-shrink-0 bg-white border border-gray-300 rounded shadow-sm p-3" style={{ width: 280, minHeight: 396, fontFamily: 'serif', fontSize: 6.5, color: '#222', lineHeight: 1.5 }}>
               <div className="text-center font-bold mb-1" style={{ fontSize: 11, letterSpacing: '0.5em' }}>履　歴　書</div>
-              <div className="text-right mb-1.5" style={{ fontSize: 6 }}>令和○年○月○日現在</div>
+              <div className="text-right mb-1" style={{ fontSize: 5.5 }}>令和8年7月1日現在</div>
               <div className="flex border border-gray-400 mb-1">
                 <div className="flex-1 border-r border-gray-400">
-                  <div className="border-b border-gray-300 px-1 py-0.5" style={{ fontSize: 5 }}>ふりがな</div>
-                  <div className="px-1 py-1 font-bold" style={{ fontSize: 10 }}>山田 太郎</div>
+                  <div className="border-b border-gray-300 px-1" style={{ fontSize: 4.5 }}>ふりがな：やまだ たろう</div>
+                  <div className="px-1 py-0.5 font-bold" style={{ fontSize: 9 }}>山田 太郎</div>
                 </div>
-                <div className="flex items-center justify-center" style={{ width: 55 }}>
-                  <div className="border border-gray-200 flex items-center justify-center" style={{ width: 48, height: 64, fontSize: 5, color: '#999', background: '#fafafa' }}>写真貼付</div>
+                <div className="flex items-center justify-center" style={{ width: 50 }}>
+                  <div className="border border-gray-200 flex items-center justify-center" style={{ width: 44, height: 58, fontSize: 4.5, color: '#bbb', background: '#fafafa' }}>写真</div>
                 </div>
               </div>
-              <div className="border border-gray-400 mb-1 px-1 py-0.5" style={{ fontSize: 6 }}>
-                <span style={{ color: '#999' }}>生年月日: </span>平成○年○月○日生（○歳）
+              <div className="border border-gray-400 mb-0.5 px-1" style={{ fontSize: 5.5 }}>平成14年4月15日生（24歳）　男</div>
+              <div className="border border-gray-400 mb-0.5 px-1" style={{ fontSize: 5.5 }}>〒113-0033 東京都文京区本郷7-3-1</div>
+              <div className="border border-gray-400 mb-0.5 px-1" style={{ fontSize: 5.5 }}>TEL: 090-1234-5678　Email: t.yamada@example.ac.jp</div>
+              <div className="text-center font-bold border-b border-gray-300 pb-0.5 mt-1 mb-0.5" style={{ fontSize: 6 }}>学　歴</div>
+              <div style={{ fontSize: 5.5 }}>
+                <div>2020年3月　東京都立日比谷高等学校　卒業</div>
+                <div>2020年4月　東京大学医学部医学科　入学</div>
+                <div>2026年3月　東京大学医学部医学科　卒業見込み</div>
               </div>
-              <div className="border border-gray-400 px-1 py-0.5" style={{ fontSize: 6 }}>
-                <span style={{ color: '#999' }}>現住所: </span>東京都○○区○○
+              <div className="text-center font-bold border-b border-gray-300 pb-0.5 mt-1 mb-0.5" style={{ fontSize: 6 }}>免許・資格</div>
+              <div style={{ fontSize: 5.5 }}>
+                <div>2020年8月　普通自動車第一種運転免許　取得</div>
+                <div>2023年11月　TOEFL iBT 95点</div>
+                <div>2025年3月　BLS/ACLSプロバイダー　取得</div>
+                <div>2026年2月　医師国家試験　合格見込み</div>
               </div>
             </div>
-            <div className="flex-shrink-0 bg-white border border-gray-300 rounded shadow-sm p-3" style={{ width: 280, minHeight: 396, fontFamily: 'serif', fontSize: 7, color: '#222' }}>
-              <div className="border border-gray-400 p-1 mb-1"><span style={{ fontSize: 6, fontWeight: 'bold' }}>志望動機</span><br/><span style={{ fontSize: 6, color: '#666' }}>貴院の充実した研修プログラムに魅力を感じ、幅広い症例を...</span></div>
-              <div className="border border-gray-400 p-1"><span style={{ fontSize: 6, fontWeight: 'bold' }}>自己PR</span><br/><span style={{ fontSize: 6, color: '#666' }}>大学では○○部に所属し、チームワークの大切さを学びました...</span></div>
+            {/* PAGE 2: 志望動機+自己PR+本人希望 */}
+            <div className="flex-shrink-0 bg-white border border-gray-300 rounded shadow-sm p-3" style={{ width: 280, minHeight: 396, fontFamily: 'serif', fontSize: 6.5, color: '#222', lineHeight: 1.5 }}>
+              <div className="text-center font-bold border-b border-gray-300 pb-0.5 mb-1" style={{ fontSize: 6.5 }}>志望動機</div>
+              <div className="mb-2" style={{ fontSize: 5.8 }}>
+                貴院の見学で救急外来を拝見した際、研修医の先生が初療から入院判断まで主体的に行っている姿に強く感銘を受けました。指導医の先生方が適切なタイミングでフィードバックを下さる教育体制にも魅力を感じています。私は将来、急性期から慢性期まで幅広く対応できる総合内科医を目指しており、貴院の豊富な症例数と充実したローテーションプログラムは理想的な環境です。特に、年間8,000件を超える救急搬送と、研修医1人あたりの担当症例数の多さは、2年間で確実に成長できると確信しています。
+              </div>
+              <div className="text-center font-bold border-b border-gray-300 pb-0.5 mb-1" style={{ fontSize: 6.5 }}>自己PR</div>
+              <div className="mb-2" style={{ fontSize: 5.8 }}>
+                私の強みは「最後まで粘り強くやり抜く力」です。大学ではラグビー部に所属し、4年次にはキャプテンとして東医体3位入賞を達成しました。チームが低迷していた時期も練習メニューを見直し、メンバーと個別面談を重ねることで結束力を高めました。この経験から、困難な状況でも諦めず、チームで目標に向かう力を身につけました。臨床実習では、担当患者さんの退院支援カンファレンスで多職種の意見を調整する役割を任され、チーム医療の大切さを実感しました。
+              </div>
+              <div className="text-center font-bold border-b border-gray-300 pb-0.5 mb-1" style={{ fontSize: 6.5 }}>本人希望記入欄</div>
+              <div style={{ fontSize: 5.8 }}>
+                <div>志望科：内科（循環器内科）</div>
+                <div>貴院の研修プログラムにて研修を希望いたします。</div>
+              </div>
             </div>
           </div>
           {/* モザイク+CTA */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-6"
-            style={{ background: 'linear-gradient(to bottom, transparent 20%, rgba(245,244,240,0.7) 50%, rgba(245,244,240,0.98) 80%)' }}>
+            style={{ background: 'linear-gradient(to bottom, transparent 10%, rgba(245,244,240,0.6) 40%, rgba(245,244,240,0.95) 70%, rgba(245,244,240,1) 85%)' }}>
             <p className="text-sm font-bold text-tx mb-1">プロフィールを入力して履歴書を自動生成</p>
             <p className="text-[10px] text-muted mb-3">質問に答えるだけで完成します</p>
             <GlowButton radius={12}>
