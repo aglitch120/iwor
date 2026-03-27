@@ -197,13 +197,14 @@ function SummaryGeneratorInner() {
         </div>
 
         <div className="mb-2">
-          <div className="spin-glow" style={{ borderRadius: 12 }}>
-            <div className="spin-glow-ray" />
-            <button onClick={() => handleCopyPrompt('new')}
-              className="spin-glow-content w-full py-2.5 text-xs font-bold transition-all"
-              style={{ background: promptCopied === 'new' ? 'var(--ok)' : MC, color: '#fff', borderRadius: 10 }}>
-              {promptCopied === 'new' ? '✓ コピー済み！' : `📋 病歴要約プロンプトをコピー${selectedDisease ? `（${selectedDisease}）` : ''}`}
-            </button>
+          <div>
+            <GlowButton fullWidth radius={12}>
+              <button onClick={() => handleCopyPrompt('new')}
+                className="w-full py-2.5 rounded-xl text-xs font-bold transition-all"
+                style={{ background: promptCopied === 'new' ? 'var(--ok)' : MC, color: '#fff' }}>
+                {promptCopied === 'new' ? '✓ コピー済み！' : `📋 病歴要約プロンプトをコピー${selectedDisease ? `（${selectedDisease}）` : ''}`}
+              </button>
+            </GlowButton>
           </div>
         </div>
 

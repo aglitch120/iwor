@@ -62,8 +62,15 @@ export default function GlowButton({
         }}
       />
       <style>{`@keyframes glowBtnSpin { to { transform: rotate(360deg); } }`}</style>
-      {/* 子要素 — z-index:1で前面、borderRadiusでクリップ */}
-      <span style={{ position: 'relative', display: fullWidth ? 'block' : 'inline-block', zIndex: 1 }}>
+      {/* 子要素 — z-index:1で前面。overflow:hidden+borderRadiusで回転光をクリップ */}
+      <span style={{
+        position: 'relative',
+        display: fullWidth ? 'block' : 'inline-block',
+        zIndex: 1,
+        borderRadius: radius,
+        overflow: 'hidden',
+        background: '#1B4F3A',
+      }}>
         {children}
       </span>
     </span>
