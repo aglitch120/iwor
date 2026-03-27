@@ -43,11 +43,14 @@ function programLabel(h: Hospital): string {
 }
 
 // ── ソート方式 ──
-type SortKey = 'name' | 'matchRate' | 'salary' | 'beds' | 'residents' | 'anaba' | 'honmei'
+type SortKey = 'name' | 'matchRate' | 'salary' | 'beds' | 'residents' | 'anaba' | 'honmei' | 'hensachi' | 'stability' | 'popularityRank'
 const SORT_OPTIONS: { key: SortKey; label: string; pro?: boolean }[] = [
   { key: 'matchRate', label: '倍率' },
+  { key: 'hensachi', label: 'マッチ難易度', pro: true },
   { key: 'anaba', label: '穴場度', pro: true },
   { key: 'honmei', label: '志望集中度', pro: true },
+  { key: 'stability', label: '安定度', pro: true },
+  { key: 'popularityRank', label: '人気順位', pro: true },
   { key: 'name', label: '名前' },
 ]
 
@@ -184,8 +187,11 @@ export default function HospitalTab({
       let cmp = 0
       switch (sortKey) {
         case 'matchRate': cmp = a.popularity - b.popularity; break
+        case 'hensachi': cmp = ((a as any).hensachi || 0) - ((b as any).hensachi || 0); break
         case 'anaba': cmp = calcAnaba(b) - calcAnaba(a); break
         case 'honmei': cmp = ((b as any).honmeiIndex || 0) - ((a as any).honmeiIndex || 0); break
+        case 'stability': cmp = ((a as any).stabilityScore || 0) - ((b as any).stabilityScore || 0); break
+        case 'popularityRank': cmp = ((b as any).popularityRank || 9999) - ((a as any).popularityRank || 9999); break
         case 'name': cmp = a.name.localeCompare(b.name); break
         default: cmp = a.name.localeCompare(b.name)
       }
@@ -349,6 +355,9 @@ export default function HospitalTab({
                   const opt = SORT_OPTIONS.find(o => o.key === key)
                   if (opt?.pro && !isPro) { onShowProModal(); return }
                   setSortKey(key)
+                  // 高い方が上に来るのが自然なソートキーは降順デフォルト
+                  const descByDefault = ['hensachi', 'anaba', 'honmei', 'stability', 'popularityRank']
+                  setSortAsc(!descByDefault.includes(key))
                 }}
                   className="px-2.5 py-2 border border-br rounded-lg bg-bg text-xs text-tx focus:border-ac outline-none">
                   {SORT_OPTIONS.map(o => <option key={o.key} value={o.key}>{o.label}順{o.pro && !isPro ? ' 🔒' : ''}</option>)}
