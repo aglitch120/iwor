@@ -1435,15 +1435,34 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
     // ═══════════════════════════════════════════════════════════════
     //  POST /api/journal/build — 手動DB構築（Admin）
     // ═══════════════════════════════════════════════════════════════
+    // デバッグ: PubMed接続テスト
+    if (path === "/api/journal/test-pubmed" && request.method === "GET") {
+      try {
+        const testUrl = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=0028-4793%5BISSN%5D&retmax=3&retmode=json";
+        const res = await fetch(testUrl, { headers: { 'User-Agent': 'iwor-journal-bot/1.0 (https://iwor.jp; tellmedu.info@gmail.com)' } });
+        const text = await res.text();
+        return json({ ok: true, status: res.status, bodyPreview: text.slice(0, 500), isJson: text.startsWith('{') }, 200, request);
+      } catch (err) {
+        return json({ ok: false, error: String(err) }, 500, request);
+      }
+    }
+
     if (path === "/api/journal/build" && request.method === "POST") {
       const adminKey = request.headers.get("X-Admin-Key") || new URL(request.url).searchParams.get("key") || "";
       if (!adminKey || adminKey !== env.ADMIN_KEY) {
         return json({ error: "Unauthorized" }, 401, request);
       }
-      // Run build synchronously (fetch handler doesn't have ctx)
       try {
         await buildJournalDb(env);
-        return json({ ok: true, message: "Journal DB build completed" }, 200, request);
+        // ビルド結果を返す
+        const enDb = await env.IWOR_KV.get("journal:db:en", "json");
+        const jaDb = await env.IWOR_KV.get("journal:db:ja", "json");
+        return json({
+          ok: true,
+          message: "Journal DB build completed",
+          en: { articles: enDb?.articles?.length || 0, newCount: enDb?.newCount || 0 },
+          ja: { articles: jaDb?.articles?.length || 0, newCount: jaDb?.newCount || 0 },
+        }, 200, request);
       } catch (err) {
         return json({ ok: false, error: String(err) }, 500, request);
       }
