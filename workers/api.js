@@ -2642,6 +2642,135 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
     }
 
     // ══════════════════════════════════════════════════
+    //  Creem決済 — PRO課金
+    // ══════════════════════════════════════════════════
+
+    // POST /api/billing/checkout — チェックアウトセッション作成
+    if (path === "/api/billing/checkout" && request.method === "POST") {
+      const body = await parseBody(request);
+      const plan = body?.plan || 'annual'; // monthly | semi-annual | annual
+      const productIds = {
+        monthly: env.CREEM_PRODUCT_MONTHLY,
+        'semi-annual': env.CREEM_PRODUCT_SEMI_ANNUAL,
+        annual: env.CREEM_PRODUCT_ANNUAL,
+      };
+      const productId = productIds[plan];
+      if (!productId) return json({ error: "Invalid plan" }, 400, request);
+
+      try {
+        const baseUrl = env.CREEM_TEST_MODE === 'true' ? 'https://test-api.creem.io/v1' : 'https://api.creem.io/v1';
+        const res = await fetch(`${baseUrl}/checkouts`, {
+          method: 'POST',
+          headers: { 'x-api-key': env.CREEM_API_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            product_id: productId,
+            success_url: `${env.SITE_URL || 'https://iwor.jp'}/pro/activate?session={CHECKOUT_SESSION_ID}`,
+            metadata: { plan, source: 'iwor-web' },
+          }),
+        });
+        const data = await res.json();
+        if (data.checkout_url) {
+          return json({ ok: true, url: data.checkout_url }, 200, request);
+        }
+        return json({ ok: false, error: data.message || 'Checkout creation failed' }, 500, request);
+      } catch (err) {
+        return json({ ok: false, error: String(err) }, 500, request);
+      }
+    }
+
+    // POST /api/billing/webhook — Creem Webhook受信
+    if (path === "/api/billing/webhook" && request.method === "POST") {
+      const signature = request.headers.get('creem-signature') || '';
+      const bodyText = await request.text();
+
+      // 署名検証
+      if (env.CREEM_WEBHOOK_SECRET) {
+        const encoder = new TextEncoder();
+        const key = await crypto.subtle.importKey('raw', encoder.encode(env.CREEM_WEBHOOK_SECRET), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+        const sig = await crypto.subtle.sign('HMAC', key, encoder.encode(bodyText));
+        const computed = Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+        if (computed !== signature) {
+          console.error('Webhook signature mismatch');
+          return new Response('Unauthorized', { status: 401 });
+        }
+      }
+
+      const event = JSON.parse(bodyText);
+      const type = event.eventType || event.type;
+      console.log(`Creem webhook: ${type}`);
+
+      // イベント処理
+      if (type === 'checkout.completed' || type === 'subscription.active') {
+        const customerId = event.object?.customer?.id;
+        const email = event.object?.customer?.email;
+        const subscriptionId = event.object?.subscription?.id || event.object?.id;
+        if (email) {
+          // KVにPROステータスを保存
+          await env.IWOR_KV.put(`pro:email:${email}`, JSON.stringify({
+            active: true, customerId, subscriptionId,
+            plan: event.object?.product?.name || 'PRO',
+            activatedAt: Date.now(),
+          }), { expirationTtl: 400 * 24 * 60 * 60 }); // 400日
+          console.log(`PRO activated: ${email}`);
+        }
+      } else if (type === 'subscription.canceled' || type === 'subscription.expired') {
+        const email = event.object?.customer?.email;
+        if (email) {
+          const existing = await env.IWOR_KV.get(`pro:email:${email}`, 'json');
+          if (existing) {
+            existing.active = false;
+            existing.canceledAt = Date.now();
+            await env.IWOR_KV.put(`pro:email:${email}`, JSON.stringify(existing), { expirationTtl: 30 * 24 * 60 * 60 }); // 30日保持（ウィンバック用）
+          }
+          console.log(`PRO deactivated: ${email}`);
+        }
+      }
+
+      return new Response('OK', { status: 200 });
+    }
+
+    // GET /api/billing/status — PRO課金状態確認
+    if (path === "/api/billing/status" && request.method === "GET") {
+      const email = new URL(request.url).searchParams.get('email');
+      if (!email) return json({ error: "email required" }, 400, request);
+      try {
+        const data = await env.IWOR_KV.get(`pro:email:${email}`, 'json');
+        if (data && data.active) {
+          return json({ ok: true, isPro: true, plan: data.plan, activatedAt: data.activatedAt }, 200, request);
+        }
+        return json({ ok: true, isPro: false }, 200, request);
+      } catch {
+        return json({ ok: true, isPro: false }, 200, request);
+      }
+    }
+
+    // POST /api/billing/portal — カスタマーポータル（支払い方法変更等）
+    if (path === "/api/billing/portal" && request.method === "POST") {
+      const body = await parseBody(request);
+      const email = body?.email;
+      if (!email) return json({ error: "email required" }, 400, request);
+      try {
+        const baseUrl = env.CREEM_TEST_MODE === 'true' ? 'https://test-api.creem.io/v1' : 'https://api.creem.io/v1';
+        // まずcustomer IDを取得
+        const custRes = await fetch(`${baseUrl}/customers?email=${encodeURIComponent(email)}`, {
+          headers: { 'x-api-key': env.CREEM_API_KEY },
+        });
+        const custData = await custRes.json();
+        if (!custData.id) return json({ error: "Customer not found" }, 404, request);
+        // ポータルURL生成
+        const portalRes = await fetch(`${baseUrl}/customers/billing`, {
+          method: 'POST',
+          headers: { 'x-api-key': env.CREEM_API_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ customer_id: custData.id }),
+        });
+        const portalData = await portalRes.json();
+        return json({ ok: true, url: portalData.customer_portal_url || portalData.url }, 200, request);
+      } catch (err) {
+        return json({ ok: false, error: String(err) }, 500, request);
+      }
+    }
+
+    // ══════════════════════════════════════════════════
     //  POST /api/conference/scrape-deadlines — 学会演題締切の自動取得
     //  各学会の公式URLからHTMLを取得→キーワード抽出→AI解析
     // ══════════════════════════════════════════════════
