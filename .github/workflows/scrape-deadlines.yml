@@ -1,0 +1,71 @@
+name: 学会演題締切の自動取得（週1回）
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # 毎週月曜 12:00 JST
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 学会URLリストを抽出してAPIに送信
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          API_BASE: https://iwor-api.mightyaddnine.workers.dev
+        run: |
+          # conferences-data.tsからid, url, meetingNameを抽出
+          node -e "
+            const fs = require('fs');
+            const text = fs.readFileSync('lib/conferences-data.ts', 'utf-8');
+            const re = /id: '([^']+)'.*?meetingName: '([^']+)'.*?url: '([^']+)'/gs;
+            const confs = [];
+            let m;
+            while ((m = re.exec(text)) !== null) {
+              confs.push({ id: m[1], meetingName: m[2], url: m[3] });
+            }
+            // 20件ずつバッチ
+            for (let i = 0; i < confs.length; i += 20) {
+              const batch = confs.slice(i, i + 20);
+              const body = JSON.stringify({ conferences: batch });
+              console.log('Batch ' + (i/20+1) + ': ' + batch.length + ' conferences');
+              fs.writeFileSync('/tmp/batch.json', body);
+            }
+            fs.writeFileSync('/tmp/all_confs.json', JSON.stringify(confs));
+            console.log('Total: ' + confs.length + ' conferences');
+          "
+
+          # バッチ送信
+          node -e "
+            const https = require('https');
+            const fs = require('fs');
+            const confs = JSON.parse(fs.readFileSync('/tmp/all_confs.json'));
+            const batchSize = 15;
+            async function run() {
+              for (let i = 0; i < confs.length; i += batchSize) {
+                const batch = confs.slice(i, i + batchSize);
+                console.log('Sending batch ' + (i/batchSize+1) + '...');
+                const res = await fetch(process.env.API_BASE + '/api/conference/scrape-deadlines', {
+                  method: 'POST',
+                  headers: { 'X-Admin-Key': process.env.ADMIN_KEY, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ conferences: batch }),
+                });
+                const data = await res.json();
+                console.log('  Found: ' + (data.found || 0) + '/' + (data.count || 0));
+                if (data.results) {
+                  for (const r of data.results) {
+                    if (r.deadline) console.log('  ✅ ' + r.name + ': ' + r.deadline);
+                  }
+                }
+                // バッチ間に30秒待機
+                if (i + batchSize < confs.length) await new Promise(r => setTimeout(r, 30000));
+              }
+            }
+            run().catch(console.error);
+          "
