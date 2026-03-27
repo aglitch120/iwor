@@ -78,6 +78,10 @@ export const trackToolUsage = (slug: string, category?: string) => {
       data[slug] = (data[slug] || 0) + 1
       data._total = (data._total || 0) + 1
       localStorage.setItem(key, JSON.stringify(data))
+      // よく使うツール履歴も記録
+      const hist = JSON.parse(localStorage.getItem('iwor_tool_history') || '{}')
+      hist[slug] = (hist[slug] || 0) + 1
+      localStorage.setItem('iwor_tool_history', JSON.stringify(hist))
     } catch {}
   }
 }

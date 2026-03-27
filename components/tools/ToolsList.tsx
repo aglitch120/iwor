@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { tools, implementedTools, categoryLabels, categoryIcons, type ToolCategory, type ToolDefinition } from '@/lib/tools-config'
 import FavoriteButton, { FavoritesBar } from '@/components/tools/FavoriteButton'
+import { normalize, expandQuery, TOOL_READINGS } from '@/components/SearchDialog'
 
 const categoryOrder: ToolCategory[] = [
   'nephrology', 'cardiology', 'hepatology', 'respiratory',
@@ -11,18 +12,32 @@ const categoryOrder: ToolCategory[] = [
   'antimicrobial', 'general',
 ]
 
+const liveTools = tools.filter(t => implementedTools.has(t.slug))
+
 export default function ToolsList() {
   const [query, setQuery] = useState('')
+  const [recentSlugs, setRecentSlugs] = useState<string[]>([])
+
+  // よく使うツール（閲覧履歴から上位5件）
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('iwor_tool_history')
+      if (raw) {
+        const history: Record<string, number> = JSON.parse(raw)
+        const sorted = Object.entries(history).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([slug]) => slug)
+        setRecentSlugs(sorted)
+      }
+    } catch {}
+  }, [])
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return tools
-    const q = query.toLowerCase()
-    return tools.filter(t =>
-      t.name.toLowerCase().includes(q) ||
-      t.nameEn.toLowerCase().includes(q) ||
-      t.description.toLowerCase().includes(q) ||
-      t.keywords.some(k => k.toLowerCase().includes(q))
-    )
+    if (!query.trim()) return liveTools
+    const queries = expandQuery(query)
+    return liveTools.filter(t => {
+      const reading = TOOL_READINGS[t.slug] || ''
+      const haystack = normalize(`${t.name} ${t.nameEn} ${t.description} ${t.keywords.join(' ')} ${t.slug} ${reading}`)
+      return queries.some(q => haystack.includes(q))
+    })
   }, [query])
 
   const grouped = useMemo(() => {
@@ -66,11 +81,33 @@ export default function ToolsList() {
         )}
       </div>
 
-      {/* 検索結果カウント */}
-      {query && (
-        <p className="text-xs text-muted mb-4">
-          {filtered.length}件のツールが見つかりました
-        </p>
+      {/* ツール数+検索結果カウント */}
+      <p className="text-xs text-muted mb-4">
+        {query ? `${filtered.length}件のツールが見つかりました` : `全${liveTools.length}種の臨床計算ツール`}
+      </p>
+
+      {/* よく使うツール（検索していない時のみ） */}
+      {!query && recentSlugs.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-sm font-bold text-tx mb-2 flex items-center gap-1.5">
+            <span>⭐</span>あなたがよく使う計算ツール
+          </h2>
+          <div className="grid gap-1.5">
+            {recentSlugs.map(slug => {
+              const tool = liveTools.find(t => t.slug === slug)
+              if (!tool) return null
+              return (
+                <Link key={slug} href={`/tools/calc/${slug}`}
+                  className="flex items-center justify-between gap-3 p-2.5 bg-acl border border-ac/10 rounded-lg hover:border-ac/30 transition-colors group">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-ac">{tool.name}</p>
+                  </div>
+                  <span className="text-ac text-sm shrink-0">→</span>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
       )}
 
       {/* カテゴリ別リスト */}
@@ -85,9 +122,7 @@ export default function ToolsList() {
               <span className="text-xs font-normal text-muted">({catTools.length})</span>
             </h2>
             <div className="grid gap-2">
-              {catTools.map(tool => {
-                const isLive = implementedTools.has(tool.slug)
-                return isLive ? (
+              {catTools.map(tool => (
                   <Link
                     key={tool.slug}
                     href={`/tools/calc/${tool.slug}`}
@@ -99,19 +134,7 @@ export default function ToolsList() {
                     </div>
                     <span className="text-ac text-sm shrink-0">→</span>
                   </Link>
-                ) : (
-                  <div
-                    key={tool.slug}
-                    className="flex items-center justify-between gap-3 p-3 bg-s1/50 border border-br/50 rounded-lg opacity-50"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-muted">{tool.name}</p>
-                      <p className="text-xs text-muted/70 line-clamp-1">{tool.description}</p>
-                    </div>
-                    <span className="text-[10px] text-muted bg-s2 px-2 py-0.5 rounded shrink-0">準備中</span>
-                  </div>
-                )
-              })}
+              ))}
             </div>
           </section>
         )
