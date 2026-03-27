@@ -317,7 +317,7 @@ function ProgressBar({ progress, stepIdx, total }: { progress: number; stepIdx: 
 
 function NavButtons({ onBack, onNext, isFirst, isLast }: { onBack: () => void; onNext: () => void; isFirst: boolean; isLast?: boolean }) {
   return (
-    <div className="flex gap-2 mt-6">
+    <div className="flex gap-2 mt-6 mb-4">
       {!isFirst && (
         <button onClick={onBack} className="px-4 py-3 rounded-xl text-sm font-medium" style={{ color: MC, background: MCL }}>← 戻る</button>
       )}

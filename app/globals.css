@@ -37,6 +37,9 @@
     
     /* ── アニメーション ── */
     --ease: .18s cubic-bezier(.4, 0, .2, 1);
+
+    /* ── BottomNav高さ（モバイル） ── */
+    --nav-h: calc(56px + env(safe-area-inset-bottom, 0px));
   }
 
   body {

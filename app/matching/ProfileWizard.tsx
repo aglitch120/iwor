@@ -401,7 +401,7 @@ export default function ProfileWizard({
       {step === 9 && <Step9 profile={profile} updateField={updateField} toggleArrayField={toggleArrayField} />}
 
       {/* ナビゲーション */}
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-3 pt-2 pb-4">
         {step > 1 && (
           <button onClick={() => goStep(step - 1)}
             className="flex-1 py-3 rounded-xl text-sm font-medium border border-br text-muted hover:text-tx transition-colors">
