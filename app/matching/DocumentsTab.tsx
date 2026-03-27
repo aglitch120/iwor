@@ -1171,8 +1171,13 @@ export function HospitalCompare({ isPro, onShowProModal }: { isPro?: boolean; on
           { label: '第1希望者数', unit: '人', key: 'applicants' },
           { label: 'マッチ率', unit: '%', key: 'matchRate', higher: 'good' },
           { label: '人気度', unit: '倍', key: 'popularity', format: (v: number) => v.toFixed(1), higher: 'good' },
-          { label: '3年平均マッチ率', unit: '%', key: 'avgMatchRate3y' as any, higher: 'good', pro: true },
-          { label: '志望集中度', unit: '', key: 'honmeiIndex' as any, format: (v: number) => v?.toFixed(2) || '—', pro: true },
+          { label: '3年平均充足率', unit: '%', key: 'avgMatchRate3y' as any, higher: 'good', pro: true },
+          { label: '志望集中度', unit: '', key: 'honmeiIndex' as any, format: (v: number) => v?.toFixed(2) || '—', higher: 'good', pro: true },
+          { label: '偏差値', unit: '', key: 'hensachi' as any, format: (v: number) => v?.toFixed(1) || '—', pro: true },
+          { label: '穴場度', unit: '点', key: 'anabaScore' as any, higher: 'good', pro: true },
+          { label: '安定度', unit: '点', key: 'stabilityScore' as any, higher: 'good', pro: true },
+          { label: '人気順位', unit: '', key: 'popularityRank' as any, format: (v: number) => v ? `${v}/1470` : '—', higher: 'bad', pro: true },
+          { label: '志望者トレンド', unit: '', key: 'popularityTrend' as any, format: (v: number) => v ? `${v > 1 ? '+' : ''}${Math.round((v-1)*100)}%` : '—', higher: 'good', pro: true },
         ]
 
         return (
