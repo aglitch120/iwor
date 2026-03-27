@@ -85,7 +85,7 @@ export default function HomeAppGrid({ apps }: { apps: AppItem[] }) {
       const count = parseInt(localStorage.getItem('iwor_recommend_shown') || '0', 10)
       if (count < 5) {
         setTimeout(() => setShowRecommend(true), 300)
-        setTimeout(() => setShowRecommend(false), 5000)
+        setTimeout(() => setShowRecommend(false), 7000)
         localStorage.setItem('iwor_recommend_shown', String(count + 1))
       }
     }
@@ -96,7 +96,7 @@ export default function HomeAppGrid({ apps }: { apps: AppItem[] }) {
     setShowRoleModal(false)
     localStorage.setItem('iwor_recommend_shown', '1')
     setTimeout(() => setShowRecommend(true), 100)
-    setTimeout(() => setShowRecommend(false), 5000)
+    setTimeout(() => setShowRecommend(false), 7000)
   }
 
   // Role別にアプリを並び替え+ラベル上書き
