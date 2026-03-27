@@ -62,7 +62,7 @@ const segments = [
 
 // ── 決済（Paddle移行中） ──
 // Paddle審査通過後にCheckoutリンクを設定
-const PURCHASE_URL = '/contact' // 移行完了までお問い合わせへ誘導
+const API_BASE = 'https://iwor-api.mightyaddnine.workers.dev'
 
 // ── 料金プラン ──
 const plans = [
@@ -361,11 +361,25 @@ export default function ProPage() {
               <p className={`text-xs mb-4 ${plan.popular ? 'text-white/60' : 'text-muted'}`}>
                 月あたり {plan.monthly}
               </p>
-              <a
-                href={PURCHASE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackBoothClick(`pro_pricing_${plan.id}`)}
+              <button
+                onClick={async () => {
+                  trackBoothClick(`pro_pricing_${plan.id}`)
+                  try {
+                    const res = await fetch(`${API_BASE}/api/billing/checkout`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ plan: plan.id === '6m' ? 'semi-annual' : plan.id }),
+                    })
+                    const data = await res.json()
+                    if (data.url) {
+                      window.location.href = data.url
+                    } else {
+                      alert('決済ページの生成に失敗しました。お問い合わせください。')
+                    }
+                  } catch {
+                    alert('接続エラーです。もう一度お試しください。')
+                  }
+                }}
                 className={`block w-full py-3 rounded-xl font-bold text-sm transition-colors ${
                   plan.popular
                     ? 'bg-white text-ac hover:bg-white/90'
@@ -373,13 +387,13 @@ export default function ProPage() {
                 }`}
               >
                 {plan.label}を購入
-              </a>
+              </button>
             </div>
           ))}
         </div>
 
         <p className="text-xs text-muted text-center mt-4">
-          ※ 決済システム移行中。ご購入はお問い合わせください。
+          クレジットカードで安全にお支払いいただけます。いつでも解約可能です。
         </p>
         <div className="text-center mt-3">
           <a
