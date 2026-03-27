@@ -64,6 +64,41 @@ console.log(`honmeiIndex: ${validHonmei.length}件有効 / ${hospitals.length}�
 const noHonmei = hospitals.filter(h => h.honmeiIndex == null || h.honmeiIndex === 0)
 console.log(`honmeiIndexなし: ${noHonmei.length}件 (中央値${medianHonmei}で代替)`)
 
+// Anomaly detection: fix honmeiIndex outliers caused by program ID mismatch
+// Calculate P10 (10th percentile) per capacity band as floor
+const capBands = [[1,2],[3,5],[6,10],[11,20],[21,50],[51,999]]
+const bandFloors = {}
+for (const [lo,hi] of capBands) {
+  const vals = hospitals
+    .filter(h => h.capacity >= lo && h.capacity <= hi && h.honmeiIndex != null && h.honmeiIndex > 0)
+    .map(h => h.honmeiIndex)
+    .sort((a,b) => a - b)
+  if (vals.length >= 10) {
+    bandFloors[`${lo}-${hi}`] = vals[Math.floor(vals.length * 0.10)]
+  }
+}
+console.log('異常値フロア（P10）:', JSON.stringify(bandFloors))
+
+let fixedCount = 0
+for (const h of hospitals) {
+  if (h.honmeiIndex == null || h.honmeiIndex <= 0) continue
+  const band = capBands.find(([lo,hi]) => h.capacity >= lo && h.capacity <= hi)
+  if (!band) continue
+  const floor = bandFloors[`${band[0]}-${band[1]}`]
+  if (floor && h.honmeiIndex < floor && h.applicants >= 20) {
+    // Anomalous: likely program ID mismatch. Replace with band median
+    const bandMedian = hospitals
+      .filter(x => x.capacity >= band[0] && x.capacity <= band[1] && x.honmeiIndex != null && x.honmeiIndex > 0)
+      .map(x => x.honmeiIndex)
+      .sort((a,b) => a - b)
+    const median = bandMedian[Math.floor(bandMedian.length / 2)]
+    console.log(`  修正: ${h.name} (定員${h.capacity}) honmei ${h.honmeiIndex} → ${median}`)
+    h.honmeiIndex = median
+    fixedCount++
+  }
+}
+console.log(`異常値修正: ${fixedCount}件`)
+
 // Calculate 本気倍率 for each hospital
 for (const h of hospitals) {
   if (h.capacity === 0) {
