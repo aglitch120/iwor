@@ -2,7 +2,7 @@ name: 医学データ検証（週次 + push時）
 
 on:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: '0 21 * * *'  # 毎日 6:00 JST
   workflow_dispatch:
   push:
     paths:

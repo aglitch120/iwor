@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-03-27T01:52:32.106Z",
+  "timestamp": "2026-03-27T02:01:09.657Z",
   "summary": {
-    "pass": 28,
-    "warn": 4,
+    "pass": 100,
+    "warn": 0,
     "fail": 0
   },
   "tools": [
@@ -13,8 +13,8 @@
       "checks": [
         {
           "check": "DATA_HASH",
-          "status": "WARN",
-          "message": "⚠️ 変更検出 b80e0b0dc5e8963a→d6302a9ba8b5f5c3"
+          "status": "PASS",
+          "message": "変更なし (d6302a9ba8b5f5c3)"
         },
         {
           "check": "DOSE_FORMAT",
@@ -31,12 +31,144 @@
     {
       "id": "renal-dose-abx",
       "path": "app/tools/calc/renal-dose-abx/page.tsx",
-      "priority": "high",
+      "priority": "critical",
       "checks": [
         {
           "check": "DATA_HASH",
-          "status": "WARN",
-          "message": "⚠️ 変更検出 abe55245727068ef→a3ff5fe9db27f24e"
+          "status": "PASS",
+          "message": "変更なし (a3ff5fe9db27f24e)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "dopamine-dose",
+      "path": "app/tools/calc/dopamine-dose/page.tsx",
+      "priority": "critical",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (e3b0c44298fc1c14)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "drip-rate",
+      "path": "app/tools/calc/drip-rate/page.tsx",
+      "priority": "critical",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (3d1e9664a0b4ddd3)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "na-correction-rate",
+      "path": "app/tools/calc/na-correction-rate/page.tsx",
+      "priority": "critical",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (5b68d41d1ed77836)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "na-deficit",
+      "path": "app/tools/calc/na-deficit/page.tsx",
+      "priority": "critical",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (36e205cde2c0b715)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "opioid-conversion",
+      "path": "app/tools/calc/opioid-conversion/page.tsx",
+      "priority": "critical",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (36494823a32b6719)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "steroid-converter",
+      "path": "app/tools/calc/steroid-converter/page.tsx",
+      "priority": "critical",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (5d47d6b8769ab226)"
         },
         {
           "check": "DOSE_FORMAT",
@@ -57,8 +189,8 @@
       "checks": [
         {
           "check": "DATA_HASH",
-          "status": "WARN",
-          "message": "⚠️ 変更検出 285b1ea4d4eebf39→652a4ded37531f31"
+          "status": "PASS",
+          "message": "変更なし (652a4ded37531f31)"
         },
         {
           "check": "DOSE_FORMAT",
@@ -95,14 +227,14 @@
       ]
     },
     {
-      "id": "na-correction-rate",
-      "path": "app/tools/calc/na-correction-rate/page.tsx",
-      "priority": "medium",
+      "id": "combination",
+      "path": "app/tools/drugs/combination/page.tsx",
+      "priority": "high",
       "checks": [
         {
           "check": "DATA_HASH",
           "status": "PASS",
-          "message": "変更なし (5b68d41d1ed77836)"
+          "message": "変更なし (4957cdfad83a56c5)"
         },
         {
           "check": "DOSE_FORMAT",
@@ -117,14 +249,212 @@
       ]
     },
     {
-      "id": "opioid-conversion",
-      "path": "app/tools/calc/opioid-conversion/page.tsx",
+      "id": "infusion-list",
+      "path": "app/tools/calc/infusion-list/page.tsx",
+      "priority": "high",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (e3b0c44298fc1c14)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "egfr",
+      "path": "app/tools/calc/egfr/page.tsx",
       "priority": "medium",
       "checks": [
         {
           "check": "DATA_HASH",
           "status": "PASS",
-          "message": "変更なし (36494823a32b6719)"
+          "message": "変更なし (08cc4dd804627995)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "cockcroft-gault",
+      "path": "app/tools/calc/cockcroft-gault/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (89925aa580a4bb29)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "corrected-ca",
+      "path": "app/tools/calc/corrected-ca/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (d96ff86572351f2c)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "anion-gap",
+      "path": "app/tools/calc/anion-gap/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (d3c1fa0bbf3234c9)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "fib-4",
+      "path": "app/tools/calc/fib-4/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (751c36d0ccf87c2a)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "qtc",
+      "path": "app/tools/calc/qtc/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (52b51235da00d7a9)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "path": "app/tools/calc/map/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (a892707a34a1daf1)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "bmi",
+      "path": "app/tools/calc/bmi/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (45c1c8b33bdac6cb)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "bsa",
+      "path": "app/tools/calc/bsa/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (6a3906f5c6eb8851)"
         },
         {
           "check": "DOSE_FORMAT",
@@ -161,14 +491,80 @@
       ]
     },
     {
-      "id": "combination",
-      "path": "app/tools/drugs/combination/page.tsx",
+      "id": "harris-benedict",
+      "path": "app/tools/calc/harris-benedict/page.tsx",
       "priority": "medium",
       "checks": [
         {
           "check": "DATA_HASH",
-          "status": "WARN",
-          "message": "⚠️ 変更検出 7d5a6e1f23380a19→4957cdfad83a56c5"
+          "status": "PASS",
+          "message": "変更なし (bb005e635a4b5571)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "parkland",
+      "path": "app/tools/calc/parkland/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (a732adb96797b649)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "maintenance-fluid",
+      "path": "app/tools/calc/maintenance-fluid/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (f925e14fce9e01f4)"
+        },
+        {
+          "check": "DOSE_FORMAT",
+          "status": "PASS",
+          "message": "OK"
+        },
+        {
+          "check": "SAMD_WORDING",
+          "status": "PASS",
+          "message": "OK"
+        }
+      ]
+    },
+    {
+      "id": "free-water-deficit",
+      "path": "app/tools/calc/free-water-deficit/page.tsx",
+      "priority": "medium",
+      "checks": [
+        {
+          "check": "DATA_HASH",
+          "status": "PASS",
+          "message": "変更なし (153dbe4cc2fb0230)"
         },
         {
           "check": "DOSE_FORMAT",
@@ -246,6 +642,118 @@
       "expected": 6,
       "actual": 6,
       "tolerance": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": "gamma-doa",
+      "description": "ドパミン γ→mL/h — 3μg/kg/min, 60kg, 200mg/50mL",
+      "expected": 2.7,
+      "actual": 2.7,
+      "tolerance": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": "gamma-dob",
+      "description": "ドブタミン γ→mL/h — 5μg/kg/min, 60kg, 200mg/50mL",
+      "expected": 4.5,
+      "actual": 4.5,
+      "tolerance": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": "na-deficit",
+      "description": "Na欠乏量 — 目標Na135, 現Na125, 60kg男性",
+      "expected": 360,
+      "actual": 360,
+      "tolerance": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "na-correction-rate",
+      "description": "Na補正速度 — 3%NaCl 500mL, Na=120→128, 60kg",
+      "expected": 8,
+      "actual": 8,
+      "tolerance": 0.5,
+      "status": "PASS"
+    },
+    {
+      "id": "steroid-psl-to-mepsl",
+      "description": "ステロイド換算 PSL 20mg → mPSL",
+      "expected": 16,
+      "actual": 16,
+      "tolerance": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": "steroid-psl-to-dex",
+      "description": "ステロイド換算 PSL 20mg → DEX",
+      "expected": 3,
+      "actual": 3,
+      "tolerance": 0.5,
+      "status": "PASS"
+    },
+    {
+      "id": "map",
+      "description": "MAP — SBP=120 DBP=80",
+      "expected": 93.3,
+      "actual": 93.333,
+      "tolerance": 0.5,
+      "status": "PASS"
+    },
+    {
+      "id": "qtc-bazett",
+      "description": "QTc (Bazett) — QT=400ms HR=75bpm",
+      "expected": 447,
+      "actual": 447.214,
+      "tolerance": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "fib4",
+      "description": "FIB-4 — 50歳 AST=40 ALT=30 PLT=15(×10⁴/μL)=150(×10⁹/L)",
+      "expected": 2.43,
+      "actual": 2.434,
+      "tolerance": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": "free-water-deficit",
+      "description": "自由水欠乏量 — Na=155, 60kg男性",
+      "expected": 3.87,
+      "actual": 3.857,
+      "tolerance": 0.2,
+      "status": "PASS"
+    },
+    {
+      "id": "ldl-friedewald",
+      "description": "LDL (Friedewald) — TC=220 HDL=50 TG=150",
+      "expected": 140,
+      "actual": 140,
+      "tolerance": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "plasma-osmolality",
+      "description": "血漿浸透圧 — Na=140 BUN=20 GLU=100",
+      "expected": 291.2,
+      "actual": 292.698,
+      "tolerance": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "winters-formula",
+      "description": "Winters式 — HCO3=12",
+      "expected": 26,
+      "actual": 26,
+      "tolerance": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "parkland",
+      "description": "Parkland式 — 70kg TBSA=30%",
+      "expected": 8400,
+      "actual": 8400,
+      "tolerance": 100,
       "status": "PASS"
     }
   ]

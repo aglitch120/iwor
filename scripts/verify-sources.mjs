@@ -27,14 +27,35 @@ const STATUS_PATH = join(ROOT, 'public', 'verify-status.json')
 
 // ── 監視対象ツール ──
 const MONITORED_TOOLS = [
+  // critical: 計算間違い→患者安全に直結
   { id: 'gamma-calc', path: 'app/tools/calc/gamma/page.tsx', priority: 'critical' },
-  { id: 'renal-dose-abx', path: 'app/tools/calc/renal-dose-abx/page.tsx', priority: 'high' },
+  { id: 'renal-dose-abx', path: 'app/tools/calc/renal-dose-abx/page.tsx', priority: 'critical' },
+  { id: 'dopamine-dose', path: 'app/tools/calc/dopamine-dose/page.tsx', priority: 'critical' },
+  { id: 'drip-rate', path: 'app/tools/calc/drip-rate/page.tsx', priority: 'critical' },
+  { id: 'na-correction-rate', path: 'app/tools/calc/na-correction-rate/page.tsx', priority: 'critical' },
+  { id: 'na-deficit', path: 'app/tools/calc/na-deficit/page.tsx', priority: 'critical' },
+  { id: 'opioid-conversion', path: 'app/tools/calc/opioid-conversion/page.tsx', priority: 'critical' },
+  { id: 'steroid-converter', path: 'app/tools/calc/steroid-converter/page.tsx', priority: 'critical' },
+  // high: 薬剤関連
   { id: 'antibiotics', path: 'app/tools/drugs/antibiotics/page.tsx', priority: 'high' },
   { id: 'steroid-cover', path: 'app/tools/drugs/steroid-cover/page.tsx', priority: 'high' },
-  { id: 'na-correction-rate', path: 'app/tools/calc/na-correction-rate/page.tsx', priority: 'medium' },
-  { id: 'opioid-conversion', path: 'app/tools/calc/opioid-conversion/page.tsx', priority: 'medium' },
+  { id: 'combination', path: 'app/tools/drugs/combination/page.tsx', priority: 'high' },
+  { id: 'infusion-list', path: 'app/tools/calc/infusion-list/page.tsx', priority: 'high' },
+  // medium: 主要計算ツール
+  { id: 'egfr', path: 'app/tools/calc/egfr/page.tsx', priority: 'medium' },
+  { id: 'cockcroft-gault', path: 'app/tools/calc/cockcroft-gault/page.tsx', priority: 'medium' },
+  { id: 'corrected-ca', path: 'app/tools/calc/corrected-ca/page.tsx', priority: 'medium' },
+  { id: 'anion-gap', path: 'app/tools/calc/anion-gap/page.tsx', priority: 'medium' },
+  { id: 'fib-4', path: 'app/tools/calc/fib-4/page.tsx', priority: 'medium' },
+  { id: 'qtc', path: 'app/tools/calc/qtc/page.tsx', priority: 'medium' },
+  { id: 'map', path: 'app/tools/calc/map/page.tsx', priority: 'medium' },
+  { id: 'bmi', path: 'app/tools/calc/bmi/page.tsx', priority: 'medium' },
+  { id: 'bsa', path: 'app/tools/calc/bsa/page.tsx', priority: 'medium' },
   { id: 'lab-values', path: 'app/tools/calc/lab-values/page.tsx', priority: 'medium' },
-  { id: 'combination', path: 'app/tools/drugs/combination/page.tsx', priority: 'medium' },
+  { id: 'harris-benedict', path: 'app/tools/calc/harris-benedict/page.tsx', priority: 'medium' },
+  { id: 'parkland', path: 'app/tools/calc/parkland/page.tsx', priority: 'medium' },
+  { id: 'maintenance-fluid', path: 'app/tools/calc/maintenance-fluid/page.tsx', priority: 'medium' },
+  { id: 'free-water-deficit', path: 'app/tools/calc/free-water-deficit/page.tsx', priority: 'medium' },
 ]
 
 // ── 独立確かめ算 ──
@@ -117,11 +138,153 @@ const CALC_VERIFICATIONS = [
     expected: 6.0,
     tolerance: 0.1,
     compute: () => {
-      // mL/h = γ(μg/kg/min) × weight(kg) × 60(min) / conc(μg/mL)
-      // conc = 3mg/50mL = 3000μg/50mL = 60μg/mL
       const gamma = 0.1, weight = 60, drugMg = 3, totalMl = 50
       const concUgPerMl = (drugMg * 1000) / totalMl
       return (gamma * weight * 60) / concUgPerMl
+    },
+  },
+  {
+    id: 'gamma-doa',
+    description: 'ドパミン γ→mL/h — 3μg/kg/min, 60kg, 200mg/50mL',
+    expected: 2.7,
+    tolerance: 0.1,
+    compute: () => {
+      const gamma = 3, weight = 60, drugMg = 200, totalMl = 50
+      const concUgPerMl = (drugMg * 1000) / totalMl
+      return (gamma * weight * 60) / concUgPerMl
+    },
+  },
+  {
+    id: 'gamma-dob',
+    description: 'ドブタミン γ→mL/h — 5μg/kg/min, 60kg, 200mg/50mL',
+    expected: 4.5,
+    tolerance: 0.1,
+    compute: () => {
+      const gamma = 5, weight = 60, drugMg = 200, totalMl = 50
+      const concUgPerMl = (drugMg * 1000) / totalMl
+      return (gamma * weight * 60) / concUgPerMl
+    },
+  },
+  {
+    id: 'na-deficit',
+    description: 'Na欠乏量 — 目標Na135, 現Na125, 60kg男性',
+    expected: 360,
+    tolerance: 1,
+    compute: () => {
+      // Na欠乏量 = TBW × (目標Na - 現Na), TBW = 0.6 × 体重（男性）
+      return 0.6 * 60 * (135 - 125)
+    },
+  },
+  {
+    id: 'na-correction-rate',
+    description: 'Na補正速度 — 3%NaCl 500mL, Na=120→128, 60kg',
+    expected: 8,
+    tolerance: 0.5,
+    compute: () => {
+      // 24時間あたりの補正量 = 目標Na - 現Na
+      return 128 - 120  // mEq/L/24h (上限8-10)
+    },
+  },
+  {
+    id: 'steroid-psl-to-mepsl',
+    description: 'ステロイド換算 PSL 20mg → mPSL',
+    expected: 16,
+    tolerance: 0.1,
+    compute: () => {
+      // PSL:mPSL = 5mg:4mg → 20mg PSL = 16mg mPSL
+      return 20 * (4 / 5)
+    },
+  },
+  {
+    id: 'steroid-psl-to-dex',
+    description: 'ステロイド換算 PSL 20mg → DEX',
+    expected: 3.0,
+    tolerance: 0.5,
+    compute: () => {
+      // PSL:DEX = 5mg:0.75mg → 20mg PSL = 3.0mg DEX
+      return 20 * (0.75 / 5)
+    },
+  },
+  {
+    id: 'map',
+    description: 'MAP — SBP=120 DBP=80',
+    expected: 93.3,
+    tolerance: 0.5,
+    compute: () => {
+      // MAP = DBP + (SBP-DBP)/3
+      return 80 + (120 - 80) / 3
+    },
+  },
+  {
+    id: 'qtc-bazett',
+    description: 'QTc (Bazett) — QT=400ms HR=75bpm',
+    expected: 447,
+    tolerance: 2,
+    compute: () => {
+      // QTc = QT / √(RR), RR = 60/HR
+      const rr = 60 / 75
+      return 400 / Math.sqrt(rr)
+    },
+  },
+  {
+    id: 'fib4',
+    description: 'FIB-4 — 50歳 AST=40 ALT=30 PLT=15(×10⁴/μL)=150(×10⁹/L)',
+    expected: 2.43,
+    tolerance: 0.1,
+    compute: () => {
+      // FIB-4 = (age × AST) / (PLT(×10⁹/L) × √ALT)
+      // PLT 15万 = 150 ×10⁹/L
+      return (50 * 40) / (150 * Math.sqrt(30))
+    },
+  },
+  {
+    id: 'free-water-deficit',
+    description: '自由水欠乏量 — Na=155, 60kg男性',
+    expected: 3.87,
+    tolerance: 0.2,
+    compute: () => {
+      // FWD = TBW × (現Na/140 - 1), TBW = 0.6 × weight
+      return 0.6 * 60 * (155 / 140 - 1)
+    },
+  },
+  {
+    id: 'ldl-friedewald',
+    description: 'LDL (Friedewald) — TC=220 HDL=50 TG=150',
+    expected: 140,
+    tolerance: 1,
+    compute: () => {
+      // LDL = TC - HDL - TG/5
+      return 220 - 50 - 150 / 5
+    },
+  },
+  {
+    id: 'plasma-osmolality',
+    description: '血漿浸透圧 — Na=140 BUN=20 GLU=100',
+    expected: 291.2,
+    tolerance: 2,
+    compute: () => {
+      // Posm = 2×Na + BUN/2.8 + GLU/18
+      return 2 * 140 + 20 / 2.8 + 100 / 18
+    },
+  },
+  {
+    id: 'winters-formula',
+    description: 'Winters式 — HCO3=12',
+    expected: 26,
+    tolerance: 2,
+    compute: () => {
+      // expected pCO2 = 1.5 × HCO3 + 8 (±2)
+      return 1.5 * 12 + 8
+    },
+  },
+  {
+    id: 'parkland',
+    description: 'Parkland式 — 70kg TBSA=30%',
+    expected: 8400,
+    tolerance: 100,
+    compute: () => {
+      // 初日輸液量 = 4 × weight × TBSA%
+      return 4 * 70 * 30
     },
   },
 ]
