@@ -37,6 +37,8 @@ export default function GlowButton({
   const blurSize = intensity === 'strong' ? 10 : 6
   const blurOpacity = intensity === 'strong' ? 0.45 : 0.3
 
+  // padding方式: 外側にpadding 2pxを設け、その隙間にグラデーションが回る
+  // 子要素は内側で不透明背景により内部は見えない
   return (
     <span
       className={`glow-btn-wrap ${fullWidth ? 'glow-btn-full' : ''} ${className}`}
@@ -44,53 +46,24 @@ export default function GlowButton({
         position: 'relative',
         display: fullWidth ? 'block' : 'inline-block',
         borderRadius: outerRadius,
+        padding: 2,
+        overflow: 'hidden',
       }}
     >
-      {/* 回転グローボーダー — overflow:hiddenで外にはみ出さない */}
+      {/* 回転グラデーション（padding 2pxの隙間から見える） */}
       <span
         aria-hidden="true"
         style={{
           position: 'absolute',
-          inset: -1.5,
-          borderRadius: outerRadius,
-          overflow: 'hidden',
+          top: '-50%', left: '-50%',
+          width: '200%', height: '200%',
+          background: 'conic-gradient(from 0deg, transparent 40%, #2DB464 50%, #4ADE80 55%, #86EFAC 58%, #4ADE80 62%, #2DB464 68%, transparent 75%)',
+          animation: 'glowBtnSpin 3s linear infinite',
         }}
-      >
-        <span
-          style={{
-            position: 'absolute',
-            top: '-50%', left: '-50%',
-            width: '200%', height: '200%',
-            background: 'conic-gradient(from 0deg, transparent 40%, #2DB464 50%, #4ADE80 55%, #86EFAC 58%, #4ADE80 62%, #2DB464 68%, transparent 75%)',
-            animation: 'glowBtnSpin 3s linear infinite',
-          }}
-        />
-      </span>
-      {/* ぼかしオーラ */}
-      <span
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: -1.5,
-          borderRadius: outerRadius,
-          overflow: 'hidden',
-        }}
-      >
-        <span
-          style={{
-            position: 'absolute',
-            top: '-50%', left: '-50%',
-            width: '200%', height: '200%',
-            background: 'conic-gradient(from 0deg, transparent 40%, #2DB464 50%, #4ADE80 55%, #86EFAC 58%, #4ADE80 62%, #2DB464 68%, transparent 75%)',
-            animation: 'glowBtnSpin 3s linear infinite',
-            filter: `blur(${blurSize}px)`,
-            opacity: blurOpacity,
-          }}
-        />
-      </span>
+      />
       <style>{`@keyframes glowBtnSpin { to { transform: rotate(360deg); } }`}</style>
-      {/* 子要素（ボタン本体）— 不透明背景で回転グラデーションを隠す */}
-      <span style={{ position: 'relative', display: fullWidth ? 'block' : 'inline-block', zIndex: 1, borderRadius: radius, overflow: 'hidden' }}>
+      {/* 子要素 — z-index:1で前面、borderRadiusでクリップ */}
+      <span style={{ position: 'relative', display: fullWidth ? 'block' : 'inline-block', zIndex: 1 }}>
         {children}
       </span>
     </span>
