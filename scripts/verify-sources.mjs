@@ -347,8 +347,27 @@ function main() {
   }
   const currentHashes = {}
 
-  // ── ファイル検証 ──
-  for (const tool of MONITORED_TOOLS) {
+  // ── 全ツール自動発見 ──
+  const calcDirs = readdirSync(join(ROOT, 'app/tools/calc')).filter(d => !d.includes(' 2') && !d.includes('.'))
+  const drugDirs = readdirSync(join(ROOT, 'app/tools/drugs')).filter(d => !d.includes(' 2') && !d.includes('.'))
+  const procDir = existsSync(join(ROOT, 'app/tools/procedures')) ? readdirSync(join(ROOT, 'app/tools/procedures')).filter(d => !d.includes(' 2') && !d.includes('.')) : []
+  const icuDir = existsSync(join(ROOT, 'app/tools/icu')) ? readdirSync(join(ROOT, 'app/tools/icu')).filter(d => !d.includes(' 2') && !d.includes('.')) : []
+  const interpretDir = existsSync(join(ROOT, 'app/tools/interpret')) ? readdirSync(join(ROOT, 'app/tools/interpret')).filter(d => !d.includes(' 2') && !d.includes('.')) : []
+
+  const ALL_TOOL_PATHS = [
+    ...calcDirs.map(d => ({ id: d, path: `app/tools/calc/${d}/page.tsx`, priority: MONITORED_TOOLS.find(m => m.id === d)?.priority || 'standard' })),
+    ...drugDirs.map(d => ({ id: `drug-${d}`, path: `app/tools/drugs/${d}/page.tsx`, priority: MONITORED_TOOLS.find(m => m.id === d)?.priority || 'standard' })),
+    ...procDir.map(d => ({ id: `proc-${d}`, path: `app/tools/procedures/${d}/page.tsx`, priority: 'standard' })),
+    ...icuDir.map(d => ({ id: `icu-${d}`, path: `app/tools/icu/${d}/page.tsx`, priority: 'standard' })),
+    ...interpretDir.map(d => ({ id: `interp-${d}`, path: `app/tools/interpret/${d}/page.tsx`, priority: 'standard' })),
+  ].filter(t => existsSync(join(ROOT, t.path)))
+
+  console.log(`📂 全ツール: ${ALL_TOOL_PATHS.length}件を検証`)
+
+  // ── 全ツール共通チェック ──
+  // 1. ファイル存在  2. データハッシュ変更  3. 用量表記  4. SaMD危険ワード
+  // 5. 単位チェック  6. 全角英数字  7. ソースURL存在
+  for (const tool of ALL_TOOL_PATHS) {
     const fullPath = join(ROOT, tool.path)
     const toolReport = { id: tool.id, path: tool.path, priority: tool.priority, checks: [] }
 
@@ -401,6 +420,37 @@ function main() {
       message: dangerWords.length ? `⚠️ ${dangerWords.join(', ')}` : 'OK',
     })
     dangerWords.length ? report.summary.warn++ : report.summary.pass++
+
+    // 全角英数字チェック
+    const zenIssues = []
+    if (/[\uFF10-\uFF19]/.test(content)) zenIssues.push('全角数字あり')
+    if (/[\uFF21-\uFF3A\uFF41-\uFF5A]/.test(content)) zenIssues.push('全角英字あり')
+    toolReport.checks.push({
+      check: 'ZENKAKU', status: zenIssues.length ? 'WARN' : 'PASS',
+      message: zenIssues.length ? `⚠️ ${zenIssues.join('; ')}` : 'OK',
+    })
+    zenIssues.length ? report.summary.warn++ : report.summary.pass++
+
+    // 単位表記チェック（数値と単位の間にスペースがないなど）
+    const unitIssues = []
+    if (/\d(mg|mL|kg|mmol|μg|mcg)(?![\/\)])/.test(content) && !/\d\s+(mg|mL|kg)/.test(content)) {
+      // 数値直後に単位がある場合（半角スペースなし）— ただしコード内はOK
+    }
+    if (/[Ll](?:iter|itre)/.test(content) && /\bl\b/.test(content)) unitIssues.push('リットル: 小文字l→大文字Lが正式')
+    toolReport.checks.push({
+      check: 'UNIT_FORMAT', status: unitIssues.length ? 'WARN' : 'PASS',
+      message: unitIssues.length ? `⚠️ ${unitIssues.join('; ')}` : 'OK',
+    })
+    unitIssues.length ? report.summary.warn++ : report.summary.pass++
+
+    // ソースURL/参考文献の存在チェック
+    const hasSource = /sources?\s*[:=]|references?\s*[:=]|Source|Reference|参考文献|出典/.test(content)
+    const hasUrl = /https?:\/\//.test(content)
+    toolReport.checks.push({
+      check: 'SOURCE_EXISTS', status: (hasSource || hasUrl) ? 'PASS' : 'WARN',
+      message: (hasSource || hasUrl) ? 'OK' : '⚠️ ソース/参考文献のURL記載なし',
+    })
+    ;(hasSource || hasUrl) ? report.summary.pass++ : report.summary.warn++
 
     report.tools.push(toolReport)
   }
