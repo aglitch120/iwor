@@ -110,6 +110,8 @@ const CALC_VERIFICATIONS = [
     description: 'BSA (Du Bois) — 170cm 70kg',
     expected: 1.81,
     tolerance: 0.05,
+    source: 'Du Bois D, Du Bois EF. Arch Intern Med 1916;17:863-871',
+    fileCheck: { path: 'app/tools/calc/bsa/page.tsx', mustContain: ['0.007184', '0.725', '0.425'] },
     compute: () => {
       // BSA = 0.007184 × H^0.725 × W^0.425
       return 0.007184 * Math.pow(170, 0.725) * Math.pow(70, 0.425)
@@ -120,6 +122,8 @@ const CALC_VERIFICATIONS = [
     description: 'AG — Na=140 Cl=105 HCO3=24',
     expected: 11,
     tolerance: 0.1,
+    source: 'Emmett M, Narins RG. Medicine 1977;56:38-54',
+    fileCheck: { path: 'app/tools/calc/anion-gap/page.tsx', mustContain: ['Na', 'Cl', 'HCO'] },
     compute: () => 140 - 105 - 24,
   },
   {
@@ -138,6 +142,8 @@ const CALC_VERIFICATIONS = [
     description: 'FENa — 尿Na=40 尿Cr=60 血Na=140 血Cr=2.0',
     expected: 0.952,
     tolerance: 0.05,
+    source: 'Espinel CH. JAMA 1976;236:579-581',
+    fileCheck: { path: 'app/tools/calc/fena/page.tsx', mustContain: ['100'] },
     compute: () => {
       // FENa = (尿Na × 血Cr) / (血Na × 尿Cr) × 100
       return (40 * 2.0) / (140 * 60) * 100
@@ -161,6 +167,8 @@ const CALC_VERIFICATIONS = [
     description: 'ドパミン γ→mL/h — 3μg/kg/min, 60kg, 200mg/50mL',
     expected: 2.7,
     tolerance: 0.1,
+    source: 'ICU Book (Marino) Ch.54',
+    fileCheck: { path: 'app/tools/calc/gamma/page.tsx', mustContain: ['1000'] },
     compute: () => {
       const gamma = 3, weight = 60, drugMg = 200, totalMl = 50
       const concUgPerMl = (drugMg * 1000) / totalMl
@@ -172,6 +180,8 @@ const CALC_VERIFICATIONS = [
     description: 'ドブタミン γ→mL/h — 5μg/kg/min, 60kg, 200mg/50mL',
     expected: 4.5,
     tolerance: 0.1,
+    source: 'ICU Book (Marino) Ch.54',
+    fileCheck: { path: 'app/tools/calc/gamma/page.tsx', mustContain: ['1000'] },
     compute: () => {
       const gamma = 5, weight = 60, drugMg = 200, totalMl = 50
       const concUgPerMl = (drugMg * 1000) / totalMl
@@ -183,6 +193,8 @@ const CALC_VERIFICATIONS = [
     description: 'Na欠乏量 — 目標Na135, 現Na125, 60kg男性',
     expected: 360,
     tolerance: 1,
+    source: 'Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders 5th ed.',
+    fileCheck: { path: 'app/tools/calc/na-deficit/page.tsx', mustContain: ['0.6', '0.5'] },
     compute: () => {
       // Na欠乏量 = TBW × (目標Na - 現Na), TBW = 0.6 × 体重（男性）
       return 0.6 * 60 * (135 - 125)
@@ -193,6 +205,8 @@ const CALC_VERIFICATIONS = [
     description: 'Na補正速度 — 3%NaCl 500mL, Na=120→128, 60kg',
     expected: 8,
     tolerance: 0.5,
+    source: 'Sterns RH. NEJM 2015;372:55-65 / 日本内分泌学会GL',
+    fileCheck: { path: 'app/tools/calc/na-correction-rate/page.tsx', mustContain: ['8', '10', '12'] },
     compute: () => {
       // 24時間あたりの補正量 = 目標Na - 現Na
       return 128 - 120  // mEq/L/24h (上限8-10)
@@ -263,6 +277,8 @@ const CALC_VERIFICATIONS = [
     description: '自由水欠乏量 — Na=155, 60kg男性',
     expected: 3.87,
     tolerance: 0.2,
+    source: 'Adrogué HJ, Madias NE. NEJM 2000;342:1493-1499',
+    fileCheck: { path: 'app/tools/calc/free-water-deficit/page.tsx', mustContain: ['140', '0.6'] },
     compute: () => {
       // FWD = TBW × (現Na/140 - 1), TBW = 0.6 × weight
       return 0.6 * 60 * (155 / 140 - 1)
@@ -273,6 +289,8 @@ const CALC_VERIFICATIONS = [
     description: 'LDL (Friedewald) — TC=220 HDL=50 TG=150',
     expected: 140,
     tolerance: 1,
+    source: 'Friedewald WT, et al. Clin Chem 1972;18:499-502',
+    fileCheck: { path: 'app/tools/calc/ldl-friedewald/page.tsx', mustContain: ['5'] },
     compute: () => {
       // LDL = TC - HDL - TG/5
       return 220 - 50 - 150 / 5
@@ -283,6 +301,8 @@ const CALC_VERIFICATIONS = [
     description: '血漿浸透圧 — Na=140 BUN=20 GLU=100',
     expected: 291.2,
     tolerance: 2,
+    source: 'Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders',
+    fileCheck: { path: 'app/tools/calc/plasma-osmolality/page.tsx', mustContain: ['2.8', '18'] },
     compute: () => {
       // Posm = 2×Na + BUN/2.8 + GLU/18
       return 2 * 140 + 20 / 2.8 + 100 / 18
@@ -293,6 +313,8 @@ const CALC_VERIFICATIONS = [
     description: 'Winters式 — HCO3=12',
     expected: 26,
     tolerance: 2,
+    source: 'Winters RW, et al. J Clin Invest 1963;42:486-495',
+    fileCheck: { path: 'app/tools/calc/winters-formula/page.tsx', mustContain: ['1.5', '8'] },
     compute: () => {
       // expected pCO2 = 1.5 × HCO3 + 8 (±2)
       return 1.5 * 12 + 8
@@ -303,6 +325,8 @@ const CALC_VERIFICATIONS = [
     description: 'Parkland式 — 70kg TBSA=30%',
     expected: 8400,
     tolerance: 100,
+    source: 'Baxter CR. Surg Clin North Am 1978;58:1293-1312',
+    fileCheck: { path: 'app/tools/calc/parkland/page.tsx', mustContain: ['4'] },
     compute: () => {
       // 初日輸液量 = 4 × weight × TBSA%
       return 4 * 70 * 30
@@ -350,7 +374,7 @@ function checkDoseFormat(content) {
 
 // ── メイン ──
 
-function main() {
+async function main() {
   const now = new Date().toISOString()
   console.log(`🔍 iwor 医学データ検証 — ${now}`)
   console.log('='.repeat(60))
@@ -474,6 +498,36 @@ function main() {
     ;(hasSource || hasUrl) ? report.summary.pass++ : report.summary.warn++
 
     report.tools.push(toolReport)
+  }
+
+  // ── ソースURLリンク切れ検出（CHECK_URLS=1 で実行） ──
+  if (process.env.CHECK_URLS === '1') {
+    console.log('\n🔗 ソースURLリンク切れチェック:')
+    const allUrls = new Set()
+    for (const tool of ALL_TOOL_PATHS) {
+      const fp = join(ROOT, tool.path)
+      if (!existsSync(fp)) continue
+      const content = readFileSync(fp, 'utf-8')
+      const urls = content.match(/https?:\/\/[^\s'"`,)}\]]+/g) || []
+      urls.forEach(u => allUrls.add(u.replace(/[.)}\]]+$/, '')))
+    }
+    console.log(`  ${allUrls.size}件のURLを検証中...`)
+    let broken = 0
+    for (const url of allUrls) {
+      try {
+        const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(10000), headers: { 'User-Agent': 'iwor-link-checker/1.0' } })
+        if (res.status >= 400) {
+          console.log(`  ❌ ${res.status} ${url}`)
+          broken++
+          report.summary.warn++
+        }
+      } catch {
+        console.log(`  ⚠️ timeout/error ${url}`)
+        report.summary.warn++
+        broken++
+      }
+    }
+    console.log(`  結果: ${allUrls.size - broken} OK / ${broken} broken`)
   }
 
   // ── 独立確かめ算（三重検証） ──

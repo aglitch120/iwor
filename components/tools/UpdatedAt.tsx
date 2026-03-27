@@ -12,16 +12,13 @@ export default function UpdatedAt({ date }: { date?: string }) {
       .then(d => {
         if (d.lastVerified) {
           const dt = new Date(d.lastVerified)
-          setVerified(`${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`)
+          const pad = (n: number) => String(n).padStart(2, '0')
+          setVerified(`${dt.getFullYear()}年${dt.getMonth() + 1}月${dt.getDate()}日 ${pad(dt.getHours())}:${pad(dt.getMinutes())}`)
         }
       })
       .catch(() => {})
   }, [])
 
-  const display = verified
-    ? verified.replace(/^(\d{4})-(\d{2})-?(\d{2})?/, (_, y, m, d) => `${y}年${parseInt(m)}月${d ? parseInt(d) + '日' : ''}`)
-    : ''
-
-  if (!display) return null
-  return <p className="text-xs text-muted/60 mt-1">最終検証: {display}</p>
+  if (!verified) return null
+  return <p className="text-xs text-muted/60 mt-1">最終検証: {verified}</p>
 }
