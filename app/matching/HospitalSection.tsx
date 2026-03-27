@@ -711,16 +711,21 @@ function HospitalCard({
               </p>
             </div>
 
-            {/* FREE: モザイク */}
+            {/* FREE: blurモザイク（中身が透けて見える） */}
             {!isPro && (
-              <div className="absolute inset-0 rounded-xl flex flex-col items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(27,79,58,0.92), rgba(45,122,90,0.92))' }}>
-                <p className="text-sm font-bold text-white mb-1">独自分析スコア</p>
-                <p className="text-[10px] text-white/70 mb-3">偏差値・穴場度・志望集中度・安定度・トレンド</p>
-                <button onClick={e => { e.stopPropagation(); onShowPro?.() }}
-                  className="pro-cta-glow px-5 py-2 rounded-xl text-xs font-bold bg-white shadow-lg" style={{ color: MC }}>
-                  PRO会員で分析を見る
-                </button>
-              </div>
+              <>
+                <div className="absolute inset-0 rounded-xl backdrop-blur-[6px] z-10" />
+                <div className="absolute inset-0 rounded-xl z-20 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-s0/30 to-s0/60">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl text-center">
+                    <p className="text-sm font-bold text-tx mb-1">独自分析スコア</p>
+                    <p className="text-[10px] text-muted mb-3">偏差値・穴場度・志望集中度・安定度・トレンド</p>
+                    <button onClick={e => { e.stopPropagation(); onShowPro?.() }}
+                      className="pro-cta-glow px-5 py-2 rounded-xl text-xs font-bold text-white shadow-lg" style={{ background: MC }}>
+                      PRO会員で分析を見る
+                    </button>
+                  </div>
+                </div>
+              </>
             )}
           </div>
 
