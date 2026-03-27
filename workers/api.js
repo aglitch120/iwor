@@ -2429,6 +2429,90 @@ ${profileCtx ? `\n受験者プロフィール:\n${profileCtx}` : ""}
       return json({ ok: true, stats: result }, 200, request);
     }
 
+    // ══════════════════════════════════════════════════
+    //  POST /api/conference/scrape-deadlines — 学会演題締切の自動取得
+    //  各学会の公式URLからHTMLを取得→キーワード抽出→AI解析
+    // ══════════════════════════════════════════════════
+    if (path === "/api/conference/scrape-deadlines" && request.method === "POST") {
+      const adminKey = request.headers.get("X-Admin-Key") || "";
+      if (!adminKey || adminKey !== env.ADMIN_KEY) return json({ error: "Unauthorized" }, 401, request);
+
+      const body = await parseBody(request);
+      const conferences = body?.conferences || []; // [{id, url, meetingName}]
+      if (!conferences.length) return json({ error: "No conferences" }, 400, request);
+
+      const delay = ms => new Promise(r => setTimeout(r, ms));
+      const results = [];
+      const keywords = ['演題', '抄録', '締切', '〆切', 'deadline', '募集', '登録期間', '応募', 'abstract', 'submission'];
+
+      for (const conf of conferences.slice(0, 20)) {
+        await delay(2000); // レート制限
+        try {
+          const res = await fetch(conf.url, {
+            headers: { 'User-Agent': 'iwor-conference-bot/1.0 (https://iwor.jp)' },
+            signal: AbortSignal.timeout(10000),
+          });
+          if (!res.ok) { results.push({ id: conf.id, error: `HTTP ${res.status}` }); continue; }
+          const html = await res.text();
+
+          // HTMLからテキスト抽出（タグ除去）
+          const text = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .slice(0, 5000);
+
+          // キーワードを含む文脈を抽出
+          const snippets = [];
+          for (const kw of keywords) {
+            const idx = text.toLowerCase().indexOf(kw.toLowerCase());
+            if (idx >= 0) {
+              snippets.push(text.slice(Math.max(0, idx - 80), idx + 120).trim());
+            }
+          }
+
+          if (snippets.length === 0) {
+            results.push({ id: conf.id, name: conf.meetingName, deadline: null, note: 'キーワード未検出' });
+            continue;
+          }
+
+          // Claude Haikuで日付解析
+          const prompt = `以下は学会「${conf.meetingName}」の公式サイトから抽出したテキストです。演題の提出締切日（deadline）を見つけてください。日付のみをYYYY-MM-DD形式で返してください。見つからない場合は"null"と返してください。\n\n${snippets.join('\n---\n')}`;
+
+          const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: {
+              "x-api-key": env.ANTHROPIC_API_KEY,
+              "anthropic-version": "2023-06-01",
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "claude-haiku-4-5-20251001",
+              max_tokens: 50,
+              messages: [{ role: "user", content: prompt }],
+            }),
+          });
+
+          let deadline = null;
+          if (aiRes.ok) {
+            const aiData = await aiRes.json();
+            const aiText = (aiData.content?.[0]?.text || "").trim();
+            const dateMatch = aiText.match(/\d{4}-\d{2}-\d{2}/);
+            if (dateMatch) deadline = dateMatch[0];
+          }
+
+          results.push({ id: conf.id, name: conf.meetingName, deadline, snippets: snippets.slice(0, 2) });
+        } catch (err) {
+          results.push({ id: conf.id, error: String(err) });
+        }
+      }
+
+      // KVに保存
+      await env.IWOR_KV.put("conference:deadlines:scraped", JSON.stringify({ results, updatedAt: Date.now() }), { expirationTtl: 604800 });
+
+      return json({ ok: true, count: results.length, found: results.filter(r => r.deadline).length, results }, 200, request);
+    }
+
     // ── 404 ──
     return json({ error: "Not Found" }, 404, request);
   },
