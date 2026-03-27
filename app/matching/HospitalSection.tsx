@@ -679,14 +679,17 @@ function HospitalCard({
               {/* スコア4つ横並び */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
-                  { label: 'マッチ難易度', value: (h as any).hensachi?.toFixed(1), desc: '席の奪い合いの激しさ' },
-                  { label: '穴場度', value: `${(h as any).anabaScore || 0}`, desc: '質が高く競争が少ない' },
-                  { label: '志望集中度', value: honmei > 0 ? honmei.toFixed(2) : '--', desc: '第1希望率（同年）' },
-                  { label: '安定度', value: `${(h as any).stabilityScore || 0}`, desc: '3年間の充足率のブレ' },
+                  { label: 'マッチ難易度', value: (h as any).hensachi?.toFixed(1), max: '偏差値', desc: '本気志望者の席あたり競争度' },
+                  { label: '穴場度', value: `${(h as any).anabaScore || 0}`, max: '/ 100', desc: '空席率+低倍率+トレンド' },
+                  { label: '志望集中度', value: honmei > 0 ? `${Math.round(honmei * 100)}%` : '--', max: '', desc: '志望者中の第1志望の割合' },
+                  { label: '安定度', value: `${(h as any).stabilityScore || 0}`, max: '/ 100', desc: '3年間の充足率の安定性' },
                 ].map((s, i) => (
                   <div key={i} className="bg-white rounded-lg p-2 text-center">
                     <p className="text-[9px] text-muted">{s.label}</p>
-                    <p className="text-base font-bold" style={{ color: MC }}>{s.value}</p>
+                    <div className="flex items-baseline justify-center gap-0.5">
+                      <p className="text-base font-bold" style={{ color: MC }}>{s.value}</p>
+                      {s.max && <p className="text-[8px] text-muted">{s.max}</p>}
+                    </div>
                     <p className="text-[8px] text-muted">{s.desc}</p>
                   </div>
                 ))}
@@ -748,12 +751,21 @@ function HospitalCard({
                 )
               })()}
 
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 space-y-1">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 space-y-1.5">
                 <p className="text-[9px] font-bold text-amber-800">この数値の読み方</p>
                 <p className="text-[8px] text-amber-900/80 leading-relaxed">
                   マッチ難易度は「席の奪い合いの激しさ」を数値化したもので、研修の質や教育体制の評価ではありません。
                   立地・定員規模・併願パターンなど多くの要因が影響するため、数値が低い＝研修が劣るとは限りません。
                 </p>
+                <details className="text-[8px] text-amber-900/70">
+                  <summary className="cursor-pointer font-bold text-amber-800">各指標の算出方法</summary>
+                  <ul className="mt-1 space-y-0.5 leading-relaxed list-disc pl-3">
+                    <li><b>マッチ難易度</b>（偏差値）: 本気倍率＝（志望者数×第1志望率）÷定員 を対数変換し、全病院の平均50・標準偏差10で偏差値化</li>
+                    <li><b>穴場度</b>（0〜100点）: 空席率（40点）＋低倍率（30点）＋志望者減少トレンド（20点）＋低充足率（10点）の合算</li>
+                    <li><b>志望集中度</b>（0〜100%）: 第1志望として登録した人数÷全志望者数。高いほど本気度の高い志望者が多い</li>
+                    <li><b>安定度</b>（0〜100点）: 直近3年間の充足率（マッチ者数÷定員）のばらつきの少なさ。100＝毎年安定して埋まる</li>
+                  </ul>
+                </details>
                 <p className="text-[8px] text-amber-900/60 leading-relaxed">
                   JRMP公式データ（2022-2025）の統計処理に基づくiwor独自指標です。
                 </p>
