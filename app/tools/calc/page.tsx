@@ -4,8 +4,8 @@ import { generateMetadata as genMeta, generateBreadcrumbJsonLd } from '@/lib/seo
 import ToolsList from '@/components/tools/ToolsList'
 
 export const metadata: Metadata = genMeta({
-  title: '臨床計算ツール（79種・診療科別）',
-  description: '循環器・腎臓・呼吸器・消化器・神経・血液・感染症・電解質など診療科別に79種の臨床スコア・計算ツールを無料で。登録不要、スマホ対応。',
+  title: '臨床計算ツール（224種・診療科別）',
+  description: '循環器・腎臓・呼吸器・消化器・神経・血液・感染症・電解質など診療科別に224種の臨床スコア・計算ツールを無料で。登録不要、スマホ対応。',
   path: '/tools/calc',
 })
 
@@ -60,7 +60,7 @@ export default function ToolsPage() {
       <header className="mb-6">
         <h1 className="text-2xl font-bold text-tx mb-2">臨床計算ツール</h1>
         <p className="text-muted text-sm">
-          診療科別に79種。登録不要、ベッドサイドですぐ使えます。
+          診療科別に224種。登録不要、ベッドサイドですぐ使えます。
         </p>
       </header>
 

@@ -169,15 +169,11 @@
 
 /* ── ボーダーグロウエフェクト（box-shadowパルス・レガシー） ── */
 .pro-cta-glow {
-  animation: glowPulse 1.5s ease-in-out 3, glowPulseFade 6s ease-out forwards;
+  animation: glowPulse 1.5s ease-in-out 5;
 }
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 4px 1px rgba(45,212,191,0.4), 0 0 12px 2px rgba(27,79,58,0.2); }
-  50%      { box-shadow: 0 0 8px 3px rgba(45,212,191,0.6), 0 0 20px 5px rgba(27,79,58,0.3); }
-}
-@keyframes glowPulseFade {
-  0%, 75% { opacity: 1; }
-  100%    { box-shadow: none; }
+  50%      { box-shadow: 0 0 10px 3px rgba(45,212,191,0.6), 0 0 24px 6px rgba(27,79,58,0.35); }
 }
 
 /* ── GlowButton用 ── */
