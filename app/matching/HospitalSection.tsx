@@ -47,7 +47,7 @@ type SortKey = 'name' | 'matchRate' | 'salary' | 'beds' | 'residents' | 'anaba' 
 const SORT_OPTIONS: { key: SortKey; label: string; pro?: boolean }[] = [
   { key: 'matchRate', label: '倍率' },
   { key: 'anaba', label: '穴場度', pro: true },
-  { key: 'honmei', label: '本命度', pro: true },
+  { key: 'honmei', label: '志望集中度', pro: true },
   { key: 'name', label: '名前' },
 ]
 
@@ -567,15 +567,19 @@ function HospitalCard({
     : pop <= 4 ? { bg: '#FEF3C7', text: '#92400E' }
     : { bg: '#FEE2E2', text: '#991B1B' }
 
-  // 本命度（データがない場合はマッチ率+倍率から推定）
+  // 志望集中度（第1希望率の代理指標）
+  // honmeiIndex: JRMPデータ由来（中間発表の第1希望者数/全志望者数）がある場合のみ正確
+  // ない場合: 全志望者数/定員（単純な人気度）をスケーリング
   let honmei = (h as any).honmeiIndex || 0
-  if (honmei === 0 && h.matchRate > 0) {
-    const popFactor = Math.min((h.popularity || 1) / 5, 1)
-    honmei = Math.round((h.matchRate / 100 * 0.6 + popFactor * 0.4) * 100) / 100
+  const hasRealData = !!(h as any).honmeiIndex
+  if (!hasRealData && h.applicants > 0 && h.capacity > 0) {
+    // 人気度を0-1にスケーリング（倍率5倍→1.0）
+    honmei = Math.min(h.applicants / h.capacity / 5, 1)
+    honmei = Math.round(honmei * 100) / 100
   }
-  const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '本命' }
-    : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '併願多め' }
-    : honmei > 0 ? { bg: '#FEE2E2', text: '#991B1B', label: 'おさえ' }
+  const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '高人気' }
+    : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '中人気' }
+    : honmei > 0 ? { bg: '#FEE2E2', text: '#991B1B', label: '低人気' }
     : { bg: '#F0EDE7', text: '#6B6760', label: '--' }
 
   return (
