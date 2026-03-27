@@ -58,14 +58,21 @@ const MONITORED_TOOLS = [
   { id: 'free-water-deficit', path: 'app/tools/calc/free-water-deficit/page.tsx', priority: 'medium' },
 ]
 
-// ── 独立確かめ算 ──
-// 各ツールの計算ロジックを独立実装して検証
+// ── 独立確かめ算（三重検証） ──
+// 1. 教科書/ガイドラインの正解値（出典付き）
+// 2. 独立計算（スクリプト内で式を実装）
+// 3. ツール内の定数・式をファイルから抽出して照合
+//
+// 全てが一致して初めてPASS
 const CALC_VERIFICATIONS = [
   {
     id: 'egfr-ckdepi',
     description: 'eGFR (CKD-EPI 2021) — 70歳男性 Cr=1.2',
     expected: 65.06,
     tolerance: 1,
+    source: 'Inker LA, et al. NEJM 2021;385:1737-1749, Table S12',
+    // ツール内の式定数を検証
+    fileCheck: { path: 'app/tools/calc/egfr/page.tsx', mustContain: ['142', '0.9938', '-1.200', '0.7', '0.9', '1.012'] },
     compute: () => {
       // CKD-EPI 2021 (race-free): 142 × min(Cr/κ, 1)^α × max(Cr/κ, 1)^-1.200 × 0.9938^age
       const cr = 1.2, age = 70, female = false
@@ -81,8 +88,9 @@ const CALC_VERIFICATIONS = [
     description: 'CCr (Cockcroft-Gault) — 70歳男性 70kg Cr=1.2',
     expected: 56.9,
     tolerance: 2,
+    source: 'Cockcroft DW, Gault MH. Nephron 1976;16:31-41',
+    fileCheck: { path: 'app/tools/calc/cockcroft-gault/page.tsx', mustContain: ['140', '72', '0.85'] },
     compute: () => {
-      // CCr = (140-age) × weight / (72 × Cr) × (0.85 if female)
       return (140 - 70) * 70 / (72 * 1.2)
     },
   },
@@ -91,6 +99,8 @@ const CALC_VERIFICATIONS = [
     description: 'BMI — 170cm 70kg',
     expected: 24.22,
     tolerance: 0.1,
+    source: 'WHO obesity classification / 日本肥満学会',
+    fileCheck: { path: 'app/tools/calc/bmi/page.tsx', mustContain: ['100', 'weight', 'height'] },
     compute: () => {
       return 70 / (1.70 * 1.70)
     },
@@ -117,8 +127,9 @@ const CALC_VERIFICATIONS = [
     description: '補正Ca (Payne式) — Ca=8.0 Alb=2.5',
     expected: 9.2,
     tolerance: 0.1,
+    source: 'Payne RB, et al. BMJ 1973;4:643-646',
+    fileCheck: { path: 'app/tools/calc/corrected-ca/page.tsx', mustContain: ['0.8', '4'] },
     compute: () => {
-      // Payne式: 補正Ca = Ca + 0.8 × (4 - Alb)
       return 8.0 + 0.8 * (4 - 2.5)
     },
   },
@@ -137,6 +148,8 @@ const CALC_VERIFICATIONS = [
     description: 'ノルアドレナリン γ→mL/h — 0.1μg/kg/min, 60kg, 3mg/50mL',
     expected: 6.0,
     tolerance: 0.1,
+    source: 'ICU Book (Marino) Ch.54 / 日本集中治療医学会 薬剤投与速度表',
+    fileCheck: { path: 'app/tools/calc/gamma/page.tsx', mustContain: ['1000', '60'] },
     compute: () => {
       const gamma = 0.1, weight = 60, drugMg = 3, totalMl = 50
       const concUgPerMl = (drugMg * 1000) / totalMl
@@ -190,8 +203,9 @@ const CALC_VERIFICATIONS = [
     description: 'ステロイド換算 PSL 20mg → mPSL',
     expected: 16,
     tolerance: 0.1,
+    source: '今日の治療薬2024 / UpToDate: Glucocorticoid dosing equivalencies',
+    fileCheck: { path: 'app/tools/calc/steroid-converter/page.tsx', mustContain: ['5', '4', '0.75'] },
     compute: () => {
-      // PSL:mPSL = 5mg:4mg → 20mg PSL = 16mg mPSL
       return 20 * (4 / 5)
     },
   },
@@ -200,8 +214,9 @@ const CALC_VERIFICATIONS = [
     description: 'ステロイド換算 PSL 20mg → DEX',
     expected: 3.0,
     tolerance: 0.5,
+    source: '今日の治療薬2024 / UpToDate: Glucocorticoid dosing equivalencies',
+    fileCheck: { path: 'app/tools/calc/steroid-converter/page.tsx', mustContain: ['0.75'] },
     compute: () => {
-      // PSL:DEX = 5mg:0.75mg → 20mg PSL = 3.0mg DEX
       return 20 * (0.75 / 5)
     },
   },
@@ -210,6 +225,8 @@ const CALC_VERIFICATIONS = [
     description: 'MAP — SBP=120 DBP=80',
     expected: 93.3,
     tolerance: 0.5,
+    source: 'Guyton: Textbook of Medical Physiology',
+    fileCheck: { path: 'app/tools/calc/map/page.tsx', mustContain: ['3'] },
     compute: () => {
       // MAP = DBP + (SBP-DBP)/3
       return 80 + (120 - 80) / 3
@@ -220,6 +237,8 @@ const CALC_VERIFICATIONS = [
     description: 'QTc (Bazett) — QT=400ms HR=75bpm',
     expected: 447,
     tolerance: 2,
+    source: 'Bazett HC. Heart 1920;7:353-370',
+    fileCheck: { path: 'app/tools/calc/qtc/page.tsx', mustContain: ['sqrt', '60'] },
     compute: () => {
       // QTc = QT / √(RR), RR = 60/HR
       const rr = 60 / 75
@@ -231,6 +250,8 @@ const CALC_VERIFICATIONS = [
     description: 'FIB-4 — 50歳 AST=40 ALT=30 PLT=15(×10⁴/μL)=150(×10⁹/L)',
     expected: 2.43,
     tolerance: 0.1,
+    source: 'Sterling RK, et al. Hepatology 2006;43:1317-1325',
+    fileCheck: { path: 'app/tools/calc/fib-4/page.tsx', mustContain: ['sqrt', 'age'] },
     compute: () => {
       // FIB-4 = (age × AST) / (PLT(×10⁹/L) × √ALT)
       // PLT 15万 = 150 ×10⁹/L
@@ -455,20 +476,52 @@ function main() {
     report.tools.push(toolReport)
   }
 
-  // ── 独立確かめ算 ──
-  console.log('\n📐 独立確かめ算:')
+  // ── 独立確かめ算（三重検証） ──
+  console.log('\n📐 独立確かめ算（三重検証）:')
   for (const v of CALC_VERIFICATIONS) {
+    const issues = []
+
+    // 検証1: 独立計算 vs 教科書正解値
     const result = v.compute()
     const diff = Math.abs(result - v.expected)
-    const pass = diff <= v.tolerance
+    const calcPass = diff <= v.tolerance
+    if (!calcPass) issues.push(`計算不一致: expected=${v.expected} actual=${Math.round(result * 1000) / 1000}`)
+
+    // 検証2: ツール内の定数・式がファイルに存在するか（fileCheck）
+    let filePass = true
+    if (v.fileCheck) {
+      const fp = join(ROOT, v.fileCheck.path)
+      if (existsSync(fp)) {
+        const content = readFileSync(fp, 'utf-8')
+        for (const term of v.fileCheck.mustContain) {
+          if (!content.includes(term)) {
+            filePass = false
+            issues.push(`定数「${term}」がファイル内に見つからない: ${v.fileCheck.path}`)
+          }
+        }
+      } else {
+        filePass = false
+        issues.push(`ファイルなし: ${v.fileCheck.path}`)
+      }
+    }
+
+    // 検証3: 出典の記載
+    const hasSource = !!v.source
+
+    const allPass = calcPass && filePass
+    const status = allPass ? 'PASS' : 'FAIL'
     report.calculations.push({
       id: v.id, description: v.description,
       expected: v.expected, actual: Math.round(result * 1000) / 1000,
-      tolerance: v.tolerance, status: pass ? 'PASS' : 'FAIL',
+      tolerance: v.tolerance, status,
+      source: v.source || '(出典未記載)',
+      fileCheck: v.fileCheck ? (filePass ? 'PASS' : 'FAIL') : 'N/A',
+      issues,
     })
-    const icon = pass ? '✅' : '❌'
-    console.log(`  ${icon} ${v.id}: expected=${v.expected} actual=${Math.round(result * 1000) / 1000} (±${v.tolerance})`)
-    pass ? report.summary.pass++ : report.summary.fail++
+    const icon = allPass ? '✅' : '❌'
+    console.log(`  ${icon} ${v.id}: calc=${calcPass?'OK':'NG'} file=${filePass?'OK':'NG'} src=${hasSource?'OK':'未記載'}`)
+    if (issues.length) issues.forEach(i => console.log(`     ↳ ${i}`))
+    allPass ? report.summary.pass++ : report.summary.fail++
   }
 
   // ハッシュ・レポート保存

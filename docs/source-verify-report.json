@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-27T02:08:07.378Z",
+  "timestamp": "2026-03-27T02:13:47.827Z",
   "summary": {
     "pass": 1414,
     "warn": 18,
@@ -8709,7 +8709,10 @@
       "expected": 65.06,
       "actual": 65.057,
       "tolerance": 1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "Inker LA, et al. NEJM 2021;385:1737-1749, Table S12",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "cockcroft-gault",
@@ -8717,7 +8720,10 @@
       "expected": 56.9,
       "actual": 56.713,
       "tolerance": 2,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "Cockcroft DW, Gault MH. Nephron 1976;16:31-41",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "bmi",
@@ -8725,7 +8731,10 @@
       "expected": 24.22,
       "actual": 24.221,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "WHO obesity classification / 日本肥満学会",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "bsa-dubois",
@@ -8733,7 +8742,10 @@
       "expected": 1.81,
       "actual": 1.81,
       "tolerance": 0.05,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "anion-gap",
@@ -8741,7 +8753,10 @@
       "expected": 11,
       "actual": 11,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "corrected-ca",
@@ -8749,7 +8764,10 @@
       "expected": 9.2,
       "actual": 9.2,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "Payne RB, et al. BMJ 1973;4:643-646",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "fena",
@@ -8757,7 +8775,10 @@
       "expected": 0.952,
       "actual": 0.952,
       "tolerance": 0.05,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "gamma-norad",
@@ -8765,7 +8786,10 @@
       "expected": 6,
       "actual": 6,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "ICU Book (Marino) Ch.54 / 日本集中治療医学会 薬剤投与速度表",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "gamma-doa",
@@ -8773,7 +8797,10 @@
       "expected": 2.7,
       "actual": 2.7,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "gamma-dob",
@@ -8781,7 +8808,10 @@
       "expected": 4.5,
       "actual": 4.5,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "na-deficit",
@@ -8789,7 +8819,10 @@
       "expected": 360,
       "actual": 360,
       "tolerance": 1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "na-correction-rate",
@@ -8797,7 +8830,10 @@
       "expected": 8,
       "actual": 8,
       "tolerance": 0.5,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "steroid-psl-to-mepsl",
@@ -8805,7 +8841,10 @@
       "expected": 16,
       "actual": 16,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "今日の治療薬2024 / UpToDate: Glucocorticoid dosing equivalencies",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "steroid-psl-to-dex",
@@ -8813,7 +8852,10 @@
       "expected": 3,
       "actual": 3,
       "tolerance": 0.5,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "今日の治療薬2024 / UpToDate: Glucocorticoid dosing equivalencies",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "map",
@@ -8821,7 +8863,10 @@
       "expected": 93.3,
       "actual": 93.333,
       "tolerance": 0.5,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "Guyton: Textbook of Medical Physiology",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "qtc-bazett",
@@ -8829,7 +8874,10 @@
       "expected": 447,
       "actual": 447.214,
       "tolerance": 2,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "Bazett HC. Heart 1920;7:353-370",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "fib4",
@@ -8837,7 +8885,10 @@
       "expected": 2.43,
       "actual": 2.434,
       "tolerance": 0.1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "Sterling RK, et al. Hepatology 2006;43:1317-1325",
+      "fileCheck": "PASS",
+      "issues": []
     },
     {
       "id": "free-water-deficit",
@@ -8845,7 +8896,10 @@
       "expected": 3.87,
       "actual": 3.857,
       "tolerance": 0.2,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "ldl-friedewald",
@@ -8853,7 +8907,10 @@
       "expected": 140,
       "actual": 140,
       "tolerance": 1,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "plasma-osmolality",
@@ -8861,7 +8918,10 @@
       "expected": 291.2,
       "actual": 292.698,
       "tolerance": 2,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "winters-formula",
@@ -8869,7 +8929,10 @@
       "expected": 26,
       "actual": 26,
       "tolerance": 2,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     },
     {
       "id": "parkland",
@@ -8877,7 +8940,10 @@
       "expected": 8400,
       "actual": 8400,
       "tolerance": 100,
-      "status": "PASS"
+      "status": "PASS",
+      "source": "(出典未記載)",
+      "fileCheck": "N/A",
+      "issues": []
     }
   ]
 }
