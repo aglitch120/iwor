@@ -13,20 +13,18 @@ export default function TokushohoPage() {
   return (
     <article className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold text-tx mb-2">特定商取引法に基づく表示</h1>
-      <p className="text-sm text-muted mb-10">最終更新日: 2026年3月20日</p>
+      <p className="text-sm text-muted mb-10">最終更新日: 2026年3月27日</p>
 
       <div className="bg-s0 border border-br rounded-xl p-6 md:p-8">
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-          <p className="text-sm text-amber-800">
-            現在、決済システムの移行準備中です。移行完了後に本ページを更新いたします。
-          </p>
-        </div>
-
         <table className="w-full text-sm">
           <tbody className="divide-y divide-br">
             <tr>
               <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top w-1/3">販売事業者</td>
-              <td className="py-3 text-tx/80">（決済サービス移行後に表示）</td>
+              <td className="py-3 text-tx/80">Creem OÜ（Merchant of Record）<br/><span className="text-xs text-muted">※ Creem が販売者として決済・税務処理を代行します</span></td>
+            </tr>
+            <tr>
+              <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top">サービス提供者</td>
+              <td className="py-3 text-tx/80">iwor 運営者</td>
             </tr>
             <tr>
               <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top">所在地</td>
@@ -40,11 +38,11 @@ export default function TokushohoPage() {
             </tr>
             <tr>
               <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top">販売価格</td>
-              <td className="py-3 text-tx/80">1年パス ¥9,800 / 2年パス ¥15,800 / 3年パス ¥19,800（税込）</td>
+              <td className="py-3 text-tx/80">月額プラン ¥980 / 6ヶ月プラン ¥5,400 / 年額プラン ¥9,800（税込）</td>
             </tr>
             <tr>
               <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top">支払方法</td>
-              <td className="py-3 text-tx/80">（決済サービス移行後に表示）</td>
+              <td className="py-3 text-tx/80">クレジットカード（Visa / Mastercard / AMEX）<br/><span className="text-xs text-muted">Creem決済基盤による安全な処理</span></td>
             </tr>
             <tr>
               <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top">商品の引渡時期</td>
@@ -52,7 +50,7 @@ export default function TokushohoPage() {
             </tr>
             <tr>
               <td className="py-3 pr-4 font-medium text-tx whitespace-nowrap align-top">返品・キャンセル</td>
-              <td className="py-3 text-tx/80">デジタルコンテンツの性質上、購入後の返品・返金はお受けしておりません</td>
+              <td className="py-3 text-tx/80">サブスクリプションはいつでも解約可能です。解約後は次回更新日まで利用できます。デジタルコンテンツの性質上、日割り返金はお受けしておりません。</td>
             </tr>
           </tbody>
         </table>
