@@ -18,8 +18,8 @@ export default function LegionellaScorePage() {
   const result = useMemo(() => {
     const total = items.reduce((sum, item, i) => sum + (checked[i] ? item.score : 0), 0)
     let severity: 'ok' | 'wn' | 'dn' = 'ok', interpretation = ''
-    if (total >= 5) { interpretation = `${total}点 — レジオネラ肺炎の可能性が高い。尿中抗原検査を提出`; severity = 'dn' }
-    else if (total >= 2) { interpretation = `${total}点 — 中間リスク。臨床状況に応じて尿中抗原検査考慮`; severity = 'wn' }
+    if (total >= 5) { interpretation = `${total}点 — レジオネラ肺炎の可能性が高い`; severity = 'dn' }
+    else if (total >= 2) { interpretation = `${total}点 — 中間リスク`; severity = 'wn' }
     else { interpretation = `${total}点 — レジオネラ肺炎の可能性は低い` }
     return { total, severity, interpretation }
   }, [checked])

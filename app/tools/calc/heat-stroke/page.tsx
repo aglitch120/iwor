@@ -8,7 +8,7 @@ const GRADES = [
   {
     grade: 'I度（軽症）',
     symptoms: ['めまい・立ちくらみ', '筋肉痛・こむら返り', '大量発汗', '意識障害なし'],
-    action: '涼しい場所へ移動, 経口補水液で水分・塩分補給, 安静',
+    action: '症状への対応は担当医が判断',
     severity: 'wn' as const,
   },
   {

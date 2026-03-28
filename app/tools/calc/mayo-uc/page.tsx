@@ -11,7 +11,7 @@ const items = [
   { name: '医師による総合評価', options: ['正常 (0)','軽症 (1)','中等症 (2)','重症 (3)'] },
 ]
 export default function MayoUcPage() {
-  const [scores, setScores] = useState([1,1,1,1])
+  const [scores, setScores] = useState([0,0,0,0])
   const result = useMemo(() => {
     const total = scores.reduce((a,b)=>a+b,0)
     let severity: 'ok'|'wn'|'dn' = 'ok', activity = ''

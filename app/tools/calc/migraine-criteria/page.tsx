@@ -7,10 +7,10 @@ const toolDef = getToolBySlug('migraine-criteria')!
 const characteristics = ['片側性','拍動性','中等度〜重度の痛み','日常的な動作で悪化(歩行・階段昇降)']
 const associated = ['悪心 and/or 嘔吐','光過敏 and 音過敏']
 export default function MigraineCriteriaPage() {
-  const [attacks, setAttacks] = useState(true)
-  const [duration, setDuration] = useState(true)
-  const [charChecked, setCharChecked] = useState([true,true,false,false])
-  const [assocChecked, setAssocChecked] = useState([true,false])
+  const [attacks, setAttacks] = useState(false)
+  const [duration, setDuration] = useState(false)
+  const [charChecked, setCharChecked] = useState([false,false,false,false])
+  const [assocChecked, setAssocChecked] = useState([false,false])
   const result = useMemo(() => {
     const charCount = charChecked.filter(Boolean).length
     const assocCount = assocChecked.filter(Boolean).length

@@ -18,7 +18,7 @@ export default function CFSPage(){
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard label="CFS" value={val} unit="/9" interpretation={v<=3?'フレイルなし':v===4?'脆弱（Vulnerable）':v<=5?'軽度フレイル':'中等度〜重度フレイル'} severity={sev} />}
+      result={<ResultCard label="CFS" value={val} unit="/9" interpretation={v<=3?'フレイルなし':v===4?'脆弱（Vulnerable）':v<=5?'軽度フレイル':v===6?'中等度フレイル':v<=8?'重度〜非常に重度フレイル':'終末期'} severity={sev} />}
       explanation={undefined}
       relatedTools={[]} references={[{text:'Rockwood K et al. A global clinical measure of fitness and frailty in elderly people. CMAJ 2005;173:489-495'}]}
     >

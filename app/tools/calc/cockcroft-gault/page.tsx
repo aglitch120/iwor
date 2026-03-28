@@ -76,7 +76,7 @@ export default function CockcroftGaultPage() {
     >
       <div className="space-y-4">
         <RadioGroup name="sex" label="性別" value={sex} onChange={setSex} options={[{ value: 'male', label: '男性' }, { value: 'female', label: '女性' }]} />
-        <NumberInput id="age" label="年齢" unit="歳" value={age} onChange={setAge} min={1} max={120} step={1} />
+        <NumberInput id="age" label="年齢" unit="歳" value={age} onChange={setAge} min={18} max={120} step={1} />
         <NumberInput id="weight" label="体重" unit="kg" value={weight} onChange={setWeight} min={1} max={300} step={0.1} />
         <NumberInput id="cr" label="血清クレアチニン" unit="mg/dL" value={cr} onChange={setCr} min={0.1} max={30} step={0.01} />
       </div>

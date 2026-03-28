@@ -76,7 +76,9 @@ export default function DesignRPage() {
 
   const severity = result.total === 0 ? 'ok' as const : result.total <= 9 ? 'ok' as const : result.total <= 20 ? 'wn' as const : 'dn' as const
   const isDU = d === 'DU'
-  const interpretation = (result.total === 0 && !isDU) ? '褥瘡なし / 治癒' : result.total <= 9 ? '軽度褥瘡 — 局所ケアで管理可能' : result.total <= 20 ? '中等度褥瘡 — 専門的な創傷管理が必要' : '重度褥瘡 — 多職種による集中的介入が必要'
+  const interpretation = isDU
+    ? '深さ判定不能 — 壊死組織除去後に再評価'
+    : (result.total === 0) ? '褥瘡なし / 治癒' : result.total <= 9 ? '軽度褥瘡 — 局所ケアで管理可能' : result.total <= 20 ? '中等度褥瘡 — 専門的な創傷管理が必要' : '重度褥瘡 — 多職種による集中的介入が必要'
   const duNote = isDU ? '深さが判定不能のため合計スコアに含みません。壊死組織除去後に再評価してください。' : undefined
 
   return (

@@ -7,7 +7,7 @@ import { NumberInput } from '@/components/tools/InputFields'
 export default function SarcopeniaAWGSPage() {
   const [sex, setSex] = useState<'male'|'female'>('male')
   const [gripStrength, setGripStrength] = useState('25')
-  const [gaitSpeed, setGaitSpeed] = useState('0.9')
+  const [gaitSpeed, setGaitSpeed] = useState('1.2')
   const [smi, setSmi] = useState('6.5')
 
   const result = useMemo(() => {

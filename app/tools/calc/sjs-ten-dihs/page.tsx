@@ -18,7 +18,7 @@ const diseases = [
     '表皮の壊死性変化（全層性）',
   ], note: '皮膚剥離面積≧30%。SCORTEN(予後スコア)で重症度評価。', color: 'bg-dnl border-dnb' },
   { name: 'DIHS (薬剤性過敏症候群)', criteria: [
-    '限られた薬剤（カルバマゼピン・フェニトイン・アロプリノール・サラゾスルファピリジン等）投与後2-6週で発症',
+    '限られた薬剤（カルバマゼピン・フェニトイン・アロプリノール・サラゾスルファピリジン・ラモトリギン等）投与後2-6週で発症',
     '38℃以上の発熱',
     '広範な紅斑・丘疹（皮疹は多形性）',
     '肝機能障害（ALT上昇が多い）',
@@ -32,7 +32,7 @@ export default function SjsTenDihsPage() {
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={null}
-      explanation={<div className="text-sm text-muted"><p>重症薬疹は早期認識と原因薬剤の中止が最重要。一般的に、眼科・皮膚科への早期コンサルテーションが推奨されています。</p></div>}
+      explanation={<div className="text-sm text-muted"><p>重症薬疹は早期認識と原因薬剤の中止が最重要。一般に眼科・皮膚科との連携が重要とされています。</p></div>}
       relatedTools={[{slug:'ctcae',name:'CTCAE'},{slug:'naranjo',name:'Naranjo'}]}
       references={toolDef.sources||[]}
     >

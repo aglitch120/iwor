@@ -14,8 +14,8 @@ export default function STONEPage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).reduce((s,i)=>s+i.points,0)
-    if(score>=10) return {score,severity:'wn' as const,label:'高リスク（10-12）: 尿路結石の確率約90%（参考情報）'}
-    if(score>=6) return {score,severity:'wn' as const,label:'中リスク（6-9）: 尿路結石の確率約50%（参考情報）'}
+    if(score>=9) return {score,severity:'wn' as const,label:'高リスク（9-12）: 尿路結石の確率約90%（参考情報）'}
+    if(score>=6) return {score,severity:'wn' as const,label:'中リスク（6-8）: 尿路結石の確率約50%（参考情報）'}
     return {score,severity:'ok' as const,label:'低リスク（0-5）: 尿路結石の確率約10%'}
   },[checks])
   return(

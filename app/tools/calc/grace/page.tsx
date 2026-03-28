@@ -102,7 +102,7 @@ export default function GRACEPage() {
       killipPoints(k) +
       (stChange ? 28 : 0) +
       (cardiacArrest ? 39 : 0) +
-      (elevatedMarkers ? 14 : 0)
+      (elevatedMarkers ? 15 : 0)
 
     return { score, ...getInHospitalMortality(score) }
   }, [age, hr, sbp, cr, killip, stChange, cardiacArrest, elevatedMarkers])
@@ -270,7 +270,7 @@ export default function GRACEPage() {
               id="grace-markers"
               label="心筋マーカー上昇"
               sublabel="トロポニン陽性 or CK-MB上昇"
-              points={14}
+              points={15}
               checked={elevatedMarkers}
               onChange={setElevatedMarkers}
             />
