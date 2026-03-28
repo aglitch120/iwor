@@ -16,7 +16,7 @@ interface CancerDef {
 // ──────── 癌種データ ────────
 const cancers: CancerDef[] = [
   // ── 肺癌 ──
-  { name: '肺癌', edition: 'UICC第9版 (2024)',
+  { name: '肺癌', edition: 'IASLC/UICC/AJCC 第9版 (2025)',
     tOptions: [
       { value: 'Tis', label: 'Tis: 上皮内癌' },
       { value: 'T1a', label: 'T1a: ≦1cm' },
@@ -29,15 +29,17 @@ const cancers: CancerDef[] = [
     ],
     nOptions: [
       { value: 'N0', label: 'N0: 転移なし' },
-      { value: 'N1', label: 'N1: 同側肺門' },
-      { value: 'N2', label: 'N2: 同側縦隔/気管分岐下' },
-      { value: 'N3', label: 'N3: 対側縦隔/鎖骨上' },
+      { value: 'N1', label: 'N1: 同側肺門/肺内' },
+      { value: 'N2a', label: 'N2a: 同側縦隔/気管分岐下(単一station)' },
+      { value: 'N2b', label: 'N2b: 同側縦隔/気管分岐下(複数station)' },
+      { value: 'N3', label: 'N3: 対側縦隔/対側肺門/鎖骨上' },
     ],
     mOptions: [
       { value: 'M0', label: 'M0: 遠隔転移なし' },
-      { value: 'M1a', label: 'M1a: 対側肺/胸膜播種/悪性胸水' },
-      { value: 'M1b', label: 'M1b: 単一臓器の単発転移' },
-      { value: 'M1c', label: 'M1c: 多臓器の遠隔転移' },
+      { value: 'M1a', label: 'M1a: 対側肺/胸膜・心膜播種/悪性胸水・心嚢水' },
+      { value: 'M1b', label: 'M1b: 胸郭外単一臓器の単発転移' },
+      { value: 'M1c1', label: 'M1c1: 単一臓器系の多発胸郭外転移' },
+      { value: 'M1c2', label: 'M1c2: 多臓器系の多発胸郭外転移' },
     ],
     rules: [
       { t:['Tis'], n:['N0'], m:['M0'], stage:'0' },
@@ -46,16 +48,23 @@ const cancers: CancerDef[] = [
       { t:['T1c'], n:['N0'], m:['M0'], stage:'IA3' },
       { t:['T2a'], n:['N0'], m:['M0'], stage:'IB' },
       { t:['T2b'], n:['N0'], m:['M0'], stage:'IIA' },
-      { t:['T1a','T1b','T1c','T2a','T2b'], n:['N1'], m:['M0'], stage:'IIB' },
+      { t:['T1a','T1b','T1c'], n:['N1'], m:['M0'], stage:'IIA' },
+      { t:['T2a','T2b'], n:['N1'], m:['M0'], stage:'IIB' },
+      { t:['T1a','T1b','T1c'], n:['N2a'], m:['M0'], stage:'IIB' },
       { t:['T3'], n:['N0'], m:['M0'], stage:'IIB' },
-      { t:['T1a','T1b','T1c','T2a','T2b'], n:['N2'], m:['M0'], stage:'IIIA' },
+      { t:['T1a','T1b','T1c'], n:['N2b'], m:['M0'], stage:'IIIA' },
+      { t:['T2a','T2b'], n:['N2a'], m:['M0'], stage:'IIIA' },
       { t:['T3'], n:['N1'], m:['M0'], stage:'IIIA' },
+      { t:['T3'], n:['N2a'], m:['M0'], stage:'IIIA' },
       { t:['T4'], n:['N0','N1'], m:['M0'], stage:'IIIA' },
-      { t:['T1a','T1b','T1c','T2a','T2b'], n:['N3'], m:['M0'], stage:'IIIB' },
-      { t:['T3','T4'], n:['N2'], m:['M0'], stage:'IIIB' },
+      { t:['T1a','T1b','T1c'], n:['N3'], m:['M0'], stage:'IIIB' },
+      { t:['T2a','T2b'], n:['N2b'], m:['M0'], stage:'IIIB' },
+      { t:['T2a','T2b'], n:['N3'], m:['M0'], stage:'IIIB' },
+      { t:['T3'], n:['N2b'], m:['M0'], stage:'IIIB' },
+      { t:['T4'], n:['N2a','N2b'], m:['M0'], stage:'IIIB' },
       { t:['T3','T4'], n:['N3'], m:['M0'], stage:'IIIC' },
-      { t:['Tis','T1a','T1b','T1c','T2a','T2b','T3','T4'], n:['N0','N1','N2','N3'], m:['M1a','M1b'], stage:'IVA' },
-      { t:['Tis','T1a','T1b','T1c','T2a','T2b','T3','T4'], n:['N0','N1','N2','N3'], m:['M1c'], stage:'IVB' },
+      { t:['Tis','T1a','T1b','T1c','T2a','T2b','T3','T4'], n:['N0','N1','N2a','N2b','N3'], m:['M1a','M1b'], stage:'IVA' },
+      { t:['Tis','T1a','T1b','T1c','T2a','T2b','T3','T4'], n:['N0','N1','N2a','N2b','N3'], m:['M1c1','M1c2'], stage:'IVB' },
     ],
   },
   // ── 胃癌 ──
@@ -535,13 +544,7 @@ function getStage(cancer: CancerDef, t: string, n: string, m: string): string | 
   return null
 }
 
-function stageColor(stage: string): string {
-  if (stage.startsWith('IV')) return 'bg-dnl text-dn'
-  if (stage.startsWith('III')) return 'bg-wnl text-wn'
-  return 'bg-okl text-ok'
-}
 
-// ──────── コンポーネント ────────
 export default function TnmStagingPage() {
   const [selected, setSelected] = useState(0)
   const [tVal, setTVal] = useState('')
@@ -624,20 +627,7 @@ export default function TnmStagingPage() {
         </div>
       </div>
 
-      {/* Stage一覧（参照用） */}
-      <div>
-        <h3 className="text-sm font-bold text-tx mb-1.5">Stage分類一覧</h3>
-        <div className="flex flex-wrap gap-1.5">
-          {cancer.rules.map((r, i) => {
-            const isMatch = stage && r.stage === stage
-            return (
-              <span key={i} className={`text-xs px-2.5 py-1 rounded-full font-medium ${isMatch ? 'ring-2 ring-ac ring-offset-1' : ''} ${stageColor(r.stage)}`}>
-                {r.stage}: {r.t.length <= 3 ? r.t.join('/') : 'T*'}{r.n.length <= 2 ? r.n.join('/') : 'N*'}{r.m[0]}
-              </span>
-            )
-          })}
-        </div>
-      </div>
+
     </CalculatorLayout>
   )
 }
