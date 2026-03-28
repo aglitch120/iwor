@@ -79,9 +79,22 @@ for (const [lo,hi] of capBands) {
 }
 console.log('異常値フロア（P10）:', JSON.stringify(bandFloors))
 
+// Load 2025 JRMP data to identify programs with verified honmeiIndex
+let verified2025 = new Set()
+try {
+  const jrmpData = JSON.parse(readFileSync('/tmp/jrmp2025.json', 'utf-8'))
+  for (const [pid, info] of Object.entries(jrmpData)) {
+    if (info.honmeiIndex != null && info.honmeiIndex > 0 && info.honmeiIndex <= 1.0) {
+      verified2025.add(pid)
+    }
+  }
+  console.log(`2025年検証済みhonmeiIndex: ${verified2025.size}件をロード`)
+} catch { console.log('2025年データなし — 異常値補正を通常実行') }
+
 // Save original honmeiIndex before any modification
 for (const h of hospitals) {
   h._originalHonmei = h.honmeiIndex
+  h._is2025Verified = verified2025.has(h.programId)
 }
 
 let fixedCount = 0
@@ -90,7 +103,7 @@ for (const h of hospitals) {
   const band = capBands.find(([lo,hi]) => h.capacity >= lo && h.capacity <= hi)
   if (!band) continue
   const floor = bandFloors[`${band[0]}-${band[1]}`]
-  if (floor && h.honmeiIndex < floor && h.applicants >= 20) {
+  if (floor && h.honmeiIndex < floor && h.applicants >= 20 && !h._is2025Verified) {
     // Anomalous: likely program ID mismatch. Replace with band median
     const bandMedian = hospitals
       .filter(x => x.capacity >= band[0] && x.capacity <= band[1] && x._originalHonmei != null && x._originalHonmei > 0)
@@ -113,6 +126,7 @@ console.log(`異常値修正: ${fixedCount}件`)
 // Never overwrite valid original data
 let improvedCount = 0
 for (const h of hospitals) {
+  if (h._is2025Verified) continue // 2025 data is authoritative, skip estimation
   const needsImprovement = h._wasFixed || h._originalHonmei == null || h._originalHonmei <= 0
 
   // Also flag: matchRate 100% but honmei < 0.40 AND original data was missing/fixed
