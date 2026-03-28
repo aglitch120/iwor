@@ -32,6 +32,17 @@ const STORAGE_INTERESTED = 'iwor_matching_interested'
 const STORAGE_WISHLIST = 'iwor_matching_wishlist'
 
 /** programからhospital nameを除いた部分を抽出（コース名サブタイトル） */
+// 同名病院の最大定員を事前計算（サブプログラム判定用）
+const mainCapByName: Record<string, number> = {}
+for (const h of HOSPITALS) {
+  if (!mainCapByName[h.name] || h.capacity > mainCapByName[h.name]) {
+    mainCapByName[h.name] = h.capacity
+  }
+}
+function isSubProgram(h: Hospital): boolean {
+  return mainCapByName[h.name] > h.capacity && h.capacity < mainCapByName[h.name] * 0.5
+}
+
 function programLabel(h: Hospital): string {
   let label = h.program
   // 病院名プレフィックスを除去
@@ -621,9 +632,12 @@ function HospitalCard({
             </div>
 
             {/* マッチ率 */}
-            <div className="flex items-center gap-3 text-[10px] text-muted">
+            <div className="flex items-center gap-3 text-[10px] text-muted flex-wrap">
               <span>マッチ率 {h.matchRate}%</span>
               <span>応募{h.applicants}人</span>
+              {isSubProgram(h) && h.applicants > h.capacity * 5 && (
+                <span className="text-[8px] text-amber-600">※他プログラムとの併願者含む</span>
+              )}
             </div>
           </div>
 
