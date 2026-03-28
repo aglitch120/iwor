@@ -18,8 +18,8 @@ const criteria = [
 ]
 
 const riskData: Record<number, { risk: string; recommendation: string }> = {
-  0: { risk: '3.9%', recommendation: '低リスク — 通常通り手術可能' },
-  1: { risk: '6.0%', recommendation: '低〜中リスク — 機能的評価は不要なことが多い' },
+  0: { risk: '3.9%', recommendation: '低リスク（外部検証コホート値）' },
+  1: { risk: '6.0%', recommendation: '低〜中リスク（外部検証コホート値）' },
   2: { risk: '10.1%', recommendation: '中リスク' },
   3: { risk: '15%以上', recommendation: '高リスク' },
 }

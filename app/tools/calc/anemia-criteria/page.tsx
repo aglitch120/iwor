@@ -18,7 +18,7 @@ export default function AnemiaCriteriaPage() {
     if (!isAnemia) { grade = '貧血なし' }
     else if (h >= 10) { grade = '軽度貧血（Hb 10.0〜基準値未満）'; severity = 'wn' }
     else if (h >= 8) { grade = '中等度貧血（Hb 8.0〜9.9）'; severity = 'dn' }
-    else { grade = '重度貧血（Hb < 8.0） — 輸血を検討'; severity = 'dn' }
+    else { grade = '重度貧血（Hb < 8.0）'; severity = 'dn' }
     if (m) {
       if (m < 80) mcvType = '小球性（鉄欠乏・サラセミア・慢性疾患）'
       else if (m <= 100) mcvType = '正球性（急性出血・溶血・腎性・慢性疾患）'

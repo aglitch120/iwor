@@ -160,7 +160,7 @@ export default function CURB65Page() {
               <p className={`text-sm font-medium ${
                 result.score >= 3 ? 'text-dn' : result.score === 2 ? 'text-wn' : 'text-tx'
               }`}>
-                {result.score >= 3 ? '🏥' : result.score === 2 ? '⚡' : '✅'} 参考マネジメント
+                {result.score >= 3 ? '⚠️' : result.score === 2 ? '⚡' : '✅'} 参考マネジメント
               </p>
               <p className={`text-xs mt-1 ${
                 result.score >= 3 ? 'text-dn' : result.score === 2 ? 'text-wn' : 'text-muted'

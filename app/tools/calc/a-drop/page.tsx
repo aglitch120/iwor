@@ -10,7 +10,7 @@ const toolDef = getToolBySlug('a-drop')!
 
 const criteria = [
   { id: 'age', label: 'A: 年齢（Age）', sublabel: '男性 ≥70歳 / 女性 ≥75歳', points: 1 },
-  { id: 'dehydration', label: 'D: 脱水（Dehydration）', sublabel: 'BUN ≥21 mg/dL', points: 1 },
+  { id: 'dehydration', label: 'D: 脱水（Dehydration）', sublabel: 'BUN ≥21 mg/dL または脱水あり', points: 1 },
   { id: 'respiration', label: 'R: 呼吸不全（Respiration）', sublabel: 'SpO₂ ≤90%（PaO₂ ≤60 Torr）', points: 1 },
   { id: 'orientation', label: 'O: 見当識障害（Orientation）', sublabel: '意識障害あり', points: 1 },
   { id: 'pressure', label: 'P: 血圧低下（Pressure）', sublabel: '収縮期血圧 ≤90 mmHg', points: 1 },

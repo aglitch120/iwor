@@ -30,7 +30,7 @@ export default function TokyoCholangitisPage() {
     const c = checked.dilatation || checked.etiology
     let dx = ''
     if (a && b && c) dx = '確診 (Definite)'
-    else if ((a && b) || (a && c) || (b && c)) dx = '疑診 (Suspected)'
+    else if ((a && b) || (a && c)) dx = '疑診 (Suspected)'
     else dx = '診断基準を満たさない'
     const g3 = sevChecked.filter((v, i) => v && severityItems[i].grade === 3).length > 0
     const g2count = sevChecked.filter((v, i) => v && severityItems[i].grade === 2).length

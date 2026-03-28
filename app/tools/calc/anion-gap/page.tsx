@@ -66,7 +66,7 @@ export default function AnionGapPage() {
           details={[
             ...(result.correctedAg != null ? [{ label: '補正AG（Alb補正）', value: `${result.correctedAg.toFixed(1)} mEq/L` }] : []),
             ...(result.deltaRatio != null ? [{ label: 'ΔAG/ΔHCO₃⁻', value: result.deltaRatio.toFixed(2) }] : []),
-            { label: '正常範囲', value: '8〜12 mEq/L' },
+            { label: '正常範囲', value: '6〜12 mEq/L（施設基準値を確認）' },
           ]}
         />
       )}

@@ -34,7 +34,7 @@ export default function PancreatitisPrognosticPage() {
     const total = checked.filter(Boolean).length + (sirsMet ? 1 : 0) + (ageChecked ? 1 : 0)
     let severity: 'ok' | 'wn' | 'dn' = 'ok', interpretation = ''
     if (total >= 3) { interpretation = `${total}/9項目 — 重症`; severity = 'dn' }
-    else if (total >= 2) { interpretation = `${total}/9項目 — 中等症の可能性`; severity = 'wn' }
+    else if (total >= 2) { interpretation = `${total}/9項目 — 1-2項目: 経過観察が必要な可能性`; severity = 'wn' }
     else { interpretation = `${total}/9項目 — 軽症の可能性が高い` }
     return { total, severity, interpretation }
   }, [checked, sirsMet, ageChecked])

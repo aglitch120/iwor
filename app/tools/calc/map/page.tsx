@@ -49,7 +49,7 @@ export default function MapPage() {
           severity={result.severity}
           details={[
             { label: '脈圧', value: `${result.pp} mmHg` },
-            { label: 'ICU目標', value: '≧65 mmHg' },
+            { label: '敗血症参考値（SSC 2021）', value: '≧65 mmHg' },
           ]}
         />
       )}

@@ -8,8 +8,8 @@ const toolDef = getToolBySlug('r-ratio')!
 export default function RRatioPage() {
   const [alt, setAlt] = useState('200')
   const [altUln, setAltUln] = useState('40')
-  const [alp, setAlp] = useState('300')
-  const [alpUln, setAlpUln] = useState('340')
+  const [alp, setAlp] = useState('')
+  const [alpUln, setAlpUln] = useState('')
   const result = useMemo(() => {
     const a = parseFloat(alt), au = parseFloat(altUln), p = parseFloat(alp), pu = parseFloat(alpUln)
     if (!a || !au || !p || !pu) return null
@@ -35,7 +35,7 @@ export default function RRatioPage() {
       <NumberInput label="ALT (U/L)" value={alt} onChange={setAlt} />
       <NumberInput label="ALT基準上限 (U/L)" value={altUln} onChange={setAltUln} />
       <NumberInput label="ALP (U/L)" value={alp} onChange={setAlp} />
-      <NumberInput label="ALP基準上限 (U/L)" value={alpUln} onChange={setAlpUln} hint="JSCC法(慣用値)340 U/L。IFCC法の場合は約115 U/Lに変更してください" />
+      <NumberInput label="ALP基準上限 (U/L)" value={alpUln} onChange={setAlpUln} hint="施設の基準上限値を入力（JSCC法: 約340 U/L、IFCC法: 約115 U/L）" />
     </CalculatorLayout>
   )
 }
