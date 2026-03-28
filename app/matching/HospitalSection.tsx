@@ -278,22 +278,62 @@ export default function HospitalTab({
               </div>
               <div className="space-y-2">
                 {(() => {
-                  // プロフィールベースのスコアリング
+                  // プロフィールベースのスコアリング（v2）
+                  const motiv = (profile.motivation || '').toLowerCase()
+                  const research = (profile.research || '').toLowerCase()
+                  const spec = (profile.preferredSpecialty || '').toLowerCase()
+                  // ユーザー志向の推定
+                  const isResearchOriented = ['研究', '基礎', '学位', '大学院', '論文', 'phd'].some(k => research.includes(k) || motiv.includes(k))
+                  const isSafetyOriented = ['安定', '確実', 'QOL', 'ワークライフ', '生活', '地元'].some(k => motiv.includes(k))
+                  const isChallengeOriented = ['挑戦', '高度', '最先端', '症例数', '手技', '救急', '忙しい', '成長'].some(k => motiv.includes(k))
+
                   const scored = HOSPITALS.map(h => {
                     let score = 0
-                    // 地域マッチ（最重要）
+                    const ha = h as any
+
+                    // ① 地域マッチ（最重要 — ユーザーが明示的に選んだ希望）
                     const region = PREF_TO_REGION[h.prefecture]
-                    if (profile.preferredRegions?.length > 0 && region && profile.preferredRegions.includes(region)) score += 40
-                    // 穴場度（空席+低倍率）
-                    if (h.vacancy > 0) score += 15
-                    if (h.popularity < 2.0) score += 10
-                    else if (h.popularity < 3.0) score += 5
-                    // マッチ率
-                    if (h.matchRate >= 90) score += 10
-                    else if (h.matchRate >= 70) score += 5
-                    // 大学病院 vs 市中（キャリアタイプによる）
-                    if (h.isUniversity && profile.preferredSpecialty && ['研究','基礎研究'].some(k => (profile.research || '').includes(k))) score += 10
-                    if (!h.isUniversity) score += 3 // 市中は一般的にマッチしやすい
+                    if (profile.preferredRegions?.length > 0 && region && profile.preferredRegions.includes(region)) score += 35
+
+                    // ② 充足率・安定性（基盤スコア — マッチできなければ意味がない）
+                    if (ha.stabilityScore >= 80) score += 8
+                    else if (ha.stabilityScore >= 50) score += 4
+                    if (h.matchRate >= 90) score += 5
+
+                    // ③ 穴場度（コスパの良い病院を発掘）
+                    if (ha.anabaScore >= 70) score += 12
+                    else if (ha.anabaScore >= 50) score += 6
+
+                    // ④ 上昇トレンド（人気低下中＝狙い目）
+                    if (ha.popularityTrend !== undefined && ha.popularityTrend < 0.85) score += 8
+                    else if (ha.popularityTrend !== undefined && ha.popularityTrend < 1.0) score += 4
+
+                    // ⑤ 志望集中度（honmeiIndex低い＝併願者が多く本命率低い＝入りやすい傾向）
+                    if (ha.honmeiIndex !== undefined && ha.honmeiIndex < 0.25) score += 6
+                    else if (ha.honmeiIndex !== undefined && ha.honmeiIndex < 0.35) score += 3
+
+                    // ⑥ 志向別ボーナス
+                    if (isResearchOriented) {
+                      if (h.isUniversity) score += 12
+                    } else {
+                      if (!h.isUniversity) score += 5 // 市中は一般的に実践的研修
+                    }
+
+                    if (isSafetyOriented) {
+                      // 安定志向 → 低倍率・高安定度を重視
+                      if (h.popularity < 2.5) score += 8
+                      if (ha.stabilityScore >= 90) score += 5
+                    }
+
+                    if (isChallengeOriented) {
+                      // 挑戦志向 → 人気病院・高難易度も許容
+                      if (ha.hensachi >= 60) score += 8
+                      else if (ha.hensachi >= 50) score += 4
+                    }
+
+                    // ⑦ 空席ボーナス（あれば加点だが過度に偏らない）
+                    if (h.vacancy > 0) score += 5
+
                     return { hospital: h, score }
                   }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3)
                   return scored
