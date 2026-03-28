@@ -1,4 +1,6 @@
 import { MetadataRoute } from 'next'
+
+export const runtime = 'edge'
 import { getAllPosts, getPostBySlug } from '@/lib/mdx'
 import { categories } from '@/lib/blog-config'
 import { tools, implementedTools } from '@/lib/tools-config'
