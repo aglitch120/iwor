@@ -10,13 +10,12 @@ export default function SuitaScorePage() {
   const [sbp, setSbp] = useState('140')
   const [dm, setDm] = useState(false)
   const [smoker, setSmoker] = useState(false)
-  const [totalChol, setTotalChol] = useState('220')
   const [hdl, setHdl] = useState('50')
   const [ldl, setLdl] = useState('140')
 
   const result = useMemo(() => {
-    const a = parseInt(age), s = parseInt(sbp), tc = parseFloat(totalChol), h = parseFloat(hdl), l = parseFloat(ldl)
-    if (!a || !s || !tc || !h) return null
+    const a = parseInt(age), s = parseInt(sbp), h = parseFloat(hdl), l = parseFloat(ldl)
+    if (!a || !s || !h) return null
     // 吹田スコア簡易版（ポイント加算方式）
     let pts = 0
     // 年齢
@@ -41,7 +40,7 @@ export default function SuitaScorePage() {
     else { risk = '低リスク'; severity = 'ok' }
 
     return { pts, risk, severity }
-  }, [age, sex, sbp, dm, smoker, totalChol, hdl, ldl])
+  }, [age, sex, sbp, dm, smoker, hdl, ldl])
 
   return (
     <CalculatorLayout slug="suita-score" title="吹田スコア" titleEn="Suita Score"

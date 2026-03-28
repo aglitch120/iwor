@@ -15,7 +15,8 @@ export default function MayoUcPage() {
   const result = useMemo(() => {
     const total = scores.reduce((a,b)=>a+b,0)
     let severity: 'ok'|'wn'|'dn' = 'ok', activity = ''
-    if (total <= 2) { activity = '寛解 (0-2)' }
+    if (total <= 2 && scores.every(s => s <= 1)) { activity = '寛解 (Mayo≦2かつ全サブスコア≦1)' }
+    else if (total <= 2) { activity = 'Mayo≦2だが個別サブスコア>1あり — 寛解基準を満たさない可能性'; severity = 'wn' }
     else if (total <= 5) { activity = '軽度活動性 (3-5)'; severity = 'wn' }
     else if (total <= 10) { activity = '中等度活動性 (6-10)'; severity = 'wn' }
     else { activity = '重度活動性 (11-12)'; severity = 'dn' }

@@ -48,11 +48,11 @@ export default function CSFAnalysisPage() {
     else if (w > 100 && (neutroPercent === null || neutroPercent > 50) && p > 100 && (g < 40 || (glucoseRatio !== null && glucoseRatio < 0.4))) {
       etiology = 'bacterial'
     }
-    // 結核性: リンパ球優位、蛋白高、糖低
-    else if (w > 10 && w <= 500 && (neutroPercent !== null && neutroPercent <= 50) && p > 100 && (g < 45 || (glucoseRatio !== null && glucoseRatio < 0.5))) {
+    // 結核性: リンパ球優位、蛋白高、糖低（好中球未入力時も結核性を考慮）
+    else if (w > 10 && w <= 500 && (neutroPercent === null || neutroPercent <= 50) && p > 100 && (g < 45 || (glucoseRatio !== null && glucoseRatio < 0.5))) {
       etiology = 'tb'
     }
-    // ウイルス性: リンパ球優位、蛋白軽度上昇(≤100が典型)、糖正常
+    // ウイルス性: リンパ球優位、蛋白軽度上昇(≤100が典型)、糖正常（好中球未入力時かつ蛋白≤100かつ糖正常ならウイルス性を優先）
     else if (w > 5 && w <= 500 && (neutroPercent === null || neutroPercent <= 50) && p <= 100 && g >= 45) {
       etiology = 'viral'
     }

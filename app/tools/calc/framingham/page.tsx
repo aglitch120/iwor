@@ -77,7 +77,7 @@ export default function FraminghamPage() {
       else if (s >= 140) points += (sex === 'male' ? 1 : 3)
       else if (s >= 130) points += (sex === 'male' ? 1 : 2)
       else if (s >= 120) points += 0
-      else points += 0
+      else points += (sex === 'male' ? 0 : -3) // Wilson 1998: 女性未治療SBP<120は-3点
     }
 
     // Smoking — Wilson 1998 age-stratified points

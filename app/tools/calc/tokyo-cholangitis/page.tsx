@@ -12,7 +12,7 @@ const items = [
 const severityItems = [
   { label: '意識障害', grade: 3 },
   { label: '循環不全(DOA/NA使用)', grade: 3 },
-  { label: '黄疸(T-Bil ≧ 5mg/dL)', grade: 2 },
+  { label: '黄疸(T-Bil ≧ 5mg/dL)', grade: 3 },
   { label: '高熱(≧ 39℃)', grade: 2 },
   { label: 'WBC < 4,000 or > 12,000', grade: 2 },
   { label: 'Plt < 10万（凝固異常）', grade: 3 },
@@ -35,8 +35,9 @@ export default function TokyoCholangitisPage() {
     const g3 = sevChecked.filter((v, i) => v && severityItems[i].grade === 3).length > 0
     const g2count = sevChecked.filter((v, i) => v && severityItems[i].grade === 2).length
     let grade = 'Grade I（軽症）', severity: 'ok'|'wn'|'dn' = 'ok'
-    if (g3) { grade = 'Grade III（重症）— 臓器不全あり。緊急胆道ドレナージ+ICU'; severity = 'dn' }
-    else if (g2count >= 1) { grade = 'Grade II（中等症）— 24-48h以内の胆道ドレナージ推奨（参考: TG18基準）'; severity = 'wn' }
+    if (g3) { grade = 'Grade III（重症）— 臓器不全あり。緊急胆道ドレナージ+ICUを検討（参考: TG18基準。治療は担当医が判断）'; severity = 'dn' }
+    else if (g2count >= 2) { grade = 'Grade II（中等症）— 24-48h以内の胆道ドレナージを検討（参考: TG18基準。治療は担当医が判断）'; severity = 'wn' }
+    else if (g2count >= 1) { grade = 'Grade I-II境界 — Grade II項目1つ。初期治療への反応を確認し24h以内に再評価'; severity = 'wn' }
     return { dx, grade, severity }
   }, [checked, sevChecked])
   return (

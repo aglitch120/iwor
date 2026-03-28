@@ -25,9 +25,9 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
     mortality: '2.3%',
   }
   if (score <= 2) return {
-    text: score === 1 ? '中等症' : '中等症',
+    text: score === 1 ? '中等症I' : '中等症II',
     severity: 'wn',
-    category: '中等症群',
+    category: score === 1 ? '中等症I群' : '中等症II群',
     disposition: score === 1 ? '外来または入院' : '入院治療',
     mortality: score === 1 ? '4.3%' : '9.0%',
   }

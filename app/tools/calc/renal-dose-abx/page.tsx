@@ -65,7 +65,8 @@ const antibiotics: Antibiotic[] = [
 
   // ニューキノロン系
   { id: 'lvfx', name: 'レボフロキサシン（LVFX）', nameEn: 'Levofloxacin', category: 'ニューキノロン系',
-    doses: ['500mg q24h', '500mg 初回→250mg q24h', '250mg q24h', '250mg q48h', '250mg q48h'] },
+    doses: ['500mg q24h', '500mg q24h', '250mg q24h', '250mg q48h', '250mg q48h'],
+    note: '添付文書: CCr≧50では通常用量(500mg q24h)。CCr20-49で250mg q24h' },
   { id: 'cpfx', name: 'シプロフロキサシン（CPFX）', nameEn: 'Ciprofloxacin', category: 'ニューキノロン系',
     doses: ['400mg q8h IV', '400mg q8h IV', '400mg q12h IV', '400mg q24h IV', '400mg q24h IV'] },
 
@@ -194,7 +195,7 @@ export default function RenalDoseAbxPage() {
                   setEgfr(String(Math.round(ccr * 10) / 10))
                 }
               }} className="w-full py-1.5 bg-ac text-white text-xs font-bold rounded-lg">
-                計算してeGFR欄に反映
+                計算してCCr欄に反映
               </button>
             </div>
           )}

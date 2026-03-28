@@ -27,6 +27,8 @@ const criteria: CriterionDef[] = [
 ]
 
 // 年間脳卒中リスク（Lip GY et al. Chest 2010 ベース）
+// 年間脳卒中リスク（Lip GY et al. Chest 2010 ベース）
+// ※スコア7-8の非単調データは原著の統計的制約による（高スコア群は少数かつ多くが抗凝固中のため過小評価の可能性）
 const strokeRisk: Record<number, string> = {
   0: '0%',
   1: '1.3%',
@@ -35,8 +37,8 @@ const strokeRisk: Record<number, string> = {
   4: '4.0%',
   5: '6.7%',
   6: '9.8%',
-  7: '9.6%',
-  8: '6.7%',
+  7: '9.6% *',
+  8: '6.7% *',
   9: '15.2%',
 }
 
@@ -128,6 +130,7 @@ export default function CHA2DS2VAScPage() {
               severity={result.severity}
               details={[
                 { label: '年間脳卒中リスク', value: result.risk },
+                ...(result.score >= 7 ? [{ label: '※注意', value: 'スコア7-8のリスク値は原著コホートの症例数が少なく、多くが抗凝固療法中のため過小評価の可能性あり。高スコアほどリスクは高いと考えるべき' }] : []),
               ]}
             />
           </div>

@@ -27,7 +27,7 @@ const items = [
   ]},
 ]
 export default function FourTScorePage() {
-  const [scores, setScores] = useState([2, 2, 0, 2])
+  const [scores, setScores] = useState([0, 0, 0, 0])
   const result = useMemo(() => {
     const total = scores.reduce((a, b) => a + b, 0)
     let severity: 'ok' | 'wn' | 'dn' = 'ok', interpretation = ''

@@ -16,8 +16,8 @@ const exclusions = [
   '先天性血小板減少症',
 ]
 export default function ItpCriteriaPage() {
-  const [plt, setPlt] = useState(true)
-  const [excluded, setExcluded] = useState<boolean[]>(exclusions.map(()=>true))
+  const [plt, setPlt] = useState(false)
+  const [excluded, setExcluded] = useState<boolean[]>(exclusions.map(()=>false))
   const allExcluded = excluded.every(Boolean)
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

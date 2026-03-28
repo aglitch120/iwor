@@ -66,7 +66,7 @@ export default function NAFLDFibrosisPage() {
       </div>
       <label className="flex items-center gap-2 text-sm cursor-pointer">
         <input type="checkbox" checked={diabetes} onChange={e => setDiabetes(e.target.checked)} className="rounded border-br" />
-        <span className="text-tx">糖尿病 or 耐糖能異常</span>
+        <span className="text-tx">糖尿病 or 空腹時血糖異常（IFG）</span>
       </label>
       <div className="grid grid-cols-2 gap-3">
         <NumberInput label="AST" value={ast} onChange={setAst} unit="U/L" />
