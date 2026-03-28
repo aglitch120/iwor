@@ -9,7 +9,7 @@ const toolDef = getToolBySlug('csf-analysis')!
 type Etiology = 'bacterial' | 'viral' | 'tb' | 'fungal' | 'normal' | 'indeterminate'
 
 const ETIOLOGY_INFO: Record<Etiology, { label: string; color: string; desc: string }> = {
-  bacterial: { label: '細菌性髄膜炎疑い', color: '#DC2626', desc: '緊急対応。経験的抗菌薬投与を検討。グラム染色・培養・血液培養を確認。' },
+  bacterial: { label: '細菌性髄膜炎疑い', color: '#DC2626', desc: '※参考所見のみ。臨床判断が必要です。グラム染色・培養・血液培養を確認。' },
   viral: { label: 'ウイルス性髄膜炎疑い', color: '#2563EB', desc: '多くは自然軽快。PCR検査（HSV, エンテロウイルス等）を検討。' },
   tb: { label: '結核性髄膜炎疑い', color: '#D97706', desc: 'ADA測定、抗酸菌培養、PCR。治療開始の遅れが予後を悪化させる。' },
   fungal: { label: '真菌性髄膜炎疑い', color: '#7C3AED', desc: '墨汁染色、クリプトコッカス抗原、培養を確認。免疫不全の有無を評価。' },
@@ -52,8 +52,8 @@ export default function CSFAnalysisPage() {
     else if (w > 10 && w <= 500 && (neutroPercent !== null && neutroPercent <= 50) && p > 100 && (g < 45 || (glucoseRatio !== null && glucoseRatio < 0.5))) {
       etiology = 'tb'
     }
-    // ウイルス性: リンパ球優位、蛋白軽度上昇、糖正常
-    else if (w > 5 && w <= 1000 && (neutroPercent === null || neutroPercent <= 50) && p <= 200 && g >= 40) {
+    // ウイルス性: リンパ球優位、蛋白軽度上昇(≤100が典型)、糖正常
+    else if (w > 5 && w <= 500 && (neutroPercent === null || neutroPercent <= 50) && p <= 100 && g >= 45) {
       etiology = 'viral'
     }
     // 真菌性: リンパ球優位、蛋白高、糖低（結核性と類似）

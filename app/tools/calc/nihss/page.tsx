@@ -163,9 +163,10 @@ function getLabel(score: number): string {
 }
 
 function getTpaNote(score: number): string {
-  if (score >= 5 && score <= 25) return 'rt-PA静注療法の適応を検討（発症4.5時間以内）'
-  if (score < 5) return '一般にrt-PA適応外（軽症）'
-  return '予後不良が予測される重症例'
+  if (score >= 26) return 'NIHSS ≧26: 重篤な神経症状。rt-PA適応は慎重に判断（参考: 日本脳卒中学会ガイドライン）'
+  if (score >= 5 && score <= 25) return 'rt-PA静注療法の適応を検討（発症4.5時間以内、参考情報）'
+  if (score >= 1 && score <= 4) return '軽症でも症状の性質・推移により適応となり得る（2021年ガイドライン改訂）'
+  return 'NIHSS 0: 神経学的異常なし'
 }
 
 export default function NihssPage() {

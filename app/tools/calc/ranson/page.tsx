@@ -41,7 +41,7 @@ export default function RansonPage() {
     if (score <= 2) { interpretation = '軽症膵炎'; mortality = '死亡率 < 5%'; severity = 'ok' }
     else if (score <= 4) { interpretation = '中等症膵炎'; mortality = '死亡率 15〜20%'; severity = 'wn' }
     else if (score <= 6) { interpretation = '重症膵炎'; mortality = '死亡率 40%'; severity = 'dn' }
-    else { interpretation = '最重症膵炎'; mortality = '死亡率 > 99%'; severity = 'dn' }
+    else { interpretation = '最重症膵炎'; mortality = '死亡率 50%以上（原著では高率だが現代ICU管理で改善の可能性あり）'; severity = 'dn' }
 
     return { score, admissionCount, h48Count, interpretation, severity, mortality }
   }, [checked])

@@ -14,7 +14,7 @@ export default function OttawaSAHPage(){
   const result=useMemo(()=>{
     const pos=items.filter(i=>checks[i.id]).length
     if(pos>0) return {score:pos,severity:'dn' as const,label:`陽性（${pos}項目）: SAH除外不可 → 頭部CT + 腰椎穿刺`}
-    return {score:0,severity:'ok' as const,label:'全項目陰性: SAH除外可能（感度100%）'}
+    return {score:0,severity:'ok' as const,label:'全項目陰性: SAH除外を検討（感度100%, Perry 2013）。※GCS15・最悪の頭痛・非外傷の成人にのみ適用'}
   },[checks])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

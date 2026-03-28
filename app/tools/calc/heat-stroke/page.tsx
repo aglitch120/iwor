@@ -19,7 +19,7 @@ const GRADES = [
   },
   {
     grade: 'III度（重症）',
-    symptoms: ['意識障害（JCS 2以上）', '痙攣', '深部体温>40度', '肝・腎機能障害', 'DIC'],
+    symptoms: ['意識障害（JCS II群以上 or GCS≦14）', '痙攣', '深部体温>40度', '肝・腎機能障害', 'DIC'],
     action: '救急搬送. ICU管理, 体表冷却, 冷却輸液, DIC治療',
     severity: 'dn' as const,
   },

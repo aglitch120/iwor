@@ -14,15 +14,14 @@ const items=[
   {id:'digits',label:'6. 数字の逆唱（6-8-2→2-8-6、3-5-2-9→9-2-5-3）',max:2,options:[{label:'0点',value:'0'},{label:'1点',value:'1'},{label:'2点',value:'2'}]},
   {id:'recall',label:'7. 3つの言葉の遅延再生（自発2点/ヒント1点、各）',max:6,options:[{label:'0点',value:'0'},{label:'1点',value:'1'},{label:'2点',value:'2'},{label:'3点',value:'3'},{label:'4点',value:'4'},{label:'5点',value:'5'},{label:'6点',value:'6'}]},
   {id:'objects',label:'8. 5つの物品記銘（提示→隠す→回答、各1点）',max:5,options:[{label:'0点',value:'0'},{label:'1点',value:'1'},{label:'2点',value:'2'},{label:'3点',value:'3'},{label:'4点',value:'4'},{label:'5点',value:'5'}]},
-  {id:'verbal',label:'9. 野菜の名前（10秒、0-5個=0点、6個=1点、7個=2点…）',max:5,options:[{label:'0点',value:'0'},{label:'1点',value:'1'},{label:'2点',value:'2'},{label:'3点',value:'3'},{label:'4点',value:'4'},{label:'5点',value:'5'}]},
+  {id:'verbal',label:'9. 野菜の名前（60秒間、0-5個=0点、6個=1点、7個=2点…10個以上=5点）',max:5,options:[{label:'0点',value:'0'},{label:'1点',value:'1'},{label:'2点',value:'2'},{label:'3点',value:'3'},{label:'4点',value:'4'},{label:'5点',value:'5'}]},
 ]
 export default function HDSRPage(){
   const [vals,setVals]=useState<Record<string,string>>(Object.fromEntries(items.map(i=>[i.id,'0'])))
   const result=useMemo(()=>{
     const score=Object.values(vals).reduce((s,v)=>s+Number(v),0)
     if(score>=21) return {score,severity:'ok' as const,label:'正常域（21-30点）'}
-    if(score>=16) return {score,severity:'wn' as const,label:'軽度認知症の疑い（16-20点）'}
-    return {score,severity:'dn' as const,label:'中等度以上の認知症の疑い（≦15点）'}
+    return {score,severity:'wn' as const,label:'認知症の疑い（≦20点）— 専門医による詳細評価を推奨'}
   },[vals])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

@@ -48,13 +48,13 @@ const LAB_DATA: LabCategory[] = [
       { name: 'PT', unit: '秒', male: '10〜13', female: '10〜13' },
       { name: 'APTT', unit: '秒', male: '25〜40', female: '25〜40' },
       { name: 'フィブリノーゲン', unit: 'mg/dL', male: '200〜400', female: '200〜400' },
-      { name: 'D-dimer', unit: 'μg/mL', male: '< 1.0', female: '< 1.0' },
+      { name: 'D-dimer', unit: 'μg/mL (FEU)', male: '< 1.0', female: '< 1.0', note: 'FEU単位。DDU単位では <0.5' },
       { name: 'FDP', unit: 'μg/mL', male: '< 5.0', female: '< 5.0' },
       { name: 'AT-III', unit: '%', male: '80〜130', female: '80〜130' },
     ],
   },
   {
-    id: 'liver', title: '肝機能', icon: '🫁',
+    id: 'liver', title: '肝機能', icon: '🔬',
     items: [
       { name: 'AST (GOT)', unit: 'U/L', male: '13〜30', female: '13〜30' },
       { name: 'ALT (GPT)', unit: 'U/L', male: '10〜42', female: '7〜23' },
@@ -132,8 +132,8 @@ const LAB_DATA: LabCategory[] = [
     items: [
       { name: 'Trop-T (hs)', unit: 'ng/mL', male: '< 0.014', female: '< 0.014', note: '高感度。99パーセンタイル値' },
       { name: 'Trop-I (hs)', unit: 'pg/mL', male: '< 26.2', female: '< 11.6', note: '高感度。男女で異なる' },
-      { name: 'BNP', unit: 'pg/mL', male: '< 18.4', female: '< 18.4', note: '心不全スクリーニング' },
-      { name: 'NT-proBNP', unit: 'pg/mL', male: '< 125', female: '< 125', note: '年齢で上昇。75歳以上は< 450', ageAlt: [75, '< 450', '< 450'] },
+      { name: 'BNP', unit: 'pg/mL', male: '< 18.4', female: '< 18.4', note: '正常上限(参考値)。心不全スクリーニングカットオフは <100 pg/mL' },
+      { name: 'NT-proBNP', unit: 'pg/mL', male: '< 125', female: '< 125', note: '心不全除外カットオフ: <50歳 450 / 50-75歳 900 / >75歳 1800 pg/mL (ESC)', ageAlt: [75, '< 1800', '< 1800'] },
       { name: 'CK', unit: 'U/L', male: '59〜248', female: '41〜153' },
       { name: 'CK-MB', unit: 'ng/mL', male: '< 5.0', female: '< 5.0' },
     ],

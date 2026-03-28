@@ -10,7 +10,7 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('glasgow-blatchford')!
 
 export default function GlasgowBlatchfordPage() {
-  const [bun, setBun] = useState('7')
+  const [bun, setBun] = useState('20')
   const [hb, setHb] = useState('13')
   const [sex, setSex] = useState('male')
   const [sbp, setSbp] = useState('120')
@@ -27,8 +27,8 @@ export default function GlasgowBlatchfordPage() {
     const heartRate = parseInt(hr) || 80
     let score = 0
 
-    // BUN (mmol/L→mg/dLの場合: mg/dL÷2.8=mmol/L として内部計算)
-    const bunMmol = b
+    // BUN: mg/dL入力 → mmol/Lに変換して原著閾値と比較
+    const bunMmol = b / 2.8
     if (bunMmol >= 25) score += 6
     else if (bunMmol >= 10) score += 4
     else if (bunMmol >= 8) score += 3
@@ -86,7 +86,7 @@ export default function GlasgowBlatchfordPage() {
       references={[{ text: 'Blatchford O, et al. Lancet 2000;356:1318-1321' }]}
     >
       <div className="space-y-4">
-        <NumberInput id="bun" label="BUN" unit="mmol/L" hint="mg/dL÷2.8" value={bun} onChange={setBun} step={0.1} />
+        <NumberInput id="bun" label="BUN" unit="mg/dL" hint="日本の検査値をそのまま入力" value={bun} onChange={setBun} step={0.1} />
         <NumberInput id="hb" label="Hb" unit="g/dL" value={hb} onChange={setHb} step={0.1} />
         <SelectInput id="sex" label="性別" value={sex} onChange={setSex} options={[{ value: 'male', label: '男性' }, { value: 'female', label: '女性' }]} />
         <NumberInput id="sbp" label="収縮期血圧" unit="mmHg" value={sbp} onChange={setSbp} step={1} />

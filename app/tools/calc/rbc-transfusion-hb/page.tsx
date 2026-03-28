@@ -12,7 +12,10 @@ export default function RbcTransfusionPage() {
   const result = useMemo(() => {
     const u = parseFloat(units), w = parseFloat(weight), hb = parseFloat(currentHb)
     if (!u || !w) return null
-    const hbRise = (u * 400 * 0.19) / (w * 0.07 * 10)
+    // RCC-LR 1単位 ≒ 140mL(赤血球), Hct約55%(≒0.55)
+    // Hb上昇(g/dL) = (単位数 × 140mL × 0.55 × Hb約33g/dL) / (体重×70mL/kg)
+    // 簡易式: 1単位あたり約0.5-0.7 g/dL/60kg
+    const hbRise = (u * 1.0) / (w / 60) * 0.6 // 約0.6 g/dL per unit per 60kg
     const expectedHb = hb ? (hb + hbRise).toFixed(1) : null
     return { hbRise: hbRise.toFixed(1), expectedHb }
   }, [units, weight, currentHb])
@@ -22,7 +25,7 @@ export default function RbcTransfusionPage() {
       result={result ? <ResultCard severity="ok"
         value={`予測Hb上昇 ≒ ${result.hbRise} g/dL`}
         interpretation={result.expectedHb ? `予測Hb ≒ ${result.expectedHb} g/dL\n\n` : '' + `RCC-LR 1単位(約140mL赤血球): Hb約${(parseFloat(result.hbRise) / parseFloat(units)).toFixed(1)}g/dL上昇/単位\n※ 出血・溶血がなければの理論値。実測で確認必要。`} /> : null}
-      explanation={<div className="space-y-2 text-sm text-muted"><p><strong className="text-tx">計算式:</strong> Hb上昇 = (単位数 × 400mL × Hct0.19) / (体重kg × 0.07 × 10)</p><p>目安: 体重60kgで1単位あたり約0.5-0.7 g/dL上昇</p></div>}
+      explanation={<div className="space-y-2 text-sm text-muted"><p><strong className="text-tx">目安:</strong> RCC-LR 1単位（140mL）で体重60kgの場合、約0.5-0.7 g/dL上昇</p><p>日本の血液製剤は「2単位=1バッグ」が標準。出血・溶血がなければの理論値。</p></div>}
       relatedTools={[{ slug: 'restrictive-transfusion', name: '制限的輸血Hb' }, { slug: 'anemia-criteria', name: '貧血の診断基準' }]}
       references={toolDef.sources || []}
     >

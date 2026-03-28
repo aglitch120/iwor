@@ -34,7 +34,7 @@ export default function HomaPage() {
       result={result && (
         <ResultCard label="HOMA-IR" value={result.ir} interpretation={result.irInterpretation} severity={result.severity}
           details={[
-            ...(result.beta ? [{ label: 'HOMA-β', value: `${result.beta}%（正常: 40-60%）` }] : []),
+            ...(result.beta ? [{ label: 'HOMA-β', value: `${result.beta}%（正常: 約100%前後）` }] : []),
             { label: 'インスリン抵抗性基準', value: '≧ 2.5 で抵抗性あり' },
           ]} />
       )}

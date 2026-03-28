@@ -22,7 +22,7 @@ export default function ADDRiskPage(){
     const catScores = cats.map(c=>c.items.some(i=>checks[i.id])?1:0) as number[]
     const score = catScores.reduce((a,b)=>a+b,0)
     if(score>=2) return {score,severity:'dn' as const,label:'高リスク（2-3点）: 大動脈解離の可能性高い → 即座にCT造影'}
-    if(score===1) return {score,severity:'wn' as const,label:'中リスク（1点）: D-dimer<0.5μg/mLなら除外可能 → CT造影も検討'}
+    if(score===1) return {score,severity:'wn' as const,label:'中リスク（1点）: ADvISED研究ではADD-RS 0-1点+D-dimer<0.5で除外検討。CT造影も考慮'}
     return {score,severity:'ok' as const,label:'低リスク（0点）: D-dimer<0.5μg/mLで除外可能'}
   },[checks])
   return(
@@ -30,7 +30,7 @@ export default function ADDRiskPage(){
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="ADD-RS" value={result.score} unit="/3点" interpretation={result.label} severity={result.severity} />}
       explanation={undefined}
-      relatedTools={[]} references={[{text:'Defined in the 2022 AHA/ACC Aortic Disease Guideline. Defined in Defined by Defined by Defined. Defined in 2022 AHA/ACC. Defined by IRAD consortium.'}]}
+      relatedTools={[]} references={[{text:'Defined in the 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease (Isselbacher EM, et al. JACC 2022)', url:'https://doi.org/10.1016/j.jacc.2022.10.004'},{text:'Rogers AM, et al. Circulation 2011;123:2213-2218'}]}
     >
       <div className="space-y-6">{cats.map((c,ci)=>(<div key={ci}><p className="text-xs font-bold text-tx mb-2">{c.title}</p><div className="space-y-1">{c.items.map(i=><CheckItem key={i.id} id={i.id} label={i.label} checked={checks[i.id]} onChange={v=>setChecks(p=>({...p,[i.id]:v}))} />)}</div></div>))}</div>
     </CalculatorLayout>

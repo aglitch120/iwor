@@ -36,7 +36,7 @@ export default function TokyoCholangitisPage() {
     const g2count = sevChecked.filter((v, i) => v && severityItems[i].grade === 2).length
     let grade = 'Grade I（軽症）', severity: 'ok'|'wn'|'dn' = 'ok'
     if (g3) { grade = 'Grade III（重症）— 臓器不全あり。緊急胆道ドレナージ+ICU'; severity = 'dn' }
-    else if (g2count >= 2) { grade = 'Grade II（中等症）— 24-48h以内の胆道ドレナージ推奨'; severity = 'wn' }
+    else if (g2count >= 1) { grade = 'Grade II（中等症）— 24-48h以内の胆道ドレナージ推奨（参考: TG18基準）'; severity = 'wn' }
     return { dx, grade, severity }
   }, [checked, sevChecked])
   return (

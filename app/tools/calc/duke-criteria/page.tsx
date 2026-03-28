@@ -20,7 +20,10 @@ export default function DukeCriteriaPage(){
   const [mChecks,setM]=useState<Record<string,boolean>>(Object.fromEntries(major.map(i=>[i.id,false])))
   const [nChecks,setN]=useState<Record<string,boolean>>(Object.fromEntries(minor.map(i=>[i.id,false])))
   const result=useMemo(()=>{
-    const mj=major.filter(i=>mChecks[i.id]).length
+    // 血液培養大基準: bc2 OR bc_persist で最大1個（排他的）
+    const bcMajor = (mChecks['bc2'] || mChecks['bc_persist']) ? 1 : 0
+    const echoMajor = mChecks['echo_veg'] ? 1 : 0
+    const mj = bcMajor + echoMajor
     const mn=minor.filter(i=>nChecks[i.id]).length
     if(mj>=2||(mj>=1&&mn>=3)||(mn>=5)) return {severity:'dn' as const,label:'確定(Definite IE): 大基準2 or 大基準1+小基準3 or 小基準5'}
     if((mj>=1&&mn>=1)||(mn>=3)) return {severity:'wn' as const,label:'疑い(Possible IE): 大基準1+小基準1 or 小基準3'}

@@ -24,10 +24,10 @@ const STRESS_LEVELS = [
   },
   {
     level: '重度ストレス',
-    examples: '心臓手術、肝切除、Whipple手術、敗血症性ショック',
-    dose: 'HC 100mg iv → 50mg q8h（150mg/日）',
+    examples: '心臓手術、肝切除、Whipple手術',
+    dose: 'HC 100mg iv → 50mg q8h（150mg/日）（参考情報）',
     duration: '2〜3日間 → 1/2ずつ48hで漸減',
-    note: '重症敗血症ではHC 200mg/日（50mg q6h）を最大7日間。',
+    note: '※敗血症性ショックへのステロイドは別の適応（SSC 2021: NA≧0.25μg/kg/min安定しない場合にHC 200mg/日を検討）。周術期ストレスカバーとは目的が異なる。',
   },
 ]
 

@@ -22,8 +22,9 @@ export default function DAS28Page() {
 
     let score: number
     if (useCRP) {
-      // DAS28-CRP = 0.56*sqrt(TJC28) + 0.28*sqrt(SJC28) + 0.36*ln(CRP+1) + 0.014*VAS + 0.96
-      score = 0.56 * Math.sqrt(t) + 0.28 * Math.sqrt(s) + 0.36 * Math.log(marker + 1) + 0.014 * v + 0.96
+      // DAS28-CRP: 原著式はCRP mg/L単位。日本はmg/dL入力のため×10でmg/Lに変換
+      const crpMgL = marker * 10
+      score = 0.56 * Math.sqrt(t) + 0.28 * Math.sqrt(s) + 0.36 * Math.log(crpMgL + 1) + 0.014 * v + 0.96
     } else {
       // DAS28-ESR = 0.56*sqrt(TJC28) + 0.28*sqrt(SJC28) + 0.70*ln(ESR) + 0.014*VAS
       score = 0.56 * Math.sqrt(t) + 0.28 * Math.sqrt(s) + 0.70 * Math.log(Math.max(marker, 1)) + 0.014 * v

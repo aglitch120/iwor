@@ -38,7 +38,7 @@ export default function HbA1cGlucosePage() {
         interpretation = 'コントロール不十分 — 合併症予防にはHbA1c 7.0%未満が目標'
         severity = 'wn'
       } else if (a1c >= 6.5) {
-        interpretation = '糖尿病の診断基準域 — 食事・運動療法の評価、薬物療法の検討'
+        interpretation = '糖尿病型の可能性（HbA1c ≧6.5%） — 確定診断には血糖検査との組み合わせまたは再検が必要'
         severity = 'wn'
       } else if (a1c >= 6.0) {
         interpretation = '境界域（糖尿病予備群） — 生活習慣の改善が示される'

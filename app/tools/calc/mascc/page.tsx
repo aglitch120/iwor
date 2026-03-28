@@ -20,7 +20,8 @@ export default function MasccPage() {
     let score = parseInt(burden)
     if (!hypotension) score += 5
     if (!copd) score += 4
-    if (solid || !fungal) score += 4
+    // 原著: 真菌感染の既往なし = +4点（がん種を問わない）
+    if (!fungal) score += 4
     if (!dehydration) score += 3
     if (outpatient) score += 3
     if (!age60) score += 2

@@ -11,7 +11,7 @@ const toolDef = getToolBySlug('fio2-table')!
 const fio2Data: Record<string, { min: number; max: number; fio2: Record<number, number> }> = {
   nasal: { min: 1, max: 6, fio2: { 1: 0.24, 2: 0.28, 3: 0.32, 4: 0.36, 5: 0.40, 6: 0.44 } },
   mask: { min: 5, max: 8, fio2: { 5: 0.40, 6: 0.50, 7: 0.60, 8: 0.70 } },
-  reservoir: { min: 6, max: 10, fio2: { 6: 0.60, 7: 0.70, 8: 0.80, 9: 0.90, 10: 0.95 } },
+  reservoir: { min: 8, max: 10, fio2: { 8: 0.80, 9: 0.90, 10: 0.95 } },
 }
 
 const deviceLabels: Record<string, string> = { nasal: '鼻カニューラ', mask: '簡易マスク', reservoir: 'リザーバー付マスク' }

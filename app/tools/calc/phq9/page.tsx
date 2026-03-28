@@ -32,10 +32,10 @@ export default function Phq9Page() {
     const total = scores.reduce((a, b) => a + parseInt(b), 0)
     let label = '', severity: 'ok'|'wn'|'dn' = 'ok'
     if (total <= 4) { label = '症状なし〜最小限'; severity = 'ok' }
-    else if (total <= 9) { label = '軽度うつ病'; severity = 'ok' }
-    else if (total <= 14) { label = '中等度うつ病 — 治療を検討'; severity = 'wn' }
-    else if (total <= 19) { label = '中等度〜重度うつ病 — 治療を検討'; severity = 'dn' }
-    else { label = '重度うつ病 — 積極的治療が必要'; severity = 'dn' }
+    else if (total <= 9) { label = '軽度の抑うつ症状'; severity = 'ok' }
+    else if (total <= 14) { label = '中等度の抑うつ症状 — 専門家への相談を検討'; severity = 'wn' }
+    else if (total <= 19) { label = '中等度〜重度の抑うつ症状 — 専門家への相談を推奨'; severity = 'dn' }
+    else { label = '重度の抑うつ症状 — 専門家への相談を推奨（スクリーニング結果であり確定診断ではありません）'; severity = 'dn' }
     const q9 = parseInt(scores[8]) > 0
     return { total, severity, label, q9 }
   }, [scores])

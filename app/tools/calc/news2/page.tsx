@@ -15,6 +15,7 @@ function o2Score(onO2: boolean) { return onO2 ? 2 : 0 }
 function tempScore(v: number) { if (v<=35) return 3; if (v<=36) return 1; if (v<=38) return 0; if (v<=39) return 1; return 2 }
 function sbpScore(v: number) { if (v<=90) return 3; if (v<=100) return 2; if (v<=110) return 1; if (v<=219) return 0; return 3 }
 function hrScore(v: number) { if (v<=40) return 3; if (v<=50) return 1; if (v<=90) return 0; if (v<=110) return 1; if (v<=130) return 2; return 3 }
+// ACVPU: Alert=0, new Confusion=3, V/P/U=3
 function consScore(v: string) { return v === 'alert' ? 0 : 3 }
 
 export default function News2Page() {

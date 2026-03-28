@@ -24,7 +24,8 @@ export default function NAFLDFibrosisPage() {
     if (!a || !b || !astV || !altV || !pltV || !albV) return null
 
     // NFS = -1.675 + 0.037 x age + 0.094 x BMI + 1.13 x IFG/diabetes + 0.99 x AST/ALT - 0.013 x PLT - 0.66 x Alb
-    const nfs = -1.675 + 0.037 * a + 0.094 * b + (diabetes ? 1.13 : 0) + 0.99 * (astV / altV) - 0.013 * pltV - 0.66 * albV
+    // 原著(Angulo 2007)はPLT ×10⁹/L単位。日本は万/μL入力のため×10で変換(18万/μL = 180×10⁹/L)
+    const nfs = -1.675 + 0.037 * a + 0.094 * b + (diabetes ? 1.13 : 0) + 0.99 * (astV / altV) - 0.013 * (pltV * 10) - 0.66 * albV
     const rounded = Math.round(nfs * 1000) / 1000
 
     let category = ''

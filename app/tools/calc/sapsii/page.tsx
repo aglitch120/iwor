@@ -31,7 +31,8 @@ export default function SAPSIIPage(){
     const h=Number(hr)||80;const hrP=h<40?11:h<70?2:h<120?0:h<160?4:7
     const s=Number(sbp)||120;const sbpP=s<70?13:s<100?5:s<200?0:2
     const t=Number(temp)||37;const tempP=t>=39?3:0
-    const p=Number(pao2)||200;const pao2P=p<100?11:p<200?9:6
+    // PaO2/FiO2は人工呼吸器装着患者のみ評価（Le Gall 1993）。空欄時は0点
+    const pRaw=pao2.trim();const p=pRaw?Number(pRaw):0;const pao2P=pRaw?(p<100?11:p<200?9:6):0
     const u=Number(uo)||1000;const uoP=u<500?11:u<1000?4:0
     const b=Number(bun)||15;const bunP=b<28?0:b<84?6:10
     const w=Number(wbc)||8;const wbcP=w<1?12:w>=20?3:0
@@ -60,7 +61,7 @@ export default function SAPSIIPage(){
         <NumberInput id="sbp" label="収縮期血圧" value={sbp} onChange={setSBP} unit="mmHg" />
         <NumberInput id="temp" label="体温" value={temp} onChange={setTemp} unit="°C" />
         <NumberInput id="gcs" label="GCS" value={gcsVal} onChange={setGCS} unit="/15" />
-        <NumberInput id="pao2" label="PaO₂/FiO₂ 比" value={pao2} onChange={setPaO2} unit="" />
+        <NumberInput id="pao2" label="PaO₂/FiO₂ 比" value={pao2} onChange={setPaO2} unit="" hint="人工呼吸器装着時のみ入力（自発呼吸なら空欄にして0点）" />
         <NumberInput id="uo" label="尿量(24h)" value={uo} onChange={setUO} unit="mL/日" />
         <NumberInput id="bun" label="BUN" value={bun} onChange={setBUN} unit="mg/dL" />
         <NumberInput id="wbc" label="WBC" value={wbc} onChange={setWBC} unit="×10³/μL" />

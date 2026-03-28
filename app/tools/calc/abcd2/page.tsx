@@ -30,7 +30,7 @@ export default function Abcd2Page() {
     }
 
     let label = ''
-    if (score <= 3) label = '低リスク — 外来フォロー可'
+    if (score <= 3) label = '低リスク — ただしTIAは原則緊急評価が必要（画像検査との組み合わせで判断）'
     else if (score <= 5) label = '中リスク — 入院精査を考慮'
     else label = '高リスク — 入院・緊急精査を検討'
 

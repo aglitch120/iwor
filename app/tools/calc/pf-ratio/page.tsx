@@ -32,7 +32,7 @@ export default function PFRatioPage() {
       slug="pf-ratio"
       title="P/F比（PaO2/FiO2比）"
       titleEn="P/F Ratio"
-      description="PaO2をFiO2で割った酸素化の指標。ARDSの重症度分類（Berlin定義）に使用。"
+      description="PaO2をFiO2で割った酸素化の指標。ARDSの重症度分類（Berlin定義: PEEP ≧5 cmH₂O下で評価）に使用。"
       category="respiratory"
       categoryIcon="🫁"
       result={result && (

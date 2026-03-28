@@ -13,7 +13,11 @@ export default function PltTransfusionPage() {
     const u = parseInt(units), w = parseFloat(weight), plt = parseFloat(currentPlt)
     if (!u || !w) return null
     // 10単位PC: 約2.0×10^11個の血小板含有, 循環血液量≒70mL/kg
-    const pltRise = (u / 10) * 2.0 / (w * 0.07) * 0.667 // 回収率2/3
+    // 10単位PC: 約2.0×10^11個 = 20万×10^6個
+    // 循環血液量: w×0.07 L = w×70 mL
+    // 上昇(万/μL) = (u/10) × 2.0×10^11 / (w×0.07×10^6) × 0.667 / 10^4
+    // = (u/10) × 2.0 / (w×0.07) × 0.667 × 10  (万/μLスケール)
+    const pltRise = (u / 10) * 2.0 / (w * 0.07) * 0.667 * 10 // 回収率2/3, 万/μL単位
     const expected = plt ? (plt + pltRise).toFixed(1) : null
     return { pltRise: pltRise.toFixed(1), expected }
   }, [units, weight, currentPlt])

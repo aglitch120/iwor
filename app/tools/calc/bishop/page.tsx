@@ -2,19 +2,62 @@
 import { useState, useMemo } from 'react'
 import CalculatorLayout from '@/components/tools/CalculatorLayout'
 import ResultCard from '@/components/tools/ResultCard'
-import { CheckItem } from '@/components/tools/InputFields'
+import { SelectInput } from '@/components/tools/InputFields'
 import { getToolBySlug, categoryLabels, categoryIcons } from '@/lib/tools-config'
 const toolDef = getToolBySlug('bishop')!
-const items=[{id:'dilation',label:'子宮口開大: 0cm(0)/1-2cm(1)/3-4cm(2)/≧5cm(3)'},{id:'effacement',label:'展退度: 0-30%(0)/40-50%(1)/60-70%(2)/≧80%(3)'},{id:'station',label:'児頭下降度: -3(0)/-2(1)/-1,0(2)/+1,+2(3)'},{id:'consistency',label:'頚管の硬さ: 硬(0)/中(1)/軟(2)'},{id:'position',label:'頚管の位置: 後方(0)/中間(1)/前方(2)'}]
-export default function Page(){
-  const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
-  const count=useMemo(()=>items.filter(i=>checks[i.id]).length,[checks])
-  return(
+
+const categories = [
+  { id: 'dilation', label: '子宮口開大', options: [
+    { label: '閉鎖 (0)', value: '0' }, { label: '1-2cm (1)', value: '1' },
+    { label: '3-4cm (2)', value: '2' }, { label: '≧5cm (3)', value: '3' },
+  ]},
+  { id: 'effacement', label: '展退度', options: [
+    { label: '0-30% (0)', value: '0' }, { label: '40-50% (1)', value: '1' },
+    { label: '60-70% (2)', value: '2' }, { label: '≧80% (3)', value: '3' },
+  ]},
+  { id: 'station', label: '児頭下降度 (Station)', options: [
+    { label: '-3 (0)', value: '0' }, { label: '-2 (1)', value: '1' },
+    { label: '-1, 0 (2)', value: '2' }, { label: '+1, +2 (3)', value: '3' },
+  ]},
+  { id: 'consistency', label: '頚管の硬さ', options: [
+    { label: '硬 (0)', value: '0' }, { label: '中 (1)', value: '1' }, { label: '軟 (2)', value: '2' },
+  ]},
+  { id: 'position', label: '頚管の位置', options: [
+    { label: '後方 (0)', value: '0' }, { label: '中間 (1)', value: '1' }, { label: '前方 (2)', value: '2' },
+  ]},
+]
+
+export default function BishopPage() {
+  const [vals, setVals] = useState<Record<string, string>>(
+    Object.fromEntries(categories.map(c => [c.id, '0']))
+  )
+  const result = useMemo(() => {
+    const score = categories.reduce((sum, c) => sum + parseInt(vals[c.id] || '0'), 0)
+    let interpretation = ''
+    let severity: 'ok' | 'wn' | 'dn' = 'ok'
+    if (score >= 8) { interpretation = '頸管成熟 — 分娩誘発の成功率が高い'; severity = 'ok' }
+    else if (score >= 6) { interpretation = '中間 — 頸管熟化処置を考慮'; severity = 'wn' }
+    else { interpretation = '頸管未熟 — 頸管熟化処置が必要な可能性'; severity = 'wn' }
+    return { score, interpretation, severity }
+  }, [vals])
+
+  return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard label="Bishopスコア" value={count+'/'+items.length+'項目'} interpretation={count>=Math.ceil(items.length/2)?'基準を満たす可能性あり':'基準を満たさない'} severity={count>=Math.ceil(items.length/2)?'wn' as const:'ok' as const} />}
-      explanation={undefined}
-      relatedTools={[]} references={[{text:'子宮頚管成熟度の内診評価'}]}
-    ><div className="space-y-2">{items.map(i=><CheckItem key={i.id} id={i.id} label={i.label} checked={checks[i.id]} onChange={v=>setChecks(p=>({...p,[i.id]:v}))}/>)}</div></CalculatorLayout>
+      result={<ResultCard label="Bishopスコア" value={`${result.score}`} unit="/ 13点" interpretation={result.interpretation} severity={result.severity}
+        details={[
+          { label: '≧8点', value: '頸管成熟（誘発分娩の成功率が高い）' },
+          { label: '6-7点', value: '中間（頸管熟化処置を考慮）' },
+          { label: '≦5点', value: '頸管未熟（熟化処置が必要な可能性）' },
+        ]} />}
+      references={[{ text: 'Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol 1964;24:266-268' }]}
+    >
+      <div className="space-y-3">
+        {categories.map(c => (
+          <SelectInput key={c.id} id={c.id} label={c.label} options={c.options}
+            value={vals[c.id]} onChange={v => setVals(p => ({ ...p, [c.id]: v }))} />
+        ))}
+      </div>
+    </CalculatorLayout>
   )
 }

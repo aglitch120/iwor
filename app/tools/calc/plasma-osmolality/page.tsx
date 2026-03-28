@@ -32,12 +32,12 @@ export default function PlasmaOsmolalityPage() {
     } else if (posm > 295) {
       interpretation = '高浸透圧 — 脱水・高Na・高血糖・マンニトール等を鑑別'
       severity = 'wn'
-    } else if (posm < 275) {
-      interpretation = '低浸透圧 — 低Na血症の精査（尿浸透圧・尿Naで鑑別）'
-      severity = 'wn'
     } else if (posm < 260) {
       interpretation = '著明低浸透圧 — 急性低Na血症の可能性。けいれん・脳浮腫に注意'
       severity = 'dn'
+    } else if (posm < 275) {
+      interpretation = '低浸透圧 — 低Na血症の精査（尿浸透圧・尿Naで鑑別）'
+      severity = 'wn'
     } else {
       interpretation = '正常範囲（275〜295 mOsm/kg）'
     }

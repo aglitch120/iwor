@@ -42,7 +42,7 @@ const organs: OrganSystem[] = [
   {
     id: 'liver',
     name: '肝臓（ビリルビン mg/dL）',
-    icon: '🫁',
+    icon: '🔬',
     options: [
       { label: '<1.2', points: 0 },
       { label: '1.2〜1.9', points: 1 },
