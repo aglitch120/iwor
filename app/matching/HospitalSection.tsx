@@ -63,7 +63,6 @@ const SORT_OPTIONS: { key: SortKey; label: string; pro?: boolean }[] = [
   { key: 'anaba', label: '穴場度', pro: true },
   { key: 'honmei', label: '志望集中度', pro: true },
   { key: 'stability', label: '安定度', pro: true },
-  { key: 'popularityRank', label: '総合順位', pro: true },
   { key: 'name', label: '名前' },
 ]
 
@@ -695,10 +694,10 @@ function HospitalCard({
               {/* スコア4つ横並び */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
-                  { label: 'マッチ難易度', value: (h as any).hensachi?.toFixed(1), max: '偏差値', desc: '本気志望者の席あたり競争度' },
-                  { label: '穴場度', value: `${(h as any).anabaScore || 0}`, max: '/ 100', desc: '空席率+低倍率+トレンド' },
-                  { label: '志望集中度', value: honmei > 0 ? `${Math.round(honmei * 100)}%` : '--', max: '', desc: '志望者中の第1志望の割合' },
-                  { label: '安定度', value: `${(h as any).stabilityScore || 0}`, max: '/ 100', desc: '3年間の充足率の安定性' },
+                  { label: 'マッチ難易度', value: (h as any).hensachi?.toFixed(1), max: (h as any).popularityRank ? `(${(h as any).popularityRank}位)` : '偏差値', desc: '席を巡る本気の競争がどれだけ激しいか' },
+                  { label: '穴場度', value: `${(h as any).anabaScore || 0}`, max: '/ 100', desc: '空席・低倍率・志望者減少の総合指標' },
+                  { label: '志望集中度', value: honmei > 0 ? `${Math.round(honmei * 100)}%` : '--', max: '', desc: '志望者のうち第1志望に選んだ人の割合' },
+                  { label: '安定度', value: `${(h as any).stabilityScore || 0}`, max: '/ 100', desc: '過去3年間、毎年安定して定員が埋まっているか' },
                 ].map((s, i) => (
                   <div key={i} className="bg-white rounded-lg p-2 text-center">
                     <p className="text-[9px] text-muted">{s.label}</p>
@@ -720,9 +719,6 @@ function HospitalCard({
                 )}
                 {(h as any).risingScore > 0 && (
                   <span className="px-2 py-0.5 rounded bg-green-50 text-green-700">🔥 上昇中</span>
-                )}
-                {(h as any).popularityRank && (
-                  <span className="px-2 py-0.5 rounded bg-s2 text-muted">総合順位</span>
                 )}
               </div>
 
