@@ -8,7 +8,7 @@ const toolDef = getToolBySlug('centor')!
 
 export default function CentorPage() {
   const [fever, setFever] = useState(false)
-  const [cough, setCough] = useState(false)
+  const [noCough, setNoCough] = useState(false)
   const [tonsillar, setTonsillar] = useState(false)
   const [lymph, setLymph] = useState(false)
   const [ageGroup, setAgeGroup] = useState('1')
@@ -16,7 +16,7 @@ export default function CentorPage() {
   const result = useMemo(() => {
     let score = 0
     if (fever) score += 1
-    if (!cough) score += 1
+    if (noCough) score += 1
     if (tonsillar) score += 1
     if (lymph) score += 1
     score += parseInt(ageGroup)
@@ -24,13 +24,13 @@ export default function CentorPage() {
     const gasProb = ['<10%', '<10%', '11-17%', '28-35%', '51-53%', '51-53%'][Math.max(0, Math.min(score, 5))]
     const severity: 'ok'|'wn'|'dn' = score <= 1 ? 'ok' : score <= 3 ? 'wn' : 'dn'
     let recommendation = ''
-    if (score <= 0) recommendation = '検査・治療不要'
-    else if (score <= 1) recommendation = '迅速抗原検査不要（GAS確率 <10%）'
-    else if (score <= 3) recommendation = '迅速抗原検査を検討'
-    else recommendation = '迅速検査を検討（治療方針は担当医が判断）'
+    if (score <= 0) recommendation = 'GAS咽頭炎確率 <10%（スコア0点）'
+    else if (score <= 1) recommendation = 'GAS咽頭炎確率 <10%（スコア1点）'
+    else if (score <= 3) recommendation = 'GAS咽頭炎確率 11-35%（スコア2-3点）'
+    else recommendation = 'GAS咽頭炎確率 51-53%（スコア4-5点）'
 
     return { score: Math.max(score, 0), gasProb, severity, recommendation }
-  }, [fever, cough, tonsillar, lymph, ageGroup])
+  }, [fever, noCough, tonsillar, lymph, ageGroup])
 
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
@@ -43,7 +43,7 @@ export default function CentorPage() {
     >
       <div className="space-y-3">
         <CheckItem id="fever" label="発熱 > 38°C" points={1} checked={fever} onChange={setFever} />
-        <CheckItem id="cough" label="咳嗽なし" sublabel="咳がない = +1点" points={1} checked={!cough} onChange={v => setCough(!v)} />
+        <CheckItem id="noCough" label="咳嗽なし" sublabel="咳がない = +1点" points={1} checked={noCough} onChange={setNoCough} />
         <CheckItem id="tonsillar" label="扁桃の腫脹または滲出物" points={1} checked={tonsillar} onChange={setTonsillar} />
         <CheckItem id="lymph" label="前頸部リンパ節の圧痛・腫脹" points={1} checked={lymph} onChange={setLymph} />
         <SelectInput id="ageGroup" label="年齢（McIsaac変法）" value={ageGroup} onChange={setAgeGroup}

@@ -9,7 +9,7 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('corrected-ca')!
 
 function getInterpretation(corrCa: number): { text: string; severity: 'ok' | 'wn' | 'dn' } {
-  if (corrCa < 8.4) return { text: '低Ca血症', severity: 'dn' }
+  if (corrCa < 8.5) return { text: '低Ca血症', severity: 'dn' }
   if (corrCa <= 10.2) return { text: '正常範囲', severity: 'ok' }
   if (corrCa <= 12.0) return { text: '軽度高Ca血症', severity: 'wn' }
   if (corrCa <= 14.0) return { text: '中等度高Ca血症', severity: 'dn' }
@@ -95,7 +95,7 @@ export default function CorrectedCaPage() {
                 name: 'イオン化Caとの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'イオン化Ca（iCa）は生理活性を持つCaの直接測定値で、最も正確です。補正Caは簡便な推定式ですが、重症患者・酸塩基異常・高グロブリン血症では誤差が大きくなるため、これらの状況ではiCa測定が示されます。',
+                  text: 'イオン化Ca（iCa）は生理活性を持つCaの直接測定値で、最も正確です。補正Caは簡便な推定式ですが、重症患者・酸塩基異常・高グロブリン血症では誤差が大きくなるため、これらの状況ではiCa直接測定が有用とされます。',
                 },
               },
             ],
@@ -154,18 +154,18 @@ export default function CorrectedCaPage() {
 
               {result.corrCa > 12.0 && (
                 <div className="bg-dnl border border-dnb rounded-xl p-4">
-                  <p className="text-sm font-medium text-dn">⚠️ {result.corrCa > 14.0 ? '高Ca血症クリーゼ — 緊急対応' : '中等度以上の高Ca血症'}</p>
+                  <p className="text-sm font-medium text-dn">⚠️ {result.corrCa > 14.0 ? '高Ca血症クリーゼ' : '中等度以上の高Ca血症'}</p>
                   <p className="text-xs text-dn mt-1">
-                    専門医へのコンサルテーションをご検討ください。
+                    対応方針は担当医による判断が必要です。
                   </p>
                 </div>
               )}
 
-              {result.corrCa < 8.4 && (
+              {result.corrCa < 8.5 && (
                 <div className="bg-dnl border border-dnb rounded-xl p-4">
                   <p className="text-sm font-medium text-dn">⚠️ 低Ca血症</p>
                   <p className="text-xs text-dn mt-1">
-                    専門医へのコンサルテーションをご検討ください。
+                    対応方針は担当医による判断が必要です。
                   </p>
                 </div>
               )}

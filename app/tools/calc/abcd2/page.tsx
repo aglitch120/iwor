@@ -30,9 +30,9 @@ export default function Abcd2Page() {
     }
 
     let label = ''
-    if (score <= 3) label = '低リスク — ただしTIAは原則緊急評価が必要（画像検査との組み合わせで判断）'
-    else if (score <= 5) label = '中リスク — 入院精査を考慮'
-    else label = '高リスク — 入院・緊急精査を検討'
+    if (score <= 3) label = '低リスク（2日以内脳梗塞リスク 1.0%）'
+    else if (score <= 5) label = '中リスク（2日以内脳梗塞リスク 4.1%）'
+    else label = '高リスク（2日以内脳梗塞リスク 8.1%）'
 
     return { score, risk2d, risk7d, risk90d, severity, label }
   }, [age, bp, clinical, duration, diabetes])
@@ -48,7 +48,7 @@ export default function Abcd2Page() {
       result={
         <div className="space-y-3">
           <div className="bg-dnl border border-dnb rounded-xl p-3">
-            <p className="text-xs font-semibold text-dn">ABCD²スコア単独での入院・外来判断は推奨されない（AHA/ASA 2021: Class III）。MRI-DWI所見・症状持続・施設状況を総合判断すること。</p>
+            <p className="text-xs font-semibold text-dn">ABCD²スコア単独での対応方針の決定は不十分（AHA/ASA 2021: Class III）。MRI-DWI所見・症状持続・施設状況を含めた総合的な臨床判断が必要。</p>
           </div>
           <ResultCard
             label="ABCD² スコア"

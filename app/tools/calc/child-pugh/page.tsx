@@ -85,7 +85,7 @@ function getClassification(score: number): { grade: string; text: string; severi
   }
   return {
     grade: 'C',
-    text: 'Class C（重度・非代償性）— 周術期リスク極めて高い。肝臓専門医への相談を検討',
+    text: 'Class C（重度・非代償性）— 周術期リスク極めて高い',
     severity: 'dn',
     survival1y: '45%',
     survival2y: '35%',
@@ -165,7 +165,7 @@ export default function ChildPughPage() {
                 name: 'Child-Pugh分類はどのような場面で使いますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '肝硬変の予後予測、手術適応の判断、肝移植の評価、薬剤投与量の調整などに使用されます。Class Cでは周術期死亡率が80%を超えるため、待機手術の実施には肝臓専門医との慎重な検討が必要です。',
+                  text: '肝硬変の予後予測、手術リスク評価、肝移植候補の評価、薬剤投与量の調整などに使用されます。Class Cでは周術期死亡率が80%を超えるため、手術リスクが極めて高いことが知られています。',
                 },
               },
               {
@@ -173,7 +173,7 @@ export default function ChildPughPage() {
                 name: 'Child-PughとMELDの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Child-Pughは3段階のカテゴリ分類（A/B/C）で臨床的判断に適し、MELDは連続変数で算出され移植待機リストの優先順位決定に使われます。両者は補完的に使用されます。なおClass Cでは周術期死亡率が極めて高く、待機手術の判断は肝臓専門医との協議が必要です。',
+                  text: 'Child-Pughは3段階のカテゴリ分類（A/B/C）で臨床的判断に適し、MELDは連続変数で算出され移植待機リストの優先順位決定に使われます。両者は補完的に使用されます。なおClass Cでは周術期死亡率が極めて高いことが知られています。',
                 },
               },
             ],
@@ -228,17 +228,17 @@ export default function ChildPughPage() {
             </div>
             {result.grade === 'C' && (
               <div className="bg-dnl border border-dnb rounded-xl p-4">
-                <p className="text-sm font-medium text-dn">⚠️ Class C — 待機手術は慎重な判断が必要です（肝臓専門医と相談）</p>
+                <p className="text-sm font-medium text-dn">⚠️ Class C — 周術期死亡率 82%</p>
                 <p className="text-xs text-dn mt-1">
-                  周術期死亡率が極めて高く、肝移植の適応については肝臓専門医にご相談ください。MELD スコアによる移植優先度評価を併用してください。
+                  周術期リスクが極めて高い。MELDスコアとの併用評価も参考になる。最終的な判断は担当医による。
                 </p>
               </div>
             )}
             {result.grade === 'B' && (
               <div className="bg-wnl border border-wnb rounded-xl p-4">
-                <p className="text-sm font-medium text-wn">⚡ Class B — 手術適応は慎重に判断</p>
+                <p className="text-sm font-medium text-wn">⚡ Class B — 周術期死亡率 30%</p>
                 <p className="text-xs text-wn mt-1">
-                  周術期リスクが高いため、手術適応は肝臓専門医と協議のうえ慎重に判断してください。栄養療法・腹水管理による改善も検討します。
+                  周術期リスクが高い。手術適応の判断は担当医による総合的な評価が必要。
                 </p>
               </div>
             )}

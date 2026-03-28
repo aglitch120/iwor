@@ -55,10 +55,10 @@ export default function CapriniPage() {
     const score = allItems.filter(c => checks[c.id]).reduce((s, c) => s + c.points, 0)
     const severity: 'ok'|'wn'|'dn' = score <= 1 ? 'ok' : score <= 4 ? 'wn' : 'dn'
     let label = '', prevention = ''
-    if (score <= 0) { label = '最低リスク'; prevention = '早期離床' }
-    else if (score <= 2) { label = '低リスク'; prevention = '弾性ストッキング or IPC' }
-    else if (score <= 4) { label = '中リスク'; prevention = 'IPC推奨。薬物的予防は高リスク以上で検討（ACCP 2012）' }
-    else { label = '高リスク'; prevention = '薬物的予防 + 弾性ストッキング/IPC' }
+    if (score <= 0) { label = '最低リスク'; prevention = 'VTEリスク最低' }
+    else if (score <= 2) { label = '低リスク'; prevention = 'VTEリスク低' }
+    else if (score <= 4) { label = '中リスク'; prevention = 'VTEリスク中等度（ACCP 2012）' }
+    else { label = '高リスク'; prevention = 'VTEリスク高' }
     return { score, severity, label, prevention }
   }, [checks])
 

@@ -13,7 +13,7 @@ export default function CandidaScorePage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).reduce((s,i)=>s+i.points,0)
-    if(score>=3) return {score,severity:'dn' as const,label:'高リスク（≧3）: 侵襲性カンジダ症を疑う → 抗真菌薬開始を検討'}
+    if(score>=3) return {score,severity:'dn' as const,label:'高リスク（≧3）: 侵襲性カンジダ症のリスク高い'}
     return {score,severity:'ok' as const,label:'低リスク（<3）: 侵襲性カンジダ症の可能性低い'}
   },[checks])
   return(

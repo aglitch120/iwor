@@ -24,7 +24,7 @@ export default function AlvaradoPage() {
   const result = useMemo(() => {
     const score = criteria.filter(c => checks[c.id]).reduce((s, c) => s + c.points, 0)
     const severity: 'ok'|'wn'|'dn' = score <= 4 ? 'ok' : score <= 6 ? 'wn' : 'dn'
-    const label = score <= 4 ? '虫垂炎の可能性低い — 経過観察' : score <= 6 ? '虫垂炎の可能性あり — CT検査を検討' : '虫垂炎の可能性高い — 外科コンサルト'
+    const label = score <= 4 ? '虫垂炎の可能性低い (unlikely)（スコア0-4）' : score <= 6 ? '虫垂炎に矛盾しない (compatible)（スコア5-6）' : score <= 8 ? '虫垂炎の可能性高い (probable)（スコア7-8）' : '虫垂炎の可能性非常に高い (very probable)（スコア9-10）'
     return { score, severity, label }
   }, [checks])
 

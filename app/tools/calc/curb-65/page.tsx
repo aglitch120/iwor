@@ -21,31 +21,31 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
     text: '低リスク',
     severity: 'ok',
     mortality: '0.6%',
-    disposition: '外来治療を検討',
+    disposition: 'スコア0点（低リスク）',
   }
   if (score === 1) return {
     text: '低リスク',
     severity: 'ok',
     mortality: '2.7%',
-    disposition: '外来治療を検討（リスク因子に応じて短期入院も考慮）',
+    disposition: 'スコア1点（低リスク）',
   }
   if (score === 2) return {
     text: '中リスク',
     severity: 'wn',
     mortality: '6.8%',
-    disposition: '入院治療（短期入院または Hospital-supervised）',
+    disposition: 'スコア2点（中リスク）',
   }
   if (score === 3) return {
     text: '高リスク',
     severity: 'dn',
     mortality: '14.0%',
-    disposition: '入院治療（重症肺炎として管理）',
+    disposition: 'スコア3点（高リスク）',
   }
   return {
     text: '非常に高リスク',
     severity: 'dn',
     mortality: score === 4 ? '27.8%' : '57.0%',
-    disposition: 'ICU入室を検討',
+    disposition: 'スコア4〜5点（非常に高リスク）',
   }
 }
 
@@ -104,7 +104,7 @@ export default function CURB65Page() {
                 name: 'CURB-65とは何ですか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'CURB-65は市中肺炎（CAP）の重症度を5項目（意識障害・BUN・呼吸数・血圧・年齢）で評価し、外来治療か入院かICUかのトリアージに使用するスコアです。British Thoracic Societyで示されています。',
+                  text: 'CURB-65は市中肺炎（CAP）の重症度を5項目（意識障害・BUN・呼吸数・血圧・年齢）で評価し、低リスク・中リスク・高リスクに分類するスコアです。British Thoracic Societyで示されています。',
                 },
               },
               {
@@ -120,7 +120,7 @@ export default function CURB65Page() {
                 name: 'CRB-65とCURB-65の違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'CRB-65はCURB-65からBUN（Urea）を除いた4項目版で、血液検査なしでベッドサイドやプライマリケアで迅速に評価できます。0点は外来、1-2点は入院検討、3-4点は緊急入院が示されます。',
+                  text: 'CRB-65はCURB-65からBUN（Urea）を除いた4項目版で、血液検査なしでベッドサイドやプライマリケアで迅速に評価できます。スコアに応じて低・中・高リスクに分類されます。',
                 },
               },
             ],

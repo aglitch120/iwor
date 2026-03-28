@@ -20,8 +20,8 @@ export default function DRIPScorePage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).reduce((s,i)=>s+i.points,0)
-    if(score>=4) return {score,severity:'dn' as const,label:'DRIPリスク高（≧4）: MRSA/緑膿菌等の耐性菌カバーを検討'}
-    return {score,severity:'ok' as const,label:'DRIPリスク低: 標準的な市中肺炎の抗菌薬を参考に選択'}
+    if(score>=4) return {score,severity:'dn' as const,label:'DRIPリスク高（≧4）: MRSA/緑膿菌等の耐性菌リスクあり'}
+    return {score,severity:'ok' as const,label:'DRIPリスク低: 耐性菌リスクが低い'}
   },[checks])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

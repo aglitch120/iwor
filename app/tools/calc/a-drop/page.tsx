@@ -21,28 +21,28 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
     text: '軽症',
     severity: 'ok',
     category: '軽症群',
-    disposition: '外来治療',
+    disposition: 'スコア0点（軽症群）',
     mortality: '2.3%',
   }
   if (score <= 2) return {
     text: score === 1 ? '中等症I' : '中等症II',
     severity: 'wn',
     category: score === 1 ? '中等症I群' : '中等症II群',
-    disposition: score === 1 ? '外来または入院' : '入院治療',
+    disposition: score === 1 ? 'スコア1点（中等症I群）' : 'スコア2点（中等症II群）',
     mortality: score === 1 ? '4.3%' : '9.0%',
   }
   if (score === 3) return {
     text: '重症',
     severity: 'dn',
     category: '重症群',
-    disposition: '入院治療（集中治療も検討）',
+    disposition: 'スコア3点（重症群）',
     mortality: '18.2%',
   }
   return {
     text: '超重症',
     severity: 'dn',
     category: '超重症群',
-    disposition: 'ICU管理',
+    disposition: 'スコア4〜5点（超重症群）',
     mortality: score === 4 ? '32.5%' : '46.2%',
   }
 }
@@ -118,7 +118,7 @@ export default function ADROPPage() {
                 name: 'A-DROPで何点から入院が必要ですか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '日本呼吸器学会のガイドラインでは、0点は外来治療、1-2点は外来または入院、3点は入院（集中治療検討）、4-5点はICU管理が示されています。',
+                  text: '日本呼吸器学会のガイドラインでは、スコアに応じた重症度分類（軽症・中等症I・中等症II・重症・超重症）が示されており、対応方針は担当医が総合的に判断します。',
                 },
               },
             ],
@@ -157,7 +157,7 @@ export default function ADROPPage() {
               <p className={`text-sm font-medium ${
                 result.score >= 3 ? 'text-dn' : result.score >= 1 ? 'text-wn' : 'text-tx'
               }`}>
-                {result.score >= 3 ? '🏥' : result.score >= 1 ? '⚡' : '✅'} 参考マネジメント（日本呼吸器学会ガイドライン）
+                {result.score >= 3 ? '🏥' : result.score >= 1 ? '⚡' : '✅'} 重症度分類（日本呼吸器学会ガイドライン）
               </p>
               <p className={`text-xs mt-1 ${
                 result.score >= 3 ? 'text-dn' : result.score >= 1 ? 'text-wn' : 'text-muted'
@@ -168,10 +168,9 @@ export default function ADROPPage() {
 
             {result.score >= 4 && (
               <div className="bg-dnl border border-dnb rounded-xl p-4">
-                <p className="text-sm font-medium text-dn">⚠️ 超重症 — ICU管理・敗血症評価を</p>
+                <p className="text-sm font-medium text-dn">⚠️ 超重症群 — 30日死亡率 {result.mortality}</p>
                 <p className="text-xs text-dn mt-1">
-                  qSOFA/SOFAスコアによる敗血症評価を並行して行い、
-                  エンピリック抗菌薬の早期投与と血液培養採取を優先してください。
+                  qSOFA/SOFAスコアによる敗血症評価との並行評価が参考になる。最終的な対応方針は担当医による判断が必要。
                 </p>
               </div>
             )}

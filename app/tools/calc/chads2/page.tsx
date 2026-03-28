@@ -27,9 +27,9 @@ const strokeRisk: Record<number, string> = {
 }
 
 function getRecommendation(score: number): string {
-  if (score === 0) return '低リスク — 抗凝固療法は一般に不要（※現行ガイドラインではアスピリン単独は非推奨）'
-  if (score === 1) return '中リスク — 抗凝固療法を考慮'
-  return '高リスク — 抗凝固療法を検討'
+  if (score === 0) return '低リスク（スコア0点）'
+  if (score === 1) return '中リスク（スコア1点）'
+  return '高リスク（スコア2点以上）'
 }
 
 function getSeverity(score: number): 'ok' | 'wn' | 'dn' {

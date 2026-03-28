@@ -45,9 +45,9 @@ const strokeRisk: Record<number, string> = {
 function getRecommendation(score: number, isFemale: boolean): string {
   // 女性で性別ポイントのみ（実質0点）の場合
   const effectiveScore = isFemale ? score - 1 : score
-  if (effectiveScore === 0) return '抗凝固療法は不要（低リスク）'
-  if (effectiveScore === 1) return '抗凝固療法を考慮（DOAC参照）'
-  return '抗凝固療法を検討（DOAC参照）'
+  if (effectiveScore === 0) return '低リスク（実質スコア0点）'
+  if (effectiveScore === 1) return '中リスク（実質スコア1点）'
+  return '高リスク（実質スコア2点以上）'
 }
 
 function getSeverity(score: number, isFemale: boolean): 'ok' | 'wn' | 'dn' {
