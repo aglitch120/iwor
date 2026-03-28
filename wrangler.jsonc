@@ -9,7 +9,7 @@
   ],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "STATIC_ASSETS"
   },
   "services": [
     {
@@ -17,9 +17,6 @@
       "service": "iwor"
     }
   ],
-  "images": {
-    "binding": "IMAGES"
-  },
   "observability": {
     "enabled": true
   }
