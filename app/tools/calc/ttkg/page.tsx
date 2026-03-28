@@ -13,7 +13,9 @@ export default function TTKGPage(){
   const result=useMemo(()=>{
     const uk=Number(uK)||0;const sk=Number(sK)||1;const uo=Number(uOsm)||1;const so=Number(sOsm)||1
     const ttkg=(uk/(uo/so))/sk
-    const sev=ttkg>7?'ok' as const:ttkg>4?'wn' as const:'wn' as const
+    // 高K: TTKG>7=腎排泄適切(ok), ≤7=腎性(dn)。低K: TTKG<3=腎性喪失(dn), ≥3=腎外性(ok)
+    const isHyperK = sk > 5.0
+    const sev = isHyperK ? (ttkg > 7 ? 'ok' as const : 'dn' as const) : (ttkg < 3 ? 'dn' as const : 'ok' as const)
     let label=''
     if(sk>5.0) label=ttkg>7?'TTKG>7: 腎からのK排泄は適切（腎外性の原因を検索）':'TTKG≦7: 腎からのK排泄が不十分（腎性の高K血症）'
     else label=ttkg<3?'TTKG<3: 腎からのK排泄が過多（腎性K喪失）':'TTKG≧3: 腎からのK排泄は適切（腎外性の低K血症）'

@@ -10,7 +10,7 @@ export default function TDSPage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).length
-    return {score,severity:score>=5?'wn' as const:'ok' as const,label:score>=5?'ニコチン依存症（≧5）→ 禁煙外来の保険適用':'依存症に該当しない'}
+    return {score,severity:score>=5?'wn' as const:'ok' as const,label:score>=5?'ニコチン依存症（≧5）— 禁煙外来の保険適用要件の1つ（他にBI≧200、禁煙意思等も必要）':'依存症に該当しない'}
   },[checks])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

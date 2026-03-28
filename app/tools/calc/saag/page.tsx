@@ -22,7 +22,7 @@ export default function SAAGPage() {
       isPortalHTN,
       severity: isPortalHTN ? 'wn' as const : 'ok' as const,
       label: isPortalHTN
-        ? `SAAG ${saag.toFixed(2)} g/dL (>= 1.1) — 門脈圧亢進を示唆（肝硬変、心不全、Budd-Chiari症候群、門脈血栓症など）。感度96%、特異度97%。`
+        ? `SAAG ${saag.toFixed(2)} g/dL (>= 1.1) — 門脈圧亢進を示唆（肝硬変、心不全、Budd-Chiari症候群、門脈血栓症など）。感度97%、特異度97% (Runyon 1992)。`
         : `SAAG ${saag.toFixed(2)} g/dL (< 1.1) — 非門脈圧亢進性（癌性腹膜炎、結核性腹膜炎、膵性腹水、ネフローゼ症候群など）`,
       ddx: isPortalHTN
         ? ['肝硬変', 'アルコール性肝炎', '心不全', 'Budd-Chiari症候群', '門脈血栓症', '肝転移（大量）', '粘液水腫']

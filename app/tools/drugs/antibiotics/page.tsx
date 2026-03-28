@@ -36,13 +36,13 @@ const DRUGS: Drug[] = [
   { id:'azm', name:'AZM', nameEn:'アジスロマイシン', category:'マクロライド', gpc:'some', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'good', note:'非定型肺炎（マイコプラズマ・クラミジア・レジオネラ）の。' },
   { id:'cam', name:'CAM', nameEn:'クラリスロマイシン', category:'マクロライド', gpc:'some', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'good', note:'非定型+MAC。H. pylori除菌' },
   // グリコペプチド
-  { id:'vcm', name:'VCM', nameEn:'バンコマイシン', category:'グリコペプチド', gpc:'good', gpcMrsa:'good', gnr:'none', gnrPseudomonas:'none', anaerobe:'some', atypical:'none', note:'MRSA。TDM必須（AUC/MIC 400-600目標）。CDI内服にも' },
+  { id:'vcm', name:'VCM', nameEn:'バンコマイシン', category:'グリコペプチド', gpc:'good', gpcMrsa:'good', gnr:'none', gnrPseudomonas:'none', anaerobe:'some', atypical:'none', note:'MRSA。TDM必須（AUC/MIC 400-600 μg·h/mL目標、トラフ15-20の代替）。CDI経口VCM 125mg×4/日は別適応' },
   // リネゾリド
   { id:'lzd', name:'LZD', nameEn:'リネゾリド', category:'オキサゾリジノン', gpc:'good', gpcMrsa:'good', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'MRSA肺炎に有効（肺移行◎）。骨髄抑制・MAO阻害注意。14日以上は血球モニタリング' },
   // メトロニダゾール
   { id:'mnz', name:'MNZ', nameEn:'メトロニダゾール', category:'ニトロイミダゾール', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'good', atypical:'none', note:'嫌気性菌◎。脳膿瘍（BBB通過◎）。飲酒禁忌（ジスルフィラム様反応）' },
   // 抗真菌
-  { id:'mcfg', name:'MCFG', nameEn:'ミカファンギン', category:'キャンディン系', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'Candida。Aspergillus△。ムコール×' },
+  { id:'mcfg', name:'MCFG', nameEn:'ミカファンギン', category:'キャンディン系', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'Candida。Aspergillus: 日本では適応外（エビデンス不十分）。ムコール×' },
 ]
 
 const ORGANISMS = [

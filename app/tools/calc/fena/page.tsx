@@ -27,7 +27,7 @@ export default function FenaPage() {
     let interpretation = ''
     let severity: 'ok' | 'wn' | 'dn' = 'ok'
     if (fena < 1) {
-      interpretation = 'FENa < 1% — 腎前性AKI（有効循環血漿量低下）を示唆'
+      interpretation = 'FENa < 1% — 腎前性AKI（有効循環血漿量低下）を示唆（※利尿薬使用中は上昇するため解釈に注意。FEUNも参照）'
       severity = 'wn'
     } else if (fena <= 2) {
       interpretation = 'FENa 1〜2% — 境界域。臨床所見と合わせて判断'

@@ -26,8 +26,8 @@ const items = [
     { label: '反応なし', score: 0 },
   ]},
   { name: 'SpO₂', options: [
-    { label: 'SpO₂ > 92% (室内気)', score: 2 },
-    { label: 'SpO₂ > 90% (酸素投与下)', score: 1 },
+    { label: 'SpO₂ ≧ 92% (室内気)', score: 2 },
+    { label: 'SpO₂ ≧ 90% (酸素投与下)', score: 1 },
     { label: 'SpO₂ < 90%', score: 0 },
   ]},
 ]

@@ -12,7 +12,7 @@ const items = [
   ]},
   { name: 'Timing（発症時期）', options: [
     { label: 'ヘパリン開始5-10日 or 1日以内（30日以内に曝露歴あり）', score: 2 },
-    { label: '10日以降 or 不明 or 1日以内（30-100日前に曝露）', score: 1 },
+    { label: '10日以降 or 不明 or 1日以内（31-100日前に曝露）', score: 1 },
     { label: '4日以内（最近の曝露なし）', score: 0 },
   ]},
   { name: 'Thrombosis（血栓症）', options: [

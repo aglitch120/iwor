@@ -112,7 +112,7 @@ export default function CURB65Page() {
                 name: 'CURB-65とA-DROPの違いは？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'CURB-65は英国BTSが開発した国際的なスコアで、A-DROPは日本呼吸器学会が日本人データに基づいて開発したスコアです。項目は類似していますが、A-DROPは年齢の性差補正や脱水の指標にBUNではなくSpO2を使用する点が異なります。',
+                  text: 'CURB-65は英国BTSが開発した国際的なスコアで、A-DROPは日本呼吸器学会が日本人データに基づいて開発したスコアです。両者ともBUNを使用しますが、A-DROPは年齢の性差補正（男性70歳/女性75歳）や酸素化指標（SpO2 ≤90%）を追加している点が異なります。',
                 },
               },
               {

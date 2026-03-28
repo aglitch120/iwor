@@ -13,7 +13,8 @@ export default function PrescriptionDaysPage() {
     if (!startDate || !endDate) return null
     const s = new Date(startDate), e = new Date(endDate)
     if (isNaN(s.getTime()) || isNaN(e.getTime())) return null
-    const diff = Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24))
+    // 処方開始日を含むため+1日（1/1〜1/7 = 7日分）
+    const diff = Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)) + 1
     if (diff < 0) return null
     const ex = parseInt(extra) || 0
     const total = diff + ex

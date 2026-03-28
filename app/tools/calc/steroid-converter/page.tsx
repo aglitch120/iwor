@@ -19,7 +19,7 @@ interface Steroid {
 }
 
 const steroids: Steroid[] = [
-  { id: 'psl', name: 'プレドニゾロン（PSL）', nameEn: 'Prednisolone', equivalentDose: 5, mineralocorticoid: '++', halfLife: '12-36h', duration: '中間型' },
+  { id: 'psl', name: 'プレドニゾロン（PSL）', nameEn: 'Prednisolone', equivalentDose: 5, mineralocorticoid: '+', halfLife: '12-36h（生物学的半減期）', duration: '中間型' },
   { id: 'mpsl', name: 'メチルプレドニゾロン（mPSL）', nameEn: 'Methylprednisolone', equivalentDose: 4, mineralocorticoid: '0', halfLife: '12-36h', duration: '中間型' },
   { id: 'dex', name: 'デキサメタゾン（DEX）', nameEn: 'Dexamethasone', equivalentDose: 0.75, mineralocorticoid: '0', halfLife: '36-72h', duration: '長時間型' },
   { id: 'bet', name: 'ベタメタゾン（BET）', nameEn: 'Betamethasone', equivalentDose: 0.6, mineralocorticoid: '0', halfLife: '36-72h', duration: '長時間型' },

@@ -107,7 +107,7 @@ const CATEGORIES: Category[] = [
       {
         title: 'DPP-4阻害薬 + SGLT2阻害薬',
         drugs: [
-          { brand: 'カナリア配合錠', generic: 'テネリグリプチン/カナグリフロジン', composition: 'テネリグリプチン 20mg + カナグリフロジン 100mg', note: '1日1回。心腎保護の相乗効果' },
+          { brand: 'カナリア配合錠', generic: 'テネリグリプチン/カナグリフロジン', composition: 'テネリグリプチン 20mg + カナグリフロジン 100mg', note: '1日1回。カナグリフロジンに心腎保護エビデンスあり（CANVAS/CREDENCE）' },
           { brand: 'スージャヌ配合錠', generic: 'シタグリプチン/イプラグリフロジン', composition: 'シタグリプチン 50mg + イプラグリフロジン 50mg' },
           { brand: 'トラディアンス配合錠 AP/BP', generic: 'リナグリプチン/エンパグリフロジン', composition: 'AP: リナグリプチン 5mg + エンパグリフロジン 10mg / BP: 5mg + 25mg', note: 'エンパグリフロジンはEMPA-REG OUTCOME試験で心血管アウトカム改善' },
         ],

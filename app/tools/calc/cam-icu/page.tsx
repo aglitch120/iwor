@@ -22,7 +22,7 @@ export default function CamIcuPage() {
     const isDelirium = f1 && f2 && (f3 || f4)
     return {
       isDelirium,
-      interpretation: isDelirium ? 'CAM-ICU陽性 — せん妄と判定' : 'CAM-ICU陰性 — せん妄なし',
+      interpretation: isDelirium ? 'CAM-ICU陽性 — せん妄が疑われます（※RASS -4/-5の深鎮静では評価不能）' : 'CAM-ICU陰性 — 現時点でせん妄は示唆されない',
       severity: (isDelirium ? 'dn' : 'ok') as 'ok' | 'wn' | 'dn',
     }
   }, [feature1, feature2, feature3, feature4])

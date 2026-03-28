@@ -11,7 +11,7 @@ const flags = [
   { item: '安静時痛・夜間痛', category: '悪性腫瘍/感染' },
   { item: '発熱', category: '感染' },
   { item: '免疫抑制状態（ステロイド・HIV等）', category: '感染' },
-  { item: 'IV drug use', category: '感染' },
+  { item: '静注薬物使用歴', category: '感染' },
   { item: '最近の脊椎手術・処置', category: '感染' },
   { item: '重大な外傷（高齢者は軽微な外傷も）', category: '骨折' },
   { item: 'ステロイド長期使用', category: '骨折' },
