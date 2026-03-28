@@ -79,6 +79,11 @@ for (const [lo,hi] of capBands) {
 }
 console.log('異常値フロア（P10）:', JSON.stringify(bandFloors))
 
+// Save original honmeiIndex before any modification
+for (const h of hospitals) {
+  h._originalHonmei = h.honmeiIndex
+}
+
 let fixedCount = 0
 for (const h of hospitals) {
   if (h.honmeiIndex == null || h.honmeiIndex <= 0) continue
@@ -88,16 +93,45 @@ for (const h of hospitals) {
   if (floor && h.honmeiIndex < floor && h.applicants >= 20) {
     // Anomalous: likely program ID mismatch. Replace with band median
     const bandMedian = hospitals
-      .filter(x => x.capacity >= band[0] && x.capacity <= band[1] && x.honmeiIndex != null && x.honmeiIndex > 0)
-      .map(x => x.honmeiIndex)
+      .filter(x => x.capacity >= band[0] && x.capacity <= band[1] && x._originalHonmei != null && x._originalHonmei > 0)
+      .map(x => x._originalHonmei)
       .sort((a,b) => a - b)
     const median = bandMedian[Math.floor(bandMedian.length / 2)]
-    console.log(`  修正: ${h.name} (定員${h.capacity}) honmei ${h.honmeiIndex} → ${median}`)
     h.honmeiIndex = median
+    h._wasFixed = true
     fixedCount++
   }
 }
 console.log(`異常値修正: ${fixedCount}件`)
+
+// Improved fallback for missing/corrected honmeiIndex using matchRate history
+// Logic: hospitals that consistently fill all seats attract serious applicants,
+// so their honmeiIndex should be higher than the generic median.
+// This replaces the flat median (0.33-0.36) with a matchRate-aware estimate.
+// Improved fallback using matchRate history
+// ONLY for hospitals where honmeiIndex was missing or replaced by anomaly detection
+// Never overwrite valid original data
+let improvedCount = 0
+for (const h of hospitals) {
+  const needsImprovement = h._wasFixed || h._originalHonmei == null || h._originalHonmei <= 0
+
+  // Also flag: matchRate 100% but honmei < 0.40 AND original data was missing/fixed
+  // (NOT for hospitals with valid original honmei — low honmei + 100% matchRate is normal for universities)
+  const mr3y = h.avgMatchRate3y || h.matchRate || 0
+  const hadValidOriginal = h._originalHonmei != null && h._originalHonmei > 0 && !h._wasFixed
+  const suspiciouslyLow = mr3y >= 100 && h.honmeiIndex != null && h.honmeiIndex < 0.40 && !hadValidOriginal
+
+  if (needsImprovement || suspiciouslyLow) {
+    if (mr3y >= 100) {
+      h.honmeiIndex = 0.55
+      improvedCount++
+    } else if (mr3y >= 80) {
+      h.honmeiIndex = 0.42
+      improvedCount++
+    }
+  }
+}
+console.log(`充足率ベース推定: ${improvedCount}件のhonmeiIndexを充足率から推定`)
 
 // Calculate 本気倍率 for each hospital
 for (const h of hospitals) {
