@@ -50,7 +50,7 @@ const SORT_OPTIONS: { key: SortKey; label: string; pro?: boolean }[] = [
   { key: 'anaba', label: '穴場度', pro: true },
   { key: 'honmei', label: '志望集中度', pro: true },
   { key: 'stability', label: '安定度', pro: true },
-  { key: 'popularityRank', label: '人気順位', pro: true },
+  { key: 'popularityRank', label: '総合順位', pro: true },
   { key: 'name', label: '名前' },
 ]
 
@@ -187,7 +187,13 @@ export default function HospitalTab({
       let cmp = 0
       switch (sortKey) {
         case 'matchRate': cmp = a.popularity - b.popularity; break
-        case 'hensachi': cmp = ((a as any).hensachi || 0) - ((b as any).hensachi || 0); break
+        case 'hensachi': {
+          // 定員2以下のサブプログラムは下位に（スコアを30に丸める）
+          const hA = a.capacity <= 2 ? 30 : ((a as any).hensachi || 0)
+          const hB = b.capacity <= 2 ? 30 : ((b as any).hensachi || 0)
+          cmp = hA - hB
+          break
+        }
         case 'anaba': cmp = calcAnaba(b) - calcAnaba(a); break
         case 'honmei': cmp = ((b as any).honmeiIndex || 0) - ((a as any).honmeiIndex || 0); break
         case 'stability': cmp = ((a as any).stabilityScore || 0) - ((b as any).stabilityScore || 0); break
@@ -223,7 +229,7 @@ export default function HospitalTab({
       <div className="flex gap-1 bg-s1 rounded-xl p-1">
         {([
           { id: 'search' as SubTab, label: '検索', count: HOSPITALS.length },
-          { id: 'ranking' as SubTab, label: '人気', count: 0 },
+          { id: 'ranking' as SubTab, label: 'ランキング', count: 0 },
         ]).map(t => (
           <button
             key={t.id}
@@ -441,7 +447,7 @@ export default function HospitalTab({
                       })}
                     </div>
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-s0/80 to-s0/95">
-                      <p className="text-sm font-bold text-tx mb-1">志望人気ランキング</p>
+                      <p className="text-sm font-bold text-tx mb-1">志望集中度ランキング</p>
                       <p className="text-[10px] text-muted mb-3">iwor全ユーザーの志望動向をリアルタイム集計</p>
                       <button onClick={onShowProModal}
                         className="pro-cta-glow px-6 py-2.5 rounded-xl text-xs font-bold text-white" style={{ background: MC }}>
@@ -496,7 +502,7 @@ export default function HospitalTab({
                     })}
                   </div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-s0/80 to-s0/95">
-                    <p className="text-sm font-bold text-tx mb-1">人気病院ランキング</p>
+                    <p className="text-sm font-bold text-tx mb-1">マッチ難易度ランキング</p>
                     <p className="text-[10px] text-muted mb-3">iwor全ユーザーの志望動向をリアルタイム集計</p>
                     <button onClick={onShowProModal}
                       className="pro-cta-glow px-6 py-2.5 rounded-xl text-xs font-bold text-white" style={{ background: MC }}>
@@ -578,17 +584,17 @@ function HospitalCard({
 
   // 志望集中度（第1希望率の代理指標）
   // honmeiIndex: JRMPデータ由来（中間発表の第1希望者数/全志望者数）がある場合のみ正確
-  // ない場合: 全志望者数/定員（単純な人気度）をスケーリング
+  // ない場合: 全志望者数/定員（単純な倍率）をスケーリング
   let honmei = (h as any).honmeiIndex || 0
   const hasRealData = !!(h as any).honmeiIndex
   if (!hasRealData && h.applicants > 0 && h.capacity > 0) {
-    // 人気度を0-1にスケーリング（倍率5倍→1.0）
+    // 倍率を0-1にスケーリング（倍率5倍→1.0）
     honmei = Math.min(h.applicants / h.capacity / 5, 1)
     honmei = Math.round(honmei * 100) / 100
   }
-  const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '高人気' }
-    : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '中人気' }
-    : honmei > 0 ? { bg: '#FEE2E2', text: '#991B1B', label: '低人気' }
+  const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '高本命' }
+    : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '中本命' }
+    : honmei > 0 ? { bg: '#FEE2E2', text: '#991B1B', label: '低本命' }
     : { bg: '#F0EDE7', text: '#6B6760', label: '--' }
 
   return (
@@ -706,7 +712,7 @@ function HospitalCard({
                   <span className="px-2 py-0.5 rounded bg-green-50 text-green-700">🔥 上昇中</span>
                 )}
                 {(h as any).popularityRank && (
-                  <span className="px-2 py-0.5 rounded bg-s2 text-muted">人気順位 {(h as any).popularityRank}/{1470}</span>
+                  <span className="px-2 py-0.5 rounded bg-s2 text-muted">総合順位 {(h as any).popularityRank}/{1470}</span>
                 )}
               </div>
 
