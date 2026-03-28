@@ -599,9 +599,9 @@ function HospitalCard({
     honmei = Math.min(h.applicants / h.capacity / 5, 1)
     honmei = Math.round(honmei * 100) / 100
   }
-  const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '高本命' }
-    : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '中本命' }
-    : honmei > 0 ? { bg: '#FEE2E2', text: '#991B1B', label: '低本命' }
+  const honmeiColor = honmei >= 0.8 ? { bg: '#DCFCE7', text: '#166534', label: '集中高' }
+    : honmei >= 0.5 ? { bg: '#FEF3C7', text: '#92400E', label: '集中中' }
+    : honmei > 0 ? { bg: '#F3F4F6', text: '#6B7280', label: '併願多' }
     : { bg: '#F0EDE7', text: '#6B6760', label: '--' }
 
   return (
@@ -654,7 +654,7 @@ function HospitalCard({
                   </div>
                 )}
               </div>
-              <span className="text-[8px] text-muted">本命度</span>
+              <span className="text-[8px] text-muted">志望集中</span>
             </div>
           )}
         </div>
