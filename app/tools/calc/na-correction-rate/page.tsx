@@ -41,10 +41,10 @@ export default function NaCorrectionRatePage() {
       label = '安全範囲内'
       severity = 'ok'
     } else if (Math.abs(projected24) <= limit24) {
-      label = '上限に近い — 注意して経過観察'
+      label = '上限に近い'
       severity = 'wn'
     } else {
-      label = `⚠ 24時間安全上限（最大値: ${limit24} mEq/L）超過リスク — 補正速度の見直しを担当医と検討`
+      label = `⚠ 24時間安全上限（最大値: ${limit24} mEq/L）超過リスク`
       severity = 'dn'
     }
 

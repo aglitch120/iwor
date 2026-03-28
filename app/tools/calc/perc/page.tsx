@@ -25,15 +25,15 @@ export default function PercPage() {
     const anyPositive = criteria.some(c => checks[c.id])
     const severity: 'ok'|'dn' = anyPositive ? 'dn' : 'ok'
     const label = anyPositive
-      ? 'PERC陽性 — PEを除外できない（D-dimer or CTを検討）'
-      : 'PERC陰性（全8項目なし）— PE除外を支持（D-dimer省略を検討可能）。※PEの事前確率が低い患者にのみ適用'
+      ? 'PERC陽性 — PEを除外できない'
+      : 'PERC陰性（全8項目なし）— PE除外を支持。※PEの事前確率が低い患者にのみ適用'
     return { anyPositive, severity, label, count: criteria.filter(c => checks[c.id]).length }
   }, [checks])
 
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard label="PERC Rule" value={result.anyPositive ? '除外不可' : 'D-dimer省略を支持（低事前確率下）'} unit="" interpretation={result.label} severity={result.severity}
+      result={<ResultCard label="PERC Rule" value={result.anyPositive ? 'PE除外不可' : 'PE除外を支持（低事前確率下）'} unit="" interpretation={result.label} severity={result.severity}
         details={[{ label: '該当項目数', value: `${result.count} / 8` }]} />}
       explanation={undefined}
       relatedTools={toolDef.relatedSlugs.map(s => { const t = implementedTools.has(s) ? getToolBySlug(s) : null; return t ? { slug: t.slug, name: t.name } : null }).filter(Boolean) as { slug: string; name: string }[]}

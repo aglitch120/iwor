@@ -25,11 +25,18 @@ export default function TTKGPage(){
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard label="TTKG" value={result.ttkg} interpretation={result.label} severity={result.severity} />}
+      result={
+        <div className="space-y-3">
+          <ResultCard label="TTKG" value={result.ttkg} interpretation={result.label} severity={result.severity} />
+          <div className="bg-wnl border border-wnb rounded-xl p-3">
+            <p className="text-xs text-wn">TTKGは利尿薬使用中・腎機能障害例では信頼性が低下します。これらの状況では尿K/Cr比の使用も検討してください。</p>
+          </div>
+        </div>
+      }
       explanation={undefined}
       relatedTools={[]} references={[
         {text:'Ethier JH et al. The transtubular potassium concentration in patients with hypokalemia and hyperkalemia. Am J Kidney Dis 1990;15:309-315'},
-        {text:'Kamel KS et al. Interpreting the urine electrolytes and osmolality in the pathophysiology of hypokalemia. Am J Kidney Dis 2014;64:489-495. ※TTKGは利尿薬使用中・腎機能障害例では信頼性が低下します'}
+        {text:'Kamel KS et al. Interpreting the urine electrolytes and osmolality in the pathophysiology of hypokalemia. Am J Kidney Dis 2014;64:489-495'},
       ]}
     >
       <div className="space-y-3">

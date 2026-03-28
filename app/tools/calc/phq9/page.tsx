@@ -32,10 +32,10 @@ export default function Phq9Page() {
     const total = scores.reduce((a, b) => a + parseInt(b), 0)
     let label = '', severity: 'ok'|'wn'|'dn' = 'ok'
     if (total <= 4) { label = '症状なし〜最小限'; severity = 'ok' }
-    else if (total <= 9) { label = '軽度の抑うつ症状'; severity = 'ok' }
-    else if (total <= 14) { label = '中等度の抑うつ症状 — 専門家への相談を検討'; severity = 'wn' }
-    else if (total <= 19) { label = '中等度〜重度の抑うつ症状 — 専門家への相談を推奨'; severity = 'dn' }
-    else { label = '重度の抑うつ症状 — 専門家への相談を推奨（スクリーニング結果であり確定診断ではありません）'; severity = 'dn' }
+    else if (total <= 9) { label = '軽度の抑うつ症状'; severity = 'wn' }
+    else if (total <= 14) { label = '中等度の抑うつ症状（スクリーニング結果）'; severity = 'wn' }
+    else if (total <= 19) { label = '中等度〜重度の抑うつ症状（スクリーニング結果）'; severity = 'dn' }
+    else { label = '重度の抑うつ症状（スクリーニング結果であり確定診断ではありません）'; severity = 'dn' }
     const q9 = parseInt(scores[8]) > 0
     return { total, severity, label, q9 }
   }, [scores])
@@ -44,7 +44,7 @@ export default function Phq9Page() {
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="PHQ-9" value={result.total} unit="/ 27点" interpretation={result.label} severity={result.severity}
-        details={result.q9 ? [{ label: '⚠ 希死念慮', value: '問9が1点以上 — 安全性の評価が必要' }] : []} />}
+        details={result.q9 ? [{ label: '⚠ 希死念慮', value: '問9が1点以上' }] : []} />}
       explanation={undefined}
       relatedTools={toolDef.relatedSlugs.map(s => { const t = implementedTools.has(s) ? getToolBySlug(s) : null; return t ? { slug: t.slug, name: t.name } : null }).filter(Boolean) as { slug: string; name: string }[]}
       references={[{ text: 'Kroenke K, et al. J Gen Intern Med 2001;16:606-613' }]}

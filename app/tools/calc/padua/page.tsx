@@ -28,7 +28,7 @@ export default function PaduaPage() {
     const score = criteria.filter(c => checks[c.id]).reduce((s, c) => s + c.points, 0)
     const highRisk = score >= 4
     const severity: 'ok'|'wn'|'dn' = highRisk ? 'dn' : 'ok'
-    const label = highRisk ? '高リスク（≥4点）— 薬物的VTE予防を検討' : '低リスク（<4点）— 薬物的VTE予防は一般的でない'
+    const label = highRisk ? '高リスク（≥4点）' : '低リスク（<4点）'
     const vteRate = highRisk ? '約11%' : '約0.3%'
     return { score, severity, label, vteRate }
   }, [checks])

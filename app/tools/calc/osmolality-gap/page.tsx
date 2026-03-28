@@ -33,7 +33,7 @@ export default function OsmolalityGapPage() {
       interpretation = 'OG開大 — 中毒物質・エタノール・その他の浸透圧物質を検索'
       severity = 'wn'
     } else if (gap < -10) {
-      interpretation = 'OG低値 — 測定誤差・高脂血症・高蛋白血症を考慮'
+      interpretation = 'OG低値 — 測定誤差・高脂血症・高蛋白血症の可能性'
       severity = 'wn'
     } else {
       interpretation = '浸透圧ギャップ正常（-10〜+10）'

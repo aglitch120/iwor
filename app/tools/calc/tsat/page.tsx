@@ -25,16 +25,16 @@ export default function TSATPage() {
       interpretation = 'TSAT著明低値 — 鉄欠乏が強く疑われる（機能的鉄欠乏含む）'
       severity = 'dn'
     } else if (tsat < 20) {
-      interpretation = 'TSAT低値 — 鉄欠乏を示唆。CKD患者では鉄補充を考慮（フェリチン値と合わせて担当医が判断）'
+      interpretation = 'TSAT低値 — 鉄欠乏を示唆（フェリチン値と合わせて担当医が判断）'
       severity = 'wn'
     } else if (tsat > 50) {
       interpretation = 'TSAT高値 — 鉄過剰を考慮（ヘモクロマトーシス・輸血後・鉄剤過量）'
       severity = 'wn'
     } else if (tsat > 45) {
-      interpretation = 'TSAT軽度高値 — 鉄過剰の精査を考慮（フェリチンと合わせて評価）'
+      interpretation = 'TSAT軽度高値 — 鉄過剰の可能性（フェリチンと合わせて評価）'
       severity = 'wn'
     } else {
-      interpretation = '正常範囲（20〜45%）'
+      interpretation = '正常範囲（男性 20-50%、女性 20-45%）'
     }
 
     return {
@@ -60,9 +60,9 @@ export default function TSATPage() {
           interpretation={result.interpretation}
           severity={result.severity}
           details={[
-            { label: '正常範囲', value: '20〜45%' },
-            { label: '鉄欠乏の閾値', value: '<20%（CKD: TSAT<20%かつフェリチン低値で鉄補充を考慮）' },
-            { label: '鉄過剰の閾値', value: '>45%' },
+            { label: '正常範囲', value: '男性 20-50%、女性 20-45%（施設基準値を参照）' },
+            { label: '鉄欠乏の閾値', value: '<20%（CKD: TSAT<20%かつフェリチン低値。担当医が判断）' },
+            { label: '鉄過剰の閾値', value: '>45%（男性では>50%）' },
           ]}
         />
       )}

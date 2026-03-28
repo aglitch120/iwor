@@ -31,16 +31,16 @@ export default function OttawaAnklePage() {
     const severity: 'ok'|'wn'|'dn' = anyPos ? 'dn' : 'ok'
     let label = ''
     if (!anyPos) label = '全項目陰性 — X線不要（感度 ~98%）'
-    else if (anklePos && footPos) label = '足関節+足部ともに陽性 — 両方のX線を検討'
-    else if (anklePos) label = '足関節陽性 — 足関節X線を検討'
-    else label = '足部陽性 — 足部X線を検討'
+    else if (anklePos && footPos) label = '足関節+足部ともに陽性'
+    else if (anklePos) label = '足関節陽性'
+    else label = '足部陽性'
     return { anyPos, anklePos, footPos, severity, label }
   }, [ankleChecks, footChecks])
 
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard label="Ottawa Ankle Rules" value={result.anyPos ? 'X線検討' : 'X線不要'} unit="" interpretation={result.label} severity={result.severity} />}
+      result={<ResultCard label="Ottawa Ankle Rules" value={result.anyPos ? '骨折リスクあり' : 'X線不要（感度~98%）'} unit="" interpretation={result.label} severity={result.severity} />}
       explanation={undefined}
       relatedTools={[]} references={[{ text: 'Stiell IG, et al. JAMA 1994;271:827-832' }]}
     >

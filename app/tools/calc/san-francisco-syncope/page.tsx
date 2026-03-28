@@ -13,8 +13,8 @@ export default function SFSyncopePage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const pos=items.filter(i=>checks[i.id]).length
-    if(pos>0) return {severity:'wn' as const,label:`陽性（${pos}項目）: 7日以内の重大イベントリスクあり → 入院/精査検討`}
-    return {severity:'ok' as const,label:'全項目陰性(CHESS): 低リスク → 外来フォロー可'}
+    if(pos>0) return {severity:'wn' as const,label:`陽性（${pos}項目）: 7日以内の重大イベントリスクあり`}
+    return {severity:'ok' as const,label:'全項目陰性(CHESS): 低リスク'}
   },[checks])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

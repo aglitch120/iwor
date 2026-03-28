@@ -20,8 +20,8 @@ const criteria = [
 const riskData: Record<number, { risk: string; recommendation: string }> = {
   0: { risk: '3.9%', recommendation: '低リスク — 通常通り手術可能' },
   1: { risk: '6.0%', recommendation: '低〜中リスク — 機能的評価は不要なことが多い' },
-  2: { risk: '10.1%', recommendation: '中リスク — 心機能評価を考慮' },
-  3: { risk: '15%以上', recommendation: '高リスク — 心エコー・負荷検査を検討' },
+  2: { risk: '10.1%', recommendation: '中リスク' },
+  3: { risk: '15%以上', recommendation: '高リスク' },
 }
 // ※リスク値は外部検証コホートのデータ。原著Lee 1999のオリジナル値: 0点0.4%, 1点1.0%, 2点2.4%, 3点以上5.4%
 

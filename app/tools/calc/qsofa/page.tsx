@@ -18,12 +18,12 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
   if (score < 2) return {
     text: 'qSOFA 陰性',
     severity: 'ok',
-    recommendation: '敗血症の可能性は低いが、感染症が疑われる場合は引き続き経過観察。バイタルの継続モニタリングを検討。',
+    recommendation: '敗血症の可能性は低いが、感染症が疑われる場合は臨床的に注意。',
   }
   return {
     text: 'qSOFA 陽性（≥2点）— 敗血症を疑う',
     severity: 'dn',
-    recommendation: 'SOFAスコアによる臓器障害評価を行い、敗血症（Sepsis-3）の診断を進めてください。血液培養採取・乳酸値測定・経験的抗菌薬投与を速やかに検討。',
+    recommendation: '敗血症（Sepsis-3）を疑う。SOFAスコアによる臓器障害評価を考慮。治療方針は担当医が判断。',
   }
 }
 
@@ -143,13 +143,10 @@ export default function QSOFAPage() {
 
             {result.score >= 2 && (
               <div className="bg-dnl border border-dnb rounded-xl p-4">
-                <p className="text-sm font-medium text-dn">⏱️ Hour-1 Bundle（SSC 2021）</p>
+                <p className="text-sm font-medium text-dn">参考: Hour-1 Bundle（SSC 2021）</p>
                 <div className="text-xs text-dn mt-1 space-y-0.5">
-                  <p>□ 乳酸値測定</p>
-                  <p>□ 抗菌薬投与前に血液培養2セット採取</p>
-                  <p>□ 広域抗菌薬の経験的投与</p>
-                  <p>□ 低血圧 or 乳酸≥4 → 輸液反応性を評価しながら晶質液投与（30mL/kgは目安。個別調整要 — J-SSCG 2024参照）</p>
-                  <p>□ 輸液後も低血圧持続 → 昇圧剤（MAP≥65目標）</p>
+                  <p>乳酸値、血液培養、臓器障害評価等。詳細はSSC 2021ガイドライン参照。</p>
+                  <p className="text-[10px] text-dn/70 mt-1">治療実施の判断は担当医が行う。</p>
                 </div>
                 <p className="text-[10px] text-dn/70 mt-2">出典: Surviving Sepsis Campaign 2021; PMID: 34599691</p>
               </div>

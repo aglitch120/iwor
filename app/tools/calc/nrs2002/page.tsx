@@ -19,7 +19,7 @@ export default function NRS2002Page(){
   const [n,setN]=useState('0');const [d,setD]=useState('0');const [age70,setAge70]=useState(false)
   const result=useMemo(()=>{
     const score=Number(n)+Number(d)+(age70?1:0)
-    return {score,severity:score>=3?'wn' as const:'ok' as const,label:score>=3?'栄養リスクあり（≧3）→ 栄養療法計画を開始':'栄養リスク低い（<3）→ 週1回再スクリーニング'}
+    return {score,severity:score>=3?'wn' as const:'ok' as const,label:score>=3?'栄養リスクあり（≧3）':'栄養リスク低い（<3）'}
   },[n,d,age70])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

@@ -23,7 +23,7 @@ export default function SpesiPage() {
     const score = criteria.filter(c => checks[c.id]).length
     const lowRisk = score === 0
     const severity: 'ok'|'dn' = lowRisk ? 'ok' : 'dn'
-    const label = lowRisk ? '低リスク（0点）— 30日死亡率 1.0%、外来治療を検討可能' : '高リスク（≥1点）— 30日死亡率 10.9%、入院治療が標準'
+    const label = lowRisk ? '低リスク（0点）— 30日死亡率 1.0%' : '高リスク（≥1点）— 30日死亡率 10.9%'
     return { score, severity, label, lowRisk }
   }, [checks])
 

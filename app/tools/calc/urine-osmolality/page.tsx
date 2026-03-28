@@ -23,7 +23,7 @@ export default function UrineOsmolalityPage() {
     let interpretation = ''
     let severity: 'ok' | 'wn' | 'dn' = 'ok'
     if (uosm35 < 100) {
-      interpretation = '著明希釈尿 — 水中毒・心因性多飲・尿崩症を考慮'
+      interpretation = '著明希釈尿 — 水中毒・心因性多飲・尿崩症の可能性'
       severity = 'wn'
     } else if (uosm35 < 300) {
       interpretation = '希釈尿 — ADH抑制状態（水分過剰・尿崩症）の可能性'

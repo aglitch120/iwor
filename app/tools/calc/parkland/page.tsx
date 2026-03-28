@@ -29,8 +29,8 @@ export default function ParklandPage() {
     else if (t >= 20) severity = 'wn'
 
     let interpretation = ''
-    if (t >= 50) interpretation = '広範囲熱傷 — ICU管理・気道確保を最優先'
-    else if (t >= 20) interpretation = '中等度〜重度熱傷 — 十分な輸液管理が必要'
+    if (t >= 50) interpretation = '広範囲熱傷'
+    else if (t >= 20) interpretation = '中等度〜重度熱傷'
     else interpretation = '軽度〜中等度熱傷'
 
     return {

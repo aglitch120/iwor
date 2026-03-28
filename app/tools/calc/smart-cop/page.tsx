@@ -19,8 +19,8 @@ export default function SMARTCOPPage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).reduce((s,i)=>s+i.points,0)
-    if(score>=5) return {score,severity:'dn' as const,label:'高リスク（≧5）: ICU/人工呼吸器/昇圧薬が必要な可能性高い'}
-    if(score>=3) return {score,severity:'wn' as const,label:'中リスク（3-4）: ICU入室を検討（1/8の確率で集中治療が必要）'}
+    if(score>=5) return {score,severity:'dn' as const,label:'高リスク（≧5）: 集中治療が必要な可能性高い'}
+    if(score>=3) return {score,severity:'wn' as const,label:'中リスク（3-4）: 1/8の確率で集中治療が必要'}
     return {score,severity:'ok' as const,label:'低リスク（0-2）: 集中治療が必要になる可能性は低い'}
   },[checks])
   return(

@@ -73,7 +73,7 @@ export default function NAFLDFibrosisPage() {
         <NumberInput label="ALT" value={alt} onChange={setAlt} unit="U/L" />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <NumberInput label="血小板" value={plt} onChange={setPlt} unit="万/uL" step={0.1} />
+        <NumberInput label="血小板" value={plt} onChange={setPlt} unit="万/μL" step={0.1} />
         <NumberInput label="アルブミン" value={albumin} onChange={setAlbumin} unit="g/dL" step={0.1} />
       </div>
     </CalculatorLayout>

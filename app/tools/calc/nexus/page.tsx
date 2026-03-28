@@ -13,8 +13,8 @@ export default function NEXUSPage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const pos=items.filter(i=>checks[i.id]).length
-    if(pos>0) return {severity:'wn' as const,label:`${pos}項目陽性: 頚椎画像検査が必要`}
-    return {severity:'ok' as const,label:'全5項目陰性: 低リスク（画像省略を検討できる）。最終判断は臨床医による（感度99.6%）'}
+    if(pos>0) return {severity:'wn' as const,label:`${pos}項目陽性`}
+    return {severity:'ok' as const,label:'全5項目陰性: 低リスク（感度99.6%）。最終判断は臨床医による'}
   },[checks])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
@@ -23,7 +23,7 @@ export default function NEXUSPage(){
       explanation={undefined}
       relatedTools={[]} references={[{text:'Hoffman JR et al. Validity of a set of clinical criteria to rule out injury to the cervical spine in patients with blunt trauma. NEJM 2000;343:94-99'}]}
     >
-      <div className="space-y-2"><p className="text-xs text-muted mb-2">以下が1つでもあれば頚椎画像が必要:</p>{items.map(i=><CheckItem key={i.id} id={i.id} label={i.label} checked={checks[i.id]} onChange={v=>setChecks(p=>({...p,[i.id]:v}))} />)}</div>
+      <div className="space-y-2"><p className="text-xs text-muted mb-2">以下が1つでもあれば頚椎画像検討の適応となる:</p>{items.map(i=><CheckItem key={i.id} id={i.id} label={i.label} checked={checks[i.id]} onChange={v=>setChecks(p=>({...p,[i.id]:v}))} />)}</div>
     </CalculatorLayout>
   )
 }

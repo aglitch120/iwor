@@ -33,7 +33,7 @@ export default function News2Page() {
     const total = rrScore(parseFloat(rr)||16) + spo2Score(parseFloat(spo2)||96, isScale2) + o2Score(onO2==='yes')
       + tempScore(parseFloat(temp)||37) + sbpScore(parseInt(sbp)||120) + hrScore(parseInt(hr)||75) + consScore(consciousness)
     const severity: 'ok'|'wn'|'dn' = total<=4 ? 'ok' : total<=6 ? 'wn' : 'dn'
-    const label = total<=4 ? '低リスク — 通常モニタリング' : total<=6 ? '中リスク — 頻回観察・医師報告' : '高リスク — 緊急対応・RRT/MET起動を検討'
+    const label = total<=4 ? '低リスク' : total<=6 ? '中リスク' : '高リスク'
     const hasAny3 = [rrScore(parseFloat(rr)||16), spo2Score(parseFloat(spo2)||96, isScale2), o2Score(onO2==='yes'),
       tempScore(parseFloat(temp)||37), sbpScore(parseInt(sbp)||120), hrScore(parseInt(hr)||75), consScore(consciousness)].some(s => s === 3)
     return { total, severity, label, hasAny3 }
@@ -43,7 +43,7 @@ export default function News2Page() {
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="NEWS2" value={result.total} unit="/ 19点" interpretation={result.label} severity={result.severity}
-        details={result.hasAny3 ? [{ label: '⚠ 注意', value: '個別パラメータ3点あり — 緊急対応を検討' }] : []} />}
+        details={result.hasAny3 ? [{ label: '⚠ 注意', value: '個別パラメータ3点あり' }] : []} />}
       explanation={undefined}
       relatedTools={toolDef.relatedSlugs.map(s => { const t = implementedTools.has(s) ? getToolBySlug(s) : null; return t ? { slug: t.slug, name: t.name } : null }).filter(Boolean) as { slug: string; name: string }[]}
       references={[{ text: 'Royal College of Physicians. NEWS2, 2017' }]}

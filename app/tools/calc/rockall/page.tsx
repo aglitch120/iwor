@@ -24,7 +24,7 @@ export default function RockallPage() {
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={<ResultCard label="Rockall Score" value={result.score} unit="/ 11点" interpretation={result.label} severity={result.severity} />}
-      explanation={undefined}
+      explanation="このツールは内視鏡後スコア（full Rockall Score）です。内視鏡施行前の初期評価には最初の3項目（年齢・ショック・併存疾患）のみ使用する pre-endoscopy スコアを用いてください。"
       relatedTools={toolDef.relatedSlugs.map(s => { const t = implementedTools.has(s) ? getToolBySlug(s) : null; return t ? { slug: t.slug, name: t.name } : null }).filter(Boolean) as { slug: string; name: string }[]}
       references={[{ text: 'Rockall TA, et al. Gut 1996;38:316-321' }]}
     >

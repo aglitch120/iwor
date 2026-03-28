@@ -31,8 +31,8 @@ export default function FourTScorePage() {
   const result = useMemo(() => {
     const total = scores.reduce((a, b) => a + b, 0)
     let severity: 'ok' | 'wn' | 'dn' = 'ok', interpretation = ''
-    if (total >= 6) { interpretation = `${total}点 — 高確率 (HIT確率 >50%)。ヘパリン中止+代替抗凝固薬+HIT抗体検査`; severity = 'dn' }
-    else if (total >= 4) { interpretation = `${total}点 — 中間確率 (HIT確率 ~14%)。HIT抗体検査を提出。結果まで代替抗凝固薬考慮`; severity = 'wn' }
+    if (total >= 6) { interpretation = `${total}点 — 高確率 (HIT確率 >50%)。治療は担当医が判断`; severity = 'dn' }
+    else if (total >= 4) { interpretation = `${total}点 — 中間確率 (HIT確率 ~14%)。治療は担当医が判断`; severity = 'wn' }
     else { interpretation = `${total}点 — 低確率 (HIT確率 <5%)。HITの可能性は低い。他の原因検索`; }
     return { total, severity, interpretation }
   }, [scores])

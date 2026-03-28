@@ -26,25 +26,25 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
     text: '低リスク',
     severity: 'ok',
     probability: '約5%',
-    recommendation: 'D-dimer検査を検討。陰性ならDVT除外を支持。',
+    recommendation: 'DVT確率 約5%。担当医が判断。',
   }
   if (score <= 2) return {
     text: '中リスク',
     severity: 'wn',
     probability: '約17%',
-    recommendation: 'D-dimer検査を施行。陽性なら下肢静脈エコーを施行。',
+    recommendation: 'DVT確率 約17%。担当医が判断。',
   }
   return {
     text: '高リスク',
     severity: 'dn',
     probability: '約53%',
-    recommendation: '下肢静脈エコーを検討。陰性でも臨床的疑いが強ければ1週間後の再検を考慮。',
+    recommendation: 'DVT確率 約53%。担当医が判断。',
   }
 }
 
 function getDichotomousInterpretation(score: number): { text: string; severity: 'ok' | 'dn' } {
-  if (score <= 1) return { text: 'DVT unlikely（≤1点）— D-dimer検査で除外可能', severity: 'ok' }
-  return { text: 'DVT likely（≥2点）— 下肢静脈エコーを施行', severity: 'dn' }
+  if (score <= 1) return { text: 'DVT unlikely（≤1点）', severity: 'ok' }
+  return { text: 'DVT likely（≥2点）', severity: 'dn' }
 }
 
 export default function WellsDVTPage() {

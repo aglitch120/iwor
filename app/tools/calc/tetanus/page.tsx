@@ -16,8 +16,8 @@ export default function TetanusPage(){
   const needTIG=wound==='dirty'&&vaccine==='under3'
   const sev=needTIG?'dn' as const:needToxoid?'wn' as const:'ok' as const
   let label='トキソイド・TIG不要'
-  if(needTIG) label='トキソイド投与を検討（投与量・経路は担当医が決定）+ TIG投与を検討（投与量は担当医が決定）'
-  else if(needToxoid) label='トキソイド投与を検討（投与量・経路は担当医が決定）'
+  if(needTIG) label='トキソイド・TIG投与の適応あり（投与量・経路は担当医が決定）'
+  else if(needToxoid) label='トキソイド投与の適応あり（投与量・経路は担当医が決定）'
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
