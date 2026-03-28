@@ -15,8 +15,8 @@ export default function CAGEPage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).length
-    if(score>=2) return {score,severity:'dn' as const,label:'スクリーニング陽性（2問以上）: アルコール使用障害の可能性 → 詳細評価へ'}
-    if(score===1) return {score,severity:'wn' as const,label:'1問陽性: 問題飲酒の可能性 → 詳細な飲酒歴聴取を'}
+    if(score>=2) return {score,severity:'dn' as const,label:'スクリーニング陽性（2問以上）: アルコール使用障害の可能性'}
+    if(score===1) return {score,severity:'wn' as const,label:'1問陽性: 問題飲酒の可能性'}
     return {score,severity:'ok' as const,label:'陰性: アルコール依存症の可能性低い'}
   },[checks])
   return(

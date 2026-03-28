@@ -28,7 +28,7 @@ const DRUGS: Drug[] = [
   { id:'vasopressin', name:'バソプレシン', nameEn:'Vasopressin', category:'vasopressor',
     unit:'U/min', weightBased:false, gammaMin:0.01, gammaMax:0.04, gammaUnit:'U/min', unitLabel:'U',
     dilutions:[{label:'40U/40mL 生食（2A+溶媒38mL）',drugMg:40,totalMl:40},{label:'20U/50mL 生食',drugMg:20,totalMl:50}],
-    notes:'NE併用で0.03-0.04 U/min固定。用量調節しない。腸管虚血に注意。'},
+    notes:'NE併用されることがある（0.03-0.04 U/min）。通常用量調節は行われない。腸管虚血に注意。'},
   { id:'adrenaline', name:'アドレナリン', nameEn:'Epinephrine', category:'vasopressor',
     unit:'μg/kg/min', weightBased:true, gammaMin:0.01, gammaMax:0.5, gammaUnit:'μg/kg/min', unitLabel:'mg',
     dilutions:[{label:'3mg/50mL 生食',drugMg:3,totalMl:50},{label:'5mg/50mL 生食',drugMg:5,totalMl:50}],
@@ -71,7 +71,7 @@ const DRUGS: Drug[] = [
   { id:'remifentanil', name:'レミフェンタニル', nameEn:'Remifentanil', category:'opioid',
     unit:'μg/kg/min', weightBased:true, gammaMin:0.05, gammaMax:0.3, gammaUnit:'μg/kg/min', unitLabel:'mg',
     dilutions:[{label:'2mg/20mL 生食',drugMg:2,totalMl:20},{label:'5mg/50mL 生食',drugMg:5,totalMl:50}],
-    notes:'超短時間作用。エステラーゼ代謝で蓄積なし。中止後すぐ覚醒。抜管前に他オピオイドへ切替が必要。'},
+    notes:'超短時間作用。エステラーゼ代謝で蓄積なし。中止後すぐ覚醒。超短時間作用のため覚醒後の鎮痛に注意。'},
   // 降圧剤
   { id:'nicardipine', name:'ニカルジピン', nameEn:'Nicardipine', category:'antihypertensive',
     unit:'μg/kg/min', weightBased:true, gammaMin:0.5, gammaMax:6, gammaUnit:'μg/kg/min', unitLabel:'mg',

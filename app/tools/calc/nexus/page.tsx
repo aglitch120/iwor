@@ -23,7 +23,7 @@ export default function NEXUSPage(){
       explanation={undefined}
       relatedTools={[]} references={[{text:'Hoffman JR et al. Validity of a set of clinical criteria to rule out injury to the cervical spine in patients with blunt trauma. NEJM 2000;343:94-99'}]}
     >
-      <div className="space-y-2"><p className="text-xs text-muted mb-2">以下が1つでもあれば頚椎画像検討の適応となる:</p>{items.map(i=><CheckItem key={i.id} id={i.id} label={i.label} checked={checks[i.id]} onChange={v=>setChecks(p=>({...p,[i.id]:v}))} />)}</div>
+      <div className="space-y-2"><p className="text-xs text-muted mb-2">以下が1つでもあればNEXUS criteriaで低リスクとはならない:</p>{items.map(i=><CheckItem key={i.id} id={i.id} label={i.label} checked={checks[i.id]} onChange={v=>setChecks(p=>({...p,[i.id]:v}))} />)}</div>
     </CalculatorLayout>
   )
 }

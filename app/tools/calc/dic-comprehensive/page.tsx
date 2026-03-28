@@ -24,7 +24,7 @@ const criteria = [
     '基礎疾患: 常位胎盤早期剥離/羊水塞栓/DIC型後産期出血/子癇等',
     '産科DICスコア: 基礎疾患+臨床症状+検査所見',
     '出血量/ショック/臓器症状/凝固検査の複合スコア',
-  ], cutoff: '≧8点でDIC（産科基礎疾患がある場合はより低値でも治療開始）', color: 'bg-pink-50' },
+  ], cutoff: '≧8点でDIC（産科基礎疾患がある場合はより低値でも該当しうる）', color: 'bg-pink-50' },
 ]
 export default function DicComprehensivePage() {
   const [tab, setTab] = useState(0)

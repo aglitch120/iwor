@@ -53,7 +53,7 @@ export default function BurnAreaPage() {
           {result.parkland !== null && (
             <div className="mt-3 p-3 rounded-lg bg-bg border border-br text-sm space-y-1">
               <p className="font-medium text-tx">Parkland公式（初期24h輸液量）</p>
-              <p className="text-muted">総量: <span className="font-bold text-tx">{Math.round(result.parkland!)} mL</span>（乳酸リンゲル液）</p>
+              <p className="text-muted">総量: <span className="font-bold text-tx">{Math.round(result.parkland!)} mL</span>（輸液量の参考値。液種・投与速度は担当医が判断）</p>
               <p className="text-muted">最初8h: <span className="font-bold text-wn">{Math.round(result.first8h!)} mL</span>　残り16h: {Math.round(result.first8h!)} mL</p>
               <p className="text-xs text-muted mt-2">※ 尿量0.5-1 mL/kg/h（小児1 mL/kg/h）を目標に調整。受傷時刻から起算。</p>
             </div>

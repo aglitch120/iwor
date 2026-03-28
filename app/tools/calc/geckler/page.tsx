@@ -6,8 +6,8 @@ const data=[
   {group:'1群',epithelial:'>25',neutrophil:'<10',quality:'不良',action:'再提出'},
   {group:'2群',epithelial:'>25',neutrophil:'10-25',quality:'不良',action:'再提出'},
   {group:'3群',epithelial:'>25',neutrophil:'>25',quality:'不良〜可',action:'判断に注意'},
-  {group:'4群',epithelial:'10-25',neutrophil:'>25',quality:'良質',action:'培養可'},
-  {group:'5群',epithelial:'<10',neutrophil:'>25',quality:'最良',action:'培養が一般的'},
+  {group:'4群',epithelial:'10-25',neutrophil:'>25',quality:'良質',action:'培養適（品質は担当医が確認）'},
+  {group:'5群',epithelial:'<10',neutrophil:'>25',quality:'最良',action:'最良の検体品質'},
   {group:'6群',epithelial:'<25',neutrophil:'<25',quality:'膿性でない',action:'培養適否は担当医が判断'},
 ]
 export default function GecklerPage(){
