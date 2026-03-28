@@ -1060,7 +1060,10 @@ function MatchProbabilityCard({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
                     <p className="text-[11px] font-medium text-tx truncate">{h.name}</p>
-                    <span className="text-[11px] font-bold flex-shrink-0 ml-2" style={{ color: MC }}>{h.probability}%</span>
+                    <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+                      {h.honkiBairitsu < 1 && <span className="text-[8px] px-1 py-0.5 rounded bg-green-50 text-green-700">競争緩</span>}
+                      <span className="text-[11px] font-bold" style={{ color: MC }}>{h.probability}%</span>
+                    </div>
                   </div>
                   <div className="h-1.5 bg-s1 rounded-full overflow-hidden">
                     <div className="h-full rounded-full transition-all" style={{
@@ -1081,8 +1084,10 @@ function MatchProbabilityCard({
 
           {/* 但し書き */}
           <p className="text-[9px] text-muted leading-relaxed mt-2">
-            ※ この確率は過去のマッチングデータ（倍率・空席率）に基づく統計的な推定値であり、個人の能力・面接力・筆記試験の結果等は考慮されていません。
-            実際のマッチング結果を保証するものではありません。iwor独自の算出です。
+            ※ JRMP公式データ（2021-2025）の倍率・第1志望率・充足率から算出した統計的な推定値です。
+            個人の能力・面接力・筆記試験の結果等は考慮されていません。
+            「競争緩」と表示される病院は、第1志望として登録する受験生が定員より少ないことを意味しますが、面接等の選考は行われます。
+            実際のマッチング結果を保証するものではありません。
           </p>
         </div>
       )}
