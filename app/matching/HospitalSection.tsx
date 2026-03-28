@@ -187,13 +187,7 @@ export default function HospitalTab({
       let cmp = 0
       switch (sortKey) {
         case 'matchRate': cmp = a.popularity - b.popularity; break
-        case 'hensachi': {
-          // 定員2以下のサブプログラムは下位に（スコアを30に丸める）
-          const hA = a.capacity <= 2 ? 30 : ((a as any).hensachi || 0)
-          const hB = b.capacity <= 2 ? 30 : ((b as any).hensachi || 0)
-          cmp = hA - hB
-          break
-        }
+        case 'hensachi': cmp = ((a as any).hensachi || 0) - ((b as any).hensachi || 0); break
         case 'anaba': cmp = calcAnaba(b) - calcAnaba(a); break
         case 'honmei': cmp = ((b as any).honmeiIndex || 0) - ((a as any).honmeiIndex || 0); break
         case 'stability': cmp = ((a as any).stabilityScore || 0) - ((b as any).stabilityScore || 0); break

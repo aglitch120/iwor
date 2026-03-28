@@ -110,6 +110,21 @@ for (const h of hospitals) {
   h._honkiBairitsu = (h.applicants * hi) / h.capacity
 }
 
+// Small-sample correction: capacity 1-2 programs have inflated honkiBairitsu
+// due to statistical noise. Apply Bayesian shrinkage toward the mean ONLY for these.
+const globalMeanHonki = hospitals.reduce((a, h) => a + h._honkiBairitsu, 0) / hospitals.length
+// Graduated shrinkage: smaller capacity → stronger pull toward mean
+for (const h of hospitals) {
+  if (h.capacity > 0 && h.capacity <= 4) {
+    // Calibrated to make each capacity band average ≈ 47 (same as cap 11-15 baseline)
+    // cap1: C=50, cap2: C=30, cap3: C=15, cap4: C=8
+    const C = h.capacity === 1 ? 50 : h.capacity === 2 ? 30 : h.capacity === 3 ? 15 : 8
+    h._honkiBairitsu = (h._honkiBairitsu * h.capacity + globalMeanHonki * C) / (h.capacity + C)
+  }
+}
+const smallCount = hospitals.filter(h => h.capacity <= 4).length
+console.log(`小規模補正: 定員1-4の${smallCount}件に段階的ベイズ縮小適用 (全体平均=${globalMeanHonki.toFixed(2)})`)
+
 // Log-transform for more natural distribution (倍率 is log-normal)
 for (const h of hospitals) {
   h._logHonki = h._honkiBairitsu > 0 ? Math.log(h._honkiBairitsu) : -3 // floor for 0
@@ -126,6 +141,24 @@ for (const h of hospitals) {
   h.hensachi = Math.round((50 + 10 * z) * 10) / 10
   // Soft clamp: min 30, max 80 (偏差値 range that users understand)
   h.hensachi = Math.max(30, Math.min(80, h.hensachi))
+}
+
+// Post-hoc capacity bias correction
+// Measure each capacity band's average hensachi, then adjust toward baseline (cap 8-15 avg)
+const baseline = hospitals.filter(h => h.capacity >= 8 && h.capacity <= 15)
+const baselineAvg = baseline.reduce((a, h) => a + h.hensachi, 0) / baseline.length
+for (let cap = 1; cap <= 4; cap++) {
+  const group = hospitals.filter(h => h.capacity === cap)
+  if (group.length < 5) continue
+  const groupAvg = group.reduce((a, h) => a + h.hensachi, 0) / group.length
+  const bias = groupAvg - baselineAvg
+  if (bias > 2) { // only correct upward bias > 2 points
+    for (const h of group) {
+      h.hensachi = Math.round((h.hensachi - bias) * 10) / 10
+      h.hensachi = Math.max(30, h.hensachi)
+    }
+    console.log(`定員${cap}: バイアス${bias.toFixed(1)}pt補正 (${group.length}件, 平均${groupAvg.toFixed(1)}→${(groupAvg-bias).toFixed(1)})`)
+  }
 }
 
 // Detect university hospitals from name
