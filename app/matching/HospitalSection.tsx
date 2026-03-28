@@ -686,7 +686,7 @@ function HospitalCard({
                 ].map((s, i) => (
                   <div key={i} className="bg-white rounded-lg p-2 text-center">
                     <p className="text-[9px] text-muted">{s.label}</p>
-                    <div className="flex items-baseline justify-center gap-0.5">
+                    <div className="flex items-baseline justify-center gap-0.5" style={!isPro ? { filter: 'blur(8px)', userSelect: 'none' } : undefined}>
                       <p className="text-base font-bold" style={{ color: MC }}>{s.value}</p>
                       {s.max && <p className="text-[8px] text-muted">{s.max}</p>}
                     </div>
@@ -696,23 +696,23 @@ function HospitalCard({
               </div>
 
               {/* トレンド情報 */}
-              <div className="flex gap-3 text-[10px]">
+              <div className="flex gap-3 text-[10px]" style={!isPro ? { filter: 'blur(6px)', userSelect: 'none' } : undefined}>
                 {(h as any).popularityTrend && (h as any).popularityTrend !== 1.0 && (
                   <span className={`px-2 py-0.5 rounded ${(h as any).popularityTrend > 1 ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                    {(h as any).popularityTrend > 1 ? '📈' : '📉'} 志望者数 {Math.round(((h as any).popularityTrend - 1) * 100)}%{(h as any).popularityTrend > 1 ? '増' : '減'}（2年間）
+                    {(h as any).popularityTrend > 1 ? '📈' : '📉'} 志望者数トレンド（2年間）
                   </span>
                 )}
                 {(h as any).risingScore > 0 && (
                   <span className="px-2 py-0.5 rounded bg-green-50 text-green-700">🔥 上昇中</span>
                 )}
                 {(h as any).popularityRank && (
-                  <span className="px-2 py-0.5 rounded bg-s2 text-muted">総合順位 {(h as any).popularityRank}/{1470}</span>
+                  <span className="px-2 py-0.5 rounded bg-s2 text-muted">総合順位</span>
                 )}
               </div>
 
               {/* 充足率バー（3年） */}
-              <div>
-                <p className="text-[9px] text-muted mb-1">3年平均充足率: {(h as any).avgMatchRate3y || h.matchRate}%</p>
+              <div style={!isPro ? { filter: 'blur(6px)', userSelect: 'none' } : undefined}>
+                <p className="text-[9px] text-muted mb-1">3年平均充足率</p>
                 <div className="w-full h-2 bg-white rounded-full overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${Math.min((h as any).avgMatchRate3y || h.matchRate, 100)}%`, background: MC }} />
                 </div>
@@ -772,21 +772,13 @@ function HospitalCard({
               </div>
             </div>
 
-            {/* FREE: 数値だけblur、タイトルは見える */}
+            {/* FREE: CTAボタン（ラベルは見えるが数値はblur済み） */}
             {!isPro && (
-              <div className="absolute inset-0 rounded-xl z-20 flex flex-col justify-end">
-                {/* 上部: タイトルは見える、数値部分だけblur */}
-                <div className="absolute top-[40px] left-0 right-0 bottom-0 backdrop-blur-[5px] rounded-b-xl" />
-                {/* CTA */}
-                <div className="relative z-30 flex justify-center pb-4">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-xl text-center">
-                    <p className="text-[10px] text-muted mb-2">数値を確認するにはPROが必要です</p>
-                    <button onClick={e => { e.stopPropagation(); onShowPro?.() }}
-                      className="pro-cta-glow px-5 py-2 rounded-xl text-xs font-bold text-white shadow-lg" style={{ background: MC }}>
-                      PRO会員で分析を見る
-                    </button>
-                  </div>
-                </div>
+              <div className="flex justify-center pt-1">
+                <button onClick={e => { e.stopPropagation(); onShowPro?.() }}
+                  className="pro-cta-glow px-5 py-2 rounded-xl text-xs font-bold text-white shadow-lg" style={{ background: MC }}>
+                  PRO会員で数値を見る
+                </button>
               </div>
             )}
           </div>
