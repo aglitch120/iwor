@@ -9,7 +9,7 @@ const drugs=[
   {id:'morphine-po',name:'モルヒネ経口',ratio:1},{id:'morphine-iv',name:'モルヒネ注射',ratio:3},
   {id:'oxycodone-po',name:'オキシコドン経口',ratio:1.5},{id:'oxycodone-iv',name:'オキシコドン注射',ratio:2.25},
   {id:'hydromorphone-po',name:'ヒドロモルフォン経口',ratio:5},{id:'hydromorphone-iv',name:'ヒドロモルフォン注射',ratio:20},
-  {id:'fentanyl-iv',name:'フェンタニル注射(μg/h)',ratio:1},{id:'fentanyl-patch',name:'フェンタニルパッチ(μg/h)',ratio:1},
+  {id:'fentanyl-iv',name:'フェンタニル注射(μg/h)',ratio:2.4},{id:'fentanyl-patch',name:'フェンタニルパッチ(μg/h)',ratio:2.4},
   {id:'tapentadol-po',name:'タペンタドール経口',ratio:0.3},{id:'tramadol-po',name:'トラマドール経口',ratio:0.2},
   {id:'codeine-po',name:'コデイン経口',ratio:0.15},
 ]
@@ -19,7 +19,7 @@ export default function OpioidConversionPage(){
   const result=useMemo(()=>{
     const d=Number(dose)||0;const fromDrug=drugs.find(dr=>dr.id===from)!
     const morphineEq=d*fromDrug.ratio
-    const fentanylHourly=morphineEq/2
+    const fentanylHourly=morphineEq/2.4
     return {morphineEq:morphineEq.toFixed(1),fentanylHourly:fentanylHourly.toFixed(1),conversions:drugs.filter(dr=>dr.id!==from).map(dr=>({name:dr.name,dose:(morphineEq/dr.ratio).toFixed(1)}))}
   },[from,dose])
   return(
