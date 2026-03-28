@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /pro/activate/
+Disallow: /pro/login/
+Disallow: /pro/register/
+Disallow: /pro/reset-password/
+Disallow: /favorites/
+Disallow: /offline/
+
+Sitemap: https://iwor.jp/sitemap.xml
+Sitemap: https://iwor.jp/image-sitemap.xml
