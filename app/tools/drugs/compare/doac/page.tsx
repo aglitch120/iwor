@@ -34,7 +34,7 @@ const data: CompareData = {
       specs: '2.5mg/5mg 錠',
       indication: '非弁膜症性AF脳卒中予防、DVT/PE治療・再発予防',
       halfLife: '約12時間',
-      metabolism: '肝代謝 75% + 腎排泄 27%（CYP3A4・P-gp基質）',
+      metabolism: '肝代謝主体（約75%）、腎排泄約27%（経路重複あり）（CYP3A4・P-gp基質）',
       renalAdjust: '2項目以上該当で減量: 年齢≧80歳、体重≦60kg、Cr≧1.5。CCr < 15: 慎重投与',
       contraindication: '活動性出血、重度肝障害',
     },

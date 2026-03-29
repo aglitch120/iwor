@@ -15,11 +15,15 @@ export default function TTKGPage(){
     const ttkg=(uk/(uo/so))/sk
     // 高K: TTKG>7=腎排泄適切(ok), ≤7=腎排泄不十分=腎性(dn)
     // 低K: TTKG<3=腎排泄適切=腎外性喪失(ok), TTKG≥3=腎排泄過多=腎性喪失(dn)
+    // 高K: TTKG>7=腎排泄適切, ≤7=腎排泄不十分 / 低K: TTKG<3=腎外性, ≥3=腎性
     const isHyperK = sk > 5.0
-    const sev = isHyperK ? (ttkg > 7 ? 'ok' as const : 'dn' as const) : (ttkg < 3 ? 'ok' as const : 'dn' as const)
+    const isHypoK = sk < 3.5
+    const isNormalK = !isHyperK && !isHypoK
+    const sev = isNormalK ? 'ok' as const : isHyperK ? (ttkg > 7 ? 'ok' as const : 'dn' as const) : (ttkg < 3 ? 'ok' as const : 'dn' as const)
     let label=''
-    if(sk>5.0) label=ttkg>7?'TTKG>7: 腎からのK排泄は適切（腎外性の原因を検索）':'TTKG≦7: 腎からのK排泄が不十分（腎性の高K血症）'
-    else label=ttkg<3?'TTKG<3: 腎からのK排泄は適切（腎外性K喪失：消化管・皮膚等）':'TTKG≧3: 腎からのK排泄が過多（腎性K喪失：アルドステロン症・利尿薬等）'
+    if(isNormalK) label='血清K正常範囲（3.5-5.0 mEq/L）。TTKGは高K血症・低K血症の鑑別に用いる指標'
+    else if(isHyperK) label=ttkg>7?'TTKG>7: 腎からのK排泄は適切（腎外性の原因が示唆される）':'TTKG≦7: 腎からのK排泄が不十分（腎性の高K血症が示唆される）'
+    else label=ttkg<3?'TTKG<3: 腎からのK排泄は適切（腎外性K喪失：消化管・皮膚等が示唆される）':'TTKG≧3: 腎からのK排泄が過多（腎性K喪失：アルドステロン症・利尿薬等が示唆される）'
     return {ttkg:ttkg.toFixed(1),severity:sev,label}
   },[uK,sK,uOsm,sOsm])
   return(

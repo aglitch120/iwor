@@ -27,14 +27,14 @@ const STRESS_LEVELS = [
     examples: '心臓手術、肝切除、Whipple手術',
     dose: 'HC 100mg iv → 50mg q8h（150mg/日）（参考情報）',
     duration: '2〜3日間 → 1/2ずつ48hで漸減',
-    note: '※敗血症性ショックへのステロイドは別の適応（SSC 2021: ノルアドレナリン（NE）≧0.25μg/kg/minを含む昇圧薬依存性が持続する場合にHC 200mg/日を検討）。周術期ストレスカバーとは目的が異なる。',
+    note: '※敗血症性ショックへのステロイドは別の適応（SSC 2021: NE≧0.25μg/kg/min含む昇圧薬依存性が持続する場合にHC 200mg/日が使用されることがある）。周術期ストレスカバーとは目的が異なる。',
   },
 ]
 
 /* ── HPA抑制リスク基準 ── */
 const HPA_CRITERIA = [
   { criteria: 'PSL ≥ 20mg/日を3週間以上', risk: '高リスク' },
-  { criteria: 'PSL 5〜20mg/日を4週間以上', risk: '中リスク — 要ACTH負荷試験考慮' },
+  { criteria: 'PSL 5〜20mg/日を4週間以上', risk: '中リスク — ACTH負荷試験で評価されることがある' },
   { criteria: 'PSL < 5mg/日 or 使用3週間未満', risk: '低リスク — 追加補充は通常不要' },
   { criteria: 'クッシング徴候あり（任意の用量）', risk: '高リスク' },
   { criteria: '夕方以降の投与（デキサメタゾン含む）', risk: 'HPA抑制リスク上昇' },

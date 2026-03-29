@@ -23,7 +23,7 @@ const data: CompareData = {
     'CIBIS-II Investigators. Lancet 1999;353:9-13',
     'Packer M et al. Carvedilol (COPERNICUS). N Engl J Med 2001;344:1651-1658'],
   relatedTools: [
-    { href: '/tools/calc/qtc-calculator', name: 'QTc計算' },
+    { href: '/tools/calc/qtc', name: 'QTc計算' },
     { href: '/tools/drugs/compare/ccb', name: 'Ca拮抗薬比較' },
     { href: '/tools/drugs/compare/arb', name: 'ARB比較' }],
 }

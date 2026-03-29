@@ -31,7 +31,7 @@ export default function Page() {
           details={[
             { label: '≧32', value: '重症アルコール性肝炎の基準値' },
             { label: '<32', value: '非重症' },
-            { label: 'Lille model', value: '治療反応性の指標（>0.45で無効を示唆）' },
+            { label: 'Lille model', value: '治療反応性評価に使用される指標（カットオフ 0.45）' },
           ]} />
       )}>
       <NumberInput id="f1" label="PT秒 (患者)" value={pt} onChange={setPt} min={0} step={0.1} />

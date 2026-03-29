@@ -16,7 +16,7 @@ export default function SARCFPage(){
   const [vals,setVals]=useState<Record<string,string>>(Object.fromEntries(items.map(i=>[i.id,'0'])))
   const result=useMemo(()=>{
     const score=Object.values(vals).reduce((s,v)=>s+Number(v),0)
-    return {score,severity:score>=4?'wn' as const:'ok' as const,label:score>=4?'サルコペニアの疑い（≧4）→ 筋力・歩行速度・筋肉量の評価へ':'サルコペニアの可能性低い（<4）'}
+    return {score,severity:score>=4?'wn' as const:'ok' as const,label:score>=4?'サルコペニアスクリーニング陽性（≧4）':'サルコペニアスクリーニング陰性（<4）'}
   },[vals])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}

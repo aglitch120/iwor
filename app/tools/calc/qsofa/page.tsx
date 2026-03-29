@@ -130,16 +130,6 @@ export default function QSOFAPage() {
               severity={result.severity}
             />
 
-            <div className={`${
-              result.score >= 2 ? 'bg-dnl border-dnb' : 'bg-s0 border-br'
-            } border rounded-xl p-4`}>
-              <p className={`text-sm font-medium ${result.score >= 2 ? 'text-dn' : 'text-tx'}`}>
-                {result.score >= 2 ? '🚨 参考情報' : '✅ 参考'}
-              </p>
-              <p className={`text-xs mt-1 ${result.score >= 2 ? 'text-dn' : 'text-muted'}`}>
-                {result.recommendation}
-              </p>
-            </div>
 
           </div>
         }

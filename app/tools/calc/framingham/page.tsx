@@ -16,8 +16,8 @@ function getAgePoints(age: number, sex: 'male' | 'female') {
 }
 
 // TC points: keys are lower bounds of each TC range, values are [20-39, 40-49, 50-59, 60-69, 70-79]
-const MALE_TC_POINTS: [number, number[]][] = [[160,[0,0,0,0,0]],[200,[4,3,2,1,0]],[240,[7,5,3,1,0]],[280,[9,6,4,2,1]],[999,[11,8,5,3,1]]]
-const FEMALE_TC_POINTS: [number, number[]][] = [[160,[0,0,0,0,0]],[200,[4,3,2,1,1]],[240,[8,6,4,2,1]],[280,[11,8,5,3,2]],[999,[13,10,7,4,2]]]
+const MALE_TC_POINTS: [number, number[]][] = [[160,[0,0,0,0,0]],[200,[4,3,2,1,0]],[240,[7,5,3,1,0]],[280,[11,8,5,3,1]]]
+const FEMALE_TC_POINTS: [number, number[]][] = [[160,[0,0,0,0,0]],[200,[4,3,2,1,1]],[240,[8,6,4,2,1]],[280,[13,10,7,4,2]]]
 
 // Smoking points by age group index [20-39, 40-49, 50-59, 60-69, 70-79] (Wilson 1998)
 const MALE_SMOKE_POINTS = [8, 5, 3, 1, 1]

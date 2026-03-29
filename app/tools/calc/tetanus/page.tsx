@@ -13,7 +13,8 @@ export default function TetanusPage(){
   const [wound,setWound]=useState('clean');const [vaccine,setVaccine]=useState('recent')
   // CDC Pink Book: 汚染創は最終接種5年超でトキソイド推奨、清潔創は10年超
   const needToxoid=(vaccine==='under3')||(wound==='dirty'&&(vaccine==='old'||vaccine==='mid'))||(wound==='clean'&&vaccine==='old')
-  const needTIG=vaccine==='under3'
+  // CDC Pink Book: TIGは汚染創かつ接種歴<3回の場合のみ
+  const needTIG=wound==='dirty'&&vaccine==='under3'
   const sev=needTIG?'dn' as const:needToxoid?'wn' as const:'ok' as const
   let label='トキソイド・TIG不要'
   if(needTIG) label='トキソイド・TIG — CDC基準では該当（最終判断は担当医）'

@@ -75,7 +75,7 @@ const data: CompareData = {
     'Nakamura H et al. MEGA Study (primary prevention with pravastatin). Lancet 2006;368:1155-1163',
     'Baigent C et al. CTT meta-analysis. Lancet 2010;376:1670-1681'],
   relatedTools: [
-    { href: '/tools/calc/fib4', name: 'FIB-4' },
+    { href: '/tools/calc/fib-4', name: 'FIB-4' },
     { href: '/tools/calc/egfr', name: 'eGFR' },
     { href: '/tools/calc/framingham', name: 'Framingham' }],
 }

@@ -34,10 +34,19 @@ export default function DAS28Page() {
     let category = ''
     let severity: 'ok' | 'wn' | 'dn' = 'ok'
 
-    if (rounded <= 2.6) { category = '寛解'; severity = 'ok' }
-    else if (rounded <= 3.2) { category = '低疾患活動性'; severity = 'ok' }
-    else if (rounded <= 5.1) { category = '中等度疾患活動性'; severity = 'wn' }
-    else { category = '高疾患活動性'; severity = 'dn' }
+    // DAS28-ESR: <=2.6寛解, <=3.2低, <=5.1中, >5.1高
+    // DAS28-CRP: <=2.3寛解, <=2.7低, <=4.1中, >4.1高 (Inoue 2007)
+    if (useCRP) {
+      if (rounded <= 2.3) { category = '寛解'; severity = 'ok' }
+      else if (rounded <= 2.7) { category = '低疾患活動性'; severity = 'ok' }
+      else if (rounded <= 4.1) { category = '中等度疾患活動性'; severity = 'wn' }
+      else { category = '高疾患活動性'; severity = 'dn' }
+    } else {
+      if (rounded <= 2.6) { category = '寛解'; severity = 'ok' }
+      else if (rounded <= 3.2) { category = '低疾患活動性'; severity = 'ok' }
+      else if (rounded <= 5.1) { category = '中等度疾患活動性'; severity = 'wn' }
+      else { category = '高疾患活動性'; severity = 'dn' }
+    }
 
     return { score: rounded, category, severity, type: useCRP ? 'DAS28-CRP' : 'DAS28-ESR' }
   }, [tender, swollen, esr, crp, vas, useCRP])
@@ -58,7 +67,7 @@ export default function DAS28Page() {
             severity={result.severity}
             details={[
               { label: '疾患活動性', value: result.category },
-              { label: '判定基準', value: '<=2.6 寛解 / <=3.2 低 / <=5.1 中 / >5.1 高' },
+              { label: '判定基準', value: useCRP ? '<=2.3 寛解 / <=2.7 低 / <=4.1 中 / >4.1 高' : '<=2.6 寛解 / <=3.2 低 / <=5.1 中 / >5.1 高' },
             ]}
           />
           <p className="text-[10px] text-muted px-1">DAS28-CRP ≤2.6は寛解の一指標。SDAI/CDAI寛解基準とは一致しないことがある</p>

@@ -19,7 +19,7 @@ export default function OaklandPage() {
     prevAdm: { 'no': 0, 'yes': 1 },
     dre: { 'no-blood': 0, 'blood': 1 },
     hr: { '<70': 0, '70-89': 1, '90-109': 2, '>=110': 3 },
-    sbp: { '>=130': 0, '120-129': 1, '110-119': 2, '100-109': 3, '<100': 5 },
+    sbp: { '>=130': 0, '120-129': 1, '110-119': 2, '100-109': 3, '90-99': 3, '<90': 5 },
     hb: { '>=160': 0, '130-159': 1, '110-129': 3, '90-109': 5, '70-89': 8, '<70': 10 },
   }
   const result = useMemo(() => {
@@ -53,7 +53,7 @@ export default function OaklandPage() {
         <Select label="下部消化管出血での入院歴" value={prevAdm} onChange={setPrevAdm} options={[{ v: 'no', l: 'なし (0点)' }, { v: 'yes', l: 'あり (1点)' }]} />
         <Select label="直腸診 (DRE)" value={dre} onChange={setDre} options={[{ v: 'no-blood', l: '血液なし (0点)' }, { v: 'blood', l: '血液あり (1点)' }]} />
         <Select label="心拍数" value={hr} onChange={setHr} options={[{ v: '<70', l: '<70 (0点)' }, { v: '70-89', l: '70-89 (1点)' }, { v: '90-109', l: '90-109 (2点)' }, { v: '>=110', l: '≧110 (3点)' }]} />
-        <Select label="収縮期血圧 (mmHg)" value={sbp} onChange={setSbp} options={[{ v: '>=130', l: '≧130 (0点)' }, { v: '120-129', l: '120-129 (1点)' }, { v: '110-119', l: '110-119 (2点)' }, { v: '100-109', l: '100-109 (3点)' }, { v: '<100', l: '<100 (5点)' }]} />
+        <Select label="収縮期血圧 (mmHg)" value={sbp} onChange={setSbp} options={[{ v: '>=130', l: '≧130 (0点)' }, { v: '120-129', l: '120-129 (1点)' }, { v: '110-119', l: '110-119 (2点)' }, { v: '100-109', l: '100-109 (3点)' }, { v: '90-99', l: '90-99 (3点)' }, { v: '<90', l: '<90 (5点)' }]} />
         <Select label="Hb (g/L) ※日本のg/dL×10で入力" value={hb} onChange={setHb} options={[{ v: '>=160', l: '≧16.0 g/dL [≧160 g/L] (0点)' }, { v: '130-159', l: '13.0-15.9 g/dL [130-159 g/L] (1点)' }, { v: '110-129', l: '11.0-12.9 g/dL [110-129 g/L] (3点)' }, { v: '90-109', l: '9.0-10.9 g/dL [90-109 g/L] (5点)' }, { v: '70-89', l: '7.0-8.9 g/dL [70-89 g/L] (8点)' }, { v: '<70', l: '<7.0 g/dL [<70 g/L] (10点)' }]} />
       </div>
     </CalculatorLayout>

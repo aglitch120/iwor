@@ -22,7 +22,7 @@ export default function SirsPage() {
     const isSirs = score >= 2
     return {
       score,
-      interpretation: isSirs ? `SIRS（${score}/4項目該当）— 感染・非感染を含む誘因の検索を（※Sepsis-3ではSIRSは敗血症定義から除外）` : `SIRS基準未達（${score}/4）`,
+      interpretation: isSirs ? `SIRS（${score}/4項目該当）— 感染・非感染を含む多様な病態でみられる（※Sepsis-3ではSIRSは敗血症定義から除外）` : `SIRS基準未達（${score}/4）`,
       severity: (isSirs ? 'dn' : 'ok') as 'ok' | 'wn' | 'dn',
     }
   }, [checked])

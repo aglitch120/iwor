@@ -23,7 +23,7 @@ const data: CompareData = {
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
     { href: '/tools/calc/cockcroft-gault', name: 'Cockcroft-Gault' },
-    { href: '/tools/calc/curb65', name: 'CURB-65' },
+    { href: '/tools/calc/curb-65', name: 'CURB-65' },
     { href: '/tools/drugs/compare/cephalosporin', name: 'セフェム系比較' }],
 }
 

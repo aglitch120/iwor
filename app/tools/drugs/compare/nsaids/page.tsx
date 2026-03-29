@@ -25,7 +25,7 @@ const data: CompareData = {
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
     { href: '/tools/calc/rockall', name: 'Rockall' },
-    { href: '/tools/calc/gbs', name: 'Glasgow-Blatchford' },
+    { href: '/tools/calc/glasgow-blatchford', name: 'Glasgow-Blatchford' },
     { href: '/tools/drugs/compare/ppi', name: 'PPI比較' }],
 }
 

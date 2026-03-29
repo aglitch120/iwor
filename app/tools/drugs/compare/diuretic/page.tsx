@@ -24,7 +24,7 @@ const data: CompareData = {
     'Zannad F et al. Eplerenone (EMPHASIS-HF). N Engl J Med 2011;364:11-21'],
   relatedTools: [
     { href: '/tools/calc/egfr', name: 'eGFR' },
-    { href: '/tools/calc/corrected-na', name: 'Na補正' },
+    { href: '/tools/calc/na-correction-rate', name: 'Na補正速度' },
     { href: '/tools/drugs/compare/arb', name: 'ARB比較' },
     { href: '/tools/drugs/compare/beta-blocker', name: 'β遮断薬比較' }],
 }

@@ -35,8 +35,8 @@ export default function LightCriteriaPage() {
     const exudative = c1 || c2 || c3
     const severity: 'ok' | 'wn' = exudative ? 'wn' : 'ok'
     const label = exudative
-      ? '滲出性胸水 — 原因検索が必要（感染症、悪性腫瘍、膠原病等）'
-      : '漏出性胸水 — 全身性要因（心不全、肝硬変、ネフローゼ等）'
+      ? '滲出性胸水（感染症、悪性腫瘍、膠原病等でみられる）'
+      : '漏出性胸水（心不全、肝硬変、ネフローゼ等でみられる）'
 
     return {
       ready: true, exudative, severity, label,

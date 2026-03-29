@@ -27,10 +27,10 @@ export default function OsmolalityGapPage() {
     let interpretation = ''
     let severity: 'ok' | 'wn' | 'dn' = 'ok'
     if (gap > 25) {
-      interpretation = 'OG著明開大 — メタノール・エチレングリコール中毒を強く疑う'
+      interpretation = 'OG著明開大 — メタノール・エチレングリコール中毒等でみられる値'
       severity = 'dn'
     } else if (gap > 10) {
-      interpretation = 'OG開大 — 中毒物質・エタノール・その他の浸透圧物質の関与が考えられる'
+      interpretation = 'OG開大 — エタ��ール・中毒物質・その他の浸透圧物質でみられる値'
       severity = 'wn'
     } else if (gap < -10) {
       interpretation = 'OG低値 — 測定誤差・高脂血症・高蛋白血症の可能性'

@@ -21,8 +21,8 @@ export default function Page() {
     // 貯蔵鉄: 体重>35kgで500mg、≤35kgで250mg
     const ironStores = w > 35 ? 500 : 250
     const deficit = w * (th - ah) * 2.4 + ironStores
-    // フェインジェクトは1回最大750mg（日本添付文書）
-    const maxPerSession = w < 50 ? 500 : 750
+    // フェインジェクト日本添付文書: 1回最大500mg、週1回以上の間隔
+    const maxPerSession = 500
     const ferinjectTotal = Math.ceil(Math.max(0, deficit) / 500) * 500
     return { deficit: Math.max(0, deficit), ferinject: ferinjectTotal, ferinjectSessions: Math.ceil(ferinjectTotal / maxPerSession), maxPerSession }
   }, [weight, actualHb, targetHb])
@@ -34,7 +34,7 @@ export default function Page() {
         <ResultCard label="鉄欠乏量" value={`${result.deficit.toFixed(0)} mg`} interpretation="Ganzoni formula（参考値。実際の投与量・製剤選択は担当医が決定）" severity="ok"
           details={[
             { label: '計算式', value: '体重×(目標Hb-実Hb)×2.4 + 貯蔵鉄: 体重>35kgは500mg、≤35kgは250mg' },
-            { label: 'カルボキシマルトース鉄（フェインジェクト）', value: `${result.ferinject} mg（${result.ferinjectSessions}回、1回最大${result.maxPerSession}mg）` },
+            { label: 'カルボキシマルトース鉄（フェインジェクト）', value: `${result.ferinject} mg（${result.ferinjectSessions}回、1回最大500mg・週1回以上の間隔）` },
             { label: '含糖酸化鉄（フェジン）40mg/A', value: `${Math.ceil(result.deficit / 40)} A` },
           ]} />
       )}>

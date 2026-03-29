@@ -37,7 +37,7 @@ export default function HbA1cGlucosePage() {
         interpretation = '糖尿病型の可能性（HbA1c ≧6.5%） — 確定診断には血糖検査との組み合わせまたは再検が必要'
         severity = 'wn'
       } else if (a1c >= 6.0) {
-        interpretation = '境界域（糖尿病予備群） — 生活習慣の改善が示される'
+        interpretation = '境界域（糖尿病予備群に相当する値）'
         severity = 'wn'
       } else {
         interpretation = '正常範囲（4.6〜6.0%未満）'
