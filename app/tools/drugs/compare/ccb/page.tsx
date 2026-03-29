@@ -6,7 +6,7 @@ const data: CompareData = {
   category: '降圧薬',
   title: 'Ca拮抗薬（CCB）比較表',
   description: 'アムロジピン・ニフェジピン・ベニジピン・シルニジピン・アゼルニジピン・ジルチアゼム・ベラパミルの7剤を比較。DHP系 vs 非DHP系・心拍への影響。',
-  columns: ['generic', 'brand', 'halfLife', 'features', 'renalAdjust', 'contraindication', 'evidence'],
+  columns: ['generic', 'brand', 'halfLife', 'renalAdjust', 'contraindication'],
   drugs: [
     { generic: 'アムロジピン', brand: 'ノルバスク/アムロジン', specs: '2.5mg/5mg/10mg', indication: '高血圧、狭心症', halfLife: '約36時間', metabolism: 'CYP3A4', renalAdjust: '通常不要', contraindication: '妊婦（ジヒドロピリジン系共通）' },
     { generic: 'ニフェジピン CR', brand: 'アダラート CR', specs: '10mg/20mg/40mg', indication: '高血圧、狭心症', halfLife: '約2時間（CR製剤で12-24時間持続）', metabolism: 'CYP3A4', renalAdjust: '通常不要', contraindication: '心原性ショック、急性心筋梗塞' },

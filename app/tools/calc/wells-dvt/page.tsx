@@ -11,7 +11,7 @@ const toolDef = getToolBySlug('wells-dvt')!
 const criteria = [
   { id: 'cancer', label: '活動性の悪性腫瘍', sublabel: '治療中・6ヶ月以内・緩和治療中', points: 1 },
   { id: 'paralysis', label: '麻痺・不全麻痺・最近のギプス固定', sublabel: '下肢の不動化', points: 1 },
-  { id: 'bedridden', label: '3日以上の臥床安静または12週以内の大手術', sublabel: '全身・局所麻酔下', points: 1 },
+  { id: 'bedridden', label: '3日以上の臥床安静または4週以内の大手術', sublabel: '全身・局所麻酔下', points: 1 },
   { id: 'tenderness', label: '深部静脈走行に沿った圧痛', sublabel: 'Localized tenderness along deep venous system', points: 1 },
   { id: 'swelling', label: '下肢全体の腫脹', sublabel: 'Entire leg swollen', points: 1 },
   { id: 'calf', label: '腓腹部の左右差 >3cm', sublabel: '脛骨粗面の10cm下で計測', points: 1 },

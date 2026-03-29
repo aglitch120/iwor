@@ -7,7 +7,7 @@ import { getToolBySlug, categoryLabels, categoryIcons } from '@/lib/tools-config
 const toolDef = getToolBySlug('nrs2002')!
 const nutrition=[
   {label:'正常 (0)',value:'0'},{label:'軽度: 3ヶ月で5%以上の体重減少 or 前週の食事摂取量が必要量の50-75% (1)',value:'1'},
-  {label:'中等度: 2ヶ月で5%以上 or BMI 18.5-20.5 + 全身状態不良 or 前週の食事摂取量が25-50% (2)',value:'2'},
+  {label:'中等度: 2ヶ月で5%以上 or BMI 18.5-20.5 + 全身状態不良 or 前週の食事摂取量が25-60% (2)',value:'2'},
   {label:'重度: 1ヶ月で5%以上 or BMI<18.5 + 全身状態不良 or 前週の食事摂取量が0-25% (3)',value:'3'},
 ]
 const disease=[

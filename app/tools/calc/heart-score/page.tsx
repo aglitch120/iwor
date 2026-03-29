@@ -12,7 +12,7 @@ const items = [
   { id: 'ecg', label: 'E: 心電図（ECG）', options: [
     { value: '0', label: '0 — 正常' }, { value: '1', label: '1 — 非特異的ST変化' }, { value: '2', label: '2 — 有意なST偏位' }] },
   { id: 'age', label: 'A: 年齢（Age）', options: [
-    { value: '0', label: '0 — < 45歳' }, { value: '1', label: '1 — 45-64歳' }, { value: '2', label: '2 — ≥ 65歳' }] },
+    { value: '0', label: '0 — < 45歳' }, { value: '1', label: '1 — 45-65歳' }, { value: '2', label: '2 — > 65歳' }] },
   { id: 'risk', label: 'R: リスク因子（Risk factors）', options: [
     { value: '0', label: '0 — リスク因子なし' }, { value: '1', label: '1 — 1-2個' }, { value: '2', label: '2 — ≥3個 or 動脈硬化既往' }] },
   { id: 'troponin', label: 'T: トロポニン（Troponin）', options: [

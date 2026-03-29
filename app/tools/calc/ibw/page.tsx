@@ -18,11 +18,9 @@ export default function IbwPage() {
     const w = parseFloat(weight)
     if (!h || h < 100) return null
 
-    const hInch = h / 2.54
-    // Devine式
-    const ibw = sex === 'male'
-      ? 50 + 2.3 * (hInch - 60)
-      : 45.5 + 2.3 * (hInch - 60)
+    // 日本標準: IBW = 身長(m)² × 22
+    const hM = h / 100
+    const ibw = hM * hM * 22
 
     const abw = ibw + 0.4 * ((w || ibw) - ibw)
     const tvRange6 = (ibw * 6 / 1000).toFixed(2)

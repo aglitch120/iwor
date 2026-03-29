@@ -9,11 +9,12 @@ const toolDef = getToolBySlug('design-r')!
 const D_DEPTH = [
   { value: 'd0', label: 'd0: 皮膚損傷・発赤なし', score: 0 },
   { value: 'd1', label: 'd1: 持続する発赤', score: 1 },
-  { value: 'd2', label: 'd2: 真皮までの損傷', score: 3 },
-  { value: 'D3', label: 'D3: 皮下組織までの損傷', score: 4 },
-  { value: 'D4', label: 'D4: 皮下組織を超える損傷', score: 5 },
-  { value: 'D5', label: 'D5: 関節腔・体腔に至る損傷', score: 6 },
-  { value: 'DU', label: 'DU: 判定不能（壊死組織で覆われ深さ不明 — 実際はD3-D5相当の可能性）', score: 0 },
+  { value: 'd2', label: 'd2: 真皮までの損傷', score: 2 },
+  { value: 'D3', label: 'D3: 皮下組織までの損傷', score: 3 },
+  { value: 'D4', label: 'D4: 皮下組織を超える損傷', score: 4 },
+  { value: 'D5', label: 'D5: 関節腔・体腔に至る損傷', score: 5 },
+  { value: 'DDTI', label: 'DDTI: 深部損傷褥瘡（DTI）疑い', score: 6 },
+  { value: 'DU', label: 'DU: 判定不能（壊死組織で覆われ深さ不明）', score: 7 },
 ]
 const E_EXUDATE = [
   { value: 'e0', label: 'e0: なし', score: 0 },
@@ -33,16 +34,17 @@ const S_SIZE = [
 const I_INFLAM = [
   { value: 'i0', label: 'i0: 局所の炎症徴候なし', score: 0 },
   { value: 'i1', label: 'i1: 局所の炎症徴候あり（発赤・腫脹・熱感・疼痛）', score: 1 },
+  { value: 'I3C', label: 'I3C: 臨界的定着疑い（創面の治癒遅延・肉芽浮腫等）', score: 3 },
   { value: 'I3', label: 'I3: 局所の明らかな感染徴候あり（膿・悪臭）', score: 3 },
   { value: 'I9', label: 'I9: 全身的影響あり（発熱・白血球増多等）', score: 9 },
 ]
 const G_GRAN = [
   { value: 'g0', label: 'g0: 治癒 or 創が浅く評価不要', score: 0 },
-  { value: 'g1', label: 'g1: 良好な肉芽が全創面を覆う', score: 1 },
-  { value: 'g3', label: 'g3: 良好な肉芽が50%以上を覆う', score: 3 },
-  { value: 'G4', label: 'G4: 良好な肉芽が50%未満', score: 4 },
-  { value: 'G5', label: 'G5: 良好な肉芽が全く形成されていない', score: 5 },
-  { value: 'G6', label: 'G6: 肉芽なし＋創面増大あり', score: 6 },
+  { value: 'g1', label: 'g1: 良好な肉芽が創面の90%以上を覆う', score: 1 },
+  { value: 'g3', label: 'g3: 良好な肉芽が創面の50%以上90%未満', score: 3 },
+  { value: 'G4', label: 'G4: 良好な肉芽が創面の10%以上50%未満', score: 4 },
+  { value: 'G5', label: 'G5: 良好な肉芽が創面の10%未満', score: 5 },
+  { value: 'G6', label: 'G6: 良好な肉芽なし', score: 6 },
 ]
 const N_NECRO = [
   { value: 'n0', label: 'n0: 壊死組織なし', score: 0 },
@@ -50,10 +52,10 @@ const N_NECRO = [
   { value: 'N6', label: 'N6: 硬く厚い壊死組織あり', score: 6 },
 ]
 const P_POCKET = [
-  { value: 'p0', label: 'p0: ポケットなし', score: 0 },
-  { value: 'p6', label: 'p6: < 4cm²', score: 6 },
-  { value: 'p9', label: 'p9: 4 - 16cm²', score: 9 },
-  { value: 'p12', label: 'p12: 16 - 36cm²', score: 12 },
+  { value: 'P0', label: 'P0: ポケットなし', score: 0 },
+  { value: 'P6', label: 'P6: < 4cm²', score: 6 },
+  { value: 'P9', label: 'P9: 4 - 16cm²', score: 9 },
+  { value: 'P12', label: 'P12: 16 - 36cm²', score: 12 },
   { value: 'P24', label: 'P24: ≧ 36cm²', score: 24 },
 ]
 
@@ -64,12 +66,13 @@ export default function DesignRPage() {
   const [i, setI] = useState('i0')
   const [g, setG] = useState('g0')
   const [n, setN] = useState('n0')
-  const [p, setP] = useState('p0')
+  const [p, setP] = useState('P0')
 
   const result = useMemo(() => {
     const sc = (arr: {value:string;score:number}[], v: string) => arr.find(x => x.value === v)?.score ?? 0
     const scores = { d: sc(D_DEPTH, d), e: sc(E_EXUDATE, e), s: sc(S_SIZE, s), i: sc(I_INFLAM, i), g: sc(G_GRAN, g), n: sc(N_NECRO, n), p: sc(P_POCKET, p) }
-    const total = Object.values(scores).reduce((a, b) => a + b, 0)
+    // DESIGN-R 2020: D（深さ）は合計スコアに加算しない（表記のみ）
+    const total = scores.e + scores.s + scores.i + scores.g + scores.n + scores.p
     const notation = `${d}${e}${s}${i}${g}${n}${p}`
     return { total, notation, ...scores }
   }, [d, e, s, i, g, n, p])

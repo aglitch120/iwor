@@ -70,7 +70,7 @@ export default function DAS28Page() {
               { label: '判定基準', value: useCRP ? '<=2.3 寛解 / <=2.7 低 / <=4.1 中 / >4.1 高' : '<=2.6 寛解 / <=3.2 低 / <=5.1 中 / >5.1 高' },
             ]}
           />
-          <p className="text-[10px] text-muted px-1">DAS28-CRP ≤2.6は寛解の一指標。SDAI/CDAI寛解基準とは一致しないことがある</p>
+          <p className="text-[10px] text-muted px-1">{useCRP ? 'DAS28-CRP ≤2.3' : 'DAS28-ESR ≤2.6'}は寛解の一指標。SDAI/CDAI寛解基準とは一致しないことがある</p>
         </div>
       )}
       references={[

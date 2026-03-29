@@ -5,8 +5,8 @@ const data: CompareData = {
   slug: 'beta-blocker',
   category: '降圧薬・心不全治療薬',
   title: 'β遮断薬 比較表',
-  description: 'ビソプロロール・カルベジロール・メトプロロール・アテノロール・プロプラノロール・ネビボロール・ランジオロールの7剤を比較。β1選択性・ISA・心不全適応。',
-  columns: ['generic', 'brand', 'halfLife', 'metabolism', 'features', 'renalAdjust', 'contraindication'],
+  description: 'ビソプロロール・カルベジロール・メトプロロール・アテノロール・プロプラノロール・セリプロロール・ランジオロールの7剤を比較。β1選択性・ISA・心不全適応。',
+  columns: ['generic', 'brand', 'halfLife', 'metabolism', 'renalAdjust', 'contraindication'],
   drugs: [
     { generic: 'ビソプロロール', brand: 'メインテート', specs: '0.625mg/2.5mg/5mg', indication: '高血圧、狭心症、心不全、AF心拍数コントロール', halfLife: '約9-12時間', metabolism: '肝代謝 50% + 腎排泄 50%', renalAdjust: '重度腎障害: 慎重投与', contraindication: '高度徐脈、2度以上AVB、SSS、心原性ショック、褐色細胞腫（未治療）、喘息' },
     { generic: 'カルベジロール', brand: 'アーチスト', specs: '1.25mg/2.5mg/10mg/20mg', indication: '高血圧、狭心症、心不全', halfLife: '約7-10時間', metabolism: 'CYP2D6/2C9/1A2（肝代謝主体）', renalAdjust: '通常不要（肝代謝主体）', contraindication: '気管支喘息、高度徐脈、2度以上AVB、心原性ショック' },

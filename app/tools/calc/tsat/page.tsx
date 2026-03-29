@@ -30,7 +30,7 @@ export default function TSATPage() {
     } else if (tsat > 50) {
       interpretation = 'TSAT高値 — 鉄過剰を考慮（ヘモクロマトーシス・輸血後・鉄剤過量）'
       severity = 'wn'
-    } else if (tsat > 45) {
+    } else if (tsat >= 45) {
       interpretation = 'TSAT軽度高値 — 鉄過剰の可能性（フェリチンと合わせて評価）'
       severity = 'wn'
     } else {

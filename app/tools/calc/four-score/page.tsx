@@ -6,7 +6,7 @@ import { RadioGroup } from '@/components/tools/InputFields'
 import { getToolBySlug, categoryLabels, categoryIcons } from '@/lib/tools-config'
 const toolDef = getToolBySlug('four-score')!
 const domains=[
-  {id:'eye',label:'眼反応 (E)',options:[{label:'E4: 開眼・追視あり',value:'4'},{label:'E3: 開眼するが追視なし',value:'3'},{label:'E2: 疼痛刺激で開眼するが追視なし',value:'2'},{label:'E1: 疼痛刺激で開眼しない',value:'1'},{label:'E0: 眼反応なし（myoclonus status含む）',value:'0'}]},
+  {id:'eye',label:'眼反応 (E)',options:[{label:'E4: 開眼・追視または瞬目指示に従う',value:'4'},{label:'E3: 開眼するが追視なし',value:'3'},{label:'E2: 閉眼、大声で開眼',value:'2'},{label:'E1: 閉眼、疼痛刺激で開眼',value:'1'},{label:'E0: 疼痛でも開眼しない',value:'0'}]},
   {id:'motor',label:'運動反応 (M)',options:[{label:'M4: 従命（thumbs up/fist/peace sign）',value:'4'},{label:'M3: 疼痛で手を払う',value:'3'},{label:'M2: 疼痛で屈曲反応',value:'2'},{label:'M1: 疼痛で伸展反応',value:'1'},{label:'M0: 運動反応なし or 全身myoclonus',value:'0'}]},
   {id:'brainstem',label:'脳幹反射 (B)',options:[{label:'B4: 瞳孔反射・角膜反射ともに正常',value:'4'},{label:'B3: 片側瞳孔散大固定',value:'3'},{label:'B2: 瞳孔反射 or 角膜反射のいずれか消失',value:'2'},{label:'B1: 瞳孔反射・角膜反射ともに消失',value:'1'},{label:'B0: 瞳孔反射・角膜反射・咳嗽反射すべて消失',value:'0'}]},
   {id:'resp',label:'呼吸パターン (R)',options:[{label:'R4: 非挿管、規則的呼吸',value:'4'},{label:'R3: 非挿管、Cheyne-Stokes呼吸',value:'3'},{label:'R2: 非挿管、不規則呼吸',value:'2'},{label:'R1: 人工呼吸器で設定以上の呼吸あり',value:'1'},{label:'R0: 人工呼吸器の設定のみ or 無呼吸',value:'0'}]},

@@ -6,14 +6,14 @@ const data: CompareData = {
   category: '糖尿病治療薬',
   title: 'GLP-1受容体作動薬 比較表',
   description: 'リラグルチド・セマグルチド（注/経口）・デュラグルチド・リキシセナチド・エキセナチドの6製剤を比較。投与頻度・心血管/腎保護・体重減少効果。',
-  columns: ['generic', 'brand', 'halfLife', 'features', 'renalAdjust', 'contraindication', 'evidence'],
+  columns: ['generic', 'brand', 'halfLife', 'renalAdjust', 'contraindication'],
   drugs: [
-    { generic: 'リラグルチド', brand: 'ビクトーザ', specs: '皮下注', indication: '2型糖尿病', halfLife: '約13時間', metabolism: 'DPP-4による分解＋内因性代謝', renalAdjust: '透析: 経験限られるため慎重', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型' },
-    { generic: 'セマグルチド（注射）', brand: 'オゼンピック', specs: '皮下注', indication: '2型糖尿病', halfLife: '約7日', metabolism: 'タンパク分解＋β酸化', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型' },
-    { generic: 'セマグルチド（経口）', brand: 'リベルサス', specs: '3mg/7mg/14mg錠', indication: '2型糖尿病', halfLife: '約7日', metabolism: 'タンパク分解＋β酸化', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型' },
-    { generic: 'デュラグルチド', brand: 'トルリシティ', specs: '皮下注アテオス', indication: '2型糖尿病', halfLife: '約5日', metabolism: '一般的なタンパク分解経路', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型' },
-    { generic: 'リキシセナチド', brand: 'リキスミア', specs: '皮下注', indication: '2型糖尿病', halfLife: '約2-3時間', metabolism: 'タンパク分解', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴' },
-    { generic: 'エキセナチド', brand: 'バイエッタ/ビデュリオン', specs: '皮下注', indication: '2型糖尿病', halfLife: '約2.4時間（徐放製剤は数週間）', metabolism: '腎排泄（GFR依存）', renalAdjust: 'CCr < 30: 使用注意', contraindication: '重篤な腎障害、甲状腺髄様癌の既往/家族歴' }],
+    { generic: 'リラグルチド', brand: 'ビクトーザ', specs: '皮下注', indication: '2型糖尿病', halfLife: '約13時間', metabolism: 'DPP-4による分解＋内因性代謝', renalAdjust: '透析: 経験限られるため慎重', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型は慎重投与（海外では禁忌）' },
+    { generic: 'セマグルチド（注射）', brand: 'オゼンピック', specs: '皮下注', indication: '2型糖尿病', halfLife: '約7日', metabolism: 'タンパク分解＋β酸化', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型は慎重投与（海外では禁忌）' },
+    { generic: 'セマグルチド（経口）', brand: 'リベルサス', specs: '3mg/7mg/14mg錠', indication: '2型糖尿病', halfLife: '約7日', metabolism: 'タンパク分解＋β酸化', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型は慎重投与（海外では禁忌）' },
+    { generic: 'デュラグルチド', brand: 'トルリシティ', specs: '皮下注アテオス', indication: '2型糖尿病', halfLife: '約5日', metabolism: '一般的なタンパク分解経路', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴、MEN2型は慎重投与（海外では禁忌）' },
+    { generic: 'リキシセナチド', brand: 'リキスミア', specs: '皮下注', indication: '2型糖尿病', halfLife: '約2-3時間', metabolism: 'タンパク分解', renalAdjust: '重度腎障害: 慎重投与', contraindication: '甲状腺髄様癌の既往/家族歴は慎重投与（海外では禁忌）' },
+    { generic: 'エキセナチド', brand: 'バイエッタ/ビデュリオン', specs: '皮下注', indication: '2型糖尿病', halfLife: '約2.4時間（徐放製剤は数週間）', metabolism: '腎排泄（GFR依存）', renalAdjust: 'CCr < 30: 使用注意', contraindication: '重篤な腎障害。甲状腺髄様癌の既往/家族歴は慎重投与（海外では禁忌）' }],
   seoContent: [
   ],
   references: [

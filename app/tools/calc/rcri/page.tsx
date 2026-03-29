@@ -57,7 +57,7 @@ export default function RcriPage() {
           severity={result.severity}
           details={[
             { label: '主要心血管合併症リスク', value: result.risk },
-            { label: '※注記', value: 'リスク値は外部検証コホートのデータ。原著Lee 1999: 0点0.4%, 1点1.0%, 2点2.4%, 3点以上5.4%' },
+            { label: '※注記', value: 'リスク値はメタ解析推定値。原著Lee 1999導出コホート: 0点0.4%, 1点0.9%, 2点6.6%, 3点以上11%' },
           ]}
         />
       }

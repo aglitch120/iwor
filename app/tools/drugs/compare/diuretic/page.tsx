@@ -6,7 +6,7 @@ const data: CompareData = {
   category: '降圧薬・心不全治療薬',
   title: '利尿薬 比較表',
   description: 'フロセミド・トルバプタン・スピロノラクトン・エプレレノン・トリクロルメチアジド・インダパミド・アゾセミドの7剤を比較。添付文書情報の一覧比較。',
-  columns: ['generic', 'brand', 'halfLife', 'features', 'renalAdjust', 'contraindication', 'evidence'],
+  columns: ['generic', 'brand', 'halfLife', 'renalAdjust', 'contraindication'],
   drugs: [
     { generic: 'フロセミド', brand: 'ラシックス', specs: '10mg/20mg/40mg錠/注', indication: '浮腫（心・腎・肝性）、高血圧', halfLife: '約0.5-1時間', metabolism: 'グルクロン酸抱合、腎排泄', renalAdjust: '腎障害でも使用可（高用量必要な場合あり）', contraindication: '無尿、肝性昏睡、体液中のNa/K著明低下' },
     { generic: 'アゾセミド', brand: 'ダイアート', specs: '30mg/60mg', indication: '浮腫', halfLife: '約2.5-3.5時間', metabolism: '肝代謝', renalAdjust: '腎障害でも使用可', contraindication: '無尿、肝性昏睡、体液中のNa/K著明低下' },

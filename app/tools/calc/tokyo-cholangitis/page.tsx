@@ -10,15 +10,19 @@ const items = [
   { cat: 'C. 胆管病変', items: [{ id: 'dilatation', label: '胆管拡張' }, { id: 'etiology', label: '胆管の成因(結石・狭窄・ステントなど)の画像所見' }] },
 ]
 const severityItems = [
+  // Grade III（重症）: 臓器不全 — 1項目でもあればGrade III
   { label: '意識障害', grade: 3 },
-  { label: '循環不全(DOA/NA使用)', grade: 3 },
-  { label: '黄疸(T-Bil ≧ 5mg/dL)', grade: 2 },
-  { label: '高熱(≧ 39℃)', grade: 2 },
+  { label: '循環不全（DOA ≧5γ or 昇圧薬使用）', grade: 3 },
+  { label: '呼吸不全（PaO₂/FiO₂ < 300）', grade: 3 },
+  { label: '腎不全（乏尿 or Cr > 2.0 mg/dL）', grade: 3 },
+  { label: '肝不全（PT-INR > 1.5）', grade: 3 },
+  { label: '血液凝固異常（Plt < 10万/μL）', grade: 3 },
+  // Grade II（中等症）: 以下のうち2項目以上
+  { label: '黄疸（T-Bil ≧ 5 mg/dL）', grade: 2 },
+  { label: '高熱（≧ 39℃）', grade: 2 },
+  { label: '年齢 ≧ 75歳', grade: 2 },
   { label: 'WBC < 4,000 or > 12,000', grade: 2 },
-  { label: 'Plt < 10万', grade: 2 },
-  { label: 'Alb < 3.0', grade: 2 },
-  { label: '腎機能障害(BUN/Cr上昇)', grade: 2 },
-  { label: 'PT-INR > 1.5', grade: 2 },
+  { label: 'Alb < 正常下限×0.7', grade: 2 },
 ]
 export default function TokyoCholangitisPage() {
   const [checked, setChecked] = useState<Record<string, boolean>>({})
@@ -34,9 +38,9 @@ export default function TokyoCholangitisPage() {
     else dx = '診断基準を満たさない'
     const g3 = sevChecked.filter((v, i) => v && severityItems[i].grade === 3).length > 0
     const g2count = sevChecked.filter((v, i) => v && severityItems[i].grade === 2).length
-    let grade = 'Grade I（軽症）', severity: 'ok'|'wn'|'dn' = 'ok'
+    let grade = 'Grade I（軽症）（参考: TG18基準。治療は担当医が判断）', severity: 'ok'|'wn'|'dn' = 'ok'
     if (g3) { grade = 'Grade III（重症）— 臓器不全あり（参考: TG18基準。治療は担当医が判断）'; severity = 'dn' }
-    else if (g2count >= 1) { grade = 'Grade II（中等症）（参考: TG18基準。治療は担当医が判断）'; severity = 'wn' }
+    else if (g2count >= 2) { grade = 'Grade II（中等症）— Grade II項目2つ以上（参考: TG18基準。治療は担当医が判断）'; severity = 'wn' }
     return { dx, grade, severity }
   }, [checked, sevChecked])
   return (

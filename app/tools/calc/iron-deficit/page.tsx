@@ -37,7 +37,12 @@ export default function Page() {
             { label: 'カルボキシマルトース鉄（フェインジェクト）', value: `${result.ferinject} mg（${result.ferinjectSessions}回、1回最大500mg・週1回以上の間隔）` },
             { label: '含糖酸化鉄（フェジン）40mg/A', value: `${Math.ceil(result.deficit / 40)} A` },
           ]} />
-      )}>
+      )}
+      references={[
+        { text: 'Ganzoni AM. Intravenous iron-dextran: therapeutic and experimental possibilities. Schweiz Med Wochenschr 1970;100:301-303' },
+        { text: 'カルボキシマルトース鉄（フェインジェクト®）添付文書' },
+      ]}
+    >
       <NumberInput id="f1" label="体重 (kg)" value={weight} onChange={setWeight} min={0} />
       <NumberInput id="f2" label="実測Hb (g/dL)" value={actualHb} onChange={setActualHb} min={0} step={0.1} />
       <NumberInput id="f3" label="目標Hb (g/dL)" value={targetHb} onChange={setTargetHb} min={0} step={0.1} />

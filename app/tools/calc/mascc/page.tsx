@@ -10,7 +10,7 @@ export default function MasccPage() {
   const [burden, setBurden] = useState('5')
   const [hypotension, setHypotension] = useState(false)
   const [copd, setCopd] = useState(false)
-  const [solid, setSolid] = useState(false)
+  const [tumorType, setTumorType] = useState<'solid'|'heme'|''>('')
   const [fungal, setFungal] = useState(false)
   const [dehydration, setDehydration] = useState(false)
   const [outpatient, setOutpatient] = useState(true)
@@ -20,8 +20,8 @@ export default function MasccPage() {
     let score = parseInt(burden)
     if (!hypotension) score += 5
     if (!copd) score += 4
-    // 原著: 固形がん かつ 真菌感染の既往なし → +4点（Klastersky 2000）
-    if (solid && !fungal) score += 4
+    // 原著: 固形がん → +4点 / 血液がんで真菌感染の既往なし → +4点（Klastersky 2000）
+    if (tumorType === 'solid' || (tumorType === 'heme' && !fungal)) score += 4
     if (!dehydration) score += 3
     if (outpatient) score += 3
     if (!age60) score += 2
@@ -33,7 +33,7 @@ export default function MasccPage() {
       : '高リスク（<21点）— 治療方針は担当医が判断'
     const complication = lowRisk ? '重篤合併症 <5%' : '重篤合併症 >5%'
     return { score, severity, label, complication }
-  }, [burden, hypotension, copd, solid, fungal, dehydration, outpatient, age60])
+  }, [burden, hypotension, copd, tumorType, fungal, dehydration, outpatient, age60])
 
   return (
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
@@ -53,8 +53,13 @@ export default function MasccPage() {
           ]} />
         <CheckItem id="hypotension" label="低血圧あり（SBP < 90）" sublabel="チェックなし = +5点" points={0} checked={hypotension} onChange={setHypotension} />
         <CheckItem id="copd" label="COPD あり" sublabel="チェックなし = +4点" points={0} checked={copd} onChange={setCopd} />
-        <CheckItem id="solid" label="固形がん（血液がんではない）" sublabel="固形がん かつ 真菌感染の既往なし = +4点" points={0} checked={solid} onChange={setSolid} />
-        <CheckItem id="fungal" label="真菌感染の既往あり" sublabel="固形がんでも既往あり = +0点（固形がんかつ既往なし = +4点）" points={0} checked={fungal} onChange={setFungal} />
+        <SelectInput id="tumor" label="腫瘍の種類" value={tumorType} onChange={v => setTumorType(v as 'solid'|'heme'|'')}
+          options={[
+            { value: '', label: '選択なし (0点)' },
+            { value: 'solid', label: '固形がん (+4点)' },
+            { value: 'heme', label: '血液がん（真菌既往なし = +4点 / あり = 0点）' },
+          ]} />
+        {tumorType === 'heme' && <CheckItem id="fungal" label="真菌感染の既往あり" sublabel="血液がんで既往あり = +0点" points={0} checked={fungal} onChange={setFungal} />}
         <CheckItem id="dehydration" label="脱水あり（輸液が必要）" sublabel="チェックなし = +3点" points={0} checked={dehydration} onChange={setDehydration} />
         <CheckItem id="outpatient" label="FN発症時に外来だった" sublabel="チェックあり = +3点" points={3} checked={outpatient} onChange={setOutpatient} />
         <CheckItem id="age60" label="年齢 ≥ 60歳" sublabel="チェックなし = +2点" points={0} checked={age60} onChange={setAge60} />

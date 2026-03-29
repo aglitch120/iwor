@@ -42,7 +42,7 @@ const DRUGS: Drug[] = [
   // メトロニダゾール
   { id:'mnz', name:'MNZ', nameEn:'メトロニダゾール', category:'ニトロイミダゾール', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'good', atypical:'none', note:'嫌気性菌◎。脳膿瘍（BBB通過◎）。飲酒禁忌（ジスルフィラム様反応）' },
   // 抗真菌
-  { id:'mcfg', name:'MCFG', nameEn:'ミカファンギン', category:'キャンディン系', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'Candida。Aspergillus: 日本では適応外（エビデンス不十分）。ムコール×' },
+  { id:'mcfg', name:'MCFG', nameEn:'ミカファンギン', category:'キャンディン系', gpc:'none', gpcMrsa:'none', gnr:'none', gnrPseudomonas:'none', anaerobe:'none', atypical:'none', note:'Candida。Aspergillus: 日本で適応あり（ただしVRCZ/L-AMBが第一選択）。ムコール×' },
 ]
 
 const ORGANISMS = [

@@ -13,9 +13,9 @@ function calcDuBois(h: number, w: number): number {
   return 0.007184 * Math.pow(h, 0.725) * Math.pow(w, 0.425)
 }
 
-// 高見式（日本人向け）: BSA = 0.007241 × H^0.725 × W^0.425
-function calcShintani(h: number, w: number): number {
-  return 0.007241 * Math.pow(h, 0.725) * Math.pow(w, 0.425)
+// 藤本式（日本人向け）: BSA = 0.008883 × H^0.663 × W^0.444
+function calcFujimoto(h: number, w: number): number {
+  return 0.008883 * Math.pow(h, 0.663) * Math.pow(w, 0.444)
 }
 
 // Mosteller式: BSA = √(H×W/3600)
@@ -34,7 +34,7 @@ export default function BsaPage() {
 
     return {
       duBois: calcDuBois(h, w),
-      shintani: calcShintani(h, w),
+      fujimoto: calcFujimoto(h, w),
       mosteller: calcMosteller(h, w),
     }
   }, [height, weight])
@@ -53,7 +53,7 @@ export default function BsaPage() {
           value={`${result.duBois.toFixed(4)} m²`}
           severity="ok"
           details={[
-            { label: '高見式（日本人向け）', value: `${result.shintani.toFixed(4)} m²` },
+            { label: '藤本式（日本人向け）', value: `${result.fujimoto.toFixed(4)} m²` },
             { label: 'Mosteller式', value: `${result.mosteller.toFixed(4)} m²` },
           ]}
         />

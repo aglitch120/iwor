@@ -25,8 +25,8 @@ export default function CorrectedCaPage() {
     const albVal = parseFloat(alb)
     if (isNaN(caVal) || isNaN(albVal) || caVal <= 0 || albVal <= 0) return null
 
-    // Payne式: 補正Ca = 実測Ca + 0.8 × (4.0 - Alb)
-    const corrCa = caVal + 0.8 * (4.0 - albVal)
+    // Payne式（日本/JSDT標準）: 補正Ca = 実測Ca + (4.0 - Alb)
+    const corrCa = caVal + (4.0 - albVal)
     const corrCaRound = Math.round(corrCa * 10) / 10
     const needsCorrection = albVal < 4.0
     return { corrCa: corrCaRound, rawCa: caVal, alb: albVal, needsCorrection, ...getInterpretation(corrCa) }

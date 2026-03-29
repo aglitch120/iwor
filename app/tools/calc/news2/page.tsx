@@ -7,9 +7,12 @@ import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '
 const toolDef = getToolBySlug('news2')!
 
 function rrScore(v: number) { if (v<=8) return 3; if (v<=11) return 1; if (v<=20) return 0; if (v<=24) return 2; return 3 }
-function spo2Score(v: number, scale2: boolean) {
+function spo2Score(v: number, scale2: boolean, onO2: boolean) {
   if (!scale2) { if (v<=91) return 3; if (v<=93) return 2; if (v<=95) return 1; return 0 }
-  else { if (v<=83) return 3; if (v<=85) return 2; if (v<=87) return 1; if (v<=92) return 0; if (v<=94) return 1; if (v<=96) return 2; return 3 }
+  // Scale 2: ≥93%のペナルティは酸素投与中のみ（室内気では0点）
+  if (v<=83) return 3; if (v<=85) return 2; if (v<=87) return 1; if (v<=92) return 0
+  if (!onO2) return 0
+  if (v<=94) return 1; if (v<=96) return 2; return 3
 }
 function o2Score(onO2: boolean) { return onO2 ? 2 : 0 }
 function tempScore(v: number) { if (v<=35) return 3; if (v<=36) return 1; if (v<=38) return 0; if (v<=39) return 1; return 2 }
@@ -30,11 +33,12 @@ export default function News2Page() {
 
   const result = useMemo(() => {
     const isScale2 = scale2 === '2'
-    const total = rrScore(parseFloat(rr)||16) + spo2Score(parseFloat(spo2)||96, isScale2) + o2Score(onO2==='yes')
+    const isOnO2 = onO2 === 'yes'
+    const total = rrScore(parseFloat(rr)||16) + spo2Score(parseFloat(spo2)||96, isScale2, isOnO2) + o2Score(isOnO2)
       + tempScore(parseFloat(temp)||37) + sbpScore(parseInt(sbp)||120) + hrScore(parseInt(hr)||75) + consScore(consciousness)
     const severity: 'ok'|'wn'|'dn' = total<=4 ? 'ok' : total<=6 ? 'wn' : 'dn'
     const label = total<=4 ? '低リスク' : total<=6 ? '中リスク' : '高リスク'
-    const hasAny3 = [rrScore(parseFloat(rr)||16), spo2Score(parseFloat(spo2)||96, isScale2), o2Score(onO2==='yes'),
+    const hasAny3 = [rrScore(parseFloat(rr)||16), spo2Score(parseFloat(spo2)||96, isScale2, isOnO2), o2Score(isOnO2),
       tempScore(parseFloat(temp)||37), sbpScore(parseInt(sbp)||120), hrScore(parseInt(hr)||75), consScore(consciousness)].some(s => s === 3)
     return { total, severity, label, hasAny3 }
   }, [rr, spo2, scale2, onO2, temp, sbp, hr, consciousness])

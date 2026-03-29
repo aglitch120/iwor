@@ -5,16 +5,21 @@ import ResultCard from '@/components/tools/ResultCard'
 import { CheckItem } from '@/components/tools/InputFields'
 import { getToolBySlug, categoryLabels, categoryIcons } from '@/lib/tools-config'
 const toolDef = getToolBySlug('drip-score')!
-// Webb BJ 2016: 主要因子(2点)と副次因子(1点)を区別
+// Webb BJ et al. Antimicrob Agents Chemother 2016;60:3271-3276
+// Major risk factors (2点) and Minor risk factors (1点)
 const items=[
-  {id:'immunosuppression',label:'免疫抑制状態',points:2},
-  {id:'mrsa',label:'過去1年以内にMRSA感染/保菌',points:2},
-  {id:'prior_hosp',label:'過去60日以内の入院・ICU・点滴抗菌薬',points:2},
+  // Major (2点)
+  {id:'abx',label:'過去60日以内の抗菌薬使用',points:2},
+  {id:'nursing',label:'長期療養施設入所中',points:2},
   {id:'tube',label:'経管栄養',points:2},
-  {id:'abx',label:'過去60日以内の経口抗菌薬使用',points:1},
-  {id:'chronic_wound',label:'慢性創傷',points:1},
-  {id:'nursing',label:'施設入所中',points:1},
-  {id:'esrd',label:'慢性腎不全/透析',points:1},
+  {id:'resistant',label:'過去1年以内の薬剤耐性菌感染/保菌',points:2},
+  // Minor (1点)
+  {id:'hosp',label:'過去60日以内の入院',points:1},
+  {id:'copd',label:'慢性肺疾患',points:1},
+  {id:'poor_func',label:'PS不良（KPS ≦70 or 寝たきり）',points:1},
+  {id:'ppi',label:'H2ブロッカー/PPI使用（過去14日以内）',points:1},
+  {id:'wound',label:'創傷ケア中',points:1},
+  {id:'mrsa_prev',label:'施設のMRSA有病率 >25%',points:1},
 ]
 export default function DRIPScorePage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))

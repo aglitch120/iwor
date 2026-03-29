@@ -6,7 +6,7 @@ const data: CompareData = {
   category: '精神・神経',
   title: '抗てんかん薬 比較表',
   description: 'レベチラセタム・バルプロ酸・カルバマゼピン・ラモトリギン・ラコサミド・フェニトインの6剤を比較。発作型別選択・TDM・催奇形性・薬物相互作用。',
-  columns: ['generic', 'brand', 'halfLife', 'metabolism', 'features', 'renalAdjust', 'contraindication'],
+  columns: ['generic', 'brand', 'halfLife', 'metabolism', 'renalAdjust', 'contraindication'],
   drugs: [
     { generic: 'レベチラセタム (LEV)', brand: 'イーケプラ', specs: '250mg/500mg錠、DS、注', indication: '部分発作、全般発作（ミオクロニー・強直間代）、てんかん重積（注射）', halfLife: '約7時間', metabolism: '血中加水分解（CYP非依存）、腎排泄 66%', renalAdjust: 'CCr < 50: 減量。透析: 補充投与', contraindication: '特になし（過敏症のみ）' },
     { generic: 'バルプロ酸 (VPA)', brand: 'デパケン/セレニカ', specs: '100mg/200mg錠、R錠、シロップ', indication: '全般てんかん（欠神・ミオクロニー・強直間代）、部分発作、躁状態、片頭痛予防', halfLife: '約8-15時間', metabolism: 'グルクロン酸抱合、β酸化、CYP2C9', renalAdjust: '通常不要（肝代謝主体）', contraindication: '重篤な肝障害、尿素サイクル異常症、妊婦（特に第1三半期）' },
