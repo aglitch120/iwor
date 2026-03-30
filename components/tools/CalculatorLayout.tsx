@@ -131,6 +131,23 @@ export default function CalculatorLayout({
     if (slug) trackToolUsage(slug)
   }, [slug])
 
+  // 管理者チェック: tellmedu.info@gmail.com のみモザイク解除
+  // URL: ?admin=tellmedu.info@gmail.com でlocalStorageに保存→以降自動解除
+  const [isAdmin, setIsAdmin] = useState(false)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const adminParam = params.get('admin')
+      if (adminParam === 'tellmedu.info@gmail.com') {
+        localStorage.setItem('iwor_admin_email', adminParam)
+        setIsAdmin(true)
+        return
+      }
+      const stored = localStorage.getItem('iwor_admin_email')
+      if (stored === 'tellmedu.info@gmail.com') setIsAdmin(true)
+    } catch {}
+  }, [])
+
   const jsonLd = slug ? generateToolJsonLd(slug) : null
 
   return (
@@ -182,17 +199,41 @@ export default function CalculatorLayout({
       {/* PLG: 3回目利用バナー */}
       <ThirdUseBanner />
 
-      {/* 計算フォーム */}
-      <section className="bg-s0 border border-br rounded-xl p-5 sm:p-6 mb-6">
-        <h2 className="sr-only">入力</h2>
-        {children}
-      </section>
-
-      {/* 結果 */}
-      {result && (
-        <section className="mb-6" aria-live="polite">
-          {result}
-        </section>
+      {/* 計算フォーム + 結果 */}
+      {isAdmin ? (
+        <>
+          <section className="bg-s0 border border-br rounded-xl p-5 sm:p-6 mb-6">
+            <h2 className="sr-only">入力</h2>
+            {children}
+          </section>
+          {result && (
+            <section className="mb-6" aria-live="polite">
+              {result}
+            </section>
+          )}
+        </>
+      ) : (
+        <div className="relative mb-6">
+          {/* モザイク: 実際のコンテンツをぼかして表示 */}
+          <div className="pointer-events-none select-none" aria-hidden="true">
+            <section className="bg-s0 border border-br rounded-xl p-5 sm:p-6 mb-4 blur-[6px] opacity-50">
+              {children}
+            </section>
+            {result && (
+              <section className="blur-[6px] opacity-50">
+                {result}
+              </section>
+            )}
+          </div>
+          {/* オーバーレイ */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-bg/60 backdrop-blur-[2px] rounded-xl">
+            <div className="text-center p-6">
+              <p className="text-4xl mb-3">🔒</p>
+              <p className="text-lg font-bold text-tx mb-1">準備中</p>
+              <p className="text-sm text-muted mb-4">本ツールは現在検証作業中です。<br />正式公開までしばらくお待ちください。</p>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ペルソナCTA */}
