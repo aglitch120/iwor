@@ -21,13 +21,16 @@ export default function CentorPage() {
     if (lymph) score += 1
     score += parseInt(ageGroup)
 
-    const gasProb = ['<10%', '<10%', '11-17%', '28-35%', '51-53%', '51-53%'][Math.max(0, Math.min(score, 5))]
+    // Fine AM, et al. Ann Emerg Med 2012 メタ解析に基づくGAS確率
+    const probMap: Record<number, string> = { [-1]: '1-2.5%', 0: '1-2.5%', 1: '5-10%', 2: '11-17%', 3: '28-35%', 4: '51-53%', 5: '51-53%' }
+    const gasProb = probMap[Math.max(-1, Math.min(score, 5))] || '—'
     const severity: 'ok'|'wn'|'dn' = score <= 1 ? 'ok' : score <= 3 ? 'wn' : 'dn'
     let recommendation = ''
-    if (score <= 0) recommendation = 'GAS咽頭炎確率 <10%（スコア0点）'
-    else if (score <= 1) recommendation = 'GAS咽頭炎確率 <10%（スコア1点）'
-    else if (score <= 3) recommendation = 'GAS咽頭炎確率 11-35%（スコア2-3点）'
-    else recommendation = 'GAS咽頭炎確率 51-53%（スコア4-5点）'
+    if (score <= 0) recommendation = 'GAS咽頭炎確率 1-2.5%'
+    else if (score === 1) recommendation = 'GAS咽頭炎確率 5-10%'
+    else if (score === 2) recommendation = 'GAS咽頭炎確率 11-17%'
+    else if (score === 3) recommendation = 'GAS咽頭炎確率 28-35%'
+    else recommendation = 'GAS咽頭炎確率 51-53%'
 
     return { score: Math.max(score, 0), gasProb, severity, recommendation }
   }, [fever, noCough, tonsillar, lymph, ageGroup])
@@ -39,7 +42,7 @@ export default function CentorPage() {
         details={[{ label: 'GAS咽頭炎確率', value: result.gasProb }]} />}
       explanation={undefined}
       relatedTools={toolDef.relatedSlugs.map(s => { const t = implementedTools.has(s) ? getToolBySlug(s) : null; return t ? { slug: t.slug, name: t.name } : null }).filter(Boolean) as { slug: string; name: string }[]}
-      references={[{ text: 'Centor RM, et al. Med Decis Making 1981;1:239-246' }, { text: 'McIsaac WJ, et al. CMAJ 1998;158:75-83' }]}
+      references={[{ text: 'Centor RM, et al. Med Decis Making 1981;1:239-246' }, { text: 'McIsaac WJ, et al. CMAJ 1998;158:75-83' }, { text: 'Fine AM, et al. Large-scale validation of the Centor and McIsaac scores. Ann Emerg Med 2012;59:156-166' }]}
     >
       <div className="space-y-3">
         <CheckItem id="fever" label="発熱 > 38°C" points={1} checked={fever} onChange={setFever} />
