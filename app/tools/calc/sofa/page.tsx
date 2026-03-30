@@ -29,14 +29,14 @@ const organs: OrganSystem[] = [
   },
   {
     id: 'coagulation',
-    name: '凝固（血小板数 ×10³/μL）',
+    name: '凝固（血小板数 万/μL）',
     icon: '🩸',
     options: [
-      { label: '≥150', points: 0 },
-      { label: '<150', points: 1 },
-      { label: '<100', points: 2 },
-      { label: '<50', points: 3 },
-      { label: '<20', points: 4 },
+      { label: '≧15万/μL', points: 0 },
+      { label: '<15万/μL', points: 1 },
+      { label: '<10万/μL', points: 2 },
+      { label: '<5万/μL', points: 3 },
+      { label: '<2万/μL', points: 4 },
     ],
   },
   {
@@ -84,7 +84,7 @@ const organs: OrganSystem[] = [
       { label: 'Cr 1.2〜1.9', points: 1 },
       { label: 'Cr 2.0〜3.4', points: 2 },
       { label: 'Cr 3.5〜4.9 or 尿量 <500mL/日', points: 3 },
-      { label: 'Cr ≥5.0 or 尿量 <200mL/日', points: 4 },
+      { label: 'Cr ≧5.0 or 尿量 <200mL/日', points: 4 },
     ],
   },
 ]
