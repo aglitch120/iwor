@@ -23,7 +23,7 @@ const questions: AuditQuestion[] = [
     ],
   },
   {
-    id: 'q2', question: '2. 飲酒するときは通常どのくらいの量を飲みますか？（ドリンク数）',
+    id: 'q2', question: '2. 飲酒するときは通常どのくらいの量を飲みますか？（ドリンク数）※1ドリンク＝純アルコール10g（ビール250mL/ワイン100mL/日本酒0.5合/焼酎70mL/ウイスキー30mL）',
     options: [
       { label: '1〜2', points: 0 }, { label: '3〜4', points: 1 },
       { label: '5〜6', points: 2 }, { label: '7〜9', points: 3 },
