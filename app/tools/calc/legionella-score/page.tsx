@@ -2,45 +2,45 @@
 import { useState, useMemo } from 'react'
 import CalculatorLayout from '@/components/tools/CalculatorLayout'
 import ResultCard from '@/components/tools/ResultCard'
+import { CheckItem } from '@/components/tools/InputFields'
 import { getToolBySlug, categoryLabels, categoryIcons } from '@/lib/tools-config'
 const toolDef = getToolBySlug('legionella-score')!
+
+// 宮下ら 2019: レジオネラ肺炎予測スコア（6項目、各1点、合計0-6点）
 const items = [
-  { name: '体温 ≧ 39.4℃', score: 2 },
-  { name: '咳嗽なし（初期）', score: -1 },
-  { name: '下痢あり', score: 3 },
-  { name: 'LDH > 225 U/L', score: 1 },
-  { name: 'CRP > 18.7 mg/dL', score: 2 },
-  { name: 'Na < 134 mEq/L', score: 2 },
-  { name: '血小板 < 17.1 万/μL', score: -2 },
+  { id: 'male', label: '男性', points: 1 },
+  { id: 'noCough', label: '咳嗽なし', points: 1 },
+  { id: 'dyspnea', label: '呼吸困難感あり', points: 1 },
+  { id: 'crp', label: 'CRP ≧ 18 mg/dL', points: 1 },
+  { id: 'na', label: 'Na < 134 mmol/L', points: 1 },
+  { id: 'ldh', label: 'LDH ≧ 260 U/L', points: 1 },
 ]
+
 export default function LegionellaScorePage() {
-  const [checked, setChecked] = useState<boolean[]>(items.map(() => false))
+  const [checks, setChecks] = useState<Record<string, boolean>>(Object.fromEntries(items.map(i => [i.id, false])))
   const result = useMemo(() => {
-    const total = items.reduce((sum, item, i) => sum + (checked[i] ? item.score : 0), 0)
-    let severity: 'ok' | 'wn' | 'dn' = 'ok', interpretation = ''
-    if (total >= 5) { interpretation = `${total}点 — レジオネラ肺炎の可能性が高い`; severity = 'dn' }
-    else if (total >= 2) { interpretation = `${total}点 — 中間リスク`; severity = 'wn' }
-    else { interpretation = `${total}点 — レジオネラ肺炎の可能性は低い` }
-    return { total, severity, interpretation }
-  }, [checked])
+    const total = items.filter(i => checks[i.id]).reduce((s, i) => s + i.points, 0)
+    if (total >= 3) return { total, severity: 'dn' as const, label: `${total}点（≧3）: レジオネラ肺炎を疑う` }
+    return { total, severity: 'ok' as const, label: `${total}点（<3）: レジオネラ肺炎の可能性は低い` }
+  }, [checks])
+
   return (
-    <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
+    <CalculatorLayout slug={toolDef.slug} title="レジオネラ肺炎予測スコア（宮下ら）" titleEn="Legionella Pneumonia Prediction Score (Miyashita)"
+      description="市中肺炎の中からレジオネラ肺炎を予測するスコア。6項目各1点、合計3点以上でレジオネラ肺炎を疑う。"
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
-      result={<ResultCard severity={result.severity} value={`スコア = ${result.total}点`} interpretation={result.interpretation} />}
-      explanation={<div className="text-sm text-muted"><p>市中肺炎の中からレジオネラ肺炎を予測するスコア。温泉歴・循環水曝露がある場合は臨床的に疑う。</p></div>}
+      result={<ResultCard severity={result.severity} value={`${result.total}/6点`} interpretation={result.label}
+        details={[{ label: '感度/特異度（≧3点）', value: '感度93%, 特異度75%, 陽性尤度比3.7, 陰性尤度比0.10' }]} />}
+      explanation={<div className="text-sm text-muted space-y-1">
+        <p>成人肺炎診療ガイドライン2024でも本スコアによる治療方針決定が記載されている。</p>
+        <p className="text-xs text-wn">注意: 症例対照研究のため選択バイアスによる診断能力の過大評価の可能性あり。免疫抑制患者・30日以内の入院・施設入所者・活動性結核・混合感染は原著で除外。日本国内でのみ評価。</p>
+      </div>}
       relatedTools={[{ slug: 'curb-65', name: 'CURB-65' }, { slug: 'a-drop', name: 'A-DROP' }, { slug: 'psi-port', name: 'PSI/PORT' }]}
-      references={toolDef.sources || []}
+      references={[
+        { text: 'Miyashita N, et al. A new clinical scoring system for evaluating the possibility of Legionella pneumonia. J Infect Chemother. 2019 Jun;25(6):407-412' },
+        { text: '日本呼吸器学会. 成人肺炎診療ガイドライン 2024' },
+      ]}
     >
-      <div className="space-y-2">
-        {items.map((item, i) => (
-          <label key={i} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${checked[i] ? 'bg-acl border border-ac/30' : 'bg-s0 border border-br hover:border-ac/20'}`}>
-            <input type="checkbox" checked={checked[i]} onChange={() => { const nc = [...checked]; nc[i] = !nc[i]; setChecked(nc) }}
-              className="accent-[var(--ac)]" />
-            <span className="text-sm text-tx flex-1">{item.name}</span>
-            <span className="text-xs text-muted">{item.score > 0 ? '+' : ''}{item.score}点</span>
-          </label>
-        ))}
-      </div>
+      <div className="space-y-2">{items.map(i => <CheckItem key={i.id} id={i.id} label={`${i.label} (+${i.points}点)`} checked={checks[i.id]} onChange={v => setChecks(p => ({ ...p, [i.id]: v }))} />)}</div>
     </CalculatorLayout>
   )
 }
