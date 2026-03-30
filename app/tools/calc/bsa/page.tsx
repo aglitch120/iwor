@@ -18,11 +18,6 @@ function calcFujimoto(h: number, w: number): number {
   return 0.008883 * Math.pow(h, 0.663) * Math.pow(w, 0.444)
 }
 
-// Mosteller式: BSA = √(H×W/3600)
-function calcMosteller(h: number, w: number): number {
-  return Math.sqrt((h * w) / 3600)
-}
-
 export default function BsaPage() {
   const [height, setHeight] = useState('170')
   const [weight, setWeight] = useState('60')
@@ -35,7 +30,6 @@ export default function BsaPage() {
     return {
       duBois: calcDuBois(h, w),
       fujimoto: calcFujimoto(h, w),
-      mosteller: calcMosteller(h, w),
     }
   }, [height, weight])
 
@@ -54,7 +48,6 @@ export default function BsaPage() {
           severity="ok"
           details={[
             { label: '藤本式（日本人向け）', value: `${result.fujimoto.toFixed(4)} m²` },
-            { label: 'Mosteller式', value: `${result.mosteller.toFixed(4)} m²` },
           ]}
         />
       )}
@@ -66,8 +59,8 @@ export default function BsaPage() {
         })
         .filter(Boolean) as { slug: string; name: string }[]}
       references={[
-        { text: 'Du Bois D, Du Bois EF. Arch Intern Med 1916;17:863-871' },
-        { text: 'Mosteller RD. N Engl J Med 1987;317:1098' },
+        { text: 'Du Bois D, Du Bois EF. A formula to estimate the approximate surface area if height and weight be known. Arch Intern Med 1916;17:863-871' },
+        { text: '藤本薫喜ほか. 日本人の体表面積に関する研究. 日衛誌 1968;23:443-450' },
       ]}
     >
       <div className="space-y-4">
