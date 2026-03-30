@@ -10,9 +10,9 @@ export default function StopBangPage(){
   const [checks,setChecks]=useState<Record<string,boolean>>(Object.fromEntries(items.map(i=>[i.id,false])))
   const result=useMemo(()=>{
     const score=items.filter(i=>checks[i.id]).length
-    if(score>=5) return {score,severity:'dn' as const,label:'高リスク（5-8）: 中等度〜重度OSAS疑い'}
-    if(score>=3) return {score,severity:'wn' as const,label:'中リスク（3-4）: OSAS疑い'}
-    return {score,severity:'ok' as const,label:'低リスク（0-2）'}
+    if(score>=5) return {score,severity:'dn' as const,label:'OSAS高確率（5-8）: 中等度〜重度OSASの可能性が高い。PSG等の精査を検討'}
+    if(score>=3) return {score,severity:'wn' as const,label:'OSAS疑い（3-4）: OSASの可能性あり。スクリーニング陽性'}
+    return {score,severity:'ok' as const,label:'OSAS低確率（0-2）: スクリーニング陰性'}
   },[checks])
   return(
     <CalculatorLayout slug={toolDef.slug} title={toolDef.name} titleEn={toolDef.nameEn} description={toolDef.description}
