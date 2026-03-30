@@ -1,84 +1,46 @@
 'use client'
-
-import { useState, useMemo } from 'react'
 import CalculatorLayout from '@/components/tools/CalculatorLayout'
-import ResultCard from '@/components/tools/ResultCard'
-import { NumberInput, RadioGroup } from '@/components/tools/InputFields'
-import { getToolBySlug, implementedTools, categoryLabels, categoryIcons } from '@/lib/tools-config'
-
+import { getToolBySlug, categoryLabels, categoryIcons } from '@/lib/tools-config'
 const toolDef = getToolBySlug('na-deficit')!
 
-function getTBWfactor(sex: string): number {
-  return sex === 'male' ? 0.6 : 0.5
-}
-
 export default function NaDeficitPage() {
-  const [sex, setSex] = useState('male')
-  const [weight, setWeight] = useState('60')
-  const [currentNa, setCurrentNa] = useState('125')
-  const [targetNa, setTargetNa] = useState('130')
-
-  const result = useMemo(() => {
-    const w = parseFloat(weight)
-    const cur = parseFloat(currentNa)
-    const tar = parseFloat(targetNa)
-    if (!w || !cur || !tar || cur >= tar) return null
-
-    const tbw = w * getTBWfactor(sex)
-    const deficit = tbw * (tar - cur)
-    const threePercentNaCl = deficit / 513 * 1000 // 3% NaCl = 513 mEq/L
-
-    return {
-      deficit: deficit.toFixed(0),
-      tbw: tbw.toFixed(1),
-      threePercentNaCl: threePercentNaCl.toFixed(0),
-      delta: tar - cur,
-    }
-  }, [sex, weight, currentNa, targetNa])
-
   return (
     <CalculatorLayout
       slug={toolDef.slug}
-      title={toolDef.name}
-      titleEn={toolDef.nameEn}
-      description={toolDef.description}
+      title="Na欠乏量推定（非推奨）"
+      titleEn="Na Deficit Estimation (Not Recommended)"
+      description="低ナトリウム血症のNa欠乏量計算は、鑑別診断なしに生食投与を促す誤解につながるため削除しました。"
       category={categoryLabels[toolDef.category]}
       categoryIcon={categoryIcons[toolDef.category]}
-      result={result && (
-        <div className="space-y-2">
-          <ResultCard
-            label="Na補充必要量"
-            value={result.deficit}
-            unit="mEq"
-            interpretation="⚠️ 最大10 mEq/L以下（推奨目標は6-8 mEq/L/日）。ODS予防"
-            severity="wn"
-            details={[
-              { label: 'TBW', value: `${result.tbw} L` },
-              { label: 'Na上昇幅', value: `${result.delta} mEq/L` },
-              { label: '3% NaCl換算', value: `約${result.threePercentNaCl} mL` },
-            ]}
-          />
-          <p className="text-[10px] text-wn px-1">※推定値。実際の投与量・速度は繰り返しのNa測定と臨床状態を考慮して決定</p>
+      result={null}
+      explanation={<div className="space-y-3 text-sm text-muted">
+        <div className="bg-dnl border border-dnb rounded-xl p-4">
+          <p className="font-bold text-dn text-sm mb-2">このツールは削除されました</p>
+          <p className="text-xs text-dn">低ナトリウム血症の治療は、まず原因の鑑別が最も重要です。Na欠乏量の計算式（TBW×ΔNa）は、低Na血症の原因を問わず一律に生食を投与すべきという誤解を招くため、本ツールの提供を中止しました。</p>
         </div>
-      )}
-      explanation={undefined}
-      relatedTools={toolDef.relatedSlugs
-        .map(s => {
-          const t = implementedTools.has(s) ? getToolBySlug(s) : null
-          return t ? { slug: t.slug, name: t.name } : null
-        })
-        .filter(Boolean) as { slug: string; name: string }[]}
+        <div className="bg-s0 border border-br rounded-xl p-4">
+          <p className="font-bold text-tx text-sm mb-2">低Na血症で確認すべきこと</p>
+          <ul className="text-xs space-y-1 list-disc list-inside">
+            <li>体液量評価（脱水・正常・過剰）</li>
+            <li>尿浸透圧・尿中Na測定</li>
+            <li>SIADH / 甲状腺機能低下 / 副腎不全の除外</li>
+            <li>薬剤性（サイアザイド・SSRI等）の確認</li>
+            <li>補正速度の管理（ODS予防: 目標6-8, 最大10 mEq/L/24h）</li>
+          </ul>
+        </div>
+      </div>}
+      relatedTools={[
+        { slug: 'hyponatremia-flow', name: '低Na血症フロー' },
+        { slug: 'na-correction-rate', name: 'Na補正速度' },
+        { slug: 'siadh', name: 'SIADH診断基準' },
+      ]}
       references={[
-        { text: 'Sterns RH. N Engl J Med 2015;372:55-65' },
-        { text: 'Verbalis JG et al. Am J Med 2013;126:S1-S42' },
+        { text: 'Sterns RH. Disorders of Plasma Sodium. N Engl J Med 2015;372:55-65' },
+        { text: 'Verbalis JG, et al. Am J Med 2013;126:S1-S42' },
       ]}
     >
-      <div className="space-y-4">
-        <RadioGroup name="sex" label="性別" value={sex} onChange={setSex} options={[{ value: 'male', label: '男性（TBW係数0.6）' }, { value: 'female', label: '女性（TBW係数0.5）' }]} />
-        <p className="text-[10px] text-wn">※高齢者(男性0.5/女性0.45)や肥満患者ではTBW比が異なる。実際の補正速度はモニタリングしながら調整。</p>
-        <NumberInput id="weight" label="体重" unit="kg" value={weight} onChange={setWeight} min={1} max={300} step={0.1} />
-        <NumberInput id="currentNa" label="現在のNa" unit="mEq/L" value={currentNa} onChange={setCurrentNa} min={100} max={170} step={0.1} />
-        <NumberInput id="targetNa" label="目標Na" unit="mEq/L" value={targetNa} onChange={setTargetNa} min={100} max={170} step={0.1} />
+      <div className="text-center py-4">
+        <a href="/tools/calc/hyponatremia-flow" className="inline-block px-4 py-2 bg-ac text-white rounded-lg text-sm font-bold hover:opacity-90 transition-all">低Na血症フローへ →</a>
       </div>
     </CalculatorLayout>
   )
