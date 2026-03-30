@@ -155,6 +155,15 @@ export default function LabValuesPage() {
   const [age, setAge] = useState(50)
   const [search, setSearch] = useState('')
   const [openCat, setOpenCat] = useState<string | null>('cbc')
+  const [isAdmin, setIsAdmin] = useState(false)
+  useState(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('admin') === 'tellmedu.info@gmail.com') { localStorage.setItem('iwor_admin_email', 'tellmedu.info@gmail.com'); setIsAdmin(true); return }
+      if (localStorage.getItem('iwor_admin_email') === 'tellmedu.info@gmail.com') setIsAdmin(true)
+    } catch {}
+  })
 
   const q = search.toLowerCase()
 
@@ -188,8 +197,19 @@ export default function LabValuesPage() {
         <UpdatedAt />
       </header>
 
-      {/* 入力 */}
-      <div className="bg-s0 border border-br rounded-xl p-4 mb-6">
+      {!isAdmin && (
+        <div className="relative mb-8">
+          <div className="pointer-events-none select-none blur-[6px] opacity-50 max-h-[300px] overflow-hidden" aria-hidden="true">
+            <div className="bg-s0 border border-br rounded-xl p-4 mb-4"><p className="text-sm text-muted">基準値データ</p></div>
+          </div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-bg/60 backdrop-blur-[2px] rounded-xl">
+            <p className="text-4xl mb-3">🔒</p>
+            <p className="text-lg font-bold text-tx mb-1">準備中</p>
+            <p className="text-sm text-muted text-center">本ツールは現在検証作業中です。<br />正式公開までしばらくお待ちください。</p>
+          </div>
+        </div>
+      )}
+      {isAdmin && <><div className="bg-s0 border border-br rounded-xl p-4 mb-6">
         <div className="flex flex-wrap gap-4 items-end">
           <div>
             <label className="text-xs font-bold text-muted block mb-1">性別</label>
@@ -272,6 +292,7 @@ export default function LabValuesPage() {
       {filtered.length === 0 && (
         <div className="text-center py-12 text-sm text-muted">該当する項目が見つかりません</div>
       )}
+      </>}
 
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-3 mt-8 mb-8 text-sm text-wn">

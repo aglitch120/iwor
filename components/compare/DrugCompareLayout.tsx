@@ -46,6 +46,22 @@ export default function DrugCompareLayout({ data }: { data: CompareData }) {
   const [sortCol, setSortCol] = useState<keyof DrugEntry | null>(null)
   const [highlightIdx, setHighlightIdx] = useState<number | null>(null)
 
+  // 管理者チェック
+  const [isAdmin, setIsAdmin] = useState(false)
+  useState(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const adminParam = params.get('admin')
+      if (adminParam === 'tellmedu.info@gmail.com') {
+        localStorage.setItem('iwor_admin_email', adminParam)
+        setIsAdmin(true)
+        return
+      }
+      if (localStorage.getItem('iwor_admin_email') === 'tellmedu.info@gmail.com') setIsAdmin(true)
+    } catch {}
+  })
+
   const sortedDrugs = useMemo(() => {
     if (!sortCol) return data.drugs
     return [...data.drugs].sort((a, b) => (a[sortCol] || '').localeCompare(b[sortCol] || '', 'ja'))
@@ -73,7 +89,23 @@ export default function DrugCompareLayout({ data }: { data: CompareData }) {
       </header>
 
       {/* 比較表 */}
-      <section className="mb-8 overflow-x-auto -mx-4 px-4">
+      {!isAdmin && (
+        <div className="relative mb-8">
+          <div className="pointer-events-none select-none blur-[6px] opacity-50 overflow-hidden max-h-[400px]" aria-hidden="true">
+            <table className="w-full text-xs border-collapse min-w-[700px]">
+              <tbody>{data.drugs.slice(0, 3).map((drug, i) => (
+                <tr key={i} className="bg-s0"><td className="p-2 border border-br">{drug.generic}</td><td className="p-2 border border-br">{drug.brand}</td></tr>
+              ))}</tbody>
+            </table>
+          </div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-bg/60 backdrop-blur-[2px] rounded-xl">
+            <p className="text-4xl mb-3">🔒</p>
+            <p className="text-lg font-bold text-tx mb-1">準備中</p>
+            <p className="text-sm text-muted text-center">本ツールは現在検証作業中です。<br />正式公開までしばらくお待ちください。</p>
+          </div>
+        </div>
+      )}
+      {isAdmin && <section className="mb-8 overflow-x-auto -mx-4 px-4">
         <table className="w-full text-xs border-collapse min-w-[700px]">
           <thead>
             <tr className="bg-s1">
@@ -105,7 +137,7 @@ export default function DrugCompareLayout({ data }: { data: CompareData }) {
           </tbody>
         </table>
         <p className="text-[10px] text-muted mt-2">※ タップで行をハイライト。列ヘッダーをタップでソート。</p>
-      </section>
+      </section>}
 
       {/* 免責 */}
       <div className="bg-wnl border border-wnb rounded-lg p-4 mb-8 text-sm text-wn">
