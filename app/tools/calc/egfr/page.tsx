@@ -79,7 +79,7 @@ export default function EgfrPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'MedicalWebPage',
-            name: 'eGFR計算ツール（CKD-EPI 2021）',
+            name: 'eGFR計算ツール（JSN推算式）',
             description: toolDef.description,
             url: 'https://iwor.jp/tools/egfr',
             audience: { '@type': 'MedicalAudience', audienceType: 'Clinician' },
@@ -97,7 +97,7 @@ export default function EgfrPage() {
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://iwor.jp' },
               { '@type': 'ListItem', position: 2, name: '臨床計算ツール', item: 'https://iwor.jp/tools' },
-              { '@type': 'ListItem', position: 3, name: 'eGFR計算', item: 'https://iwor.jp/tools/egfr' },
+              { '@type': 'ListItem', position: 3, name: 'eGFR計算（JSN推算式）', item: 'https://iwor.jp/tools/egfr' },
             ],
           }),
         }}

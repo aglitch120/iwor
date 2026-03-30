@@ -69,9 +69,9 @@ export const tools: ToolDefinition[] = [
   // ── Tier 1（16種） ──
   {
     slug: 'egfr',
-    name: 'eGFR計算（CKD-EPI）',
-    nameEn: 'eGFR (CKD-EPI 2021)',
-    description: '血清クレアチニン値から推算糸球体濾過量（eGFR）を計算。CKD-EPI 2021式と日本人係数対応。CKDステージ判定付き。',
+    name: 'eGFR計算（JSN推算式）',
+    nameEn: 'eGFR (JSN Formula)',
+    description: '血清クレアチニン値から推算糸球体濾過量（eGFR）を計算。日本腎臓学会（JSN）推算式を主表示。CKDステージ判定付き。',
     category: 'nephrology',
     tier: 1,
     keywords: ['eGFR', '計算', 'CKD-EPI', '腎機能', 'CKD', 'ステージ', 'クレアチニン'],
