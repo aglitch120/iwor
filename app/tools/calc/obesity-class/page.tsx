@@ -14,11 +14,11 @@ export default function ObesityClassPage() {
     const bmi = w/(h*h)
     let jpnClass = '', whoClass = '', severity: 'ok'|'wn'|'dn' = 'ok'
     if (bmi < 18.5) { jpnClass = '低体重'; whoClass = 'Underweight'; severity = 'wn' }
-    else if (bmi < 25) { jpnClass = '普通体重'; whoClass = 'Normal' }
-    else if (bmi < 30) { jpnClass = '肥満(1度)'; whoClass = 'Pre-obese'; severity = 'wn' }
-    else if (bmi < 35) { jpnClass = '肥満(2度)'; whoClass = 'Obese class I'; severity = 'dn' }
-    else if (bmi < 40) { jpnClass = '肥満(3度)'; whoClass = 'Obese class II'; severity = 'dn' }
-    else { jpnClass = '肥満(4度)'; whoClass = 'Obese class III'; severity = 'dn' }
+    else if (bmi < 25) { jpnClass = '普通体重'; whoClass = 'Normal range' }
+    else if (bmi < 30) { jpnClass = '肥満（1度）'; whoClass = 'Pre-obese'; severity = 'wn' }
+    else if (bmi < 35) { jpnClass = '肥満（2度）'; whoClass = 'Obese class I'; severity = 'dn' }
+    else if (bmi < 40) { jpnClass = '高度肥満 — 肥満（3度）'; whoClass = 'Obese class II'; severity = 'dn' }
+    else { jpnClass = '高度肥満 — 肥満（4度）'; whoClass = 'Obese class III'; severity = 'dn' }
     const ibw = 22 * h * h
     return { bmi: bmi.toFixed(1), jpnClass, whoClass, ibw: ibw.toFixed(1), severity }
   }, [height, weight])
@@ -27,7 +27,7 @@ export default function ObesityClassPage() {
       category={categoryLabels[toolDef.category]} categoryIcon={categoryIcons[toolDef.category]}
       result={result ? <ResultCard severity={result.severity} value={`BMI = ${result.bmi} → ${result.jpnClass}`}
         interpretation={`WHO分類: ${result.whoClass}\n標準体重(BMI22): ${result.ibw} kg\n\n日本肥満学会:\n <18.5: 低体重\n 18.5-25: 普通\n 25-30: 肥満1度\n 30-35: 肥満2度\n 35-40: 肥満3度\n ≧40: 肥満4度`} /> : null}
-      explanation={<div className="text-sm text-muted"><p>日本人ではBMI≧25で肥満。WHO基準(≧30)とは異なる。BMI≧35は高度肥満（肥満3度）。</p></div>}
+      explanation={<div className="text-sm text-muted"><p>日本肥満学会: BMI≧25で肥満、≧35で高度肥満。肥満症=肥満に起因する健康障害を合併するか、その合併が予測され医学的に減量を必要とする疾患。</p></div>}
       relatedTools={[{slug:'bmi',name:'BMI'},{slug:'bsa',name:'BSA'}]}
       references={toolDef.sources||[]}
     >
