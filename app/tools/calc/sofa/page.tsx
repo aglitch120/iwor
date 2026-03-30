@@ -28,27 +28,27 @@ const organs: OrganSystem[] = [
     ],
   },
   {
-    id: 'coagulation',
+    id: 'hemostasis',
     name: '凝固（血小板数 万/μL）',
     icon: '🩸',
     options: [
       { label: '≧15万/μL', points: 0 },
       { label: '<15万/μL', points: 1 },
       { label: '<10万/μL', points: 2 },
-      { label: '<5万/μL', points: 3 },
-      { label: '<2万/μL', points: 4 },
+      { label: '<8万/μL', points: 3 },
+      { label: '<5万/μL', points: 4 },
     ],
   },
   {
     id: 'liver',
-    name: '肝臓（ビリルビン mg/dL）',
+    name: '肝臓（T-Bil mg/dL）',
     icon: '🔬',
     options: [
       { label: '<1.2', points: 0 },
-      { label: '1.2〜1.9', points: 1 },
-      { label: '2.0〜5.9', points: 2 },
-      { label: '6.0〜11.9', points: 3 },
-      { label: '≥12.0', points: 4 },
+      { label: '<3.0', points: 1 },
+      { label: '<6.0', points: 2 },
+      { label: '<12.0', points: 3 },
+      { label: '≧12.0', points: 4 },
     ],
   },
   {
@@ -81,10 +81,10 @@ const organs: OrganSystem[] = [
     icon: '💧',
     options: [
       { label: 'Cr <1.2', points: 0 },
-      { label: 'Cr 1.2〜1.9', points: 1 },
-      { label: 'Cr 2.0〜3.4', points: 2 },
-      { label: 'Cr 3.5〜4.9 or 尿量 <500mL/日', points: 3 },
-      { label: 'Cr ≧5.0 or 尿量 <200mL/日', points: 4 },
+      { label: 'Cr <2.0', points: 1 },
+      { label: 'Cr <3.5', points: 2 },
+      { label: 'Cr ≧3.5 or 尿量 <500mL/日', points: 3 },
+      { label: 'RRT施行中 or RRT基準を満たす', points: 4 },
     ],
   },
 ]
@@ -100,7 +100,7 @@ function getInterpretation(score: number): { text: string; severity: 'ok' | 'wn'
 export default function SOFAPage() {
   const [selected, setSelected] = useState<Record<string, number>>({
     respiration: 0,
-    coagulation: 0,
+    hemostasis: 0,
     liver: 0,
     cardiovascular: 0,
     cns: 0,
@@ -199,7 +199,8 @@ export default function SOFAPage() {
         categoryIcon={categoryIcons[toolDef.category]}
         relatedTools={relatedTools}
         references={[
-          { text: 'Vincent JL, et al. The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. Intensive Care Med. 1996;22(7):707-710. PMID: 8844239', url: 'https://pubmed.ncbi.nlm.nih.gov/8844239/' },
+          { text: 'Ranzani OT, et al. Development and Validation of the SOFA-2 Score. JAMA. 2025;334:2090-2103' },
+          { text: 'Vincent JL, et al. The SOFA score (original). Intensive Care Med. 1996;22(7):707-710. PMID: 8844239', url: 'https://pubmed.ncbi.nlm.nih.gov/8844239/' },
           { text: 'Singer M, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810. PMID: 26903338', url: 'https://pubmed.ncbi.nlm.nih.gov/26903338/' },
           { text: 'Ferreira FL, et al. Serial evaluation of the SOFA score to predict outcome in critically ill patients. JAMA. 2001;286(14):1754-1758. PMID: 11594901', url: 'https://pubmed.ncbi.nlm.nih.gov/11594901/' },
           { text: 'Evans L, et al. Surviving Sepsis Campaign: International Guidelines 2021. Intensive Care Med. 2021;47(11):1181-1247. PMID: 34599691', url: 'https://pubmed.ncbi.nlm.nih.gov/34599691/' },
